@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "497021662174",
+    "firebase_url": "https://datewidget-ab4ba.firebaseio.com",
+    "project_id": "datewidget-ab4ba",
+    "storage_bucket": "datewidget-ab4ba.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:497021662174:android:d7d02e2f6e251b61d8234f",
+        "android_client_info": {
+          "package_name": "com.mywidget"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "497021662174-uhh3bjlneli098gp9e6hk7joscp1vit3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBCuWdI8Ef0gyDcS3mg5DVuG-KagSNM9rk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "497021662174-uhh3bjlneli098gp9e6hk7joscp1vit3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

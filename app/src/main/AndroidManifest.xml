@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          package="com.mywidget">
+
+    <application
+            android:allowBackup="true"
+            android:windowSoftInputMode="adjustPan"
+            android:icon="@mipmap/ic_launcher_heart"
+            android:label="@string/app_name"
+            android:roundIcon="@mipmap/ic_launcher_heart_round"
+            android:supportsRtl="true"
+            android:theme="@style/noActionBarAppTheme"
+            android:name=".MainApplication">
+        <receiver android:name=".MyAppWidget">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+            </intent-filter>
+
+            <meta-data
+                    android:name="android.appwidget.provider"
+                    android:resource="@xml/my_app_widget_info"/>
+        </receiver>
+
+        <activity android:name=".MainActivity"
+                  android:windowSoftInputMode="adjustPan">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".UserActivity"
+                  android:screenOrientation="portrait"
+                  android:windowSoftInputMode="adjustPan"></activity>
+
+        <activity android:name=".LoveDayPopupActivity"
+                  android:screenOrientation="unspecified"
+                  android:theme="@style/Theme.Transparent"
+                  android:windowSoftInputMode="adjustPan"></activity>
+
+        <activity android:name=".login.view.LoginGoogle"
+                  android:screenOrientation="portrait"
+                  android:windowSoftInputMode="adjustPan"/>
+
+        <activity android:name=".lmemo.view.LMemoActivity"
+                  android:screenOrientation="portrait"
+                  android:windowSoftInputMode="adjustPan"/>
+
+        <service
+                android:name=".MyFirebaseMessagingService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+            </intent-filter>
+        </service>
+
+    </application>
+
+    <meta-data
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="@string/notification_channel_id" />
+
+    <uses-permission android:name="android.permission.CALL_PHONE"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+</manifest>

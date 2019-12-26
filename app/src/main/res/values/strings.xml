@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">The Day After</string>
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="add_widget">Add widget</string>
+
+    <string name="menu_home">번호리스트</string>
+    <string name="menu_gallery">미구현</string>
+    <string name="menu_slideshow">로그인</string>
+    <string name="menu_tools">Tools</string>
+    <string name="menu_share">Share</string>
+    <string name="menu_send">Send</string>
+    <string name="notification_channel_id">push test</string>
+</resources>
