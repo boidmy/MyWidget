@@ -18,6 +18,7 @@ class MainApplication : Application() {
     val loveday_table = "LOVEDAY"
     var editor: SharedPreferences.Editor? = null
     var mSharedPreference: SharedPreferences? = null
+    var googleIdtoken: String? = null
 
     override fun onCreate() {
         super.onCreate()
@@ -30,6 +31,7 @@ class MainApplication : Application() {
     init {
         INSTANSE = this
     }
+
 
     companion object {
 

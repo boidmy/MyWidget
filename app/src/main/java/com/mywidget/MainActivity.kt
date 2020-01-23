@@ -23,10 +23,12 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.viewpager.widget.ViewPager
+import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.tabs.TabLayout
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.iid.FirebaseInstanceId
 import com.mywidget.adapter.TabPagerAdapter
 import com.mywidget.lmemo.view.LMemoActivity
 import com.mywidget.login.view.LoginGoogle
@@ -86,6 +88,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         init()
         leftMenu()
         tabInit()
+        googleLogin()
 
         add_txt.setOnClickListener {
             if (tabPosition == 0) {
@@ -94,6 +97,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 onClickLoveDay()
             }
         }
+    }
+
+    private fun googleLogin() {
+        val userAct = GoogleSignIn.getLastSignedInAccount(this)
+        //fcmtest("")
     }
 
     private fun dimVisiblity(flag: Boolean) {
@@ -194,6 +202,26 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     loveDday()
                 }
             }
+            4000 -> {
+                val userAct = GoogleSignIn.getLastSignedInAccount(this)
+
+                userAct?.let {
+                    val name = it.givenName
+                    val token = it.idToken
+
+                    login_name.text = it.givenName
+                }
+            }
+        }
+    }
+
+    fun fcmtest(token2: String?) {
+
+        var test = sendTest()
+        var token: String
+        FirebaseInstanceId.getInstance().instanceId.addOnSuccessListener {itemcontainer ->
+            token = itemcontainer.token
+            //test.haha2(token,"")
         }
     }
 
@@ -287,7 +315,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
             R.id.login_google -> {
                 val intent = Intent(this, LoginGoogle::class.java)
-                startActivity(intent)
+                startActivityForResult(intent, 4000)
             }
             R.id.nav_tools -> {
 

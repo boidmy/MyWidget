@@ -35,7 +35,7 @@ import java.util.*
 
 class FragmentLoveDay : Fragment(), View.OnClickListener  {
 
-    private var unSubscripbe: CompositeDisposable? = null
+    private var unSubscripbe: CompositeDisposable = CompositeDisposable()
 
     private var database: DatabaseReference = FirebaseDatabase.getInstance().reference.child("Lmemo")
 
@@ -47,7 +47,7 @@ class FragmentLoveDay : Fragment(), View.OnClickListener  {
     override fun onDestroy() {
         super.onDestroy()
 
-        unSubscripbe?.dispose()
+        unSubscripbe.dispose()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -112,7 +112,7 @@ class FragmentLoveDay : Fragment(), View.OnClickListener  {
         when (view?.id) {
             R.id.left_container -> {
                 unSubscripbe?.add(ApiConnection.Instance().retrofitService
-                    .lmemoData2("뿡이")
+                    .lmemoData("뿡이")
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe (
@@ -126,7 +126,7 @@ class FragmentLoveDay : Fragment(), View.OnClickListener  {
             }
             R.id.right_container -> {
                 unSubscripbe?.add(ApiConnection.Instance().retrofitService
-                    .lmemoData2("콩이")
+                    .lmemoData("콩이")
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe (

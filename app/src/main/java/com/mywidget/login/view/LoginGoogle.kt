@@ -1,5 +1,6 @@
 package com.mywidget.login.view
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -51,10 +52,7 @@ class LoginGoogle : AppCompatActivity(), GoogleLoginContract.View {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        // Result returned from launching the Intent from GoogleSignInClient.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
-            // The Task returned from this call is always completed, no need to attach
-            // a listener.
             val task = GoogleSignIn.getSignedInAccountFromIntent(data)
             mPresenter.login(task)
         }
@@ -86,4 +84,13 @@ class LoginGoogle : AppCompatActivity(), GoogleLoginContract.View {
     override fun googleSignInClient(): GoogleSignInClient? {
         return mGoogleSignInClient
     }
+
+    override fun finishView() {
+        finish()
+    }
+
+    override fun context(): Context {
+        return this
+    }
+
 }
