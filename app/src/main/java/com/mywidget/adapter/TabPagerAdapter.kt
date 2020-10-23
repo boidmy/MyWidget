@@ -7,17 +7,17 @@ import androidx.viewpager.widget.PagerAdapter
 import com.mywidget.fragment.FragmentLoveDay
 import com.mywidget.fragment.FragmentMemo
 
-class TabPagerAdapter(fm: FragmentManager?) : FragmentStatePagerAdapter(fm) {
+class TabPagerAdapter(fm: FragmentManager) : FragmentStatePagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
     var mFragmentMemo: FragmentMemo? = null
     var mFragmentLoveDay: FragmentLoveDay? = null
 
-    override fun getItem(position: Int): Fragment? {
-        if(position == 0) {
+    override fun getItem(position: Int): Fragment {
+        return if(position == 0) {
             mFragmentMemo = FragmentMemo.newInstance(position)
-            return mFragmentMemo as FragmentMemo
+            mFragmentMemo as FragmentMemo
         } else {
             mFragmentLoveDay = FragmentLoveDay.newInstance(position)
-            return mFragmentLoveDay as FragmentLoveDay
+            mFragmentLoveDay as FragmentLoveDay
         }
     }
 
