@@ -11,8 +11,8 @@ import com.mywidget.Util
 import com.mywidget.data.UserListData
 import kotlinx.android.synthetic.main.user_rv_item.view.*
 
-class UserAdapter(context: Context, callBack: UserACallBack) : RecyclerView.Adapter<UserAdapter.myViewHolder>() {
-    val mContext = context
+class UserAdapter(context: Context, callBack: UserACallBack) : RecyclerView.Adapter<UserAdapter.MyViewHolder>() {
+    private val mContext = context
     private var mData: ArrayList<UserListData.USERLISTITEM>? = null
     private var mCallBack = callBack
 
@@ -20,13 +20,13 @@ class UserAdapter(context: Context, callBack: UserACallBack) : RecyclerView.Adap
         fun callBackCall()
     }
 
-    override fun onBindViewHolder(holder: myViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         holder.bindView(position)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): myViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val view = LayoutInflater.from(mContext).inflate(R.layout.user_rv_item, parent, false)
-        return myViewHolder(view)
+        return MyViewHolder(view)
     }
 
     override fun getItemCount(): Int {
@@ -38,7 +38,7 @@ class UserAdapter(context: Context, callBack: UserACallBack) : RecyclerView.Adap
         notifyDataSetChanged()
     }
 
-    inner class myViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bindView(position: Int) {
             itemView.user_name.text = mData?.get(position)?.userName
             itemView.user_phone.text = mData?.get(position)?.phonNumber
