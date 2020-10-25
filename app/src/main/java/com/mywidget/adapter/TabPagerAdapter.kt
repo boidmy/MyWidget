@@ -4,8 +4,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
 import androidx.viewpager.widget.PagerAdapter
-import com.mywidget.fragment.FragmentLoveDay
-import com.mywidget.fragment.FragmentMemo
+import com.mywidget.view.fragment.FragmentLoveDay
+import com.mywidget.view.fragment.FragmentMemo
 
 class TabPagerAdapter(fm: FragmentManager) : FragmentStatePagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
     var mFragmentMemo: FragmentMemo? = null

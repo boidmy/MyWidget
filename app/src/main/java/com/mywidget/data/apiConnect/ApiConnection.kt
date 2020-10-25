@@ -1,7 +1,7 @@
-package com.mywidget
+package com.mywidget.data.apiConnect
 
-import com.mywidget.Interface.LmemoApi
-import com.mywidget.data.UserData
+import com.mywidget.data.Interface.LmemoApi
+import com.mywidget.data.model.UserData
 import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
 import retrofit2.Retrofit
@@ -14,7 +14,8 @@ class ApiConnection private constructor() {
 
     private val baseUrl = "https://datewidget-ab4ba.firebaseio.com/"
 
-    val retrofitService: LmemoApi get() {
+    val retrofitService: LmemoApi
+        get() {
         return retrofit.create(LmemoApi::class.java)
     }
 

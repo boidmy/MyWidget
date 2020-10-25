@@ -6,7 +6,7 @@ import androidx.annotation.RequiresApi
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
-import com.mywidget.ApiConnection
+import com.mywidget.data.apiConnect.ApiConnection
 import com.mywidget.lmemo.LmemoContract
 import com.mywidget.sendTest
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -87,7 +87,8 @@ class Lpresenter(view: LmemoContract.View) : LmemoContract.presenter {
     fun findFriendToken(id: String?, memo: String, myNickname: String?) {
         val sendPush = sendTest()
 
-        disposable.add(ApiConnection.Instance().retrofitService
+        disposable.add(
+            ApiConnection.Instance().retrofitService
             .UserData(id)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -110,7 +111,8 @@ class Lpresenter(view: LmemoContract.View) : LmemoContract.presenter {
         val idx = user?.indexOf("@")
         val userMail: String = idx?.let { user.substring(0, it) }?:""
 
-        disposable.add(ApiConnection.Instance()
+        disposable.add(
+            ApiConnection.Instance()
             .selectNickName(userMail)
             .map { it.nickName }
             .observeOn(AndroidSchedulers.mainThread())

@@ -1,4 +1,4 @@
-package com.mywidget.fragment
+package com.mywidget.view.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -19,9 +19,6 @@ class FragmentMemo : Fragment(), MainTabRvAdapter.callback {
         super.onCreate(savedInstanceState)
 
         mAdapter = MainTabRvAdapter()
-        if(arguments != null) {
-
-        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, parent: ViewGroup?, savedInstanceState: Bundle?): View? {

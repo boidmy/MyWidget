@@ -1,4 +1,4 @@
-package com.mywidget.data
+package com.mywidget.data.model
 
 class UserListData {
 

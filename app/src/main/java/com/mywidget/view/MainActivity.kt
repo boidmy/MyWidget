@@ -1,4 +1,4 @@
-package com.mywidget
+package com.mywidget.view
 
 import android.Manifest
 import android.annotation.SuppressLint
@@ -22,6 +22,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager.widget.ViewPager
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.material.navigation.NavigationView
@@ -29,9 +30,11 @@ import com.google.android.material.tabs.TabLayout
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.iid.FirebaseInstanceId
+import com.mywidget.*
 import com.mywidget.adapter.TabPagerAdapter
 import com.mywidget.lmemo.view.LMemoActivity
 import com.mywidget.login.view.LoginGoogle
+import com.mywidget.viewModel.MainViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.layout_title.*
 import kotlinx.android.synthetic.main.main_loveday_dialog.view.*
@@ -69,6 +72,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         super.onCreate(savedInstanceState)
         setContentView(R.layout.drawerlayout_main)
 
+        val factory = ViewModelProvider.AndroidViewModelFactory.getInstance(application)
+        var model = ViewModelProvider(this, factory).get(MainViewModel::class.java)
+        
         db?.execSQL("CREATE TABLE IF NOT EXISTS " + user_table + " (name VARCHAR(20), phone VARCHAR(20))")
         db?.execSQL("CREATE TABLE IF NOT EXISTS " + menu_table + " (name VARCHAR(20))")
         db?.execSQL("CREATE TABLE IF NOT EXISTS " + memo_table + " (memo VARCHAR(40), date VARCHAR(20))")
@@ -141,9 +147,13 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private fun tabInit() {
         val mTabLayout: TabLayout = findViewById(R.id.main_tab)
         val mViewPager: ViewPager = findViewById(R.id.vp_tab)
-        mTabLayout.setTabTextColors(ContextCompat.getColor(this, R.color.tab_gray), ContextCompat.getColor(this, R.color.white))
+        mTabLayout.setTabTextColors(ContextCompat.getColor(this,
+            R.color.tab_gray
+        ), ContextCompat.getColor(this, R.color.white))
         mTabLayout.setupWithViewPager(mViewPager)
-        mTabLayout.setSelectedTabIndicatorColor(ContextCompat.getColor(this, R.color.white))
+        mTabLayout.setSelectedTabIndicatorColor(ContextCompat.getColor(this,
+            R.color.white
+        ))
 
         mTabPagerAdapter = TabPagerAdapter(supportFragmentManager)
         mViewPager.adapter = mTabPagerAdapter
@@ -156,11 +166,15 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 when (tab.position) {
                     0 -> {
                         tabPosition = tab.position
-                        add_txt.background = ContextCompat.getDrawable(applicationContext, R.drawable.circle_blue)
+                        add_txt.background = ContextCompat.getDrawable(applicationContext,
+                            R.drawable.circle_blue
+                        )
                     }
                     else -> {
                         tabPosition = tab.position
-                        add_txt.background = ContextCompat.getDrawable(applicationContext, R.drawable.circle_red)
+                        add_txt.background = ContextCompat.getDrawable(applicationContext,
+                            R.drawable.circle_red
+                        )
                     }
                 }
 

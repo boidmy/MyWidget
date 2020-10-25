@@ -1,7 +1,7 @@
-package com.mywidget.Interface
+package com.mywidget.data.Interface
 
 import com.google.gson.JsonObject
-import com.mywidget.data.UserData
+import com.mywidget.data.model.UserData
 import io.reactivex.Observable
 import org.json.JSONObject
 import retrofit2.Response

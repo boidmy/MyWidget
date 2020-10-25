@@ -6,7 +6,7 @@
         android:id="@+id/mainContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".MainActivity"
+        tools:context=".view.MainActivity"
         android:background="#8ED8E2">
 
     <include android:id="@+id/title_container"

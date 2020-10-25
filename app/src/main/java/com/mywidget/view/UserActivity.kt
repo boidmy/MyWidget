@@ -1,4 +1,4 @@
-package com.mywidget
+package com.mywidget.view
 
 import android.annotation.SuppressLint
 import android.appwidget.AppWidgetManager
@@ -14,10 +14,17 @@ import android.widget.RelativeLayout
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.mywidget.MyAppWidget
+import com.mywidget.R
 import com.mywidget.adapter.UserAdapter
-import com.mywidget.data.UserListData
+import com.mywidget.data.model.UserListData
+import com.mywidget.data.room.User
+import com.mywidget.data.room.UserDB
+import com.mywidget.viewModel.UserViewModel
 import kotlinx.android.synthetic.main.activity_user.*
 import kotlinx.android.synthetic.main.main_phone_dialog.view.*
 
@@ -28,7 +35,10 @@ class UserActivity : AppCompatActivity(), UserAdapter.UserACallBack {
     private var mAdapter: UserAdapter? = null
     @SuppressLint("WrongConstant")
     private val mLayoutManager: RecyclerView.LayoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-    private var mData: UserListData? = UserListData()
+    private var mData: UserListData? =
+        UserListData()
+    private var userDb: UserDB? = null
+    private var viewModel: UserViewModel? = null
 
     @SuppressLint("NewApi")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,6 +47,10 @@ class UserActivity : AppCompatActivity(), UserAdapter.UserACallBack {
         setContentView(R.layout.activity_user)
 
         db = this.openOrCreateDatabase("widgetDb", Context.MODE_PRIVATE, null)
+        userDb = UserDB.getInstance(this)
+
+        val factory = ViewModelProvider.AndroidViewModelFactory.getInstance(application)
+        viewModel = ViewModelProvider(this, factory).get(UserViewModel::class.java)
 
         init()
 
@@ -51,6 +65,10 @@ class UserActivity : AppCompatActivity(), UserAdapter.UserACallBack {
         mRecyclerView?.layoutManager = mLayoutManager
         mRecyclerView?.adapter = mAdapter
 
+        viewModel?.data?.observe(this, Observer {
+            mAdapter?.setData(it)
+        })
+
         selectDb()
     }
 
@@ -59,32 +77,9 @@ class UserActivity : AppCompatActivity(), UserAdapter.UserACallBack {
     }
 
     private fun selectDb() {
-        val cursor = db?.rawQuery("SELECT * FROM " + user_table, null)
-
-        try {
-            cursor?.moveToFirst()
-            var itemArray = arrayListOf<UserListData.USERLISTITEM>()
-            itemArray.clear()
-
-            if(cursor?.moveToFirst() != null) {
-                for(i in 0 until cursor.count){
-                    val userItem: UserListData.USERLISTITEM? = mData?.USERLISTITEM()
-
-                    userItem?.userName = cursor.getString(0)
-                    userItem?.phonNumber = cursor.getString(1)
-
-                    if (userItem != null) {
-                        itemArray.add(i, userItem)
-                    }
-
-                    cursor.moveToNext()
-                }
-            }
-
-            mAdapter?.setData(itemArray)
-        } catch (e: Exception) {
-
-        }
+        Thread(Runnable {
+            viewModel?.selectUser(userDb)
+        }).start()
     }
 
     private val onClickListener = View.OnClickListener {
@@ -131,12 +126,12 @@ class UserActivity : AppCompatActivity(), UserAdapter.UserACallBack {
         val name: String = v.name_add.text.toString()
         val number: String = v.number_add.text.toString()
 
-        //db?.execSQL("INSERT INTO$table(name, phone) Values ('$name', '$number')")
-        db?.execSQL("INSERT INTO " + user_table + "(name, phone)" + "Values ('$name', '$number')")
+        Thread(Runnable {
+            viewModel?.insertUser(name, number, userDb)
+        }).start()
 
-        selectDb()
+        //MainApplication.widgetBroad()
 
-        MainApplication.widgetBroad()
         intent = Intent(this, MyAppWidget::class.java)
         intent.action = AppWidgetManager.ACTION_APPWIDGET_UPDATE
         this.sendBroadcast(intent)

@@ -1,4 +1,4 @@
-package com.mywidget.fragment
+package com.mywidget.view.fragment
 
 import android.os.Bundle
 import android.util.Log
@@ -13,11 +13,11 @@ import com.google.firebase.database.*
 import com.google.gson.Gson
 import com.google.gson.JsonObject
 import com.google.gson.reflect.TypeToken
-import com.mywidget.ApiConnection
+import com.mywidget.data.apiConnect.ApiConnection
 import com.mywidget.MainApplication
 import com.mywidget.R
 import com.mywidget.Util
-import com.mywidget.data.LmemoData
+import com.mywidget.data.model.LmemoData
 import com.mywidget.lmemo.Ldata
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -111,7 +111,8 @@ class FragmentLoveDay : Fragment(), View.OnClickListener  {
     override fun onClick(view: View?) {
         when (view?.id) {
             R.id.left_container -> {
-                unSubscripbe?.add(ApiConnection.Instance().retrofitService
+                unSubscripbe?.add(
+                    ApiConnection.Instance().retrofitService
                     .lmemoData("뿡이")
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
@@ -125,7 +126,8 @@ class FragmentLoveDay : Fragment(), View.OnClickListener  {
 
             }
             R.id.right_container -> {
-                unSubscripbe?.add(ApiConnection.Instance().retrofitService
+                unSubscripbe?.add(
+                    ApiConnection.Instance().retrofitService
                     .lmemoData("콩이")
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())

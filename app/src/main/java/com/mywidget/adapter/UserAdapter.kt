@@ -5,15 +5,18 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
 import com.mywidget.R
 import com.mywidget.Util
-import com.mywidget.data.UserListData
+import com.mywidget.data.model.UserListData
+import com.mywidget.data.room.User
+import com.mywidget.viewModel.UserViewModel
 import kotlinx.android.synthetic.main.user_rv_item.view.*
 
 class UserAdapter(context: Context, callBack: UserACallBack) : RecyclerView.Adapter<UserAdapter.MyViewHolder>() {
     private val mContext = context
-    private var mData: ArrayList<UserListData.USERLISTITEM>? = null
+    private var mData: List<User>? = null
     private var mCallBack = callBack
 
     interface UserACallBack {
@@ -33,15 +36,15 @@ class UserAdapter(context: Context, callBack: UserACallBack) : RecyclerView.Adap
         return mData?.size?: 0
     }
 
-    fun setData(userListData: ArrayList<UserListData.USERLISTITEM>) {
+    fun setData(userListData: List<User>?) {
         mData = userListData
         notifyDataSetChanged()
     }
 
     inner class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bindView(position: Int) {
-            itemView.user_name.text = mData?.get(position)?.userName
-            itemView.user_phone.text = mData?.get(position)?.phonNumber
+            itemView.user_name.text = mData?.get(position)?.name
+            itemView.user_phone.text = mData?.get(position)?.number
 
             var alert = AlertDialog.Builder(itemView.context)
 

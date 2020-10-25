@@ -1,4 +1,4 @@
-package com.mywidget.Interface
+package com.mywidget.data.Interface
 
 interface UserCallBack {
     fun callBackCall()

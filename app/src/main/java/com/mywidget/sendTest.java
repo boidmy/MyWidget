@@ -1,7 +1,9 @@
 package com.mywidget;
 
 import android.util.Log;
-import com.mywidget.data.UserData;
+
+import com.mywidget.data.apiConnect.ApiConnection;
+import com.mywidget.data.model.UserData;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
