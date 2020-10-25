@@ -28,15 +28,12 @@ import com.mywidget.viewModel.UserViewModel
 import kotlinx.android.synthetic.main.activity_user.*
 import kotlinx.android.synthetic.main.main_phone_dialog.view.*
 
-class UserActivity : AppCompatActivity(), UserAdapter.UserACallBack {
+class UserActivity : AppCompatActivity() {
     private var db: SQLiteDatabase? = null
-    private val user_table = "USER"
     private var mRecyclerView: RecyclerView? = null
     private var mAdapter: UserAdapter? = null
     @SuppressLint("WrongConstant")
     private val mLayoutManager: RecyclerView.LayoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-    private var mData: UserListData? =
-        UserListData()
     private var userDb: UserDB? = null
     private var viewModel: UserViewModel? = null
 
@@ -51,6 +48,7 @@ class UserActivity : AppCompatActivity(), UserAdapter.UserACallBack {
 
         val factory = ViewModelProvider.AndroidViewModelFactory.getInstance(application)
         viewModel = ViewModelProvider(this, factory).get(UserViewModel::class.java)
+        viewModel?.userDB = userDb
 
         init()
 
@@ -60,7 +58,7 @@ class UserActivity : AppCompatActivity(), UserAdapter.UserACallBack {
     private fun init() {
 
         mRecyclerView = findViewById(R.id.user_rv)
-        mAdapter = UserAdapter(this, this)
+        mAdapter = UserAdapter(this, viewModel)
 
         mRecyclerView?.layoutManager = mLayoutManager
         mRecyclerView?.adapter = mAdapter
@@ -72,13 +70,9 @@ class UserActivity : AppCompatActivity(), UserAdapter.UserACallBack {
         selectDb()
     }
 
-    override fun callBackCall() {
-        selectDb()
-    }
-
     private fun selectDb() {
         Thread(Runnable {
-            viewModel?.selectUser(userDb)
+            viewModel?.selectUser()
         }).start()
     }
 
@@ -127,7 +121,7 @@ class UserActivity : AppCompatActivity(), UserAdapter.UserACallBack {
         val number: String = v.number_add.text.toString()
 
         Thread(Runnable {
-            viewModel?.insertUser(name, number, userDb)
+            viewModel?.insertUser(name, number)
         }).start()
 
         //MainApplication.widgetBroad()

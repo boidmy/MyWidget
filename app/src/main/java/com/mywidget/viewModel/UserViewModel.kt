@@ -9,15 +9,20 @@ import com.mywidget.data.room.UserDB
 class UserViewModel(application: Application) : AndroidViewModel(application) {
 
     var data: MutableLiveData<List<User>> = MutableLiveData()
+    var userDB: UserDB? = null
 
-    fun insertUser(user: String, phone: String, userDB: UserDB?) {
+    fun insertUser(user: String, phone: String) {
         userDB?.userDao()?.insert(User(null, user, phone))
-        selectUser(userDB)
+        selectUser()
     }
 
-    fun selectUser(userDB: UserDB?) {
-        var userList: List<User>?
-        userList = userDB?.userDao()?.getUser()!!
+    fun deleteUser(user: String) {
+        userDB?.userDao()?.delete(user)
+        selectUser()
+    }
+
+    fun selectUser() {
+        val userList = userDB?.userDao()?.getUser()!!
         data.postValue(userList)
     }
 }

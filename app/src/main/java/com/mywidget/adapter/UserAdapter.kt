@@ -14,14 +14,10 @@ import com.mywidget.data.room.User
 import com.mywidget.viewModel.UserViewModel
 import kotlinx.android.synthetic.main.user_rv_item.view.*
 
-class UserAdapter(context: Context, callBack: UserACallBack) : RecyclerView.Adapter<UserAdapter.MyViewHolder>() {
+class UserAdapter(context: Context, viewModel: UserViewModel?) : RecyclerView.Adapter<UserAdapter.MyViewHolder>() {
     private val mContext = context
     private var mData: List<User>? = null
-    private var mCallBack = callBack
-
-    interface UserACallBack {
-        fun callBackCall()
-    }
+    private var mViewModel = viewModel
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         holder.bindView(position)
@@ -47,14 +43,13 @@ class UserAdapter(context: Context, callBack: UserACallBack) : RecyclerView.Adap
             itemView.user_phone.text = mData?.get(position)?.number
 
             var alert = AlertDialog.Builder(itemView.context)
-
-
             itemView.delete_btn.setOnClickListener {
                 alert
                     .setTitle("삭제할거에염?")
                     .setPositiveButton("삭제") { _, _ ->
-                        Util.deleteSql(itemView.context, itemView.user_name.text.toString())
-                        mCallBack.callBackCall()
+                        Thread(Runnable {
+                            mViewModel?.deleteUser(itemView.user_name.text.toString())
+                        }).start()
                     }
                     .setNegativeButton("취소") { _, _ ->
                     }

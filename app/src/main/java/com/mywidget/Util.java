@@ -81,11 +81,4 @@ public class Util {
 
         return nTotalDate1-nTotalDate2;
     }
-
-    public static void deleteSql(Context context, String name) {
-        SQLiteDatabase db = context.openOrCreateDatabase("widgetDb", Context.MODE_PRIVATE, null);
-        db.execSQL("delete from USER where name = " + "'"+name+"'");
-
-        MainApplication.Companion.widgetBroad();
-    }
 }
