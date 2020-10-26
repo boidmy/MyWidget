@@ -134,19 +134,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     private fun loveDayAdd(v: View?) {
         val day: String = v?.day_add?.tag.toString()
-
-        val cursor = db?.rawQuery("SELECT * FROM " + loveday_table, null)
-        try {
-            if (cursor?.moveToFirst() != null) {
-                db?.execSQL("delete from " + loveday_table)
-            }
-        } catch (e: Exception) {
-
-        }
-
-        //db?.execSQL("INSERT INTO$table(name, phone) Values ('$name', '$number')")
-        db?.execSQL("INSERT INTO " + loveday_table + "(date)" + "Values ('$day')")
-        mTabPagerAdapter?.notifyDataSetChanged()
+        mTabPagerAdapter?.mFragmentLoveDay?.addLoveDay(day)
     }
 
     private fun tabInit() {

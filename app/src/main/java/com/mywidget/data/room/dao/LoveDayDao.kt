@@ -6,9 +6,10 @@ import com.mywidget.data.room.LoveDay
 @Dao
 interface LoveDayDao {
     @Query("SELECT * FROM loveDay")
-    fun getData(): LoveDay
+    fun getData(): List<LoveDay>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(loveDay: LoveDay)
+
 
 }

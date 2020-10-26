@@ -1,5 +1,6 @@
 package com.mywidget.view.fragment
 
+import android.app.Application
 import android.os.Bundle
 import android.util.Log
 import android.view.Gravity
@@ -8,7 +9,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupWindow
 import android.widget.RelativeLayout
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import com.google.firebase.database.*
 import com.google.gson.Gson
 import com.google.gson.JsonObject
@@ -18,7 +21,11 @@ import com.mywidget.MainApplication
 import com.mywidget.R
 import com.mywidget.Util
 import com.mywidget.data.model.LmemoData
+import com.mywidget.data.room.LoveDay
+import com.mywidget.data.room.LoveDayDB
+import com.mywidget.databinding.MainFragmentFragment2Binding
 import com.mywidget.lmemo.Ldata
+import com.mywidget.viewModel.MainViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -31,143 +38,101 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 
-
-
-class FragmentLoveDay : Fragment(), View.OnClickListener  {
+class FragmentLoveDay : Fragment() {
 
     private var unSubscripbe: CompositeDisposable = CompositeDisposable()
-
+    private var application: Application? = null
+    private var viewModel: MainViewModel? = null
     private var database: DatabaseReference = FirebaseDatabase.getInstance().reference.child("Lmemo")
-
+    private var loveDayDB: LoveDayDB? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        application = activity?.application
 
     }
 
     override fun onDestroy() {
         super.onDestroy()
-
+        viewModel?.rxClear()
         unSubscripbe.dispose()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view: View = inflater.inflate(R.layout.main_fragment_fragment2, container, false)
+        val binding: MainFragmentFragment2Binding = DataBindingUtil.inflate(inflater,
+            R.layout.main_fragment_fragment2, container, false)
+        bindView(binding)
+        selectMemo(binding)
+        messagePop()
+        return binding.root
+    }
 
-        //view.heart_day.text = Util.date().toString() + "일"
+    private fun messagePop() {
+        viewModel?.message?.observe(this, androidx.lifecycle.Observer {
+            val view: View = layoutInflater.inflate(R.layout.memo_list_dialog, null)
+            val popupWindow = PopupWindow(
+                view,
+                RelativeLayout.LayoutParams.WRAP_CONTENT,
+                RelativeLayout.LayoutParams.WRAP_CONTENT
+            )
+            popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0)
+            for (ds in it) {
+                val listItem: View = layoutInflater.inflate(R.layout.memo_list_dialog_item, null)
+                listItem.memo.text = ds.memo
+                listItem.date.text = ds.date
+                view.memo_list_container.addView(listItem)
+            }
+        })
 
+    }
+
+    private fun bindView(binding: MainFragmentFragment2Binding) {
+        application?.let { it ->
+            val factory = ViewModelProvider.AndroidViewModelFactory.getInstance(it)
+            binding.lifecycleOwner = this
+            viewModel = ViewModelProvider(this, factory).get(MainViewModel::class.java)
+            binding.viewModel = viewModel
+            loveDayDB = LoveDayDB.getInstance(it)
+            viewModel?.loveDayDB = loveDayDB
+            Thread(Runnable {
+                viewModel?.selectLoveDay()
+            }).start()
+            viewModel?.loveday?.observe(this, androidx.lifecycle.Observer { data ->
+                viewLoveDay(binding, data)
+            })
+        }
+    }
+
+    fun addLoveDay(date: String) {
+        Thread(Runnable {
+            viewModel?.insertLoveDay(date)
+        }).start()
+    }
+
+    fun viewLoveDay(binding: MainFragmentFragment2Binding, data: List<LoveDay>?) {
         try {
-            val date = SimpleDateFormat("yyyyMMdd").parse(MainApplication.loveDaySelect())
+            val date = SimpleDateFormat("yyyyMMdd").parse(data?.get(data.size-1)?.date)
             val cal: Calendar = Calendar.getInstance()
             cal.time = date
             val year: Int = cal.get(Calendar.YEAR)
             val month: Int = cal.get(Calendar.MONTH) + 1
             val nowdate: Int = cal.get(Calendar.DAY_OF_MONTH)
             val dayOfWeek: Int = cal.get(Calendar.DAY_OF_WEEK)
-
-            view.heart_day.text = Util.loveDay(year, month, nowdate).toString() + "일"
+            binding.heartDay.text = Util.loveDay(year, month, nowdate).toString() + "일"
         } catch (e: Exception) {
-            view.heart_day.text = "0일"
+            binding.heartDay.text = "0일"
         }
-
-        view.left_container.setOnClickListener(this)
-        view.right_container.setOnClickListener(this)
-
-        selectMemo(view)
-
-        return view
     }
 
-    fun selectMemo(view: View) {
-        database.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(data: DataSnapshot) {
-                var arrayRight = arrayListOf<Ldata>()
-                var arrayLeft = arrayListOf<Ldata>()
-
-                for (ds in data.child("콩이").children) {
-                    val product = ds.getValue(Ldata::class.java)
-                    arrayRight.add(product!!)
-                }
-
-                for (ds in data.child("뿡이").children) {
-                    val product = ds.getValue(Ldata::class.java)
-                    arrayLeft.add(product!!)
-                }
-
-                if(data.child("뿡이").value != null) {
-                    view.lmemo_left.text = arrayLeft[arrayLeft.size-1].memo
-                    view.date_left.text = arrayLeft[arrayLeft.size-1].date
-                }
-
-                if(data.child("콩이").value != null) {
-                    view.lmemo_right.text = arrayRight[arrayRight.size-1].memo
-                    view.date_right.text = arrayRight[arrayRight.size-1].date
-                }
-            }
-            override fun onCancelled(p0: DatabaseError) {
-            }
+    fun selectMemo(binding: MainFragmentFragment2Binding) {
+        viewModel?.leftMessage?.observe(this, androidx.lifecycle.Observer {
+            binding.lmemoLeft.text = it[it.size-1].memo
+            binding.dateLeft.text = it[it.size-1].date
         })
-    }
-
-    override fun onClick(view: View?) {
-        when (view?.id) {
-            R.id.left_container -> {
-                unSubscripbe?.add(
-                    ApiConnection.Instance().retrofitService
-                    .lmemoData("뿡이")
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe (
-                        { item ->
-                            memoDialog(item)
-                        }, {exception ->
-                            Log.d("error!", exception.toString())
-                        })
-                )
-
-            }
-            R.id.right_container -> {
-                unSubscripbe?.add(
-                    ApiConnection.Instance().retrofitService
-                    .lmemoData("콩이")
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe (
-                        { item ->
-                            memoDialog(item)
-                        }, {exception ->
-                            Log.d("error!", exception.toString())
-                        })
-                )
-            }
-        }
-    }
-
-    fun memoDialog(jsonObject: JsonObject) {
-        val obj = JSONObject(Gson().toJson(jsonObject))
-        val x = obj.keys()
-        val array = JSONArray()
-
-        while (x.hasNext()) {
-            val key = x.next() as String
-            array.put(obj.get(key))
-        }
-
-        val arrayLmemoData: ArrayList<LmemoData> = Gson().fromJson(array.toString(), object:TypeToken<ArrayList<LmemoData>>(){}.type)
-
-        val view: View = layoutInflater.inflate(R.layout.memo_list_dialog, null)
-        val popupWindow = PopupWindow(
-            view,
-            RelativeLayout.LayoutParams.WRAP_CONTENT,
-            RelativeLayout.LayoutParams.WRAP_CONTENT
-        )
-        popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0)
-        for (ds in arrayLmemoData) {
-            val listItem: View = layoutInflater.inflate(R.layout.memo_list_dialog_item, null)
-            listItem.memo.text = ds.memo
-            listItem.date.text = ds.date
-            view.memo_list_container.addView(listItem)
-
-        }
+        viewModel?.rightMessage?.observe(this, androidx.lifecycle.Observer {
+            binding.lmemoRight.text = it[it.size-1].memo
+            binding.dateRight.text = it[it.size-1].date
+        })
+        viewModel?.message(database)
     }
 
     companion object {
