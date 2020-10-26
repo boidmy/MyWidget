@@ -21,6 +21,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
+import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager.widget.ViewPager
@@ -32,10 +33,13 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.iid.FirebaseInstanceId
 import com.mywidget.*
 import com.mywidget.adapter.TabPagerAdapter
+import com.mywidget.data.room.MemoDB
+import com.mywidget.databinding.DrawerlayoutMainBinding
 import com.mywidget.lmemo.view.LMemoActivity
 import com.mywidget.login.view.LoginGoogle
 import com.mywidget.viewModel.MainViewModel
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_main.view.*
 import kotlinx.android.synthetic.main.layout_title.*
 import kotlinx.android.synthetic.main.main_loveday_dialog.view.*
 import kotlinx.android.synthetic.main.main_phone_dialog.view.*
@@ -52,9 +56,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private var editor = MainApplication.INSTANSE.editor
     private var db = MainApplication.INSTANSE.db
 
-    private val user_table = "USER"
     private val menu_table = "MENU"
-    private val memo_table = "MEMO"
     private val loveday_table = "LOVEDAY"
 
     private var backPressAppFinish: BackPressAppFinish? = null
@@ -64,20 +66,27 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     var drawerLayout: DrawerLayout? = null
     private var tabPosition: Int? = 0
 
+    private var memoDb: MemoDB? = null
+    private var viewModel: MainViewModel? = null
+
     private lateinit var database: DatabaseReference
 
+    private var binding: DrawerlayoutMainBinding? = null
 
     @SuppressLint("NewApi")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.drawerlayout_main)
+
+        binding = DataBindingUtil.setContentView(this, R.layout.drawerlayout_main)
+        binding?.lifecycleOwner = this
 
         val factory = ViewModelProvider.AndroidViewModelFactory.getInstance(application)
-        var model = ViewModelProvider(this, factory).get(MainViewModel::class.java)
-        
-        db?.execSQL("CREATE TABLE IF NOT EXISTS " + user_table + " (name VARCHAR(20), phone VARCHAR(20))")
+        viewModel = ViewModelProvider(this, factory).get(MainViewModel::class.java)
+        memoDb = MemoDB.getInstance(this)
+        viewModel?.memoDB = memoDb
+        binding?.viewModel = viewModel
+
         db?.execSQL("CREATE TABLE IF NOT EXISTS " + menu_table + " (name VARCHAR(20))")
-        db?.execSQL("CREATE TABLE IF NOT EXISTS " + memo_table + " (memo VARCHAR(40), date VARCHAR(20))")
         db?.execSQL("CREATE TABLE IF NOT EXISTS " + loveday_table + " (date VARCHAR(20))")
 
         alertDialog = AlertDialog.Builder(this)
@@ -119,12 +128,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     private fun memoAdd(v: View?) {
-        val name: String = v?.memo_txt?.text.toString()
-        val date: String = v?.date_txt?.tag.toString()
-
-        //db?.execSQL("INSERT INTO$table(name, phone) Values ('$name', '$number')")
-        db?.execSQL("INSERT INTO " + memo_table + "(memo, date)" + "Values ('$name', '$date')")
-        mTabPagerAdapter?.itemNotify()
+        Thread(Runnable {
+            mTabPagerAdapter?.itemNotify(v?.memo_txt?.text.toString(), v?.date_txt?.tag.toString())
+        }).start()
     }
 
     private fun loveDayAdd(v: View?) {
@@ -156,9 +162,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         ))
 
         mTabPagerAdapter = TabPagerAdapter(supportFragmentManager)
-        mViewPager.adapter = mTabPagerAdapter
-
-        mTabPagerAdapter?.notifyDataSetChanged()
+        binding?.mainContainer?.vp_tab?.adapter = mTabPagerAdapter
+        //mViewPager.adapter = mTabPagerAdapter
 
         mViewPager.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(mTabLayout))
         mTabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
@@ -240,26 +245,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
     }
 
-    fun widgetAdd(v: View) {
-        val name: String = v.name_add.text.toString()
-        val number: String = v.number_add.text.toString()
-
-        //db?.execSQL("INSERT INTO$table(name, phone) Values ('$name', '$number')")
-        db?.execSQL("INSERT INTO " + user_table + "(name, phone)" + "Values ('$name', '$number')")
-
-        /*var arrayList = arrayListOf<String>()
-        arrayList.add(name)
-        arrayList.add(number)
-        var set = HashSet<String>()
-        set.addAll(arrayList)
-
-        editor = mSharedPreference?.edit()
-
-        editor?.putStringSet("user", set)*/
-
-        init()
-    }
-
     private fun init() {
         MainApplication.widgetBroad()
         intent = Intent(this, MyAppWidget::class.java)
@@ -325,21 +310,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 val intent = Intent(this, UserActivity::class.java)
                 startActivity(intent)
             }
-            R.id.widget_phone_add -> {
-
-            }
             R.id.login_google -> {
                 val intent = Intent(this, LoginGoogle::class.java)
                 startActivityForResult(intent, 4000)
-            }
-            R.id.nav_tools -> {
-
-            }
-            R.id.nav_share -> {
-
-            }
-            R.id.nav_send -> {
-
             }
         }
         drawerLayout?.closeDrawer(GravityCompat.START)
@@ -379,7 +352,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private fun onClickLoveDay() {
         var intent = Intent(this, LoveDayPopupActivity::class.java)
         startActivityForResult(intent, 3000)
-
     }
 
     private fun loveDday() {
@@ -399,7 +371,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 .setTitle("아싸~")
                 .setMessage("♥입력됐대용♥")
                 .setIcon(android.R.drawable.ic_menu_save)
-                .setPositiveButton(android.R.string.yes) { dialog, whichButton ->
+                .setPositiveButton("yes") { _, _ ->
                     // 확인시 처리 로직
                     loveDayAdd(loveday_dialog)
                     Toast.makeText(this, "저장했대요!!", Toast.LENGTH_SHORT).show()
@@ -410,7 +382,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 }
                 .setNegativeButton(
                     android.R.string.no
-                ) { dialog, whichButton ->
+                ) { _, _ ->
                     // 취소시 처리 로직
                     Toast.makeText(this, "취소했대요ㅠㅠ.", Toast.LENGTH_SHORT).show()
                 }
@@ -451,7 +423,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 .setTitle("아싸~")
                 .setMessage("♥입력됐대용♥")
                 .setIcon(android.R.drawable.ic_menu_save)
-                .setPositiveButton(android.R.string.yes) { dialog, whichButton ->
+                .setPositiveButton("yes") { _, _ ->
                     // 확인시 처리 로직
                     memoAdd(memo_dialog)
                     Toast.makeText(this, "저장했대요!!", Toast.LENGTH_SHORT).show()
@@ -463,7 +435,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 }
                 .setNegativeButton(
                     android.R.string.no
-                ) { dialog, whichButton ->
+                ) { _, _ ->
                     // 취소시 처리 로직
                     Toast.makeText(this, "취소했대요ㅠㅠ.", Toast.LENGTH_SHORT).show()
                 }
@@ -473,9 +445,5 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             dimVisiblity(false)
             imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0)
         }
-    }
-
-    fun hahahoho() {
-
     }
 }

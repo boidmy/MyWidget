@@ -12,17 +12,25 @@ import androidx.recyclerview.widget.RecyclerView
 import com.mywidget.MainApplication
 import com.mywidget.R
 import com.mywidget.Util
+import com.mywidget.data.room.Memo
+import com.mywidget.data.room.User
+import com.mywidget.viewModel.MainViewModel
 import java.text.SimpleDateFormat
 import java.util.*
 
 
 class MainTabRvAdapter : RecyclerView.Adapter<MainTabRvAdapter.MainTabRvViewholder>() {
 
-    private var mData: ArrayList<ArrayList<String>>? = null
+    private var mData: List<Memo>? = null
     private var mCallBack: callback? = null
+    private var mViewModel: MainViewModel? = null
 
     interface callback {
-        fun notifyCall()
+        fun notifyCall(memo: String, date: String)
+    }
+
+    fun setViewModel(viewModel: MainViewModel?) {
+        mViewModel = viewModel
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainTabRvViewholder {
@@ -38,9 +46,8 @@ class MainTabRvAdapter : RecyclerView.Adapter<MainTabRvAdapter.MainTabRvViewhold
         holder.bindView(position)
     }
 
-    fun setData(arrayList: ArrayList<ArrayList<String>>, callback: callback) {
+    fun setData(arrayList: List<Memo>?) {
         mData = arrayList
-        mCallBack = callback
         notifyDataSetChanged()
     }
 
@@ -51,10 +58,10 @@ class MainTabRvAdapter : RecyclerView.Adapter<MainTabRvAdapter.MainTabRvViewhold
         private var rv_container: ConstraintLayout = itemView.findViewById(R.id.rv_container)
         private var memo_date: TextView = itemView.findViewById(R.id.memo_date)
         fun bindView(position: Int) {
-            memotxt.text = mData?.get(position)?.get(0)
+            memotxt.text = mData?.get(position)?.memo
 
             try {
-                val day = mData?.get(position)?.get(1)
+                val day = mData?.get(position)?.date
                 val date = SimpleDateFormat("yyyyMMdd").parse(day)
                 val cal: Calendar = Calendar.getInstance()
                 cal.time = date
@@ -85,8 +92,11 @@ class MainTabRvAdapter : RecyclerView.Adapter<MainTabRvAdapter.MainTabRvViewhold
                 alert
                     .setTitle("삭제할거에염?")
                     .setPositiveButton("삭제") { _, _ ->
-                        MainApplication.memoDelete(mData?.get(position)?.get(0)!!)
-                        mCallBack?.notifyCall()
+//                        MainApplication.memoDelete(mData?.get(position)?.memo!!)
+                        //mCallBack?.notifyCall()
+                        Thread(Runnable {
+                            mViewModel?.deletMemo(mData?.get(position)?.memo!!)
+                        }).start()
                     }
                     .setNegativeButton("취소") { _, _ ->
                     }

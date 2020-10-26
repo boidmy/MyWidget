@@ -32,8 +32,8 @@ class TabPagerAdapter(fm: FragmentManager) : FragmentStatePagerAdapter(fm, BEHAV
             "LoveDays"
     }
 
-    fun itemNotify() {
-        mFragmentMemo?.notifyCall()
+    fun itemNotify(memo: String, date: String) {
+        mFragmentMemo?.notifyCall(memo, date)
     }
 
     override fun getItemPosition(`object`: Any): Int {

@@ -49,6 +49,7 @@ class UserActivity : AppCompatActivity() {
         val binding: ActivityUserBinding = DataBindingUtil.setContentView(this, R.layout.activity_user)
         binding.lifecycleOwner = this
         userDb = UserDB.getInstance(this)
+
         val factory = ViewModelProvider.AndroidViewModelFactory.getInstance(application)
         viewModel = ViewModelProvider(this, factory).get(UserViewModel::class.java)
         viewModel?.userDB = userDb
