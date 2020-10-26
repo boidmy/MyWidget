@@ -4,14 +4,14 @@ import android.app.Application
 import android.graphics.drawable.Drawable
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
-import com.mywidget.data.room.Memo
-import com.mywidget.data.room.MemoDB
-import com.mywidget.data.room.UserDB
+import com.mywidget.data.room.*
 
 class MainViewModel(application: Application) : AndroidViewModel(application) {
     var data: MutableLiveData<List<Memo>> = MutableLiveData()
+    var loveday: MutableLiveData<LoveDay> = MutableLiveData()
 
     var memoDB: MemoDB? = null
+    var loveDayDB: LoveDayDB? = null
 
     fun insertMemo(memo: String, data: String) {
         memoDB?.memoDao()?.insert(Memo(null, memo, data))
@@ -25,5 +25,13 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     fun selectMemo() {
         data.postValue(memoDB?.memoDao()?.getUser())
+    }
+
+    fun insertLoveDay(data: String) {
+        loveDayDB?.loveDayDao()?.insert(LoveDay(null, data))
+    }
+
+    fun selectLoveDay() {
+        loveday.postValue(loveDayDB?.loveDayDao()?.getData())
     }
 }

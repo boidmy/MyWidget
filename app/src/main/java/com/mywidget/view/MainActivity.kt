@@ -83,7 +83,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val factory = ViewModelProvider.AndroidViewModelFactory.getInstance(application)
         viewModel = ViewModelProvider(this, factory).get(MainViewModel::class.java)
         memoDb = MemoDB.getInstance(this)
-        viewModel?.memoDB = memoDb
         binding?.viewModel = viewModel
 
         db?.execSQL("CREATE TABLE IF NOT EXISTS " + menu_table + " (name VARCHAR(20))")
