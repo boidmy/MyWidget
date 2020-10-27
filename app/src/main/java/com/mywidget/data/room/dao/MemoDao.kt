@@ -7,13 +7,10 @@ import androidx.room.Query
 import com.mywidget.data.room.Memo
 
 @Dao
-interface MemoDao {
+abstract class MemoDao : BaseDao<Memo>{
     @Query("SELECT * FROM memo")
-    fun getUser(): List<Memo>
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(memo: Memo)
+    abstract fun getUser(): List<Memo>
 
     @Query("DELETE from memo where memo = :memo")
-    fun delete(memo: String)
+    abstract fun delete(memo: String)
 }
