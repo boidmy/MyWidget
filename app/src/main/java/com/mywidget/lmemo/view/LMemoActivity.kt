@@ -26,19 +26,14 @@ class LMemoActivity : AppCompatActivity(), View.OnClickListener, LmemoContract.V
 
     private val mStateMaintainer: StateMaintainer = StateMaintainer(fragmentManager, LMemoActivity::class.java.name)
 
-
     @SuppressLint("CheckResult")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_love_memo)
-
         confirm_btn.setOnClickListener(this)
-
         setupMVP()
-
         mPresenter?.selectNickName()
-
 
         var ee = Observable.create<String>{ha: ObservableEmitter<String> ->
             ha.onNext("방출하라삐리삐리")
@@ -51,14 +46,12 @@ class LMemoActivity : AppCompatActivity(), View.OnClickListener, LmemoContract.V
 
         }}
             .subscribe{
-
         }
 
         var ob2 = Observable.just(1.0)
 
         var ob = Observable.create{ emitter: ObservableEmitter<String> ->
             emitter.onNext("나다")
-
         }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -71,7 +64,6 @@ class LMemoActivity : AppCompatActivity(), View.OnClickListener, LmemoContract.V
             it * 2
             Log.d("뭐뜨내ㅑ", it.toString())
         }
-
     }
 
     private fun setupMVP() {
@@ -87,7 +79,6 @@ class LMemoActivity : AppCompatActivity(), View.OnClickListener, LmemoContract.V
             mPresenter = mStateMaintainer.get(Lpresenter::class.java.name)
             mPresenter?.setView(this)
         }
-
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -110,10 +101,4 @@ class LMemoActivity : AppCompatActivity(), View.OnClickListener, LmemoContract.V
     override fun nickNameAdd(nickName: String) {
         name_edit.setText(nickName)
     }
-
-
-}
-
-fun abcd() {
-
 }

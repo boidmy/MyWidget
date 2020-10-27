@@ -24,7 +24,6 @@ import com.mywidget.data.model.LmemoData
 import com.mywidget.data.room.LoveDay
 import com.mywidget.data.room.LoveDayDB
 import com.mywidget.databinding.MainFragmentFragment2Binding
-import com.mywidget.lmemo.Ldata
 import com.mywidget.viewModel.MainViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable

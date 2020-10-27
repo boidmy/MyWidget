@@ -12,7 +12,6 @@ import com.google.gson.reflect.TypeToken
 import com.mywidget.data.apiConnect.ApiConnection
 import com.mywidget.data.model.LmemoData
 import com.mywidget.data.room.*
-import com.mywidget.lmemo.Ldata
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers

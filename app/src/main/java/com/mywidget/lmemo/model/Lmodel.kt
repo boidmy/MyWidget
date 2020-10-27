@@ -11,13 +11,9 @@ class Lmodel(private var presenter: Lpresenter?) : LmemoContract.model {
     override fun insertMemo(name:String, memo:String) {
 
     }
-
     override fun onDestroy(isChangingConfiguration: Boolean) {
         if(!isChangingConfiguration) {
             presenter = null
         }
     }
-
-
-
 }

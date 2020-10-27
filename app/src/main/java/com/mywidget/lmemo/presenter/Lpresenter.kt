@@ -17,7 +17,6 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 
-
 class Lpresenter(view: LmemoContract.View) : LmemoContract.presenter {
 
     var mModel: LmemoContract.model? = null
@@ -99,12 +98,6 @@ class Lpresenter(view: LmemoContract.View) : LmemoContract.presenter {
             })
         )
     }
-        /*var token:String
-        FirebaseInstanceId.getInstance().instanceId.addOnSuccessListener { itemcontainer ->
-            token = itemcontainer.token
-            testt.haha2(token, memo)
-
-        }*/
 
     override fun selectNickName() {
         val user = GoogleSignIn.getLastSignedInAccount(getView()?.context())?.email
@@ -125,5 +118,4 @@ class Lpresenter(view: LmemoContract.View) : LmemoContract.presenter {
         )
 
     }
-
 }
