@@ -40,21 +40,17 @@ import java.util.*
 
 class FragmentLoveDay : Fragment() {
 
-    private var unSubscripbe: CompositeDisposable = CompositeDisposable()
     private var application: Application? = null
     private var viewModel: MainViewModel? = null
-    private var database: DatabaseReference = FirebaseDatabase.getInstance().reference.child("Lmemo")
     private var loveDayDB: LoveDayDB? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         application = activity?.application
-
     }
 
     override fun onDestroy() {
         super.onDestroy()
         viewModel?.rxClear()
-        unSubscripbe.dispose()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -108,7 +104,7 @@ class FragmentLoveDay : Fragment() {
         }).start()
     }
 
-    fun viewLoveDay(binding: MainFragmentFragment2Binding, data: List<LoveDay>?) {
+    private fun viewLoveDay(binding: MainFragmentFragment2Binding, data: List<LoveDay>?) {
         try {
             val date = SimpleDateFormat("yyyyMMdd").parse(data?.get(data.size-1)?.date)
             val cal: Calendar = Calendar.getInstance()
@@ -123,7 +119,7 @@ class FragmentLoveDay : Fragment() {
         }
     }
 
-    fun selectMemo(binding: MainFragmentFragment2Binding) {
+    private fun selectMemo(binding: MainFragmentFragment2Binding) {
         viewModel?.leftMessage?.observe(this, androidx.lifecycle.Observer {
             binding.lmemoLeft.text = it[it.size-1].memo
             binding.dateLeft.text = it[it.size-1].date
@@ -132,19 +128,6 @@ class FragmentLoveDay : Fragment() {
             binding.lmemoRight.text = it[it.size-1].memo
             binding.dateRight.text = it[it.size-1].date
         })
-        viewModel?.message(database)
+        viewModel?.messageData()
     }
-
-    companion object {
-        private val ARG_TAB_POS = "tab_position"
-
-        fun newInstance(position: Int): FragmentLoveDay {
-            val fragment = FragmentLoveDay()
-            val args = Bundle()
-            args.putInt(ARG_TAB_POS, position)
-            fragment.arguments = args
-            return fragment
-        }
-    }
-
 }

@@ -91,16 +91,10 @@ class MainApplication : Application() {
 
         fun widgetBroad() {
             var userList = listOf<User>()
-            val r = Runnable {
-                try {
-                    userList = INSTANSE.userDb?.userDao()?.getUser()!!
-                } catch (e: java.lang.Exception) {
 
-                }
-            }
-
-            val thread = Thread(r)
-            thread.start()
+            Thread(Runnable {
+                userList = INSTANSE.userDb?.userDao()?.getUser()!!
+            }).start()
 
             val appWidgetManager = AppWidgetManager.getInstance(INSTANSE)
 

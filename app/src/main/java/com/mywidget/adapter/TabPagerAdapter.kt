@@ -13,10 +13,10 @@ class TabPagerAdapter(fm: FragmentManager) : FragmentStatePagerAdapter(fm, BEHAV
 
     override fun getItem(position: Int): Fragment {
         return if(position == 0) {
-            mFragmentMemo = FragmentMemo.newInstance(position)
+            mFragmentMemo = FragmentMemo()
             mFragmentMemo as FragmentMemo
         } else {
-            mFragmentLoveDay = FragmentLoveDay.newInstance(position)
+            mFragmentLoveDay = FragmentLoveDay()
             mFragmentLoveDay as FragmentLoveDay
         }
     }

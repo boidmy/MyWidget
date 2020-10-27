@@ -5,10 +5,7 @@ import android.graphics.drawable.Drawable
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.*
 import com.google.gson.Gson
 import com.google.gson.JsonObject
 import com.google.gson.reflect.TypeToken
@@ -26,8 +23,8 @@ import java.util.ArrayList
 class MainViewModel(application: Application) : AndroidViewModel(application) {
     var data: MutableLiveData<List<Memo>> = MutableLiveData()
     var loveday: MutableLiveData<List<LoveDay>> = MutableLiveData()
-    var leftMessage: MutableLiveData<List<Ldata>> = MutableLiveData()
-    var rightMessage: MutableLiveData<List<Ldata>> = MutableLiveData()
+    var leftMessage: MutableLiveData<List<LmemoData>> = MutableLiveData()
+    var rightMessage: MutableLiveData<List<LmemoData>> = MutableLiveData()
     var message: MutableLiveData<List<LmemoData>> = MutableLiveData()
     
     var memoDB: MemoDB? = null
@@ -57,7 +54,68 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         loveday.postValue(loveDayDB?.loveDayDao()?.getData())
     }
 
-    fun message(database: DatabaseReference) {
+    fun messageData() {
+        unSubscripbe.add(
+            ApiConnection.Instance().retrofitService
+                .lmemoData("뿡이")
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe (
+                    { item ->
+                        getGsonMessage(item, "left")
+                    }, {exception ->
+                        Log.d("error!", exception.toString())
+                    })
+        )
+        unSubscripbe.add(
+            ApiConnection.Instance().retrofitService
+                .lmemoData("콩이")
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe (
+                    { item ->
+                        getGsonMessage(item, "right")
+                    }, {exception ->
+                    Log.d("error!", exception.toString())
+                })
+        )
+    }
+
+    fun leftClick() {
+        message.value = leftMessage.value
+    }
+    
+    fun rightClick() {
+        message.value = rightMessage.value
+    }
+
+    fun getGsonMessage(jsonObject: JsonObject, where: String) {
+        val obj = JSONObject(Gson().toJson(jsonObject))
+        val x = obj.keys()
+        val array = JSONArray()
+
+        while (x.hasNext()) {
+            val key = x.next() as String
+            array.put(obj.get(key))
+        }
+        val arrayLmemoData: List<LmemoData> = Gson().fromJson(array.toString(), object:
+            TypeToken<ArrayList<LmemoData>>(){}.type)
+
+        if("left" == where) {
+            leftMessage.value = arrayLmemoData
+        } else {
+            rightMessage.value = arrayLmemoData
+        }
+    }
+
+    fun rxClear() {
+        unSubscripbe.dispose()
+    }
+
+    /*
+    * private var database: DatabaseReference = FirebaseDatabase.getInstance().reference.child("Lmemo")
+
+    fun message() {
         database.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(data: DataSnapshot) {
                 var arrayRight = arrayListOf<Ldata>()
@@ -83,54 +141,5 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             override fun onCancelled(p0: DatabaseError) {
             }
         })
-    }
-    
-    fun leftClick() {
-        unSubscripbe.add(
-            ApiConnection.Instance().retrofitService
-                .lmemoData("뿡이")
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe (
-                    { item ->
-                        getGsonMessage(item)
-                    }, {exception ->
-                        Log.d("error!", exception.toString())
-                    })
-        )
-    }
-    
-    fun rightClick() {
-        unSubscripbe.add(
-            ApiConnection.Instance().retrofitService
-                .lmemoData("콩이")
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe (
-                    { item ->
-                        getGsonMessage(item)
-                    }, {exception ->
-                        Log.d("error!", exception.toString())
-                    })
-        )
-    }
-
-    fun getGsonMessage(jsonObject: JsonObject) {
-        val obj = JSONObject(Gson().toJson(jsonObject))
-        val x = obj.keys()
-        val array = JSONArray()
-
-        while (x.hasNext()) {
-            val key = x.next() as String
-            array.put(obj.get(key))
-        }
-        val arrayLmemoData: List<LmemoData> = Gson().fromJson(array.toString(), object:
-            TypeToken<ArrayList<LmemoData>>(){}.type)
-
-        message.value = arrayLmemoData
-    }
-
-    fun rxClear() {
-        unSubscripbe.dispose()
-    }
+    }*/
 }

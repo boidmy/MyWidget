@@ -22,12 +22,7 @@ import java.util.*
 class MainTabRvAdapter : RecyclerView.Adapter<MainTabRvAdapter.MainTabRvViewholder>() {
 
     private var mData: List<Memo>? = null
-    private var mCallBack: callback? = null
     private var mViewModel: MainViewModel? = null
-
-    interface callback {
-        fun notifyCall(memo: String, date: String)
-    }
 
     fun setViewModel(viewModel: MainViewModel?) {
         mViewModel = viewModel
