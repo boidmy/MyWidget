@@ -233,8 +233,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         val alpha: Drawable = loveday_bg.background
         alpha.alpha = 20
-
-        loveday_bg.visibility = View.VISIBLE
     }
 
     private fun leftMenu() {
