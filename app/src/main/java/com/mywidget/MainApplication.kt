@@ -13,11 +13,6 @@ import com.mywidget.data.room.UserDB
 
 class MainApplication : Application() {
 
-    var db: SQLiteDatabase? = null
-    val table = "USER"
-    val menu_table = "MENU"
-    val memo_table = "MEMO"
-    val loveday_table = "LOVEDAY"
     var editor: SharedPreferences.Editor? = null
     var mSharedPreference: SharedPreferences? = null
     var googleIdtoken: String? = null
@@ -27,7 +22,6 @@ class MainApplication : Application() {
         super.onCreate()
 
         userDb = UserDB.getInstance(INSTANSE)
-        db = this.openOrCreateDatabase("widgetDb", Context.MODE_PRIVATE, null)
         mSharedPreference = getSharedPreferences("unme", Context.MODE_PRIVATE)
         editor = mSharedPreference?.edit()
     }
@@ -36,58 +30,9 @@ class MainApplication : Application() {
         INSTANSE = this
     }
 
-
     companion object {
 
         lateinit var INSTANSE: MainApplication
-
-        fun loveDaySelect(): String? {
-            val cursor = INSTANSE.db?.rawQuery("SELECT * FROM " + INSTANSE.loveday_table, null)
-            var date: String? = ""
-
-            try {
-                cursor?.moveToFirst()
-                if(cursor?.moveToFirst() != null) {
-                    date = cursor.getString(0)
-                }
-                return date
-            } catch (e: Exception) {
-                return "0"
-            }
-        }
-
-        fun memoSelect(): ArrayList<ArrayList<String>> {
-            val cursor = INSTANSE.db?.rawQuery("SELECT * FROM " + INSTANSE.memo_table, null)
-
-            var itemArray = arrayListOf(arrayListOf<String>())
-            itemArray.clear()
-
-            try {
-                cursor?.moveToFirst()
-
-                if (cursor?.moveToFirst() != null) {
-                    for (i in 0 until cursor.count) {
-                        var arraylist = arrayListOf<String>()
-                        val name = cursor.getString(0)
-                        val phone = cursor.getString(1)
-
-                        arraylist.add(name)
-                        arraylist.add(phone)
-
-                        itemArray.add(i, arraylist)
-
-                        cursor.moveToNext()
-                    }
-                }
-                return itemArray
-            } catch (e: Exception) {
-                return itemArray
-            }
-        }
-
-        fun memoDelete(keyword: String) {
-            INSTANSE.db?.execSQL("delete from " + INSTANSE.memo_table + " where memo = '$keyword'")
-        }
 
         fun widgetBroad() {
             var userList = listOf<User>()

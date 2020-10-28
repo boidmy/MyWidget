@@ -4,6 +4,7 @@ import android.app.Application
 import android.graphics.drawable.Drawable
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.database.*
 import com.google.gson.Gson
@@ -22,7 +23,7 @@ import java.util.ArrayList
 
 class MainViewModel(application: Application) : AndroidViewModel(application) {
     var data: MutableLiveData<List<Memo>> = MutableLiveData()
-    var loveday: MutableLiveData<List<LoveDay>> = MutableLiveData()
+    var loveday: MutableLiveData<String> = MutableLiveData()
     var leftMessage: MutableLiveData<List<LmemoData>> = MutableLiveData()
     var rightMessage: MutableLiveData<List<LmemoData>> = MutableLiveData()
     var message: MutableLiveData<List<LmemoData>> = MutableLiveData()
@@ -54,7 +55,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun selectLoveDay() {
-        loveday.postValue(loveDayDB?.loveDayDao()?.getData())
+        loveday.postValue(repository.lovedayFormatt(loveDayDB?.loveDayDao()?.getData()))
     }
 
     fun messageLeft(name: String) : MutableLiveData<List<LmemoData>> {

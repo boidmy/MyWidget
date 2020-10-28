@@ -96,6 +96,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/icon_heart"
                 tools:text="300일"
+                android:text="@{viewModel.loveday}"
                 android:gravity="center"
                 android:textColor="@color/white"
                 android:textSize="28dp"

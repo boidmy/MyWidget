@@ -54,10 +54,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private lateinit var alert: AlertDialog
     private var mSharedPreference = MainApplication.INSTANSE.mSharedPreference
     private var editor = MainApplication.INSTANSE.editor
-    private var db = MainApplication.INSTANSE.db
-
-    private val menu_table = "MENU"
-    private val loveday_table = "LOVEDAY"
 
     private var backPressAppFinish: BackPressAppFinish? = null
     private var mTabPagerAdapter: TabPagerAdapter? = null
@@ -84,9 +80,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         viewModel = ViewModelProvider(this, factory).get(MainViewModel::class.java)
         memoDb = MemoDB.getInstance(this)
         binding?.viewModel = viewModel
-
-        db?.execSQL("CREATE TABLE IF NOT EXISTS " + menu_table + " (name VARCHAR(20))")
-        db?.execSQL("CREATE TABLE IF NOT EXISTS " + loveday_table + " (date VARCHAR(20))")
 
         alertDialog = AlertDialog.Builder(this)
         if (checkSelfPermission(Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED) {

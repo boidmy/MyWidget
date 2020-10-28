@@ -11,15 +11,11 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.mywidget.R
-import com.mywidget.Util
-import com.mywidget.data.room.LoveDay
 import com.mywidget.data.room.LoveDayDB
 import com.mywidget.databinding.MainFragmentFragment2Binding
 import com.mywidget.viewModel.MainViewModel
 import kotlinx.android.synthetic.main.memo_list_dialog.view.*
 import kotlinx.android.synthetic.main.memo_list_dialog_item.view.*
-import java.text.SimpleDateFormat
-import java.util.*
 
 class FragmentLoveDay : Fragment() {
 
@@ -39,6 +35,27 @@ class FragmentLoveDay : Fragment() {
         return binding.root
     }
 
+    private fun bindView() {
+        val factory = ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().application)
+        binding.lifecycleOwner = this
+        binding.viewModel = ViewModelProvider(this, factory).get(MainViewModel::class.java)
+        binding.viewModel?.loveDayDB = LoveDayDB.getInstance(requireActivity().application)
+        Thread(Runnable {
+            binding.viewModel?.selectLoveDay()
+        }).start()
+    }
+
+    private fun selectMemo() {
+        binding.viewModel?.messageLeft("뿡이")
+        binding.viewModel?.messageRight("콩이")
+        binding.viewModel?.leftMessage?.observe(this, androidx.lifecycle.Observer {
+            binding.viewModel?.leftString?.value = it[it.size-1]
+        })
+        binding.viewModel?.rightMessage?.observe(this, androidx.lifecycle.Observer {
+            binding.viewModel?.rightString?.value = it[it.size-1]
+        })
+    }
+
     private fun messagePop() {
         binding.viewModel?.message?.observe(this, androidx.lifecycle.Observer {
             val view: View = layoutInflater.inflate(R.layout.memo_list_dialog, null)
@@ -55,52 +72,11 @@ class FragmentLoveDay : Fragment() {
                 view.memo_list_container.addView(listItem)
             }
         })
-
-    }
-
-    private fun bindView() {
-        val factory = ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().application)
-        binding.lifecycleOwner = this
-        binding.viewModel = ViewModelProvider(this, factory).get(MainViewModel::class.java)
-        binding.viewModel?.loveDayDB = LoveDayDB.getInstance(requireActivity().application)
-        Thread(Runnable {
-            binding.viewModel?.selectLoveDay()
-        }).start()
-        binding.viewModel?.loveday?.observe(this, androidx.lifecycle.Observer { data ->
-            viewLoveDay(binding, data)
-        })
     }
 
     fun addLoveDay(date: String) {
         Thread(Runnable {
             binding.viewModel?.insertLoveDay(date)
         }).start()
-    }
-
-    private fun viewLoveDay(binding: MainFragmentFragment2Binding, data: List<LoveDay>?) {
-        try {
-            val date = SimpleDateFormat("yyyyMMdd").parse(data?.get(data.size-1)?.date)
-            val cal: Calendar = Calendar.getInstance()
-            cal.time = date
-            val year: Int = cal.get(Calendar.YEAR)
-            val month: Int = cal.get(Calendar.MONTH) + 1
-            val nowdate: Int = cal.get(Calendar.DAY_OF_MONTH)
-            val dayOfWeek: Int = cal.get(Calendar.DAY_OF_WEEK)
-            binding.heartDay.text = Util.loveDay(year, month, nowdate).toString() + "일"
-        } catch (e: Exception) {
-            binding.heartDay.text = "0일"
-        }
-    }
-
-    private fun selectMemo() {
-        binding.viewModel?.messageLeft("뿡이")
-        binding.viewModel?.messageRight("콩이")
-        binding.viewModel?.leftMessage?.observe(this, androidx.lifecycle.Observer {
-            binding.viewModel?.leftString?.value = it[it.size-1]
-        })
-        binding.viewModel?.rightMessage?.observe(this, androidx.lifecycle.Observer {
-            binding.viewModel?.rightString?.value = it[it.size-1]
-        })
-
     }
 }
