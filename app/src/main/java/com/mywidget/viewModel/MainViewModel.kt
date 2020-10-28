@@ -12,6 +12,7 @@ import com.google.gson.reflect.TypeToken
 import com.mywidget.data.apiConnect.ApiConnection
 import com.mywidget.data.model.LmemoData
 import com.mywidget.data.room.*
+import com.mywidget.repository.MessageRepository
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -25,10 +26,13 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     var leftMessage: MutableLiveData<List<LmemoData>> = MutableLiveData()
     var rightMessage: MutableLiveData<List<LmemoData>> = MutableLiveData()
     var message: MutableLiveData<List<LmemoData>> = MutableLiveData()
-    
+    var leftString : MutableLiveData<LmemoData> = MutableLiveData()
+    var rightString : MutableLiveData<LmemoData> = MutableLiveData()
+
     var memoDB: MemoDB? = null
     var loveDayDB: LoveDayDB? = null
-    private var unSubscripbe: CompositeDisposable = CompositeDisposable()
+
+    var repository: MessageRepository = MessageRepository.instance()
 
     fun insertMemo(memo: String, data: String) {
         memoDB?.memoDao()?.insert(Memo(null, memo, data))
@@ -53,31 +57,14 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         loveday.postValue(loveDayDB?.loveDayDao()?.getData())
     }
 
-    fun messageData() {
-        unSubscripbe.add(
-            ApiConnection.Instance().retrofitService
-                .lmemoData("뿡이")
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe (
-                    { item ->
-                        getGsonMessage(item, "left")
-                    }, {exception ->
-                        Log.d("error!", exception.toString())
-                    })
-        )
-        unSubscripbe.add(
-            ApiConnection.Instance().retrofitService
-                .lmemoData("콩이")
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe (
-                    { item ->
-                        getGsonMessage(item, "right")
-                    }, {exception ->
-                    Log.d("error!", exception.toString())
-                })
-        )
+    fun messageLeft(name: String) : MutableLiveData<List<LmemoData>> {
+        leftMessage = repository.messageLeft(name)
+        return leftMessage
+    }
+
+    fun messageRight(name: String) : MutableLiveData<List<LmemoData>> {
+        rightMessage = repository.messageRight(name)
+        return rightMessage
     }
 
     fun leftClick() {
@@ -88,27 +75,10 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         message.value = rightMessage.value
     }
 
-    fun getGsonMessage(jsonObject: JsonObject, where: String) {
-        val obj = JSONObject(Gson().toJson(jsonObject))
-        val x = obj.keys()
-        val array = JSONArray()
-
-        while (x.hasNext()) {
-            val key = x.next() as String
-            array.put(obj.get(key))
-        }
-        val arrayLmemoData: List<LmemoData> = Gson().fromJson(array.toString(), object:
-            TypeToken<ArrayList<LmemoData>>(){}.type)
-
-        if("left" == where) {
-            leftMessage.value = arrayLmemoData
-        } else {
-            rightMessage.value = arrayLmemoData
-        }
-    }
-
     fun rxClear() {
-        unSubscripbe.dispose()
+        memoDB?.destroyInstance()
+        loveDayDB?.destroyInstance()
+        repository.rxClear()
     }
 
     /*

@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.os.bundleOf
 import androidx.databinding.BindingAdapter
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -13,17 +12,12 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.mywidget.MainApplication
 import com.mywidget.R
 import com.mywidget.adapter.MainTabRvAdapter
-import com.mywidget.adapter.UserAdapter
 import com.mywidget.data.room.Memo
 import com.mywidget.data.room.MemoDB
-import com.mywidget.data.room.User
 import com.mywidget.databinding.MainFragmentRvBinding
-import com.mywidget.viewModel.MainFragmentRvViewModel
 import com.mywidget.viewModel.MainViewModel
-import kotlinx.android.synthetic.main.main_fragment_rv.view.*
 
 class FragmentMemo : Fragment() {
     private var mAdapter: MainTabRvAdapter? = null
@@ -67,7 +61,7 @@ class FragmentMemo : Fragment() {
 
     override fun onDestroy() {
         super.onDestroy()
-        viewModel?.memoDB?.destroyInstance()
+        viewModel?.rxClear()
     }
 
     fun notifyCall(memo: String, date: String) {

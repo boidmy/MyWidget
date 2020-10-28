@@ -93,7 +93,7 @@ class MainApplication : Application() {
             var userList = listOf<User>()
 
             Thread(Runnable {
-                userList = INSTANSE.userDb?.userDao()?.getUser()!!
+                //userList = INSTANSE.userDb?.userDao()?.getUser()!!
             }).start()
 
             val appWidgetManager = AppWidgetManager.getInstance(INSTANSE)
