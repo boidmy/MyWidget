@@ -9,12 +9,10 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
-import com.mywidget.MainApplication
 import com.mywidget.R
 import com.mywidget.Util
 import com.mywidget.data.room.Memo
-import com.mywidget.data.room.User
-import com.mywidget.viewModel.MainViewModel
+import com.mywidget.viewModel.MainFragmentViewModel
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -22,10 +20,10 @@ import java.util.*
 class MainTabRvAdapter : RecyclerView.Adapter<MainTabRvAdapter.MainTabRvViewholder>() {
 
     private var mData: List<Memo>? = null
-    private var mViewModel: MainViewModel? = null
+    private var mFragmentViewModel: MainFragmentViewModel? = null
 
-    fun setViewModel(viewModel: MainViewModel?) {
-        mViewModel = viewModel
+    fun setViewModel(fragmentViewModel: MainFragmentViewModel?) {
+        mFragmentViewModel = fragmentViewModel
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainTabRvViewholder {
@@ -90,7 +88,7 @@ class MainTabRvAdapter : RecyclerView.Adapter<MainTabRvAdapter.MainTabRvViewhold
 //                        MainApplication.memoDelete(mData?.get(position)?.memo!!)
                         //mCallBack?.notifyCall()
                         Thread(Runnable {
-                            mViewModel?.deletMemo(mData?.get(position)?.memo!!)
+                            mFragmentViewModel?.deletMemo(mData?.get(position)?.memo!!)
                         }).start()
                     }
                     .setNegativeButton("취소") { _, _ ->

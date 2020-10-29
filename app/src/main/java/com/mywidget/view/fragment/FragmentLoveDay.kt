@@ -10,18 +10,18 @@ import android.widget.RelativeLayout
 import com.mywidget.R
 import com.mywidget.data.room.LoveDayDB
 import com.mywidget.databinding.MainFragmentFragment2Binding
-import com.mywidget.viewModel.MainViewModel
+import com.mywidget.viewModel.MainFragmentViewModel
 import kotlinx.android.synthetic.main.memo_list_dialog.view.*
 import kotlinx.android.synthetic.main.memo_list_dialog_item.view.*
 
-class FragmentLoveDay : BaseFragment<MainViewModel, MainFragmentFragment2Binding>() {
+class FragmentLoveDay : BaseFragment<MainFragmentViewModel, MainFragmentFragment2Binding>() {
 
     override fun getLayout(): Int {
         return R.layout.main_fragment_fragment2
     }
 
-    override fun getViewModel(): Class<MainViewModel> {
-        return MainViewModel::class.java
+    override fun getViewModel(): Class<MainFragmentViewModel> {
+        return MainFragmentViewModel::class.java
     }
 
     override fun onCreateView(inflater: LayoutInflater, parent: ViewGroup?,
@@ -69,7 +69,7 @@ class FragmentLoveDay : BaseFragment<MainViewModel, MainFragmentFragment2Binding
 
     fun addLoveDay(date: String) {
         Thread(Runnable {
-            viewModel.insertLoveDay(date)
+            viewModel.addLoveDay(date)
         }).start()
     }
 }

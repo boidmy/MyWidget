@@ -14,9 +14,9 @@ import com.mywidget.adapter.MainTabRvAdapter
 import com.mywidget.data.room.Memo
 import com.mywidget.data.room.MemoDB
 import com.mywidget.databinding.MainFragmentRvBinding
-import com.mywidget.viewModel.MainViewModel
+import com.mywidget.viewModel.MainFragmentViewModel
 
-class FragmentMemo : BaseFragment<MainViewModel, MainFragmentRvBinding>() {
+class FragmentMemo : BaseFragment<MainFragmentViewModel, MainFragmentRvBinding>() {
     private var mAdapter: MainTabRvAdapter? = null
     private var application: Application? = null
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,8 +28,8 @@ class FragmentMemo : BaseFragment<MainViewModel, MainFragmentRvBinding>() {
         return R.layout.main_fragment_rv
     }
 
-    override fun getViewModel(): Class<MainViewModel> {
-        return MainViewModel::class.java
+    override fun getViewModel(): Class<MainFragmentViewModel> {
+        return MainFragmentViewModel::class.java
     }
 
     override fun onCreateView(inflater: LayoutInflater, parent: ViewGroup?,
@@ -62,7 +62,7 @@ class FragmentMemo : BaseFragment<MainViewModel, MainFragmentRvBinding>() {
         }
     }
 
-    fun notifyCall(memo: String, date: String) {
+    fun insertMemo(memo: String, date: String) {
         viewModel.insertMemo(memo, date)
     }
 

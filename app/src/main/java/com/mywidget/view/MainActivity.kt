@@ -37,18 +37,19 @@ import com.mywidget.data.room.MemoDB
 import com.mywidget.databinding.DrawerlayoutMainBinding
 import com.mywidget.lmemo.view.LMemoActivity
 import com.mywidget.login.view.LoginGoogle
+import com.mywidget.viewModel.MainFragmentViewModel
 import com.mywidget.viewModel.MainViewModel
+import com.mywidget.viewModel.UserViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_main.view.*
 import kotlinx.android.synthetic.main.layout_title.*
 import kotlinx.android.synthetic.main.main_loveday_dialog.view.*
-import kotlinx.android.synthetic.main.main_phone_dialog.view.*
 import kotlinx.android.synthetic.main.main_phone_dialog.view.confirm_btn
 import kotlinx.android.synthetic.main.memo_dialog.view.*
 import java.util.*
 
 
-class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+class MainActivity : BaseActivity<MainViewModel, DrawerlayoutMainBinding>(), NavigationView.OnNavigationItemSelectedListener {
 
     private var alertDialog: AlertDialog.Builder? = null
     private lateinit var alert: AlertDialog
@@ -59,28 +60,22 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private var mTabPagerAdapter: TabPagerAdapter? = null
     private var memo_dialog: View? = null
     private var loveday_dialog: View? = null
-    var drawerLayout: DrawerLayout? = null
     private var tabPosition: Int? = 0
-
-    private var memoDb: MemoDB? = null
-    private var viewModel: MainViewModel? = null
 
     private lateinit var database: DatabaseReference
 
-    private var binding: DrawerlayoutMainBinding? = null
+    override val layout: Int
+        get() = R.layout.drawerlayout_main
+
+    override fun getViewModel(): Class<MainViewModel> {
+        return MainViewModel::class.java
+    }
 
     @SuppressLint("NewApi")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        binding = DataBindingUtil.setContentView(this, R.layout.drawerlayout_main)
-        binding?.lifecycleOwner = this
-
-        val factory = ViewModelProvider.AndroidViewModelFactory.getInstance(application)
-        viewModel = ViewModelProvider(this, factory).get(MainViewModel::class.java)
-        memoDb = MemoDB.getInstance(this)
-        binding?.viewModel = viewModel
-
+        binding.viewModel = viewModel
         alertDialog = AlertDialog.Builder(this)
         if (checkSelfPermission(Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED) {
 
@@ -89,10 +84,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
 
         database = FirebaseDatabase.getInstance().reference
-
         backPressAppFinish = BackPressAppFinish(this)
 
-        init()
+        addWidget()
         leftMenu()
         tabInit()
         googleLogin()
@@ -121,7 +115,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     private fun memoAdd(v: View?) {
         Thread(Runnable {
-            mTabPagerAdapter?.itemNotify(v?.memo_txt?.text.toString(), v?.date_txt?.tag.toString())
+            mTabPagerAdapter?.insertMemo(v?.memo_txt?.text.toString(), v?.date_txt?.tag.toString())
         }).start()
     }
 
@@ -131,22 +125,17 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     private fun tabInit() {
-        val mTabLayout: TabLayout = findViewById(R.id.main_tab)
-        val mViewPager: ViewPager = findViewById(R.id.vp_tab)
-        mTabLayout.setTabTextColors(ContextCompat.getColor(this,
-            R.color.tab_gray
-        ), ContextCompat.getColor(this, R.color.white))
-        mTabLayout.setupWithViewPager(mViewPager)
-        mTabLayout.setSelectedTabIndicatorColor(ContextCompat.getColor(this,
+        binding.mainContainer.main_tab.setupWithViewPager(binding.mainContainer.vp_tab)
+        binding.mainContainer.main_tab.setSelectedTabIndicatorColor(ContextCompat.getColor(this,
             R.color.white
         ))
 
         mTabPagerAdapter = TabPagerAdapter(supportFragmentManager)
-        binding?.mainContainer?.vp_tab?.adapter = mTabPagerAdapter
+        binding.mainContainer.vp_tab.adapter = mTabPagerAdapter
         //mViewPager.adapter = mTabPagerAdapter
 
-        mViewPager.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(mTabLayout))
-        mTabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+        binding.mainContainer.vp_tab.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(binding.mainContainer.main_tab))
+        binding.mainContainer.main_tab.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab) {
                 when (tab.position) {
                     0 -> {
@@ -163,16 +152,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     }
                 }
 
-                mViewPager.currentItem = tab.position
+                binding.mainContainer.vp_tab.currentItem = tab.position
             }
 
-            override fun onTabUnselected(tab: TabLayout.Tab) {
-
-            }
-
-            override fun onTabReselected(tab: TabLayout.Tab) {
-
-            }
+            override fun onTabUnselected(tab: TabLayout.Tab) {}
+            override fun onTabReselected(tab: TabLayout.Tab) {}
         })
 
     }
@@ -183,8 +167,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             dimVisiblity(false)
         }
 
-        if(drawerLayout?.isDrawerOpen(GravityCompat.START) == true) {
-            drawerLayout?.closeDrawer(GravityCompat.START)
+        if(binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            binding.drawerLayout.closeDrawer(GravityCompat.START)
             return
         }
 
@@ -225,30 +209,21 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
     }
 
-    private fun init() {
+    private fun addWidget() {
         MainApplication.widgetBroad()
         intent = Intent(this, MyAppWidget::class.java)
         intent.action = AppWidgetManager.ACTION_APPWIDGET_UPDATE
         this.sendBroadcast(intent)
-
-        val alpha: Drawable = loveday_bg.background
-        alpha.alpha = 20
     }
 
     private fun leftMenu() {
-        val nav_view: NavigationView = findViewById(R.id.nav_view)
-
-        drawerLayout = findViewById(R.id.drawer_layout)
-
         left_btn.setOnClickListener {
-            drawerLayout?.openDrawer(GravityCompat.START)
+            binding.drawerLayout.openDrawer(GravityCompat.START)
         }
-
-        nav_view.setNavigationItemSelectedListener(this)
+        binding.navView.setNavigationItemSelectedListener(this)
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-
         when (requestCode) {
             1 -> if(grantResults[0] == PackageManager.PERMISSION_GRANTED){
                 alertDialog?.setTitle("권한에 동의하셨네요?")
@@ -293,7 +268,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 startActivityForResult(intent, 4000)
             }
         }
-        drawerLayout?.closeDrawer(GravityCompat.START)
+        binding.drawerLayout.closeDrawer(GravityCompat.START)
         return true
     }
 
