@@ -1,28 +1,14 @@
 package com.mywidget.viewModel
 
 import android.app.Application
-import android.graphics.drawable.Drawable
-import android.util.Log
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.google.firebase.database.*
-import com.google.gson.Gson
-import com.google.gson.JsonObject
-import com.google.gson.reflect.TypeToken
-import com.mywidget.data.apiConnect.ApiConnection
 import com.mywidget.data.model.LmemoData
 import com.mywidget.data.room.*
 import com.mywidget.repository.MessageRepository
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.schedulers.Schedulers
-import org.json.JSONArray
-import org.json.JSONObject
-import java.util.ArrayList
 
 class MainViewModel(application: Application) : AndroidViewModel(application) {
-    var data: MutableLiveData<List<Memo>> = MutableLiveData()
+    var memoData: MutableLiveData<List<Memo>> = MutableLiveData()
     var loveday: MutableLiveData<String> = MutableLiveData()
     var leftMessage: MutableLiveData<List<LmemoData>> = MutableLiveData()
     var rightMessage: MutableLiveData<List<LmemoData>> = MutableLiveData()
@@ -46,7 +32,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun selectMemo() {
-        data.postValue(memoDB?.memoDao()?.getUser())
+        memoData.postValue(memoDB?.memoDao()?.getUser())
     }
 
     fun insertLoveDay(data: String) {
@@ -76,10 +62,11 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         message.value = rightMessage.value
     }
 
-    fun rxClear() {
+    override fun onCleared() {
         memoDB?.destroyInstance()
         loveDayDB?.destroyInstance()
         repository.rxClear()
+        super.onCleared()
     }
 
     /*

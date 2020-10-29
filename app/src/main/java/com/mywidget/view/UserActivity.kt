@@ -11,11 +11,8 @@ import android.widget.PopupWindow
 import android.widget.RelativeLayout
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.BindingAdapter
-import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.mywidget.MyAppWidget
@@ -28,11 +25,17 @@ import com.mywidget.viewModel.UserViewModel
 import kotlinx.android.synthetic.main.activity_user.*
 import kotlinx.android.synthetic.main.main_phone_dialog.view.*
 
-class UserActivity : AppCompatActivity() {
+class UserActivity : BaseActivity<UserViewModel, ActivityUserBinding>() {
     private var mAdapter: UserAdapter? = null
     private val mLayoutManager: RecyclerView.LayoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
     private var userDb: UserDB? = null
-    private var viewModel: UserViewModel? = null
+
+    override val layout: Int
+        get() = R.layout.activity_user
+
+    override fun getViewModel(): Class<UserViewModel> {
+        return UserViewModel::class.java
+    }
 
     companion object {
         @BindingAdapter("items")
@@ -45,31 +48,20 @@ class UserActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        val binding: ActivityUserBinding = DataBindingUtil.setContentView(this, R.layout.activity_user)
-        binding.lifecycleOwner = this
         userDb = UserDB.getInstance(this)
-
-        val factory = ViewModelProvider.AndroidViewModelFactory.getInstance(application)
-        viewModel = ViewModelProvider(this, factory).get(UserViewModel::class.java)
-        viewModel?.userDB = userDb
         binding.viewModel = viewModel
-
+        viewModel.userDB = userDb
         mAdapter = UserAdapter(this, viewModel)
         binding.userRv.layoutManager = mLayoutManager
         binding.userRv.adapter = mAdapter
-        init()
+        selectUser()
 
         add_txt.setOnClickListener(onClickListener)
     }
 
-    private fun init() {
-        selectDb()
-    }
-
-    private fun selectDb() {
+    private fun selectUser() {
         Thread(Runnable {
-            viewModel?.selectUser()
+            viewModel.selectUser()
         }).start()
     }
 
@@ -115,7 +107,7 @@ class UserActivity : AppCompatActivity() {
 
     private fun insertUser(v: View) {
         Thread(Runnable {
-            viewModel?.insertUser(v.name_add.text.toString(), v.number_add.text.toString())
+            viewModel.insertUser(v.name_add.text.toString(), v.number_add.text.toString())
         }).start()
 
         //MainApplication.widgetBroad()

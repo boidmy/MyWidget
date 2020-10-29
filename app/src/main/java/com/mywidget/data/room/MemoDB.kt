@@ -15,7 +15,7 @@ abstract class MemoDB: RoomDatabase() {
 
         fun getInstance(context: Context): MemoDB? {
             if(INSTANCE == null) {
-                synchronized(UserDB::class) {
+                synchronized(MemoDB::class) {
                     INSTANCE = Room.databaseBuilder(context.applicationContext,
                             MemoDB::class.java, "memo.db")
                             .fallbackToDestructiveMigration()

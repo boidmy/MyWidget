@@ -16,7 +16,7 @@
         android:id="@+id/fragment_rv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:items="@{viewModel.data}">
+        app:items="@{viewModel.memoData}">
 
     </androidx.recyclerview.widget.RecyclerView>
     

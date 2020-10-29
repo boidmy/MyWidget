@@ -7,9 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupWindow
 import android.widget.RelativeLayout
-import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import com.mywidget.R
 import com.mywidget.data.room.LoveDayDB
 import com.mywidget.databinding.MainFragmentFragment2Binding
@@ -17,42 +14,38 @@ import com.mywidget.viewModel.MainViewModel
 import kotlinx.android.synthetic.main.memo_list_dialog.view.*
 import kotlinx.android.synthetic.main.memo_list_dialog_item.view.*
 
-class FragmentLoveDay : Fragment() {
+class FragmentLoveDay : BaseFragment<MainViewModel, MainFragmentFragment2Binding>() {
 
-    lateinit var binding: MainFragmentFragment2Binding
-
-    override fun onDestroy() {
-        super.onDestroy()
-        binding.viewModel?.rxClear()
+    override fun getLayout(): Int {
+        return R.layout.main_fragment_fragment2
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = DataBindingUtil.inflate(inflater,
-            R.layout.main_fragment_fragment2, container, false)
-        bindView()
-        selectMemo()
+    override fun getViewModel(): Class<MainViewModel> {
+        return MainViewModel::class.java
+    }
+
+    override fun onCreateView(inflater: LayoutInflater, parent: ViewGroup?,
+                              savedInstanceState: Bundle?): View? {
+        super.onCreateView(inflater, parent, savedInstanceState)
+        binding.viewModel = viewModel
+        viewModel.loveDayDB = LoveDayDB.getInstance(requireActivity().application)
+
+        bindData()
         messagePop()
         return binding.root
     }
 
-    private fun bindView() {
-        val factory = ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().application)
-        binding.lifecycleOwner = this
-        binding.viewModel = ViewModelProvider(this, factory).get(MainViewModel::class.java)
-        binding.viewModel?.loveDayDB = LoveDayDB.getInstance(requireActivity().application)
+    private fun bindData() {
         Thread(Runnable {
             binding.viewModel?.selectLoveDay()
         }).start()
-    }
-
-    private fun selectMemo() {
-        binding.viewModel?.messageLeft("뿡이")
-        binding.viewModel?.messageRight("콩이")
-        binding.viewModel?.leftMessage?.observe(this, androidx.lifecycle.Observer {
-            binding.viewModel?.leftString?.value = it[it.size-1]
+        viewModel.messageLeft("뿡이")
+        viewModel.messageRight("콩이")
+        viewModel.leftMessage.observe(this, androidx.lifecycle.Observer {
+            viewModel.leftString.value = it[it.size-1]
         })
-        binding.viewModel?.rightMessage?.observe(this, androidx.lifecycle.Observer {
-            binding.viewModel?.rightString?.value = it[it.size-1]
+        viewModel.rightMessage.observe(this, androidx.lifecycle.Observer {
+            viewModel.rightString.value = it[it.size-1]
         })
     }
 
@@ -76,7 +69,7 @@ class FragmentLoveDay : Fragment() {
 
     fun addLoveDay(date: String) {
         Thread(Runnable {
-            binding.viewModel?.insertLoveDay(date)
+            viewModel.insertLoveDay(date)
         }).start()
     }
 }
