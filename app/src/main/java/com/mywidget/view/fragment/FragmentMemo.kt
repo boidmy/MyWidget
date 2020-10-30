@@ -1,6 +1,5 @@
 package com.mywidget.view.fragment
 
-import android.app.Application
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -18,11 +17,6 @@ import com.mywidget.viewModel.MainFragmentViewModel
 
 class FragmentMemo : BaseFragment<MainFragmentViewModel, MainFragmentRvBinding>() {
     private var mAdapter: MainTabRvAdapter? = null
-    private var application: Application? = null
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        application = activity?.application
-    }
 
     override fun getLayout(): Int {
         return R.layout.main_fragment_rv
