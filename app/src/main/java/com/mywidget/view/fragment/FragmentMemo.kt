@@ -35,11 +35,10 @@ class FragmentMemo : BaseFragment<MainFragmentViewModel, MainFragmentRvBinding>(
 
     private fun bindView() {
         mAdapter = MainTabRvAdapter()
-        mAdapter?.setViewModel(binding.viewModel)
+        mAdapter?.setViewModel(viewModel)
         binding.fragmentRv.layoutManager = LinearLayoutManager(binding.root.context)
         binding.fragmentRv.adapter = mAdapter
         binding.viewModel = viewModel
-        viewModel.memoDB = MemoDB.getInstance(requireActivity().application)
         Thread(Runnable {
             selectCall()
         }).start()

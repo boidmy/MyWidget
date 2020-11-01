@@ -16,32 +16,35 @@ class MainFragmentViewModel(application: Application) : AndroidViewModel(applica
     var leftString : MutableLiveData<LmemoData> = MutableLiveData()
     var rightString : MutableLiveData<LmemoData> = MutableLiveData()
 
-    var memoDB: MemoDB? = null
-    var loveDayDB: LoveDayDB? = null
-
-    var repository: MessageRepository = MessageRepository.instance()
+    var repository = MessageRepository(application)
 
     fun insertMemo(memo: String, data: String) {
-        memoDB?.memoDao()?.insert(Memo(null, memo, data))
-        selectMemo()
+        Thread(Runnable {
+            repository.insertMemo(memo, data)
+            selectMemo()
+        }).start()
     }
 
     fun deletMemo(memo: String) {
-        memoDB?.memoDao()?.delete(memo)
-        selectMemo()
+        Thread(Runnable {
+            repository.deleteMemo(memo)
+            selectMemo()
+        }).start()
     }
 
     fun selectMemo() {
-        memoData.postValue(memoDB?.memoDao()?.getUser())
+        memoData.postValue(repository.selectMemo())
     }
 
     fun addLoveDay(data: String) {
-        loveDayDB?.loveDayDao()?.insert(LoveDay(null, data))
-        selectLoveDay()
+        Thread(Runnable {
+            repository.addLoveDay(data)
+            selectLoveDay()
+        }).start()
     }
 
     fun selectLoveDay() {
-        loveday.postValue(repository.lovedayFormatt(loveDayDB?.loveDayDao()?.getData()))
+        loveday.postValue(repository.selectLoveDay())
     }
 
     fun messageLeft(name: String) : MutableLiveData<List<LmemoData>> {
@@ -63,8 +66,6 @@ class MainFragmentViewModel(application: Application) : AndroidViewModel(applica
     }
 
     override fun onCleared() {
-        memoDB?.destroyInstance()
-        loveDayDB?.destroyInstance()
         repository.rxClear()
         super.onCleared()
     }

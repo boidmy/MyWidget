@@ -28,8 +28,6 @@ class FragmentLoveDay : BaseFragment<MainFragmentViewModel, MainFragmentFragment
                               savedInstanceState: Bundle?): View? {
         super.onCreateView(inflater, parent, savedInstanceState)
         binding.viewModel = viewModel
-        viewModel.loveDayDB = LoveDayDB.getInstance(requireActivity().application)
-
         bindData()
         messagePop()
         return binding.root
@@ -68,8 +66,6 @@ class FragmentLoveDay : BaseFragment<MainFragmentViewModel, MainFragmentFragment
     }
 
     fun addLoveDay(date: String) {
-        Thread(Runnable {
-            viewModel.addLoveDay(date)
-        }).start()
+        viewModel.addLoveDay(date)
     }
 }

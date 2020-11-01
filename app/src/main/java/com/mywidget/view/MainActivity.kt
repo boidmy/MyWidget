@@ -7,7 +7,7 @@ import android.appwidget.AppWidgetManager
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.drawable.Drawable
+import android.os.Build
 import android.os.Bundle
 import android.view.Gravity
 import android.view.MenuItem
@@ -17,14 +17,9 @@ import android.widget.PopupWindow
 import android.widget.RelativeLayout
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
-import androidx.databinding.DataBindingUtil
-import androidx.drawerlayout.widget.DrawerLayout
-import androidx.lifecycle.ViewModelProvider
-import androidx.viewpager.widget.ViewPager
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.tabs.TabLayout
@@ -33,13 +28,10 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.iid.FirebaseInstanceId
 import com.mywidget.*
 import com.mywidget.adapter.TabPagerAdapter
-import com.mywidget.data.room.MemoDB
 import com.mywidget.databinding.DrawerlayoutMainBinding
 import com.mywidget.lmemo.view.LMemoActivity
 import com.mywidget.login.view.LoginGoogle
-import com.mywidget.viewModel.MainFragmentViewModel
 import com.mywidget.viewModel.MainViewModel
-import com.mywidget.viewModel.UserViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_main.view.*
 import kotlinx.android.synthetic.main.layout_title.*
@@ -71,16 +63,17 @@ class MainActivity : BaseActivity<MainViewModel, DrawerlayoutMainBinding>(), Nav
         return MainViewModel::class.java
     }
 
-    @SuppressLint("NewApi")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding.viewModel = viewModel
         alertDialog = AlertDialog.Builder(this)
-        if (checkSelfPermission(Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED) {
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (checkSelfPermission(Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED) {
 
-        } else {
-            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CALL_PHONE), 1)
+            } else {
+                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CALL_PHONE), 1)
+            }
         }
 
         database = FirebaseDatabase.getInstance().reference
@@ -91,13 +84,7 @@ class MainActivity : BaseActivity<MainViewModel, DrawerlayoutMainBinding>(), Nav
         tabInit()
         googleLogin()
 
-        add_txt.setOnClickListener {
-            if (tabPosition == 0) {
-                onClickMemo()
-            } else {
-                onClickLoveDay()
-            }
-        }
+        floating_btn.setOnClickListener(onClickFloating)
     }
 
     private fun googleLogin() {
@@ -106,17 +93,12 @@ class MainActivity : BaseActivity<MainViewModel, DrawerlayoutMainBinding>(), Nav
     }
 
     private fun dimVisiblity(flag: Boolean) {
-        if (flag) {
-            dim_layout.visibility = View.VISIBLE
-        } else {
-            dim_layout.visibility = View.GONE
-        }
+        if (flag) dim_layout.visibility = View.VISIBLE
+        else dim_layout.visibility = View.GONE
     }
 
     private fun memoAdd(v: View?) {
-        Thread(Runnable {
-            mTabPagerAdapter?.insertMemo(v?.memo_txt?.text.toString(), v?.date_txt?.tag.toString())
-        }).start()
+        mTabPagerAdapter?.insertMemo(v?.memo_txt?.text.toString(), v?.date_txt?.tag.toString())
     }
 
     private fun loveDayAdd(v: View?) {
@@ -126,39 +108,17 @@ class MainActivity : BaseActivity<MainViewModel, DrawerlayoutMainBinding>(), Nav
 
     private fun tabInit() {
         binding.mainContainer.main_tab.setupWithViewPager(binding.mainContainer.vp_tab)
-        binding.mainContainer.main_tab.setSelectedTabIndicatorColor(ContextCompat.getColor(this,
-            R.color.white
+        binding.mainContainer.main_tab.setSelectedTabIndicatorColor(ContextCompat
+            .getColor(this, R.color.white
         ))
 
         mTabPagerAdapter = TabPagerAdapter(supportFragmentManager)
         binding.mainContainer.vp_tab.adapter = mTabPagerAdapter
         //mViewPager.adapter = mTabPagerAdapter
 
-        binding.mainContainer.vp_tab.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(binding.mainContainer.main_tab))
-        binding.mainContainer.main_tab.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
-            override fun onTabSelected(tab: TabLayout.Tab) {
-                when (tab.position) {
-                    0 -> {
-                        tabPosition = tab.position
-                        add_txt.background = ContextCompat.getDrawable(applicationContext,
-                            R.drawable.circle_blue
-                        )
-                    }
-                    else -> {
-                        tabPosition = tab.position
-                        add_txt.background = ContextCompat.getDrawable(applicationContext,
-                            R.drawable.circle_red
-                        )
-                    }
-                }
-
-                binding.mainContainer.vp_tab.currentItem = tab.position
-            }
-
-            override fun onTabUnselected(tab: TabLayout.Tab) {}
-            override fun onTabReselected(tab: TabLayout.Tab) {}
-        })
-
+        binding.mainContainer.vp_tab.addOnPageChangeListener(TabLayout
+            .TabLayoutOnPageChangeListener(binding.mainContainer.main_tab))
+        binding.mainContainer.main_tab.addOnTabSelectedListener(onTabSelectedListener)
     }
 
     override fun onBackPressed() {
@@ -235,26 +195,17 @@ class MainActivity : BaseActivity<MainViewModel, DrawerlayoutMainBinding>(), Nav
                 alert.show()
             } else {
                 alertDialog?.setTitle("권한을 동의하지 않으셨네요?")
-                ?.setMessage("어쩔수없이 앱을 종료합니다 ㅠㅠ")
-                ?.setCancelable(false)
-                ?.setPositiveButton("확인") { _, _ ->
-                    finish()
-                }
+                    ?.setMessage("어쩔수없이 앱을 종료합니다 ㅠㅠ")
+                    ?.setCancelable(false)
+                    ?.setPositiveButton("확인") { _, _ ->
+                        finish()
+                    }
                 alert = alertDialog!!.create()
                 alert.show()
             }
         }
-
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-
     }
-
-    /*private fun menuAdd(v: View) {
-        val name: String = v.menu_add.text.toString()
-
-        //db?.execSQL("INSERT INTO$table(name, phone) Values ('$name', '$number')")
-        db?.execSQL("INSERT INTO " + menu_table + "(name)" + "Values ('$name')")
-    }*/
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         // Handle navigation view item clicks here.
@@ -274,15 +225,12 @@ class MainActivity : BaseActivity<MainViewModel, DrawerlayoutMainBinding>(), Nav
 
     private val memoCalOnClickListener = View.OnClickListener {
         val c = Calendar.getInstance()
-        val year = c.get(Calendar.YEAR)
-        val month = c.get(Calendar.MONTH)
-        val day = c.get(Calendar.DAY_OF_MONTH)
 
         val dpd = DatePickerDialog(this, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
             memo_dialog?.date_txt?.text = year.toString() + "-" + (monthOfYear+1).toString() + "-" + dayOfMonth.toString()
             memo_dialog?.date_txt?.tag = year.toString()+String.format("%02d", monthOfYear+1)+dayOfMonth.toString()
 
-        }, year, month, day)
+        }, Util.getYear(c), Util.getMonth(c), Util.getNowdate(c))
 
         dpd.show()
     }
@@ -303,7 +251,7 @@ class MainActivity : BaseActivity<MainViewModel, DrawerlayoutMainBinding>(), Nav
     }
 
     private fun onClickLoveDay() {
-        var intent = Intent(this, LoveDayPopupActivity::class.java)
+        val intent = Intent(this, LoveDayPopupActivity::class.java)
         startActivityForResult(intent, 3000)
     }
 
@@ -331,7 +279,6 @@ class MainActivity : BaseActivity<MainViewModel, DrawerlayoutMainBinding>(), Nav
                     loveday_dialog?.day_add?.text = null
                     loveday_dialog?.visibility = View.GONE
                     dimVisiblity(false)
-
                 }
                 .setNegativeButton(
                     android.R.string.no
@@ -397,6 +344,34 @@ class MainActivity : BaseActivity<MainViewModel, DrawerlayoutMainBinding>(), Nav
         popupWindow.setOnDismissListener {
             dimVisiblity(false)
             imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0)
+        }
+    }
+
+    private val onTabSelectedListener = object : TabLayout.OnTabSelectedListener {
+        override fun onTabSelected(tab: TabLayout.Tab?) {
+            when (tab?.position) {
+                0 -> {
+                    tabPosition = tab.position
+                    floating_btn.background = ContextCompat.getDrawable(applicationContext,
+                        R.drawable.circle_blue
+                    )
+                }
+                else -> {
+                    tabPosition = tab?.position
+                    floating_btn.background = ContextCompat.getDrawable(applicationContext,
+                        R.drawable.circle_red
+                    )
+                }
+            }
+        }
+        override fun onTabReselected(tab: TabLayout.Tab?) {}
+        override fun onTabUnselected(tab: TabLayout.Tab?) {}
+    }
+
+    private val onClickFloating = View.OnClickListener {
+        when(tabPosition) {
+            0 -> onClickMemo()
+            else -> onClickLoveDay()
         }
     }
 }

@@ -116,6 +116,5 @@ class Lpresenter(view: LmemoContract.View) : LmemoContract.presenter {
                     Log.d("error : ", it.toString())
                 })
         )
-
     }
 }

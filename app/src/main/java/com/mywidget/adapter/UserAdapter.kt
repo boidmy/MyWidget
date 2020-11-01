@@ -42,7 +42,7 @@ class UserAdapter(context: Context, viewModel: UserViewModel?) : RecyclerView.Ad
             itemView.user_name.text = mData?.get(position)?.name
             itemView.user_phone.text = mData?.get(position)?.number
 
-            var alert = AlertDialog.Builder(itemView.context)
+            val alert = AlertDialog.Builder(itemView.context)
             itemView.delete_btn.setOnClickListener {
                 alert
                     .setTitle("삭제할거에염?")

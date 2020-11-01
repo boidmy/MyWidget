@@ -1,5 +1,6 @@
 package com.mywidget
 
+import com.mywidget.data.room.Memo
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -79,5 +80,30 @@ object Util {
         nDiffOfDay = cal[Calendar.DAY_OF_YEAR]
         nTotalDate2 += nDiffOfDay
         return nTotalDate1 - nTotalDate2
+    }
+
+    fun getYear(cal: Calendar): Int {
+        return cal.get(Calendar.YEAR)
+    }
+
+    fun getMonth(cal: Calendar): Int {
+        return cal.get(Calendar.MONTH)
+    }
+
+    fun getNowdate(cal: Calendar): Int {
+        return cal.get(Calendar.DAY_OF_MONTH)
+    }
+
+    fun week(dayOfWeek: Int) : String {
+        return when (dayOfWeek) {
+            1 -> "일"
+            2 -> "월"
+            3 -> "화"
+            4 -> "수"
+            5 -> "목"
+            6 -> "금"
+            7 -> "토"
+            else -> ""
+        }
     }
 }
