@@ -71,7 +71,13 @@ class MessageRepository(application: Application) {
     }
 
     fun lovedayFormatt(data: List<LoveDay>?): String {
-        return Util.howMuchloveDay(data?.get(data.size-1)?.date)
+        data?.let {
+            return if(it.isNotEmpty()) {
+                Util.howMuchloveDay(it[data.size-1].date)
+            } else "0"
+        } ?: run {
+            return "0"
+        }
     }
 
     fun addLoveDay(data: String) {
