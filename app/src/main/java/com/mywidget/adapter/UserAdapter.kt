@@ -1,59 +1,45 @@
 package com.mywidget.adapter
 
 import android.app.AlertDialog
-import android.content.Context
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
-import com.mywidget.R
-import com.mywidget.Util
-import com.mywidget.data.model.UserListData
-import com.mywidget.data.room.User
+import com.mywidget.databinding.UserRvItemBinding
 import com.mywidget.viewModel.UserViewModel
 import kotlinx.android.synthetic.main.user_rv_item.view.*
 
-class UserAdapter(context: Context, viewModel: UserViewModel?) : RecyclerView.Adapter<UserAdapter.MyViewHolder>() {
-    private val mContext = context
-    private var mData: List<User>? = null
+class UserAdapter(viewModel: UserViewModel?)
+    : RecyclerView.Adapter<UserAdapter.MyViewHolder>() {
     private var mViewModel = viewModel
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        holder.bindView(position)
+        holder.bindView(mViewModel, position)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
-        val view = LayoutInflater.from(mContext).inflate(R.layout.user_rv_item, parent, false)
-        return MyViewHolder(view)
+        val bind = UserRvItemBinding.inflate(LayoutInflater.from(parent.context)
+            , parent, false)
+        return MyViewHolder(bind)
     }
 
-    override fun getItemCount(): Int {
-        return mData?.size?: 0
-    }
+    override fun getItemCount(): Int = mViewModel?.data?.value?.size?: 0
 
-    fun setData(userListData: List<User>?) {
-        mData = userListData
-        notifyDataSetChanged()
-    }
+    inner class MyViewHolder(val binding: UserRvItemBinding)
+        : RecyclerView.ViewHolder(binding.root) {
 
-    inner class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bindView(position: Int) {
-            itemView.user_name.text = mData?.get(position)?.name
-            itemView.user_phone.text = mData?.get(position)?.number
-
+        fun bindView(viewModel: UserViewModel?, position: Int) {
+            binding.position = position
+            binding.viewModel = viewModel
+            binding.executePendingBindings()
             val alert = AlertDialog.Builder(itemView.context)
             itemView.delete_btn.setOnClickListener {
                 alert
                     .setTitle("삭제할거에염?")
                     .setPositiveButton("삭제") { _, _ ->
-                        Thread(Runnable {
-                            mViewModel?.deleteUser(itemView.user_name.text.toString())
-                        }).start()
+                        binding.viewModel.deleteUser(itemView.user_name.text.toString())
                     }
                     .setNegativeButton("취소") { _, _ ->
-                    }
-                    .show()
+                    }.show()
             }
         }
     }

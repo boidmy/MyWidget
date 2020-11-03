@@ -13,7 +13,6 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.databinding.BindingAdapter
 import androidx.lifecycle.MutableLiveData
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.mywidget.MyAppWidget
 import com.mywidget.R
@@ -27,7 +26,6 @@ import kotlinx.android.synthetic.main.main_phone_dialog.view.*
 
 class UserActivity : BaseActivity<UserViewModel, ActivityUserBinding>() {
     private var mAdapter: UserAdapter? = null
-    private val mLayoutManager: RecyclerView.LayoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
     private var userDb: UserDB? = null
 
     override val layout: Int
@@ -42,7 +40,7 @@ class UserActivity : BaseActivity<UserViewModel, ActivityUserBinding>() {
         @JvmStatic
         fun adapter(recyclerView: RecyclerView?, data: MutableLiveData<List<User>>) {
             val adapter: UserAdapter = recyclerView?.adapter as UserAdapter
-            adapter.setData(data.value)
+            adapter.notifyDataSetChanged()
         }
     }
 
@@ -51,8 +49,7 @@ class UserActivity : BaseActivity<UserViewModel, ActivityUserBinding>() {
         userDb = UserDB.getInstance(this)
         binding.viewModel = viewModel
         viewModel.userDB = userDb
-        mAdapter = UserAdapter(this, viewModel)
-        binding.userRv.layoutManager = mLayoutManager
+        mAdapter = UserAdapter(viewModel)
         binding.userRv.adapter = mAdapter
         selectUser()
 
@@ -106,12 +103,8 @@ class UserActivity : BaseActivity<UserViewModel, ActivityUserBinding>() {
     }
 
     private fun insertUser(v: View) {
-        Thread(Runnable {
-            viewModel.insertUser(v.name_add.text.toString(), v.number_add.text.toString())
-        }).start()
-
+        viewModel.insertUser(v.name_add.text.toString(), v.number_add.text.toString())
         //MainApplication.widgetBroad()
-
         intent = Intent(this, MyAppWidget::class.java)
         intent.action = AppWidgetManager.ACTION_APPWIDGET_UPDATE
         this.sendBroadcast(intent)

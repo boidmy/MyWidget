@@ -13,13 +13,17 @@ class UserViewModel(application: Application) : AndroidViewModel(application) {
     var userDB: UserDB? = null
 
     fun insertUser(user: String, phone: String) {
-        userDB?.userDao()?.insert(User(null, user, phone))
-        selectUser()
+        Thread(Runnable {
+            userDB?.userDao()?.insert(User(null, user, phone))
+            selectUser()
+        }).start()
     }
 
     fun deleteUser(user: String) {
-        userDB?.userDao()?.delete(user)
-        selectUser()
+        Thread(Runnable {
+            userDB?.userDao()?.delete(user)
+            selectUser()
+        }).start()
     }
 
     fun selectUser() {

@@ -41,7 +41,8 @@ import kotlinx.android.synthetic.main.memo_dialog.view.*
 import java.util.*
 
 
-class MainActivity : BaseActivity<MainViewModel, DrawerlayoutMainBinding>(), NavigationView.OnNavigationItemSelectedListener {
+class MainActivity : BaseActivity<MainViewModel, DrawerlayoutMainBinding>()
+    , NavigationView.OnNavigationItemSelectedListener {
 
     private var alertDialog: AlertDialog.Builder? = null
     private lateinit var alert: AlertDialog
@@ -131,7 +132,6 @@ class MainActivity : BaseActivity<MainViewModel, DrawerlayoutMainBinding>(), Nav
             binding.drawerLayout.closeDrawer(GravityCompat.START)
             return
         }
-
         backPressAppFinish?.onBackPressed()
     }
 
