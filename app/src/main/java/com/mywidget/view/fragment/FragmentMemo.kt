@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.BindingAdapter
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.mywidget.R
@@ -34,11 +35,12 @@ class FragmentMemo : BaseFragment<MainFragmentViewModel, MainFragmentRvBinding>(
     }
 
     private fun bindView() {
+        val dd = ViewModelProvider(requireActivity()).get(MainFragmentViewModel::class.java)
         mAdapter = MainTabRvAdapter()
-        mAdapter?.setViewModel(viewModel)
+        mAdapter?.setViewModel(dd)
         binding.fragmentRv.layoutManager = LinearLayoutManager(binding.root.context)
         binding.fragmentRv.adapter = mAdapter
-        binding.viewModel = viewModel
+        binding.viewModel = dd
         Thread(Runnable {
             selectCall()
         }).start()
@@ -60,6 +62,6 @@ class FragmentMemo : BaseFragment<MainFragmentViewModel, MainFragmentRvBinding>(
     }
 
     private fun selectCall() {
-        viewModel.selectMemo()
+        binding.viewModel?.selectMemo()
     }
 }

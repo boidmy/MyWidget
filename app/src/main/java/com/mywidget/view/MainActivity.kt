@@ -31,6 +31,7 @@ import com.mywidget.adapter.TabPagerAdapter
 import com.mywidget.databinding.DrawerlayoutMainBinding
 import com.mywidget.lmemo.view.LMemoActivity
 import com.mywidget.login.view.LoginGoogle
+import com.mywidget.viewModel.MainFragmentViewModel
 import com.mywidget.viewModel.MainViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_main.view.*
@@ -41,7 +42,7 @@ import kotlinx.android.synthetic.main.memo_dialog.view.*
 import java.util.*
 
 
-class MainActivity : BaseActivity<MainViewModel, DrawerlayoutMainBinding>()
+class MainActivity : BaseActivity<MainFragmentViewModel, DrawerlayoutMainBinding>()
     , NavigationView.OnNavigationItemSelectedListener {
 
     private var alertDialog: AlertDialog.Builder? = null
@@ -60,8 +61,8 @@ class MainActivity : BaseActivity<MainViewModel, DrawerlayoutMainBinding>()
     override val layout: Int
         get() = R.layout.drawerlayout_main
 
-    override fun getViewModel(): Class<MainViewModel> {
-        return MainViewModel::class.java
+    override fun getViewModel(): Class<MainFragmentViewModel> {
+        return MainFragmentViewModel::class.java
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -99,7 +100,8 @@ class MainActivity : BaseActivity<MainViewModel, DrawerlayoutMainBinding>()
     }
 
     private fun memoAdd(v: View?) {
-        mTabPagerAdapter?.insertMemo(v?.memo_txt?.text.toString(), v?.date_txt?.tag.toString())
+        //mTabPagerAdapter?.insertMemo(v?.memo_txt?.text.toString(), v?.date_txt?.tag.toString())
+        binding.viewModel?.insertMemo(v?.memo_txt?.text.toString(), v?.date_txt?.tag.toString())
     }
 
     private fun loveDayAdd(v: View?) {

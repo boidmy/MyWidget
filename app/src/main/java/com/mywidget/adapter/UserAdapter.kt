@@ -36,7 +36,7 @@ class UserAdapter(viewModel: UserViewModel?)
                 alert
                     .setTitle("삭제할거에염?")
                     .setPositiveButton("삭제") { _, _ ->
-                        binding.viewModel.deleteUser(itemView.user_name.text.toString())
+                        binding.viewModel?.deleteUser(itemView.user_name.text.toString())
                     }
                     .setNegativeButton("취소") { _, _ ->
                     }.show()

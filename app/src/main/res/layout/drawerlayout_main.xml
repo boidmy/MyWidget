@@ -7,7 +7,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.mywidget.viewModel.MainViewModel" />
+            type="com.mywidget.viewModel.MainFragmentViewModel" />
     </data>
 
     <androidx.drawerlayout.widget.DrawerLayout
