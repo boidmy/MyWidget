@@ -22,9 +22,9 @@ abstract class BaseFragment<V : AndroidViewModel, D : ViewDataBinding> : Fragmen
                               savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, getLayout(), parent, false)
         binding.lifecycleOwner = this
-        val factory = ViewModelProvider.AndroidViewModelFactory
+        /*val factory = ViewModelProvider.AndroidViewModelFactory
             .getInstance(requireActivity().application)
-        viewModel = ViewModelProvider(this, factory).get(getViewModel())
+        viewModel = ViewModelProvider(this, factory).get(getViewModel())*/
         return binding.root
     }
 }

@@ -5,7 +5,6 @@ import android.appwidget.AppWidgetManager
 import android.content.ComponentName
 import android.content.Context
 import android.content.SharedPreferences
-import android.database.sqlite.SQLiteDatabase
 import android.view.View
 import android.widget.RemoteViews
 import com.mywidget.data.room.User
@@ -20,7 +19,6 @@ class MainApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
-
         userDb = UserDB.getInstance(INSTANSE)
         mSharedPreference = getSharedPreferences("unme", Context.MODE_PRIVATE)
         editor = mSharedPreference?.edit()

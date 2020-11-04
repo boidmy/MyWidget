@@ -100,13 +100,11 @@ class MainActivity : BaseActivity<MainFragmentViewModel, DrawerlayoutMainBinding
     }
 
     private fun memoAdd(v: View?) {
-        //mTabPagerAdapter?.insertMemo(v?.memo_txt?.text.toString(), v?.date_txt?.tag.toString())
-        binding.viewModel?.insertMemo(v?.memo_txt?.text.toString(), v?.date_txt?.tag.toString())
+        viewModel.insertMemo(v?.memo_txt?.text.toString(), v?.date_txt?.tag.toString())
     }
 
     private fun loveDayAdd(v: View?) {
-        val day: String = v?.day_add?.tag.toString()
-        mTabPagerAdapter?.mFragmentLoveDay?.addLoveDay(day)
+        viewModel.addLoveDay(v?.day_add?.tag.toString())
     }
 
     private fun tabInit() {

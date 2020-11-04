@@ -35,15 +35,14 @@ class FragmentMemo : BaseFragment<MainFragmentViewModel, MainFragmentRvBinding>(
     }
 
     private fun bindView() {
-        val dd = ViewModelProvider(requireActivity()).get(MainFragmentViewModel::class.java)
         mAdapter = MainTabRvAdapter()
-        mAdapter?.setViewModel(dd)
         binding.fragmentRv.layoutManager = LinearLayoutManager(binding.root.context)
         binding.fragmentRv.adapter = mAdapter
-        binding.viewModel = dd
-        Thread(Runnable {
-            selectCall()
-        }).start()
+        viewModel = ViewModelProvider(requireActivity())
+                .get(MainFragmentViewModel::class.java)
+        binding.viewModel = viewModel
+        mAdapter?.setViewModel(viewModel)
+        selectCall()
     }
 
     companion object {
@@ -62,6 +61,8 @@ class FragmentMemo : BaseFragment<MainFragmentViewModel, MainFragmentRvBinding>(
     }
 
     private fun selectCall() {
-        binding.viewModel?.selectMemo()
+        Thread(Runnable {
+            viewModel.selectMemo()
+        }).start()
     }
 }

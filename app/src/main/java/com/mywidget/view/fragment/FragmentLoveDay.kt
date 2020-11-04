@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupWindow
 import android.widget.RelativeLayout
+import androidx.lifecycle.ViewModelProvider
 import com.mywidget.R
 import com.mywidget.data.room.LoveDayDB
 import com.mywidget.databinding.MainFragmentFragment2Binding
@@ -27,16 +28,15 @@ class FragmentLoveDay : BaseFragment<MainFragmentViewModel, MainFragmentFragment
     override fun onCreateView(inflater: LayoutInflater, parent: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         super.onCreateView(inflater, parent, savedInstanceState)
-        binding.viewModel = viewModel
-        bindData()
+        bindView()
         messagePop()
         return binding.root
     }
 
-    private fun bindData() {
-        Thread(Runnable {
-            binding.viewModel?.selectLoveDay()
-        }).start()
+    private fun bindView() {
+        viewModel = ViewModelProvider(requireActivity())
+                .get(MainFragmentViewModel::class.java)
+        binding.viewModel = viewModel
         viewModel.messageLeft("뿡이")
         viewModel.messageRight("콩이")
         viewModel.leftMessage.observe(this, androidx.lifecycle.Observer {
@@ -45,6 +45,9 @@ class FragmentLoveDay : BaseFragment<MainFragmentViewModel, MainFragmentFragment
         viewModel.rightMessage.observe(this, androidx.lifecycle.Observer {
             viewModel.rightString.value = it[it.size-1]
         })
+        Thread(Runnable {
+            viewModel.selectLoveDay()
+        }).start()
     }
 
     private fun messagePop() {
@@ -63,9 +66,5 @@ class FragmentLoveDay : BaseFragment<MainFragmentViewModel, MainFragmentFragment
                 view.memo_list_container.addView(listItem)
             }
         })
-    }
-
-    fun addLoveDay(date: String) {
-        viewModel.addLoveDay(date)
     }
 }

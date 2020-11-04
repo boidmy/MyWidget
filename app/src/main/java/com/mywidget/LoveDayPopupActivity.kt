@@ -21,13 +21,13 @@ class LoveDayPopupActivity : Activity() {
     private val clickListener = View.OnClickListener { v ->
         when (v.id){
             R.id.loveday_feeling -> {
-                var intent = Intent()
+                val intent = Intent()
                 intent.putExtra("result", "feel")
                 setResult(RESULT_OK, intent)
                 finish()
             }
             R.id.loveday_dday -> {
-                var intent = Intent()
+                val intent = Intent()
                 intent.putExtra("result", "dday")
                 setResult(RESULT_OK, intent)
                 finish()
@@ -35,5 +35,4 @@ class LoveDayPopupActivity : Activity() {
             R.id.smart_talk_floating_popup_dim_layout -> finish()
         }
     }
-
 }
