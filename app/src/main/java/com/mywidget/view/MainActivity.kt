@@ -230,7 +230,7 @@ class MainActivity : BaseActivity<MainFragmentViewModel, DrawerlayoutMainBinding
             memo_dialog?.date_txt?.text = year.toString() + "-" + (monthOfYear+1).toString() + "-" + dayOfMonth.toString()
             memo_dialog?.date_txt?.tag = year.toString()+String.format("%02d", monthOfYear+1)+dayOfMonth.toString()
 
-        }, Util.getYear(c), Util.getMonth(c), Util.getNowdate(c))
+        }, CalendarUtil.getYear(c), CalendarUtil.getMonth(c), CalendarUtil.getNowdate(c))
 
         dpd.show()
     }

@@ -10,14 +10,13 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.mywidget.R
-import com.mywidget.adapter.MainTabRvAdapter
+import com.mywidget.adapter.MainTabMemoAdapter
 import com.mywidget.data.room.Memo
-import com.mywidget.data.room.MemoDB
 import com.mywidget.databinding.MainFragmentRvBinding
 import com.mywidget.viewModel.MainFragmentViewModel
 
 class FragmentMemo : BaseFragment<MainFragmentViewModel, MainFragmentRvBinding>() {
-    private var mAdapter: MainTabRvAdapter? = null
+    private var mAdapter: MainTabMemoAdapter? = null
 
     override fun getLayout(): Int {
         return R.layout.main_fragment_rv
@@ -35,7 +34,7 @@ class FragmentMemo : BaseFragment<MainFragmentViewModel, MainFragmentRvBinding>(
     }
 
     private fun bindView() {
-        mAdapter = MainTabRvAdapter()
+        mAdapter = MainTabMemoAdapter()
         binding.fragmentRv.layoutManager = LinearLayoutManager(binding.root.context)
         binding.fragmentRv.adapter = mAdapter
         viewModel = ViewModelProvider(requireActivity())
@@ -49,9 +48,9 @@ class FragmentMemo : BaseFragment<MainFragmentViewModel, MainFragmentRvBinding>(
         @BindingAdapter("items")
         @JvmStatic
         fun adapter(recyclerView: RecyclerView?, data: MutableLiveData<List<Memo>>?) {
-            val adapter: MainTabRvAdapter = recyclerView?.adapter as MainTabRvAdapter
+            val adapter: MainTabMemoAdapter = recyclerView?.adapter as MainTabMemoAdapter
             data?.let {
-                adapter.setData(data.value)
+                adapter.notifyDataSetChanged()
             }
         }
     }
