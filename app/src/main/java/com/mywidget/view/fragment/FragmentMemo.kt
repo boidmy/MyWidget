@@ -49,9 +49,7 @@ class FragmentMemo : BaseFragment<MainFragmentViewModel, MainFragmentRvBinding>(
         @JvmStatic
         fun adapter(recyclerView: RecyclerView?, data: MutableLiveData<List<Memo>>?) {
             val adapter: MainTabMemoAdapter = recyclerView?.adapter as MainTabMemoAdapter
-            data?.let {
-                adapter.notifyDataSetChanged()
-            }
+            adapter.notifyDataSetChanged()
         }
     }
 

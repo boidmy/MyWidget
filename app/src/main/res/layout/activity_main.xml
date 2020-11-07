@@ -9,9 +9,6 @@
         <variable
             name="viewModel"
             type="com.mywidget.viewModel.MainFragmentViewModel" />
-        <variable
-            name="dim"
-            type="boolean" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
