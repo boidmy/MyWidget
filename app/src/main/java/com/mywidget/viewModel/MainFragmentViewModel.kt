@@ -2,6 +2,7 @@ package com.mywidget.viewModel
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.mywidget.data.model.LmemoData
 import com.mywidget.data.room.*
@@ -15,7 +16,6 @@ class MainFragmentViewModel(application: Application) : AndroidViewModel(applica
     var message: MutableLiveData<List<LmemoData>> = MutableLiveData()
     var leftString : MutableLiveData<LmemoData> = MutableLiveData()
     var rightString : MutableLiveData<LmemoData> = MutableLiveData()
-
     var repository = MessageRepository(application)
 
     var visible: MutableLiveData<Boolean> = MutableLiveData()

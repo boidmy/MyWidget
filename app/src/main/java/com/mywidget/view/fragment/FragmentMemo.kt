@@ -39,7 +39,7 @@ class FragmentMemo : BaseFragment<MainFragmentViewModel, MainFragmentRvBinding>(
         binding.fragmentRv.adapter = mAdapter
         viewModel = ViewModelProvider(requireActivity())
                 .get(MainFragmentViewModel::class.java)
-        binding.viewModel = viewModel
+        binding.data = viewModel.memoData
         mAdapter?.setViewModel(viewModel)
         selectCall()
     }
