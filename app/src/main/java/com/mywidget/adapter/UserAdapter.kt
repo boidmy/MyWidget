@@ -27,20 +27,23 @@ class UserAdapter(viewModel: UserViewModel?)
     inner class MyViewHolder(val binding: UserRvItemBinding)
         : RecyclerView.ViewHolder(binding.root) {
 
-        fun bindView(viewModel: UserViewModel?, position: Int) {
-            binding.position = position
-            binding.viewModel = viewModel
-            binding.executePendingBindings()
-            val alert = AlertDialog.Builder(itemView.context)
-            itemView.delete_btn.setOnClickListener {
-                alert
-                    .setTitle("삭제할거에염?")
-                    .setPositiveButton("삭제") { _, _ ->
-                        binding.viewModel?.deleteUser(itemView.user_name.text.toString())
-                    }
-                    .setNegativeButton("취소") { _, _ ->
-                    }.show()
+        fun bindView(mViewModel: UserViewModel?, mPosition: Int) {
+            binding.apply {
+                position = mPosition
+                viewModel = mViewModel
+                executePendingBindings()
+                val alert = AlertDialog.Builder(root.context)
+                deleteBtn.setOnClickListener {
+                    alert
+                        .setTitle("삭제할거에염?")
+                        .setPositiveButton("삭제") { _, _ ->
+                            viewModel?.deleteUser(userName.text.toString())
+                        }
+                        .setNegativeButton("취소") { _, _ ->
+                        }.show()
+                }
             }
+
         }
     }
 }

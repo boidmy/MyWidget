@@ -18,6 +18,8 @@ class MainFragmentViewModel(application: Application) : AndroidViewModel(applica
 
     var repository = MessageRepository(application)
 
+    var visible = false
+
     fun insertMemo(memo: String, data: String) {
         Thread(Runnable {
             repository.insertMemo(memo, data)

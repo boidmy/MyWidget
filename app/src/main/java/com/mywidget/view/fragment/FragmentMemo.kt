@@ -55,10 +55,6 @@ class FragmentMemo : BaseFragment<MainFragmentViewModel, MainFragmentRvBinding>(
         }
     }
 
-    fun insertMemo(memo: String, date: String) {
-        viewModel.insertMemo(memo, date)
-    }
-
     private fun selectCall() {
         Thread(Runnable {
             viewModel.selectMemo()

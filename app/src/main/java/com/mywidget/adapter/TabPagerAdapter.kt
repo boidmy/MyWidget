@@ -32,10 +32,6 @@ class TabPagerAdapter(fm: FragmentManager) : FragmentStatePagerAdapter(fm, BEHAV
             "LoveDays"
     }
 
-    fun insertMemo(memo: String, date: String) {
-        mFragmentMemo?.insertMemo(memo, date)
-    }
-
     override fun getItemPosition(`object`: Any): Int {
         if (`object` as Fragment == mFragmentLoveDay) {
             return PagerAdapter.POSITION_NONE

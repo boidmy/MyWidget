@@ -108,18 +108,18 @@ class MainActivity : BaseActivity<MainFragmentViewModel, DrawerlayoutMainBinding
     }
 
     private fun tabInit() {
-        binding.mainContainer.main_tab.setupWithViewPager(binding.mainContainer.vp_tab)
-        binding.mainContainer.main_tab.setSelectedTabIndicatorColor(ContextCompat
+        binding.mainContainer.mainTab.setupWithViewPager(binding.mainContainer.vpTab)
+        binding.mainContainer.mainTab.setSelectedTabIndicatorColor(ContextCompat
             .getColor(this, R.color.white
         ))
 
         mTabPagerAdapter = TabPagerAdapter(supportFragmentManager)
-        binding.mainContainer.vp_tab.adapter = mTabPagerAdapter
+        binding.mainContainer.vpTab.adapter = mTabPagerAdapter
         //mViewPager.adapter = mTabPagerAdapter
 
-        binding.mainContainer.vp_tab.addOnPageChangeListener(TabLayout
-            .TabLayoutOnPageChangeListener(binding.mainContainer.main_tab))
-        binding.mainContainer.main_tab.addOnTabSelectedListener(onTabSelectedListener)
+        binding.mainContainer.vpTab.addOnPageChangeListener(TabLayout
+            .TabLayoutOnPageChangeListener(binding.mainContainer.mainTab))
+        binding.mainContainer.mainTab.addOnTabSelectedListener(onTabSelectedListener)
     }
 
     override fun onBackPressed() {
