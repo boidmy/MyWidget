@@ -31,6 +31,7 @@
             android:layout_height="wrap_content"
             app:tabTextColor="#989696"
             app:tabSelectedTextColor="#ffffff"
+            app:tabIndicatorColor="#ffffff"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@id/title_container"/>
 
@@ -68,7 +69,8 @@
             android:layout_height="match_parent"
             android:background="#77000000"
             android:orientation="horizontal"
-            android:visibility="@{dim ? View.VISIBLE : View.GONE}"/>
+            tools:visibility="gone"
+            android:visibility="@{viewModel.visible ? View.VISIBLE : View.GONE}"/>
 
         <ImageView
             android:id="@+id/loveday_bg"
@@ -78,7 +80,6 @@
             app:layout_constraintTop_toTopOf="parent"
             android:scaleType="fitCenter"
             android:visibility="visible"
-            tools:visibility="gone"
             android:alpha="0.2"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

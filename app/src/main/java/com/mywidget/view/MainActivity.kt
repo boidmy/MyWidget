@@ -70,17 +70,10 @@ class MainActivity : BaseActivity<MainFragmentViewModel, DrawerlayoutMainBinding
 
         binding.viewModel = viewModel
         alertDialog = AlertDialog.Builder(this)
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (checkSelfPermission(Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED) {
-
-            } else {
-                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CALL_PHONE), 1)
-            }
-        }
-
         database = FirebaseDatabase.getInstance().reference
         backPressAppFinish = BackPressAppFinish(this)
 
+        permissionChk()
         addWidget()
         leftMenu()
         tabInit()
@@ -95,8 +88,7 @@ class MainActivity : BaseActivity<MainFragmentViewModel, DrawerlayoutMainBinding
     }
 
     private fun dimVisiblity(flag: Boolean) {
-        if (flag) dim_layout.visibility = View.VISIBLE
-        else dim_layout.visibility = View.GONE
+        viewModel.visible.value = flag
     }
 
     private fun memoAdd(v: View?) {
@@ -109,9 +101,6 @@ class MainActivity : BaseActivity<MainFragmentViewModel, DrawerlayoutMainBinding
 
     private fun tabInit() {
         binding.mainContainer.mainTab.setupWithViewPager(binding.mainContainer.vpTab)
-        binding.mainContainer.mainTab.setSelectedTabIndicatorColor(ContextCompat
-            .getColor(this, R.color.white
-        ))
 
         mTabPagerAdapter = TabPagerAdapter(supportFragmentManager)
         binding.mainContainer.vpTab.adapter = mTabPagerAdapter
@@ -169,6 +158,16 @@ class MainActivity : BaseActivity<MainFragmentViewModel, DrawerlayoutMainBinding
         }
     }
 
+    private fun permissionChk() {
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (checkSelfPermission(Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED) {
+
+            } else {
+                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CALL_PHONE), 1)
+            }
+        }
+    }
+
     private fun addWidget() {
         MainApplication.widgetBroad()
         intent = Intent(this, MyAppWidget::class.java)
@@ -184,6 +183,7 @@ class MainActivity : BaseActivity<MainFragmentViewModel, DrawerlayoutMainBinding
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         when (requestCode) {
             1 -> if(grantResults[0] == PackageManager.PERMISSION_GRANTED){
                 alertDialog?.setTitle("권한에 동의하셨네요?")
@@ -204,7 +204,6 @@ class MainActivity : BaseActivity<MainFragmentViewModel, DrawerlayoutMainBinding
                 alert.show()
             }
         }
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
