@@ -1,15 +1,18 @@
 package com.mywidget.extension
 
 import android.app.DatePickerDialog
+import android.content.Context
 import android.view.View
-import android.widget.TableLayout
-import android.widget.TextView
+import android.view.inputmethod.InputMethodManager
+import android.widget.*
+import androidx.appcompat.app.AlertDialog
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import com.mywidget.CalendarUtil
 import com.mywidget.R
 import com.mywidget.Util
+import com.mywidget.viewModel.MainFragmentViewModel
 import java.util.*
 
 @BindingAdapter("text")
@@ -43,6 +46,32 @@ fun termProcessing(textView: TextView?, data: String?) {
     }
 
     text(textView, value)
+}
+
+@BindingAdapter("memoTxt", "dateTxt", "viewModel")
+fun memoOnclick(button: Button, memo: EditText, date: TextView, viewModel: MainFragmentViewModel) {
+    button.setOnClickListener {
+        AlertDialog.Builder(button.context)
+            .setTitle("아싸~")
+            .setMessage("♥입력됐대용♥")
+            .setIcon(android.R.drawable.ic_menu_save)
+            .setPositiveButton("yes") { _, _ ->
+                viewModel.insertMemo(memo.text.toString(), date.tag.toString())
+                Toast.makeText(button.context, "저장했대요!!", Toast.LENGTH_SHORT).show()
+                viewModel.visible.value = false
+                viewModel.memovisible.value = false
+                //imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0)
+            }
+            .setNegativeButton(
+                android.R.string.no
+            ) { _, _ ->
+                // 취소시 처리 로직
+                Toast.makeText(button.context, "취소했대요ㅠㅠ.", Toast.LENGTH_SHORT).show()
+                viewModel.memovisible.value = false
+                //imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0)
+            }
+            .show()
+    }
 }
 
 /*

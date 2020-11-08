@@ -7,8 +7,11 @@ object CalendarUtil {
 
     fun calendar(data: String?): Calendar? {
         data?.let {
+
+        }
+        if(data != "null") {
             val cal: Calendar = Calendar.getInstance()
-            cal.time = SimpleDateFormat("yyyyMMdd").parse(it)
+            cal.time = SimpleDateFormat("yyyyMMdd").parse(data)
             return cal
         }
         return null

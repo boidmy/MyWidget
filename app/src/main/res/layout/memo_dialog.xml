@@ -8,6 +8,10 @@
         <variable
             name="date"
             type="String" />
+        <variable
+            name="viewModel"
+            type="com.mywidget.viewModel.MainFragmentViewModel" />
+
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/memo_dialog"
@@ -82,6 +86,9 @@
             android:background="@drawable/edge_round_blue"
             android:layout_marginTop="10dp"
             android:textColor="@color/white"
+            app:memoTxt="@{memoTxt}"
+            app:dateTxt="@{dateTxt}"
+            app:viewModel="@{viewModel}"
             app:layout_constraintHorizontal_bias="0.4"
             app:layout_constraintVertical_bias="0.0"/>
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -19,6 +19,7 @@ class MainFragmentViewModel(application: Application) : AndroidViewModel(applica
     var repository = MessageRepository(application)
 
     var visible: MutableLiveData<Boolean> = MutableLiveData()
+    var memovisible: MutableLiveData<Boolean> = MutableLiveData()
 
     fun insertMemo(memo: String, data: String) {
         Thread(Runnable {

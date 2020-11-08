@@ -96,10 +96,6 @@ class MainActivity : BaseActivity<MainFragmentViewModel, DrawerlayoutMainBinding
         viewModel.visible.value = flag
     }
 
-    private fun memoAdd(memoText: String, dateText: String) {
-        viewModel.insertMemo(memoText, dateText)
-    }
-
     private fun loveDayAdd(v: View?) {
         viewModel.addLoveDay(v?.day_add?.tag.toString())
     }
@@ -116,11 +112,6 @@ class MainActivity : BaseActivity<MainFragmentViewModel, DrawerlayoutMainBinding
     }
 
     override fun onBackPressed() {
-        if(memo_dialog?.visibility == View.VISIBLE) {
-            memo_dialog?.visibility = View.GONE
-            dimVisiblity(false)
-        }
-
         if(binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
             binding.drawerLayout.closeDrawer(GravityCompat.START)
             return
@@ -303,7 +294,11 @@ class MainActivity : BaseActivity<MainFragmentViewModel, DrawerlayoutMainBinding
 
         memoDialogBinding = MemoDialogBinding.inflate(LayoutInflater.from(this))
         dialog.setContentView(memoDialogBinding?.root!!)
+        memoDialogBinding?.viewModel = viewModel
         dialog.show()
+        viewModel.memovisible.observe(this, androidx.lifecycle.Observer {
+            if(!it) dialog.dismiss()
+        })
 
         memoDialogBinding?.apply {
             memoTxt.requestFocus()
@@ -313,28 +308,6 @@ class MainActivity : BaseActivity<MainFragmentViewModel, DrawerlayoutMainBinding
             val c = Calendar.getInstance()
             CalendarUtil.apply {
                 date = "${getYear(c)}-${getMonth(c)+1}-${getNowdate(c)}"
-            }
-            confirmBtn.setOnClickListener {
-                AlertDialog.Builder(root.context)
-                    .setTitle("아싸~")
-                    .setMessage("♥입력됐대용♥")
-                    .setIcon(android.R.drawable.ic_menu_save)
-                    .setPositiveButton("yes") { _, _ ->
-                        // 확인시 처리 로직
-                        memoAdd(memoTxt.text.toString(), dateTxt.tag.toString())
-                        Toast.makeText(root.context, "저장했대요!!", Toast.LENGTH_SHORT).show()
-                        dimVisiblity(false)
-                        dialog.dismiss()
-                        imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0)
-                    }
-                    .setNegativeButton(
-                        android.R.string.no
-                    ) { _, _ ->
-                        // 취소시 처리 로직
-                        Toast.makeText(root.context, "취소했대요ㅠㅠ.", Toast.LENGTH_SHORT).show()
-                        imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0)
-                    }
-                    .show()
             }
         }
     }
