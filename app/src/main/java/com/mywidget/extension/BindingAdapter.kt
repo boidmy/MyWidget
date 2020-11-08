@@ -59,19 +59,15 @@ fun memoOnclick(button: Button, memo: EditText, date: TextView, viewModel: MainF
             .setPositiveButton("yes") { _, _ ->
                 viewModel.insertMemo(memo.text.toString(), date.tag.toString())
                 Toast.makeText(button.context, "저장했대요!!", Toast.LENGTH_SHORT).show()
-                viewModel.visible.value = false
-                viewModel.dialogVisible.value = false
-                //imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0)
             }
             .setNegativeButton(
                 android.R.string.no
             ) { _, _ ->
                 // 취소시 처리 로직
                 Toast.makeText(button.context, "취소했대요ㅠㅠ.", Toast.LENGTH_SHORT).show()
-                viewModel.dialogVisible.value = false
-                //imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0)
             }
             .show()
+        viewModel.dialogVisible.value = false
     }
 }
 

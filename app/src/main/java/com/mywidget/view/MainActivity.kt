@@ -82,10 +82,6 @@ class MainActivity : BaseActivity<MainFragmentViewModel, DrawerlayoutMainBinding
         //fcmtest("")
     }
 
-    private fun dimVisiblity(flag: Boolean) {
-        viewModel.visible.value = flag
-    }
-
     private fun tabInit() {
         binding.mainContainer.mainTab.setupWithViewPager(binding.mainContainer.vpTab)
 
@@ -223,17 +219,20 @@ class MainActivity : BaseActivity<MainFragmentViewModel, DrawerlayoutMainBinding
     private fun onClickMemo() {
         val dialog = Dialog(this)
         val memoDialogBinding = MemoDialogBinding.inflate(LayoutInflater.from(this))
+        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         dialog.setContentView(memoDialogBinding.root)
         memoDialogBinding.viewModel = viewModel
         dialog.show()
         viewModel.dialogVisible.value = true
         viewModel.dialogVisible.observe(this, androidx.lifecycle.Observer {
-            if(!it) dialog.dismiss()
+            if(!it) {
+                dialog.dismiss()
+                imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0)
+            }
         })
 
         memoDialogBinding.apply {
             memoTxt.requestFocus()
-            val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY)
             val c = Calendar.getInstance()
             CalendarUtil.apply {
