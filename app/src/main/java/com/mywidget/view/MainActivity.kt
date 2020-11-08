@@ -3,6 +3,7 @@ package com.mywidget.view
 import android.Manifest
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
+import android.app.Dialog
 import android.appwidget.AppWidgetManager
 import android.content.Context
 import android.content.Intent
@@ -10,6 +11,7 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.view.Gravity
+import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.inputmethod.InputMethodManager
@@ -20,6 +22,8 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
+import androidx.databinding.DataBindingUtil
+import androidx.databinding.ViewDataBinding
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.tabs.TabLayout
@@ -29,6 +33,7 @@ import com.google.firebase.iid.FirebaseInstanceId
 import com.mywidget.*
 import com.mywidget.adapter.TabPagerAdapter
 import com.mywidget.databinding.DrawerlayoutMainBinding
+import com.mywidget.databinding.MemoDialogBinding
 import com.mywidget.lmemo.view.LMemoActivity
 import com.mywidget.login.view.LoginGoogle
 import com.mywidget.viewModel.MainFragmentViewModel
@@ -91,8 +96,8 @@ class MainActivity : BaseActivity<MainFragmentViewModel, DrawerlayoutMainBinding
         viewModel.visible.value = flag
     }
 
-    private fun memoAdd(v: View?) {
-        viewModel.insertMemo(v?.memo_txt?.text.toString(), v?.date_txt?.tag.toString())
+    private fun memoAdd(memoText: String, dateText: String) {
+        viewModel.insertMemo(memoText, dateText)
     }
 
     private fun loveDayAdd(v: View?) {
@@ -104,7 +109,6 @@ class MainActivity : BaseActivity<MainFragmentViewModel, DrawerlayoutMainBinding
 
         mTabPagerAdapter = TabPagerAdapter(supportFragmentManager)
         binding.mainContainer.vpTab.adapter = mTabPagerAdapter
-        //mViewPager.adapter = mTabPagerAdapter
 
         binding.mainContainer.vpTab.addOnPageChangeListener(TabLayout
             .TabLayoutOnPageChangeListener(binding.mainContainer.mainTab))
@@ -226,8 +230,8 @@ class MainActivity : BaseActivity<MainFragmentViewModel, DrawerlayoutMainBinding
         val c = Calendar.getInstance()
 
         val dpd = DatePickerDialog(this, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
-            memo_dialog?.date_txt?.text = year.toString() + "-" + (monthOfYear+1).toString() + "-" + dayOfMonth.toString()
-            memo_dialog?.date_txt?.tag = year.toString()+String.format("%02d", monthOfYear+1)+dayOfMonth.toString()
+            memoDialogBinding?.dateTxt?.date_txt?.text = year.toString() + "-" + (monthOfYear+1).toString() + "-" + dayOfMonth.toString()
+            memoDialogBinding?.dateTxt?.tag = year.toString()+String.format("%02d", monthOfYear+1)+dayOfMonth.toString()
 
         }, CalendarUtil.getYear(c), CalendarUtil.getMonth(c), CalendarUtil.getNowdate(c))
 
@@ -293,56 +297,45 @@ class MainActivity : BaseActivity<MainFragmentViewModel, DrawerlayoutMainBinding
         }
     }
 
+    var memoDialogBinding: MemoDialogBinding? = null
     private fun onClickMemo() {
-        memo_dialog = layoutInflater.inflate(R.layout.memo_dialog, null)
-        val popupWindow = PopupWindow(
-            memo_dialog,
-            RelativeLayout.LayoutParams.WRAP_CONTENT,
-            RelativeLayout.LayoutParams.WRAP_CONTENT
-        )
-        popupWindow.isFocusable = true
-        popupWindow.showAtLocation(memo_dialog, Gravity.CENTER, 0, 0)
-        dimVisiblity(true)
-        memo_dialog?.memo_txt?.requestFocus()
+        val dialog = Dialog(this)
 
-        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY)
+        memoDialogBinding = MemoDialogBinding.inflate(LayoutInflater.from(this))
+        dialog.setContentView(memoDialogBinding?.root!!)
+        dialog.show()
 
-        memo_dialog?.cal_btn?.setOnClickListener(memoCalOnClickListener)
-
-        val c = Calendar.getInstance()
-        val year = c.get(Calendar.YEAR).toString()
-        val month = (c.get(Calendar.MONTH) + 1).toString()
-        val day = c.get(Calendar.DAY_OF_MONTH).toString()
-        memo_dialog?.date_txt?.text = "$year-$month-$day"
-
-        popupWindow.isOutsideTouchable = true
-        memo_dialog?.confirm_btn?.setOnClickListener {
-            AlertDialog.Builder(this)
-                .setTitle("아싸~")
-                .setMessage("♥입력됐대용♥")
-                .setIcon(android.R.drawable.ic_menu_save)
-                .setPositiveButton("yes") { _, _ ->
-                    // 확인시 처리 로직
-                    memoAdd(memo_dialog)
-                    Toast.makeText(this, "저장했대요!!", Toast.LENGTH_SHORT).show()
-                    memo_dialog?.memo_txt?.text = null
-                    memo_dialog?.date_txt?.text = null
-                    memo_dialog?.visibility = View.GONE
-                    dimVisiblity(false)
-
-                }
-                .setNegativeButton(
-                    android.R.string.no
-                ) { _, _ ->
-                    // 취소시 처리 로직
-                    Toast.makeText(this, "취소했대요ㅠㅠ.", Toast.LENGTH_SHORT).show()
-                }
-                .show()
-        }
-        popupWindow.setOnDismissListener {
-            dimVisiblity(false)
-            imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0)
+        memoDialogBinding?.apply {
+            memoTxt.requestFocus()
+            val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY)
+            calBtn.setOnClickListener(memoCalOnClickListener)
+            val c = Calendar.getInstance()
+            CalendarUtil.apply {
+                date = "${getYear(c)}-${getMonth(c)+1}-${getNowdate(c)}"
+            }
+            confirmBtn.setOnClickListener {
+                AlertDialog.Builder(root.context)
+                    .setTitle("아싸~")
+                    .setMessage("♥입력됐대용♥")
+                    .setIcon(android.R.drawable.ic_menu_save)
+                    .setPositiveButton("yes") { _, _ ->
+                        // 확인시 처리 로직
+                        memoAdd(memoTxt.text.toString(), dateTxt.tag.toString())
+                        Toast.makeText(root.context, "저장했대요!!", Toast.LENGTH_SHORT).show()
+                        dimVisiblity(false)
+                        dialog.dismiss()
+                        imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0)
+                    }
+                    .setNegativeButton(
+                        android.R.string.no
+                    ) { _, _ ->
+                        // 취소시 처리 로직
+                        Toast.makeText(root.context, "취소했대요ㅠㅠ.", Toast.LENGTH_SHORT).show()
+                        imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0)
+                    }
+                    .show()
+            }
         }
     }
 
