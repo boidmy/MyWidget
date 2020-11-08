@@ -1,23 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="com.mywidget.viewModel.MainFragmentViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:orientation="vertical"
-        android:layout_width="200dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/outline_white"
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
         android:paddingBottom="20dp">
 
-    <TextView
+        <View
+            android:id="@+id/cal_btn"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/img_calendar"
+            android:layout_marginTop="5dp"
+            app:NowDate="@{dayAdd}"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/day_add"
+            app:layout_constraintTop_toTopOf="@+id/day_add"
+            app:layout_constraintBottom_toBottomOf="@+id/day_add"
+            app:layout_constraintHorizontal_chainStyle="packed"/>
+
+        <TextView
             android:id="@+id/day_add"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:hint="기념일을 선택하세용"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
             android:layout_marginTop="20dp"
             android:background="@drawable/outline_pink"
             android:textColor="#000000"
@@ -25,14 +43,23 @@
             android:layout_marginBottom="5dp"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
-            android:gravity="center"/>
+            android:gravity="center"
+            app:layout_constraintLeft_toRightOf="@+id/cal_btn"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
 
-    <Button android:id="@+id/confirm_btn"
+        <Button
+            android:id="@+id/confirm_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="입력"
             android:layout_marginBottom="20dp"
+            app:loveDayConfirm="@{viewModel}"
+            app:textTag="@{dayAdd}"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/day_add"/>
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

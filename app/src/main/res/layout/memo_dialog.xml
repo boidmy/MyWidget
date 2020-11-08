@@ -55,6 +55,7 @@
             android:layout_height="40dp"
             android:background="@drawable/img_calendar"
             android:layout_marginTop="5dp"
+            app:NowDate="@{dateTxt}"
             app:layout_constraintRight_toLeftOf="@+id/date_txt"
             app:layout_constraintTop_toBottomOf="@+id/memo_txt"
             app:layout_constraintHorizontal_chainStyle="packed"/>

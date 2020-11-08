@@ -13,6 +13,7 @@ import com.mywidget.CalendarUtil
 import com.mywidget.R
 import com.mywidget.Util
 import com.mywidget.viewModel.MainFragmentViewModel
+import kotlinx.android.synthetic.main.main_loveday_dialog.view.*
 import java.util.*
 
 @BindingAdapter("text")
@@ -59,7 +60,7 @@ fun memoOnclick(button: Button, memo: EditText, date: TextView, viewModel: MainF
                 viewModel.insertMemo(memo.text.toString(), date.tag.toString())
                 Toast.makeText(button.context, "저장했대요!!", Toast.LENGTH_SHORT).show()
                 viewModel.visible.value = false
-                viewModel.memovisible.value = false
+                viewModel.dialogVisible.value = false
                 //imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0)
             }
             .setNegativeButton(
@@ -67,13 +68,48 @@ fun memoOnclick(button: Button, memo: EditText, date: TextView, viewModel: MainF
             ) { _, _ ->
                 // 취소시 처리 로직
                 Toast.makeText(button.context, "취소했대요ㅠㅠ.", Toast.LENGTH_SHORT).show()
-                viewModel.memovisible.value = false
+                viewModel.dialogVisible.value = false
                 //imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0)
             }
             .show()
     }
 }
 
+@BindingAdapter("NowDate")
+fun setNowDate(view: View, textView: TextView) {
+    view.setOnClickListener {
+        val c = Calendar.getInstance()
+        val dpd = DatePickerDialog(view.context, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+            textView.text = year.toString() + "-" + (monthOfYear+1).toString() + "-" + dayOfMonth.toString()
+            textView.tag = year.toString()+String.format("%02d", monthOfYear+1)+dayOfMonth.toString()
+        }, CalendarUtil.getYear(c), CalendarUtil.getMonth(c), CalendarUtil.getNowdate(c))
+        dpd.show()
+    }
+}
+
+@BindingAdapter("loveDayConfirm", "textTag")
+fun setLoveDay(button: Button, viewModel: MainFragmentViewModel, textView: TextView) {
+    button.setOnClickListener {
+        AlertDialog.Builder(button.context)
+            .setTitle("아싸~")
+            .setMessage("♥입력됐대용♥")
+            .setIcon(android.R.drawable.ic_menu_save)
+            .setPositiveButton("yes") { _, _ ->
+                // 확인시 처리 로직
+                viewModel.addLoveDay(textView.tag.toString())
+                Toast.makeText(button.context, "저장했대요!!", Toast.LENGTH_SHORT).show()
+                viewModel.dialogVisible.value = false
+            }
+            .setNegativeButton(
+                android.R.string.no
+            ) { _, _ ->
+                // 취소시 처리 로직
+                Toast.makeText(button.context, "취소했대요ㅠㅠ.", Toast.LENGTH_SHORT).show()
+                viewModel.dialogVisible.value = false
+            }
+            .show()
+    }
+}
 /*
 @BindingAdapter("onClickDate")
 fun onClickDate(constraintLayout: ConstraintLayout, data: String?) {

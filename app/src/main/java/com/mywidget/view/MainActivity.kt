@@ -1,7 +1,6 @@
 package com.mywidget.view
 
 import android.Manifest
-import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.app.Dialog
 import android.appwidget.AppWidgetManager
@@ -22,8 +21,6 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
-import androidx.databinding.DataBindingUtil
-import androidx.databinding.ViewDataBinding
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.tabs.TabLayout
@@ -33,13 +30,12 @@ import com.google.firebase.iid.FirebaseInstanceId
 import com.mywidget.*
 import com.mywidget.adapter.TabPagerAdapter
 import com.mywidget.databinding.DrawerlayoutMainBinding
+import com.mywidget.databinding.MainLovedayDialogBinding
 import com.mywidget.databinding.MemoDialogBinding
 import com.mywidget.lmemo.view.LMemoActivity
 import com.mywidget.login.view.LoginGoogle
 import com.mywidget.viewModel.MainFragmentViewModel
-import com.mywidget.viewModel.MainViewModel
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.activity_main.view.*
 import kotlinx.android.synthetic.main.layout_title.*
 import kotlinx.android.synthetic.main.main_loveday_dialog.view.*
 import kotlinx.android.synthetic.main.main_phone_dialog.view.confirm_btn
@@ -50,15 +46,10 @@ import java.util.*
 class MainActivity : BaseActivity<MainFragmentViewModel, DrawerlayoutMainBinding>()
     , NavigationView.OnNavigationItemSelectedListener {
 
-    private var alertDialog: AlertDialog.Builder? = null
-    private lateinit var alert: AlertDialog
     private var mSharedPreference = MainApplication.INSTANSE.mSharedPreference
     private var editor = MainApplication.INSTANSE.editor
-
     private var backPressAppFinish: BackPressAppFinish? = null
     private var mTabPagerAdapter: TabPagerAdapter? = null
-    private var memo_dialog: View? = null
-    private var loveday_dialog: View? = null
     private var tabPosition: Int? = 0
 
     private lateinit var database: DatabaseReference
@@ -74,7 +65,6 @@ class MainActivity : BaseActivity<MainFragmentViewModel, DrawerlayoutMainBinding
         super.onCreate(savedInstanceState)
 
         binding.viewModel = viewModel
-        alertDialog = AlertDialog.Builder(this)
         database = FirebaseDatabase.getInstance().reference
         backPressAppFinish = BackPressAppFinish(this)
 
@@ -94,10 +84,6 @@ class MainActivity : BaseActivity<MainFragmentViewModel, DrawerlayoutMainBinding
 
     private fun dimVisiblity(flag: Boolean) {
         viewModel.visible.value = flag
-    }
-
-    private fun loveDayAdd(v: View?) {
-        viewModel.addLoveDay(v?.day_add?.tag.toString())
     }
 
     private fun tabInit() {
@@ -179,23 +165,23 @@ class MainActivity : BaseActivity<MainFragmentViewModel, DrawerlayoutMainBinding
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        val alertDialog = AlertDialog.Builder(this)
+        val alert = alertDialog.create()
         when (requestCode) {
             1 -> if(grantResults[0] == PackageManager.PERMISSION_GRANTED){
-                alertDialog?.setTitle("권한에 동의하셨네요?")
+                alertDialog.setTitle("권한에 동의하셨네요?")
                     ?.setMessage("이젠 취소할 수 없습니다.")
                     ?.setPositiveButton("확인") { _, _ ->
 
                     }
-                alert = alertDialog!!.create()
                 alert.show()
             } else {
-                alertDialog?.setTitle("권한을 동의하지 않으셨네요?")
+                alertDialog.setTitle("권한을 동의하지 않으셨네요?")
                     ?.setMessage("어쩔수없이 앱을 종료합니다 ㅠㅠ")
                     ?.setCancelable(false)
                     ?.setPositiveButton("확인") { _, _ ->
                         finish()
                     }
-                alert = alertDialog!!.create()
                 alert.show()
             }
         }
@@ -217,94 +203,38 @@ class MainActivity : BaseActivity<MainFragmentViewModel, DrawerlayoutMainBinding
         return true
     }
 
-    private val memoCalOnClickListener = View.OnClickListener {
-        val c = Calendar.getInstance()
-
-        val dpd = DatePickerDialog(this, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
-            memoDialogBinding?.dateTxt?.date_txt?.text = year.toString() + "-" + (monthOfYear+1).toString() + "-" + dayOfMonth.toString()
-            memoDialogBinding?.dateTxt?.tag = year.toString()+String.format("%02d", monthOfYear+1)+dayOfMonth.toString()
-
-        }, CalendarUtil.getYear(c), CalendarUtil.getMonth(c), CalendarUtil.getNowdate(c))
-
-        dpd.show()
-    }
-
-    private val loveDayCalOnClickListener = View.OnClickListener {
-        val c = Calendar.getInstance()
-        val year = c.get(Calendar.YEAR)
-        val month = c.get(Calendar.MONTH)
-        val day = c.get(Calendar.DAY_OF_MONTH)
-
-        val dpd = DatePickerDialog(this, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
-
-            loveday_dialog?.day_add?.text = year.toString() + "-" + (monthOfYear+1).toString() + "-" + dayOfMonth.toString()
-            loveday_dialog?.day_add?.tag = year.toString()+String.format("%02d", monthOfYear+1)+dayOfMonth.toString()
-        }, year, month, day)
-
-        dpd.show()
-    }
-
     private fun onClickLoveDay() {
         val intent = Intent(this, LoveDayPopupActivity::class.java)
         startActivityForResult(intent, 3000)
     }
 
     private fun loveDday() {
-        loveday_dialog = layoutInflater.inflate(R.layout.main_loveday_dialog, null)
-        val popupWindow = PopupWindow(
-            loveday_dialog,
-            RelativeLayout.LayoutParams.WRAP_CONTENT,
-            RelativeLayout.LayoutParams.WRAP_CONTENT
-        )
-        popupWindow.isFocusable = true
-        popupWindow.showAtLocation(loveday_dialog, Gravity.CENTER, 0, 0)
-        dimVisiblity(true)
-        loveday_dialog?.day_add?.setOnClickListener(loveDayCalOnClickListener)
-
-        loveday_dialog?.confirm_btn?.setOnClickListener {
-            AlertDialog.Builder(this)
-                .setTitle("아싸~")
-                .setMessage("♥입력됐대용♥")
-                .setIcon(android.R.drawable.ic_menu_save)
-                .setPositiveButton("yes") { _, _ ->
-                    // 확인시 처리 로직
-                    loveDayAdd(loveday_dialog)
-                    Toast.makeText(this, "저장했대요!!", Toast.LENGTH_SHORT).show()
-                    loveday_dialog?.day_add?.text = null
-                    loveday_dialog?.visibility = View.GONE
-                    dimVisiblity(false)
-                }
-                .setNegativeButton(
-                    android.R.string.no
-                ) { _, _ ->
-                    // 취소시 처리 로직
-                    Toast.makeText(this, "취소했대요ㅠㅠ.", Toast.LENGTH_SHORT).show()
-                }
-                .show()
-        }
-
-        popupWindow.setOnDismissListener {
-            dimVisiblity(false)
-        }
+        val dialog = Dialog(this)
+        val loveDayBinding = MainLovedayDialogBinding.inflate(LayoutInflater.from(this))
+        loveDayBinding.viewModel = viewModel
+        dialog.setContentView(loveDayBinding.root)
+        viewModel.dialogVisible.value = true
+        dialog.show()
+        viewModel.dialogVisible.observe(this, androidx.lifecycle.Observer {
+            if(!it) dialog.dismiss()
+        })
     }
 
-    var memoDialogBinding: MemoDialogBinding? = null
     private fun onClickMemo() {
         val dialog = Dialog(this)
-
-        memoDialogBinding = MemoDialogBinding.inflate(LayoutInflater.from(this))
-        dialog.setContentView(memoDialogBinding?.root!!)
-        memoDialogBinding?.viewModel = viewModel
+        val memoDialogBinding = MemoDialogBinding.inflate(LayoutInflater.from(this))
+        dialog.setContentView(memoDialogBinding.root)
+        memoDialogBinding.viewModel = viewModel
         dialog.show()
-        viewModel.memovisible.observe(this, androidx.lifecycle.Observer {
+        viewModel.dialogVisible.value = true
+        viewModel.dialogVisible.observe(this, androidx.lifecycle.Observer {
             if(!it) dialog.dismiss()
         })
 
-        memoDialogBinding?.apply {
+        memoDialogBinding.apply {
             memoTxt.requestFocus()
             val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY)
-            calBtn.setOnClickListener(memoCalOnClickListener)
             val c = Calendar.getInstance()
             CalendarUtil.apply {
                 date = "${getYear(c)}-${getMonth(c)+1}-${getNowdate(c)}"
