@@ -48,7 +48,6 @@ class UserActivity : BaseActivity<UserViewModel, ActivityUserBinding>() {
         super.onCreate(savedInstanceState)
         userDb = UserDB.getInstance(this)
         binding.viewModel = viewModel
-        viewModel.userDB = userDb
         mAdapter = UserAdapter(viewModel)
         binding.userRv.adapter = mAdapter
         selectUser()

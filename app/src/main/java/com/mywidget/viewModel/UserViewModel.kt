@@ -6,28 +6,28 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.mywidget.data.room.User
 import com.mywidget.data.room.UserDB
+import com.mywidget.repository.UserRepository
 
 class UserViewModel(application: Application) : AndroidViewModel(application) {
 
     var data: MutableLiveData<List<User>> = MutableLiveData()
-    var userDB: UserDB? = null
+    private val repository = UserRepository(application)
 
     fun insertUser(user: String, phone: String) {
         Thread(Runnable {
-            userDB?.userDao()?.insert(User(null, user, phone))
+            repository.insertUser(user, phone)
             selectUser()
         }).start()
     }
 
     fun deleteUser(user: String) {
         Thread(Runnable {
-            userDB?.userDao()?.delete(user)
+            repository.deleteUser(user)
             selectUser()
         }).start()
     }
 
     fun selectUser() {
-        val userList = userDB?.userDao()?.getUser()!!
-        data.postValue(userList)
+        data.postValue(repository.selectUser())
     }
 }
