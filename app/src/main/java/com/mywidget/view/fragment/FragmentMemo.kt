@@ -44,15 +44,6 @@ class FragmentMemo : BaseFragment<MainFragmentViewModel, MainFragmentRvBinding>(
         selectCall()
     }
 
-    companion object {
-        @BindingAdapter("items")
-        @JvmStatic
-        fun adapter(recyclerView: RecyclerView?, data: MutableLiveData<List<Memo>>?) {
-            val adapter: MainTabMemoAdapter = recyclerView?.adapter as MainTabMemoAdapter
-            adapter.notifyDataSetChanged()
-        }
-    }
-
     private fun selectCall() {
         Thread(Runnable {
             viewModel.selectMemo()

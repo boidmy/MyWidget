@@ -11,10 +11,16 @@ import androidx.appcompat.app.AlertDialog
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
+import androidx.lifecycle.MutableLiveData
+import androidx.recyclerview.widget.RecyclerView
 import com.mywidget.CalendarUtil
 import com.mywidget.MyAppWidget
 import com.mywidget.R
 import com.mywidget.Util
+import com.mywidget.adapter.MainTabMemoAdapter
+import com.mywidget.adapter.UserAdapter
+import com.mywidget.data.room.Memo
+import com.mywidget.data.room.User
 import com.mywidget.viewModel.MainFragmentViewModel
 import com.mywidget.viewModel.UserViewModel
 import kotlinx.android.synthetic.main.main_loveday_dialog.view.*
@@ -140,5 +146,18 @@ fun setUserConfirm(button: Button, name: EditText, phone: EditText, viewModel: U
                     viewModel.dialogVisible.value = false
                 }.show()
     }
+
+}
+
+@BindingAdapter("items")
+fun adapter(recyclerView: RecyclerView?, data: MutableLiveData<List<User>>) {
+    val adapter: UserAdapter = recyclerView?.adapter as UserAdapter
+    adapter.notifyDataSetChanged()
+}
+
+@BindingAdapter("items")
+fun memoAdapter(recyclerView: RecyclerView?, data: MutableLiveData<List<Memo>>?) {
+    val adapter: MainTabMemoAdapter = recyclerView?.adapter as MainTabMemoAdapter
+    adapter.notifyDataSetChanged()
 }
 
