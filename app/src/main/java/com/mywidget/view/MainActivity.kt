@@ -53,7 +53,6 @@ class MainActivity : BaseActivity<MainFragmentViewModel, DrawerlayoutMainBinding
     private var tabPosition: Int? = 0
 
     private lateinit var database: DatabaseReference
-
     override val layout: Int
         get() = R.layout.drawerlayout_main
 
@@ -161,8 +160,8 @@ class MainActivity : BaseActivity<MainFragmentViewModel, DrawerlayoutMainBinding
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        val alert: AlertDialog?
         val alertDialog = AlertDialog.Builder(this)
-        val alert = alertDialog.create()
         when (requestCode) {
             1 -> if(grantResults[0] == PackageManager.PERMISSION_GRANTED){
                 alertDialog.setTitle("권한에 동의하셨네요?")
@@ -170,6 +169,7 @@ class MainActivity : BaseActivity<MainFragmentViewModel, DrawerlayoutMainBinding
                     ?.setPositiveButton("확인") { _, _ ->
 
                     }
+                alert = alertDialog.create()
                 alert.show()
             } else {
                 alertDialog.setTitle("권한을 동의하지 않으셨네요?")
@@ -178,6 +178,7 @@ class MainActivity : BaseActivity<MainFragmentViewModel, DrawerlayoutMainBinding
                     ?.setPositiveButton("확인") { _, _ ->
                         finish()
                     }
+                alert = alertDialog.create()
                 alert.show()
             }
         }

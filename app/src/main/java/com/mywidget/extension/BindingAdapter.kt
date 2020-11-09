@@ -57,8 +57,12 @@ fun memoOnclick(button: Button, memo: EditText, date: TextView, viewModel: MainF
             .setMessage("♥입력됐대용♥")
             .setIcon(android.R.drawable.ic_menu_save)
             .setPositiveButton("yes") { _, _ ->
-                viewModel.insertMemo(memo.text.toString(), date.tag.toString())
-                Toast.makeText(button.context, "저장했대요!!", Toast.LENGTH_SHORT).show()
+                date.tag?.let {
+                    viewModel.insertMemo(memo.text.toString(), it.toString())
+                    Toast.makeText(button.context, "저장했대요!!", Toast.LENGTH_SHORT).show()
+                } ?: run {
+                    Toast.makeText(button.context, "날짜를 선택해주세요!", Toast.LENGTH_SHORT).show()
+                }
             }
             .setNegativeButton(
                 android.R.string.no
@@ -92,9 +96,13 @@ fun setLoveDay(button: Button, viewModel: MainFragmentViewModel, textView: TextV
             .setIcon(android.R.drawable.ic_menu_save)
             .setPositiveButton("yes") { _, _ ->
                 // 확인시 처리 로직
-                viewModel.addLoveDay(textView.tag.toString())
-                Toast.makeText(button.context, "저장했대요!!", Toast.LENGTH_SHORT).show()
-                viewModel.dialogVisible.value = false
+                textView.tag?.let {
+                    viewModel.addLoveDay(it.toString())
+                    Toast.makeText(button.context, "저장했대요!!", Toast.LENGTH_SHORT).show()
+                    viewModel.dialogVisible.value = false
+                } ?: run {
+                    Toast.makeText(button.context, "날짜를 선택해주세요!", Toast.LENGTH_SHORT).show()
+                }
             }
             .setNegativeButton(
                 android.R.string.no
