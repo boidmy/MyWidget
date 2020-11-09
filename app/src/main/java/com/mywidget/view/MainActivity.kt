@@ -220,7 +220,6 @@ class MainActivity : BaseActivity<MainFragmentViewModel, DrawerlayoutMainBinding
     private fun onClickMemo() {
         val dialog = Dialog(this)
         val memoDialogBinding = MemoDialogBinding.inflate(LayoutInflater.from(this))
-        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         dialog.setContentView(memoDialogBinding.root)
         memoDialogBinding.viewModel = viewModel
         dialog.show()
@@ -228,13 +227,13 @@ class MainActivity : BaseActivity<MainFragmentViewModel, DrawerlayoutMainBinding
         viewModel.dialogVisible.observe(this, androidx.lifecycle.Observer {
             if(!it) {
                 dialog.dismiss()
-                imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0)
+                Util.downKeyboard(this)
             }
         })
 
         memoDialogBinding.apply {
             memoTxt.requestFocus()
-            imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY)
+            Util.upKeyboard(this@MainActivity)
             val c = Calendar.getInstance()
             CalendarUtil.apply {
                 date = "${getYear(c)}-${getMonth(c)+1}-${getNowdate(c)}"

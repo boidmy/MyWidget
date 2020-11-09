@@ -11,6 +11,7 @@ import com.mywidget.repository.UserRepository
 class UserViewModel(application: Application) : AndroidViewModel(application) {
 
     var data: MutableLiveData<List<User>> = MutableLiveData()
+    var dialogVisible: MutableLiveData<Boolean> = MutableLiveData()
     private val repository = UserRepository(application)
 
     fun insertUser(user: String, phone: String) {

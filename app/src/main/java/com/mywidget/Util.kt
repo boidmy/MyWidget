@@ -1,5 +1,7 @@
 package com.mywidget
 
+import android.content.Context
+import android.view.inputmethod.InputMethodManager
 import com.mywidget.data.room.Memo
 import java.text.SimpleDateFormat
 import java.util.*
@@ -48,5 +50,15 @@ object Util {
             return "0"
         }
 
+    }
+
+    fun upKeyboard(context: Context) {
+        val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY)
+    }
+
+    fun downKeyboard(context: Context) {
+        val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0)
     }
 }

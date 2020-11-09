@@ -1,7 +1,9 @@
 package com.mywidget.extension
 
 import android.app.DatePickerDialog
+import android.appwidget.AppWidgetManager
 import android.content.Context
+import android.content.Intent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
@@ -10,10 +12,13 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import com.mywidget.CalendarUtil
+import com.mywidget.MyAppWidget
 import com.mywidget.R
 import com.mywidget.Util
 import com.mywidget.viewModel.MainFragmentViewModel
+import com.mywidget.viewModel.UserViewModel
 import kotlinx.android.synthetic.main.main_loveday_dialog.view.*
+import kotlinx.android.synthetic.main.main_phone_dialog.view.*
 import java.util.*
 
 @BindingAdapter("text")
@@ -69,8 +74,7 @@ fun memoOnclick(button: Button, memo: EditText, date: TextView, viewModel: MainF
             ) { _, _ ->
                 // 취소시 처리 로직
                 Toast.makeText(button.context, "취소했대요ㅠㅠ.", Toast.LENGTH_SHORT).show()
-            }
-            .show()
+            }.show()
         viewModel.dialogVisible.value = false
     }
 }
@@ -110,18 +114,31 @@ fun setLoveDay(button: Button, viewModel: MainFragmentViewModel, textView: TextV
                 // 취소시 처리 로직
                 Toast.makeText(button.context, "취소했대요ㅠㅠ.", Toast.LENGTH_SHORT).show()
                 viewModel.dialogVisible.value = false
-            }
-            .show()
+            }.show()
     }
 }
-/*
-@BindingAdapter("onClickDate")
-fun onClickDate(constraintLayout: ConstraintLayout, data: String?) {
-    val cal = CalendarUtil.calendar(data)
-    val dpd = DatePickerDialog(constraintLayout.context
-            , DatePickerDialog.OnDateSetListener { _, _, _, dayOfMonth ->
-    }, CalendarUtil.getYear(cal)
-            , CalendarUtil.getMonth(cal)
-            , CalendarUtil.getNowdate(cal))
-    dpd.show()
-}*/
+
+@BindingAdapter("userConfirm", "userPhone", "userviewModel")
+fun setUserConfirm(button: Button, name: EditText, phone: EditText, viewModel: UserViewModel) {
+    val context = button.context
+    button.setOnClickListener {
+        AlertDialog.Builder(context)
+                .setTitle("아싸~")
+                .setMessage("입력됐어요!")
+                .setIcon(android.R.drawable.ic_menu_save)
+                .setPositiveButton("yes") { _, _ ->
+                    viewModel.insertUser(name.text.toString(), phone.text.toString())
+                    Toast.makeText(context, "저장했대요!!", Toast.LENGTH_SHORT).show()
+                    val intent = Intent(context, MyAppWidget::class.java)
+                    intent.action = AppWidgetManager.ACTION_APPWIDGET_UPDATE
+                    context.sendBroadcast(intent)
+                    viewModel.dialogVisible.value = false
+                }
+                .setNegativeButton("no") { _, _ ->
+                    // 취소시 처리 로직
+                    Toast.makeText(context, "취소했대요", Toast.LENGTH_SHORT).show()
+                    viewModel.dialogVisible.value = false
+                }.show()
+    }
+}
+
