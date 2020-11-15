@@ -6,6 +6,8 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'com.google.gms.google-services'
 apply plugin: 'io.fabric'
 apply plugin: 'kotlin-kapt'
+apply plugin: "scabbard.gradle"
+
 android {
     compileSdkVersion 30
     buildToolsVersion "30.0.2"
@@ -31,6 +33,11 @@ android {
         sourceCompatibility = '1.8'
         targetCompatibility = '1.8'
     }
+}
+scabbard {
+    enabled true
+    failOnError true // default false
+    fullBindingGraphValidation true // default false
 }
 
 dependencies {
@@ -109,4 +116,11 @@ dependencies {
 
     // optional - Test helpers for LiveData
     testImplementation "androidx.arch.core:core-testing:$arch_version"
+
+    implementation "com.google.dagger:dagger:2.27"
+    implementation "com.google.dagger:dagger-android:2.27"
+    implementation "com.google.dagger:dagger-android-support:2.27"
+    kapt "com.google.dagger:dagger-android-processor:2.27"
+    kapt 'com.google.dagger:dagger-compiler:2.27'
+    annotationProcessor 'com.google.dagger:dagger-compiler:2.27'
 }
