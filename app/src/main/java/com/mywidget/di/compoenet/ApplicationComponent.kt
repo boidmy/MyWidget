@@ -11,7 +11,7 @@ import javax.inject.Singleton
     ApplicationModule::class,
     SubComponentModule::class])
 interface ApplicationComponent {
-    val mainActivityComponentBuilder : MainActivityComponent.Factort
+    val mainActivityComponentBuilder : MainActivityComponent.Factory
 
     fun inject(application: MainApplication)
 

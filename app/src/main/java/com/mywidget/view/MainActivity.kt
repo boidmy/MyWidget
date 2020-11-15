@@ -42,6 +42,7 @@ import kotlinx.android.synthetic.main.main_loveday_dialog.view.*
 import kotlinx.android.synthetic.main.main_phone_dialog.view.confirm_btn
 import kotlinx.android.synthetic.main.memo_dialog.view.*
 import java.util.*
+import javax.inject.Inject
 
 
 class MainActivity : BaseActivity<MainFragmentViewModel, DrawerlayoutMainBinding>()
@@ -49,12 +50,14 @@ class MainActivity : BaseActivity<MainFragmentViewModel, DrawerlayoutMainBinding
 
     private var mSharedPreference = MainApplication.INSTANSE.mSharedPreference
     private var editor = MainApplication.INSTANSE.editor
-    private var backPressAppFinish: BackPressAppFinish? = null
-    private var mTabPagerAdapter: TabPagerAdapter? = null
     private var tabPosition: Int? = 0
 
     lateinit var mainComponent: MainActivityComponent
     private lateinit var database: DatabaseReference
+
+    @Inject lateinit var mTabPagerAdapter: TabPagerAdapter
+    @Inject lateinit var backPressAppFinish: BackPressAppFinish
+
     override val layout: Int
         get() = R.layout.drawerlayout_main
 
@@ -66,12 +69,11 @@ class MainActivity : BaseActivity<MainFragmentViewModel, DrawerlayoutMainBinding
         super.onCreate(savedInstanceState)
 
         mainComponent = (application as MainApplication).getApplicationCompoenet()
-            .mainActivityComponentBuilder.create()
+            .mainActivityComponentBuilder.create(this)
         mainComponent.inject(this)
 
         binding.viewModel = viewModel
         database = FirebaseDatabase.getInstance().reference
-        backPressAppFinish = BackPressAppFinish(this)
 
         permissionChk()
         addWidget()
@@ -89,10 +91,7 @@ class MainActivity : BaseActivity<MainFragmentViewModel, DrawerlayoutMainBinding
 
     private fun tabInit() {
         binding.mainContainer.mainTab.setupWithViewPager(binding.mainContainer.vpTab)
-
-        mTabPagerAdapter = TabPagerAdapter(supportFragmentManager)
         binding.mainContainer.vpTab.adapter = mTabPagerAdapter
-
         binding.mainContainer.vpTab.addOnPageChangeListener(TabLayout
             .TabLayoutOnPageChangeListener(binding.mainContainer.mainTab))
         binding.mainContainer.mainTab.addOnTabSelectedListener(onTabSelectedListener)
@@ -103,7 +102,7 @@ class MainActivity : BaseActivity<MainFragmentViewModel, DrawerlayoutMainBinding
             binding.drawerLayout.closeDrawer(GravityCompat.START)
             return
         }
-        backPressAppFinish?.onBackPressed()
+        backPressAppFinish.onBackPressed()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

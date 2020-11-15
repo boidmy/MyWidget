@@ -4,11 +4,14 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
-import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import javax.inject.Inject
 
-abstract class BaseActivity<V : AndroidViewModel, D : ViewDataBinding>
+abstract class BaseActivity<V : ViewModel, D : ViewDataBinding>
     : AppCompatActivity() {
+
+    @Inject
 
     protected lateinit var viewModel: V
     protected lateinit var binding: D
