@@ -1,5 +1,6 @@
 package com.mywidget.view.fragment
 
+import android.content.Context
 import android.os.Bundle
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -11,6 +12,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.mywidget.R
 import com.mywidget.data.room.LoveDayDB
 import com.mywidget.databinding.MainFragmentFragment2Binding
+import com.mywidget.view.MainActivity
 import com.mywidget.viewModel.MainFragmentViewModel
 import kotlinx.android.synthetic.main.memo_list_dialog.view.*
 import kotlinx.android.synthetic.main.memo_list_dialog_item.view.*
@@ -31,6 +33,12 @@ class FragmentLoveDay : BaseFragment<MainFragmentViewModel, MainFragmentFragment
         bindView()
         messagePop()
         return binding.root
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+
+        (activity as MainActivity).mainComponent.inject(this)
     }
 
     private fun bindView() {

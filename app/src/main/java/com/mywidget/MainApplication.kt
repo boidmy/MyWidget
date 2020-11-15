@@ -9,6 +9,8 @@ import android.view.View
 import android.widget.RemoteViews
 import com.mywidget.data.room.User
 import com.mywidget.data.room.UserDB
+import com.mywidget.di.compoenet.ApplicationComponent
+import com.mywidget.di.compoenet.DaggerApplicationComponent
 
 class MainApplication : Application() {
 
@@ -16,9 +18,14 @@ class MainApplication : Application() {
     var mSharedPreference: SharedPreferences? = null
     var googleIdtoken: String? = null
     var userDb: UserDB? = null
+    private lateinit var component: ApplicationComponent
 
     override fun onCreate() {
         super.onCreate()
+
+        component = DaggerApplicationComponent.create()
+        component.inject(this)
+
         userDb = UserDB.getInstance(INSTANSE)
         mSharedPreference = getSharedPreferences("unme", Context.MODE_PRIVATE)
         editor = mSharedPreference?.edit()
@@ -28,6 +35,9 @@ class MainApplication : Application() {
         INSTANSE = this
     }
 
+    fun getApplicationCompoenet() : ApplicationComponent {
+        return component
+    }
     companion object {
 
         lateinit var INSTANSE: MainApplication

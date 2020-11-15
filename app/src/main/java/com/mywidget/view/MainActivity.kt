@@ -32,6 +32,7 @@ import com.mywidget.adapter.TabPagerAdapter
 import com.mywidget.databinding.DrawerlayoutMainBinding
 import com.mywidget.databinding.MainLovedayDialogBinding
 import com.mywidget.databinding.MemoDialogBinding
+import com.mywidget.di.compoenet.MainActivityComponent
 import com.mywidget.lmemo.view.LMemoActivity
 import com.mywidget.login.view.LoginGoogle
 import com.mywidget.viewModel.MainFragmentViewModel
@@ -52,6 +53,7 @@ class MainActivity : BaseActivity<MainFragmentViewModel, DrawerlayoutMainBinding
     private var mTabPagerAdapter: TabPagerAdapter? = null
     private var tabPosition: Int? = 0
 
+    lateinit var mainComponent: MainActivityComponent
     private lateinit var database: DatabaseReference
     override val layout: Int
         get() = R.layout.drawerlayout_main
@@ -62,6 +64,10 @@ class MainActivity : BaseActivity<MainFragmentViewModel, DrawerlayoutMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        mainComponent = (application as MainApplication).getApplicationCompoenet()
+            .mainActivityComponentBuilder.create()
+        mainComponent.inject(this)
 
         binding.viewModel = viewModel
         database = FirebaseDatabase.getInstance().reference
