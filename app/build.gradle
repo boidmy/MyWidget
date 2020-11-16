@@ -1,7 +1,5 @@
 apply plugin: 'com.android.application'
-
 apply plugin: 'kotlin-android'
-
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'com.google.gms.google-services'
 apply plugin: 'io.fabric'
@@ -91,12 +89,11 @@ dependencies {
     def arch_version = "2.1.0"
 
     // ViewModel
-    implementation "androidx.lifecycle:lifecycle-viewmodel:$lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
     // LiveData
-    implementation "androidx.lifecycle:lifecycle-livedata:$lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
     // Lifecycles only (without ViewModel or LiveData)
-    implementation "androidx.lifecycle:lifecycle-runtime:$lifecycle_version"
-
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version"
     // Saved state module for ViewModel
     implementation "androidx.lifecycle:lifecycle-viewmodel-savedstate:$lifecycle_version"
 
