@@ -1,5 +1,6 @@
 package com.mywidget.view.fragment
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,10 +14,14 @@ import com.mywidget.R
 import com.mywidget.adapter.MainTabMemoAdapter
 import com.mywidget.data.room.Memo
 import com.mywidget.databinding.MainFragmentRvBinding
+import com.mywidget.view.MainActivity
 import com.mywidget.viewModel.MainFragmentViewModel
+import javax.inject.Inject
 
 class FragmentMemo : BaseFragment<MainFragmentViewModel, MainFragmentRvBinding>() {
-    private var mAdapter: MainTabMemoAdapter? = null
+    //private var mAdapter: MainTabMemoAdapter? = null
+
+    @Inject lateinit var mAdapter: MainTabMemoAdapter
 
     override fun getLayout(): Int {
         return R.layout.main_fragment_rv
@@ -31,6 +36,12 @@ class FragmentMemo : BaseFragment<MainFragmentViewModel, MainFragmentRvBinding>(
         super.onCreateView(inflater, parent, savedInstanceState)
         bindView()
         return binding.root
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+
+        (activity as MainActivity).mainComponent.inject(this)
     }
 
     private fun bindView() {

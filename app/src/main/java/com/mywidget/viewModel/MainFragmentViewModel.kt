@@ -9,7 +9,7 @@ import com.mywidget.data.model.LmemoData
 import com.mywidget.data.room.*
 import com.mywidget.repository.MessageRepository
 
-class MainFragmentViewModel(application: Application) : ViewModel() {
+class MainFragmentViewModel(application: Application) : AndroidViewModel(application) {
     var memoData: MutableLiveData<List<Memo>> = MutableLiveData()
     var loveday: MutableLiveData<String> = MutableLiveData()
     var leftMessage: MutableLiveData<List<LmemoData>> = MutableLiveData()

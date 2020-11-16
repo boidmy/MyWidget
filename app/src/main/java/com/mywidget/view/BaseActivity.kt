@@ -11,7 +11,7 @@ import javax.inject.Inject
 abstract class BaseActivity<V : ViewModel, D : ViewDataBinding>
     : AppCompatActivity() {
 
-    @Inject
+    @Inject lateinit var factory: ViewModelProvider.NewInstanceFactory
 
     protected lateinit var viewModel: V
     protected lateinit var binding: D

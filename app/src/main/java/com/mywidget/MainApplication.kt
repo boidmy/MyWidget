@@ -23,7 +23,7 @@ class MainApplication : Application() {
     override fun onCreate() {
         super.onCreate()
 
-        component = DaggerApplicationComponent.create()
+        component = DaggerApplicationComponent.factory().create(this)
         component.inject(this)
 
         userDb = UserDB.getInstance(INSTANSE)

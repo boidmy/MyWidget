@@ -24,6 +24,7 @@ import io.reactivex.schedulers.Schedulers
 import org.json.JSONArray
 import org.json.JSONObject
 import java.util.ArrayList
+import javax.inject.Inject
 
 class MessageRepository(application: Application) {
 
@@ -95,19 +96,19 @@ class MessageRepository(application: Application) {
     }
 
     fun deleteMemo(memo: String) {
-        memoDb?.memoDao()?.delete(memo)
+        memoDb.memoDao().delete(memo)
     }
 
     fun selectMemo() : List<Memo>? {
-        return memoDb?.memoDao()?.getUser()
+        return memoDb.memoDao().getUser()
     }
 
     fun insertMemo(memo: String, data: String) {
-        memoDb?.memoDao()?.insert(Memo(null, memo, data))
+        memoDb.memoDao().insert(Memo(null, memo, data))
     }
 
     fun rxClear() {
-        memoDb?.destroyInstance()
+        memoDb.destroyInstance()
         loveDayDb?.destroyInstance()
         unSubscripbe.dispose()
     }

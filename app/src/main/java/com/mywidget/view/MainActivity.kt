@@ -66,11 +66,10 @@ class MainActivity : BaseActivity<MainFragmentViewModel, DrawerlayoutMainBinding
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
         mainComponent = (application as MainApplication).getApplicationCompoenet()
             .mainActivityComponentBuilder.create(this)
         mainComponent.inject(this)
+        super.onCreate(savedInstanceState)
 
         binding.viewModel = viewModel
         database = FirebaseDatabase.getInstance().reference
