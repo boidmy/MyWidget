@@ -48,7 +48,7 @@ import java.util.*
 import javax.inject.Inject
 
 
-class MainActivity : BaseActivity<MainFragmentViewModel, DrawerlayoutMainBinding>()
+class MainActivity : BaseActivity<DrawerlayoutMainBinding>()
     , NavigationView.OnNavigationItemSelectedListener {
 
     private var mSharedPreference = MainApplication.INSTANSE.mSharedPreference
@@ -66,10 +66,6 @@ class MainActivity : BaseActivity<MainFragmentViewModel, DrawerlayoutMainBinding
 
     override val layout: Int
         get() = R.layout.drawerlayout_main
-
-    override fun getViewModel(): Class<MainFragmentViewModel> {
-        return MainFragmentViewModel::class.java
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         mainComponent = (application as MainApplication).getApplicationCompoenet()

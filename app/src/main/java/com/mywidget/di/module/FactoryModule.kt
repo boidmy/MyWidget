@@ -7,7 +7,10 @@ import dagger.Module
 import dagger.Provides
 
 @Module
-class ApplicationModule {
+class FactoryModule {
 
-
+    @Provides
+    fun provideViewModelFactory(application: Application) : ViewModelProvider.NewInstanceFactory {
+        return MyViewModelFactory(application)
+    }
 }

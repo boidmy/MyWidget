@@ -11,21 +11,16 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import javax.inject.Inject
 
-abstract class BaseFragment<V : ViewModel, D : ViewDataBinding> : Fragment() {
+abstract class BaseFragment<D : ViewDataBinding> : Fragment() {
 
-    protected lateinit var viewModel : V
     protected lateinit var binding: D
 
     protected abstract fun getLayout(): Int
-    protected abstract fun getViewModel(): Class<V>
 
     override fun onCreateView(inflater: LayoutInflater, parent: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, getLayout(), parent, false)
         binding.lifecycleOwner = this
-        /*val factory = ViewModelProvider.AndroidViewModelFactory
-            .getInstance(requireActivity().application)
-        viewModel = ViewModelProvider(this, factory).get(getViewModel())*/
         return binding.root
     }
 }
