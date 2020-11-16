@@ -9,6 +9,7 @@ import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
+import javax.inject.Inject
 
 abstract class BaseFragment<V : ViewModel, D : ViewDataBinding> : Fragment() {
 

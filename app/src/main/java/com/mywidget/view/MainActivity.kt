@@ -17,10 +17,13 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.PopupWindow
 import android.widget.RelativeLayout
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.tabs.TabLayout
@@ -57,6 +60,9 @@ class MainActivity : BaseActivity<MainFragmentViewModel, DrawerlayoutMainBinding
 
     @Inject lateinit var mTabPagerAdapter: TabPagerAdapter
     @Inject lateinit var backPressAppFinish: BackPressAppFinish
+    @Inject lateinit var factory: ViewModelProvider.NewInstanceFactory
+
+    private val viewModel by viewModels<MainFragmentViewModel> { factory }
 
     override val layout: Int
         get() = R.layout.drawerlayout_main

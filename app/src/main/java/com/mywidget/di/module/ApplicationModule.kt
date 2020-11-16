@@ -1,6 +1,8 @@
 package com.mywidget.di.module
 
+import android.app.Application
 import androidx.lifecycle.ViewModelProvider
+import com.mywidget.viewModel.MyViewModelFactory
 import dagger.Module
 import dagger.Provides
 
@@ -8,8 +10,8 @@ import dagger.Provides
 class ApplicationModule {
 
     @Provides
-    fun provideViewModelFactory() : ViewModelProvider.NewInstanceFactory {
-        return ViewModelProvider.NewInstanceFactory()
+    fun provideViewModelFactory(application: Application) : ViewModelProvider.NewInstanceFactory {
+        return MyViewModelFactory(application)
     }
 
 }

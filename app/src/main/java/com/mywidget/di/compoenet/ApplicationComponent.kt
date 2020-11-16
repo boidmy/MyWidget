@@ -16,6 +16,7 @@ import javax.inject.Singleton
     RoomModule::class])
 interface ApplicationComponent {
     val mainActivityComponentBuilder : MainActivityComponent.Factory
+    val userActivityComponentBuilder : UserActivityComponent.Factory
 
     fun inject(application: MainApplication)
 

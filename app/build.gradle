@@ -31,6 +31,9 @@ android {
         sourceCompatibility = '1.8'
         targetCompatibility = '1.8'
     }
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
 }
 scabbard {
     enabled true
@@ -67,6 +70,8 @@ dependencies {
 
     implementation 'com.google.firebase:firebase-auth:19.4.0'
     implementation 'com.google.android.gms:play-services-auth:18.1.0'
+
+    implementation "androidx.fragment:fragment-ktx:1.2.5"
 
     //room
     implementation "android.arch.persistence.room:runtime:1.1.1"

@@ -8,8 +8,9 @@ import androidx.lifecycle.ViewModel
 import com.mywidget.data.model.LmemoData
 import com.mywidget.data.room.*
 import com.mywidget.repository.MessageRepository
+import javax.inject.Inject
 
-class MainFragmentViewModel(application: Application) : AndroidViewModel(application) {
+class MainFragmentViewModel(application: Application) : ViewModel() {
     var memoData: MutableLiveData<List<Memo>> = MutableLiveData()
     var loveday: MutableLiveData<String> = MutableLiveData()
     var leftMessage: MutableLiveData<List<LmemoData>> = MutableLiveData()

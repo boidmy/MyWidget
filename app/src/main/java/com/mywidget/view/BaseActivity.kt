@@ -11,9 +11,7 @@ import javax.inject.Inject
 abstract class BaseActivity<V : ViewModel, D : ViewDataBinding>
     : AppCompatActivity() {
 
-    @Inject lateinit var factory: ViewModelProvider.NewInstanceFactory
-
-    protected lateinit var viewModel: V
+    //protected lateinit var viewModel: V
     protected lateinit var binding: D
     protected abstract val layout: Int
     protected abstract fun getViewModel(): Class<V>
@@ -23,7 +21,7 @@ abstract class BaseActivity<V : ViewModel, D : ViewDataBinding>
 
         binding = DataBindingUtil.setContentView(this, layout)
         binding.lifecycleOwner = this
-        val factory = ViewModelProvider.AndroidViewModelFactory.getInstance(application)
-        viewModel = ViewModelProvider(this, factory).get(getViewModel())
+        //val factory = ViewModelProvider.AndroidViewModelFactory.getInstance(application)
+        //viewModel = ViewModelProvider(this, factory).get(getViewModel())
     }
 }

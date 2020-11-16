@@ -5,11 +5,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.BindingAdapter
-import androidx.lifecycle.MutableLiveData
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.mywidget.R
 import com.mywidget.adapter.MainTabMemoAdapter
 import com.mywidget.data.room.Memo
@@ -22,6 +20,7 @@ class FragmentMemo : BaseFragment<MainFragmentViewModel, MainFragmentRvBinding>(
     //private var mAdapter: MainTabMemoAdapter? = null
 
     @Inject lateinit var mAdapter: MainTabMemoAdapter
+    @Inject lateinit var factory: ViewModelProvider.NewInstanceFactory
 
     override fun getLayout(): Int {
         return R.layout.main_fragment_rv
@@ -48,10 +47,10 @@ class FragmentMemo : BaseFragment<MainFragmentViewModel, MainFragmentRvBinding>(
         mAdapter = MainTabMemoAdapter()
         binding.fragmentRv.layoutManager = LinearLayoutManager(binding.root.context)
         binding.fragmentRv.adapter = mAdapter
-        viewModel = ViewModelProvider(requireActivity())
+        viewModel = ViewModelProvider(requireActivity(), factory)
                 .get(MainFragmentViewModel::class.java)
         binding.data = viewModel.memoData
-        mAdapter?.setViewModel(viewModel)
+        mAdapter.setViewModel(viewModel)
         selectCall()
     }
 
