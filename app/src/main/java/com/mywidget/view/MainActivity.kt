@@ -69,7 +69,7 @@ class MainActivity : BaseActivity<DrawerlayoutMainBinding>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         mainComponent = (application as MainApplication).getApplicationCompoenet()
-            .mainActivityComponentBuilder.create(this)
+            .mainActivityComponent().create(this)
         mainComponent.inject(this)
         super.onCreate(savedInstanceState)
 

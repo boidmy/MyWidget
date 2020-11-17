@@ -22,7 +22,7 @@ import com.mywidget.viewModel.UserViewModel
 import kotlinx.android.synthetic.main.activity_user.*
 import javax.inject.Inject
 
-class UserActivity : BaseActivity<UserViewModel, ActivityUserBinding>() {
+class UserActivity : BaseActivity<ActivityUserBinding>() {
     private var mAdapter: UserAdapter? = null
 
     @Inject lateinit var factory: ViewModelProvider.NewInstanceFactory
@@ -32,13 +32,9 @@ class UserActivity : BaseActivity<UserViewModel, ActivityUserBinding>() {
     override val layout: Int
         get() = R.layout.activity_user
 
-    override fun getViewModel(): Class<UserViewModel> {
-        return UserViewModel::class.java
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         (application as MainApplication).getApplicationCompoenet()
-            .userActivityComponentBuilder.create().inject(this)
+            .userActivityComponent().create().inject(this)
 
         super.onCreate(savedInstanceState)
         binding.viewModel = viewModel
