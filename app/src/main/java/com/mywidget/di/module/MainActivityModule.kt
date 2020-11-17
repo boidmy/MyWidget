@@ -6,6 +6,7 @@ import com.mywidget.BackPressAppFinish
 import com.mywidget.adapter.MainTabMemoAdapter
 import com.mywidget.adapter.TabPagerAdapter
 import com.mywidget.view.MainActivity
+import com.mywidget.viewModel.ViewModelFactory
 import dagger.Module
 import dagger.Provides
 

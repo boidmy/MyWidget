@@ -9,6 +9,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.MenuItem
@@ -60,9 +61,7 @@ class MainActivity : BaseActivity<DrawerlayoutMainBinding>()
 
     @Inject lateinit var mTabPagerAdapter: TabPagerAdapter
     @Inject lateinit var backPressAppFinish: BackPressAppFinish
-    @Inject lateinit var factory: ViewModelProvider.NewInstanceFactory
-
-    private val viewModel by viewModels<MainFragmentViewModel> { factory }
+    @Inject lateinit var viewModel: MainFragmentViewModel
 
     override val layout: Int
         get() = R.layout.drawerlayout_main
@@ -72,9 +71,9 @@ class MainActivity : BaseActivity<DrawerlayoutMainBinding>()
             .mainActivityComponent().create(this)
         mainComponent.inject(this)
         super.onCreate(savedInstanceState)
-
         binding.viewModel = viewModel
         database = FirebaseDatabase.getInstance().reference
+        Log.d("ViewmodellMainActivity", viewModel.toString())
 
         permissionChk()
         addWidget()

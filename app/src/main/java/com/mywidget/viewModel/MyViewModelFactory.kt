@@ -12,7 +12,8 @@ class MyViewModelFactory(private val application: Application) :
 
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         return if (modelClass.isAssignableFrom(MainFragmentViewModel::class.java)) {
-            MainFragmentViewModel(application) as T
+            val messageRepository = MessageRepository(application)
+            MainFragmentViewModel(messageRepository) as T
         } else if(modelClass.isAssignableFrom(UserViewModel::class.java)) {
             UserViewModel(application) as T
         } else {

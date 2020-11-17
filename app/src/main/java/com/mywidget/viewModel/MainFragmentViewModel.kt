@@ -10,7 +10,7 @@ import com.mywidget.data.room.*
 import com.mywidget.repository.MessageRepository
 import javax.inject.Inject
 
-class MainFragmentViewModel(application: Application) : ViewModel() {
+class MainFragmentViewModel @Inject constructor(private val repository: MessageRepository) : ViewModel() {
     var memoData: MutableLiveData<List<Memo>> = MutableLiveData()
     var loveday: MutableLiveData<String> = MutableLiveData()
     var leftMessage: MutableLiveData<List<LmemoData>> = MutableLiveData()
@@ -18,7 +18,7 @@ class MainFragmentViewModel(application: Application) : ViewModel() {
     var message: MutableLiveData<List<LmemoData>> = MutableLiveData()
     var leftString : MutableLiveData<LmemoData> = MutableLiveData()
     var rightString : MutableLiveData<LmemoData> = MutableLiveData()
-    var repository = MessageRepository(application)
+    //var repository = MessageRepository(application)
 
     var dialogVisible: MutableLiveData<Boolean> = MutableLiveData()
 

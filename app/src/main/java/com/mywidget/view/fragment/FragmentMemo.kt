@@ -2,6 +2,7 @@ package com.mywidget.view.fragment
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,16 +14,24 @@ import com.mywidget.R
 import com.mywidget.adapter.MainTabMemoAdapter
 import com.mywidget.data.room.Memo
 import com.mywidget.databinding.MainFragmentRvBinding
+import com.mywidget.repository.MessageRepository
 import com.mywidget.view.MainActivity
+import com.mywidget.viewModel.FragmentViewModelFactory
 import com.mywidget.viewModel.MainFragmentViewModel
+import com.mywidget.viewModel.ViewModelFactory
 import javax.inject.Inject
 
 class FragmentMemo : BaseFragment<MainFragmentRvBinding>() {
     //private var mAdapter: MainTabMemoAdapter? = null
 
     @Inject lateinit var mAdapter: MainTabMemoAdapter
-    @Inject lateinit var factory: ViewModelProvider.NewInstanceFactory
-    private var viewModel: MainFragmentViewModel? = null
+    //@Inject lateinit var factory: ViewModelFactory
+    //private var viewModel: MainFragmentViewModel? = null
+    //@Inject lateinit var factory: ViewModelProvider.NewInstanceFactory
+    @Inject lateinit var viewModel: MainFragmentViewModel
+//    val viewModel: MainFragmentViewModel by lazy {
+//        ViewModelProvider(requireActivity(), factory).get(MainFragmentViewModel::class.java)}
+    @Inject lateinit var messageRepository: MessageRepository
     override fun getLayout(): Int {
         return R.layout.main_fragment_rv
     }
@@ -41,11 +50,13 @@ class FragmentMemo : BaseFragment<MainFragmentRvBinding>() {
     }
 
     private fun bindView() {
+
         mAdapter = MainTabMemoAdapter()
         binding.fragmentRv.layoutManager = LinearLayoutManager(binding.root.context)
         binding.fragmentRv.adapter = mAdapter
-        viewModel = ViewModelProvider(requireActivity(), factory)
-                .get(MainFragmentViewModel::class.java)
+        /*viewModel = ViewModelProvider(requireActivity(), factory)
+                .get(MainFragmentViewModel::class.java)*/
+        Log.d("ViewmodellFragment", viewModel.toString())
         binding.data = viewModel?.memoData
         mAdapter.setViewModel(viewModel)
         selectCall()
