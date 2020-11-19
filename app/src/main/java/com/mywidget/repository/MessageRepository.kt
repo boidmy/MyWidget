@@ -1,16 +1,10 @@
 package com.mywidget.repository
 
-import android.app.AlertDialog
-import android.app.Application
-import android.app.DatePickerDialog
 import android.util.Log
-import android.view.View
 import androidx.lifecycle.MutableLiveData
-import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
 import com.google.gson.JsonObject
 import com.google.gson.reflect.TypeToken
-import com.mywidget.CalendarUtil
 import com.mywidget.Util
 import com.mywidget.data.apiConnect.ApiConnection
 import com.mywidget.data.model.LmemoData
@@ -18,7 +12,6 @@ import com.mywidget.data.room.LoveDay
 import com.mywidget.data.room.LoveDayDB
 import com.mywidget.data.room.Memo
 import com.mywidget.data.room.MemoDB
-import com.mywidget.databinding.MainFragmentRvItemBinding
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -27,13 +20,12 @@ import org.json.JSONObject
 import java.util.ArrayList
 import javax.inject.Inject
 
-class MessageRepository @Inject constructor(application: Application) {
+class MessageRepository @Inject constructor(
+    private val memoDb: MemoDB, private val loveDayDb: LoveDayDB) {
 
     private var unSubscripbe: CompositeDisposable = CompositeDisposable()
     private var leftMessage: MutableLiveData<List<LmemoData>> = MutableLiveData()
     private var rightMessage: MutableLiveData<List<LmemoData>> = MutableLiveData()
-    private var memoDb = MemoDB.getInstance(application)
-    private var loveDayDb = LoveDayDB.getInstance(application)
 
     fun messageLeft(name: String) : MutableLiveData<List<LmemoData>> {
         unSubscripbe.add(
@@ -45,7 +37,6 @@ class MessageRepository @Inject constructor(application: Application) {
                     { item ->
                         leftMessage.value = getGsonMessage(item)
                     }, {
-                        Log.d("????", it.toString())
                 })
         )
         return leftMessage
@@ -90,11 +81,11 @@ class MessageRepository @Inject constructor(application: Application) {
     }
 
     fun addLoveDay(data: String) {
-        loveDayDb?.loveDayDao()?.insert(LoveDay(null, data))
+        loveDayDb.loveDayDao().insert(LoveDay(null, data))
     }
 
     fun selectLoveDay() : String {
-        return lovedayFormatt(loveDayDb?.loveDayDao()?.getData())
+        return lovedayFormatt(loveDayDb.loveDayDao().getData())
     }
 
     fun deleteMemo(memo: String) {
@@ -110,8 +101,6 @@ class MessageRepository @Inject constructor(application: Application) {
     }
 
     fun rxClear() {
-        memoDb.destroyInstance()
-        loveDayDb?.destroyInstance()
         unSubscripbe.dispose()
     }
 }

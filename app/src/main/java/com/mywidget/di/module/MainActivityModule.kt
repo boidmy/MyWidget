@@ -2,6 +2,7 @@ package com.mywidget.di.module
 
 import android.app.Activity
 import android.content.Context
+import androidx.fragment.app.FragmentManager
 import com.mywidget.BackPressAppFinish
 import com.mywidget.adapter.MainTabMemoAdapter
 import com.mywidget.adapter.TabPagerAdapter
@@ -19,8 +20,13 @@ class MainActivityModule {
     }
 
     @Provides
-    fun provideTabPagerAdapter(activity: Activity) : TabPagerAdapter {
-        return TabPagerAdapter((activity as MainActivity).supportFragmentManager)
+    fun provideFragmentManager(activity: Activity) : FragmentManager {
+        return (activity as MainActivity).supportFragmentManager
+    }
+
+    @Provides
+    fun provideTabPagerAdapter(fragmentManager: FragmentManager) : TabPagerAdapter {
+        return TabPagerAdapter(fragmentManager)
     }
 
     @Provides
