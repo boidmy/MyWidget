@@ -10,14 +10,16 @@ import com.mywidget.data.room.*
 import com.mywidget.repository.MessageRepository
 import javax.inject.Inject
 
-class MainFragmentViewModel @Inject constructor(private val repository: MessageRepository) : ViewModel() {
+class MainFragmentViewModel @Inject constructor(
+    private val repository: MessageRepository
+) : ViewModel() {
     var memoData: MutableLiveData<List<Memo>> = MutableLiveData()
     var loveday: MutableLiveData<String> = MutableLiveData()
     var leftMessage: MutableLiveData<List<LmemoData>> = MutableLiveData()
     var rightMessage: MutableLiveData<List<LmemoData>> = MutableLiveData()
     var message: MutableLiveData<List<LmemoData>> = MutableLiveData()
-    var leftString : MutableLiveData<LmemoData> = MutableLiveData()
-    var rightString : MutableLiveData<LmemoData> = MutableLiveData()
+    var leftString: MutableLiveData<LmemoData> = MutableLiveData()
+    var rightString: MutableLiveData<LmemoData> = MutableLiveData()
 
     var dialogVisible: MutableLiveData<Boolean> = MutableLiveData()
 
@@ -50,12 +52,12 @@ class MainFragmentViewModel @Inject constructor(private val repository: MessageR
         loveday.postValue(repository.selectLoveDay())
     }
 
-    fun messageLeft(name: String) : MutableLiveData<List<LmemoData>> {
+    fun messageLeft(name: String): MutableLiveData<List<LmemoData>> {
         leftMessage = repository.messageLeft(name)
         return leftMessage
     }
 
-    fun messageRight(name: String) : MutableLiveData<List<LmemoData>> {
+    fun messageRight(name: String): MutableLiveData<List<LmemoData>> {
         rightMessage = repository.messageRight(name)
         return rightMessage
     }
@@ -63,7 +65,7 @@ class MainFragmentViewModel @Inject constructor(private val repository: MessageR
     fun leftClick() {
         message.value = leftMessage.value
     }
-    
+
     fun rightClick() {
         message.value = rightMessage.value
     }
