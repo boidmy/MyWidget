@@ -11,10 +11,4 @@ import javax.inject.Singleton
 @Module(subcomponents = [
     MainActivityComponent::class,
     UserActivityComponent::class])
-class SubComponentModule {
-    @Provides
-    @Singleton
-    fun provideRepository(application: Application): MessageRepository {
-        return MessageRepository(application)
-    }
-}
+class SubComponentModule {}

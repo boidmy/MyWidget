@@ -1,8 +1,8 @@
 package com.mywidget.view.fragment
 
-import android.app.Application
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -11,19 +11,19 @@ import android.widget.PopupWindow
 import android.widget.RelativeLayout
 import androidx.lifecycle.ViewModelProvider
 import com.mywidget.R
-import com.mywidget.data.room.LoveDayDB
 import com.mywidget.databinding.MainFragmentFragment2Binding
 import com.mywidget.view.MainActivity
 import com.mywidget.viewModel.MainFragmentViewModel
-import com.mywidget.viewModel.MyViewModelFactory
 import kotlinx.android.synthetic.main.memo_list_dialog.view.*
 import kotlinx.android.synthetic.main.memo_list_dialog_item.view.*
 import javax.inject.Inject
 
 class FragmentLoveDay : BaseFragment<MainFragmentFragment2Binding>() {
 
-    @Inject lateinit var application: Application
-    private var viewModel: MainFragmentViewModel? = null
+    @Inject lateinit var factory: ViewModelProvider.Factory
+    val viewModel: MainFragmentViewModel by lazy {
+        ViewModelProvider(requireActivity(), factory).get(MainFragmentViewModel::class.java)}
+
     override fun getLayout(): Int {
         return R.layout.main_fragment_fragment2
     }
@@ -43,10 +43,8 @@ class FragmentLoveDay : BaseFragment<MainFragmentFragment2Binding>() {
     }
 
     private fun bindView() {
-        viewModel = ViewModelProvider(requireActivity(), MyViewModelFactory(application))
-                .get(MainFragmentViewModel::class.java)
         binding.viewModel = viewModel
-        viewModel?.apply {
+        viewModel.apply {
             messageLeft("뿡이")
             messageRight("콩이")
             leftMessage.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
@@ -63,7 +61,7 @@ class FragmentLoveDay : BaseFragment<MainFragmentFragment2Binding>() {
     }
 
     private fun messagePop() {
-        viewModel?.message?.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+        viewModel.message.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
             val view: View = layoutInflater.inflate(R.layout.memo_list_dialog, null)
             val popupWindow = PopupWindow(
                 view,

@@ -1,9 +1,10 @@
 package com.mywidget.di.compoenet
 
+import com.mywidget.di.module.MainViewModel
 import com.mywidget.view.UserActivity
 import dagger.Subcomponent
 
-@Subcomponent
+@Subcomponent(modules = [MainViewModel::class])
 interface UserActivityComponent {
 
     fun inject(userActivity: UserActivity)

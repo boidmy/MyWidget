@@ -3,6 +3,7 @@ package com.mywidget.repository
 import android.app.AlertDialog
 import android.app.Application
 import android.app.DatePickerDialog
+import android.util.Log
 import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
@@ -26,7 +27,7 @@ import org.json.JSONObject
 import java.util.ArrayList
 import javax.inject.Inject
 
-class MessageRepository(application: Application) {
+class MessageRepository @Inject constructor(application: Application) {
 
     private var unSubscripbe: CompositeDisposable = CompositeDisposable()
     private var leftMessage: MutableLiveData<List<LmemoData>> = MutableLiveData()
@@ -44,6 +45,7 @@ class MessageRepository(application: Application) {
                     { item ->
                         leftMessage.value = getGsonMessage(item)
                     }, {
+                        Log.d("????", it.toString())
                 })
         )
         return leftMessage

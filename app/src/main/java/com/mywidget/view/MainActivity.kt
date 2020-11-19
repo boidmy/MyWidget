@@ -55,13 +55,14 @@ class MainActivity : BaseActivity<DrawerlayoutMainBinding>()
     private var mSharedPreference = MainApplication.INSTANSE.mSharedPreference
     private var editor = MainApplication.INSTANSE.editor
     private var tabPosition: Int? = 0
-
     lateinit var mainComponent: MainActivityComponent
     private lateinit var database: DatabaseReference
+    @Inject lateinit var factory: ViewModelProvider.Factory
 
     @Inject lateinit var mTabPagerAdapter: TabPagerAdapter
     @Inject lateinit var backPressAppFinish: BackPressAppFinish
-    @Inject lateinit var viewModel: MainFragmentViewModel
+    val viewModel: MainFragmentViewModel by lazy {
+        ViewModelProvider(this, factory).get(MainFragmentViewModel::class.java)}
 
     override val layout: Int
         get() = R.layout.drawerlayout_main
@@ -73,7 +74,6 @@ class MainActivity : BaseActivity<DrawerlayoutMainBinding>()
         super.onCreate(savedInstanceState)
         binding.viewModel = viewModel
         database = FirebaseDatabase.getInstance().reference
-        Log.d("ViewmodellMainActivity", viewModel.toString())
 
         permissionChk()
         addWidget()

@@ -18,7 +18,6 @@ class MainFragmentViewModel @Inject constructor(private val repository: MessageR
     var message: MutableLiveData<List<LmemoData>> = MutableLiveData()
     var leftString : MutableLiveData<LmemoData> = MutableLiveData()
     var rightString : MutableLiveData<LmemoData> = MutableLiveData()
-    //var repository = MessageRepository(application)
 
     var dialogVisible: MutableLiveData<Boolean> = MutableLiveData()
 

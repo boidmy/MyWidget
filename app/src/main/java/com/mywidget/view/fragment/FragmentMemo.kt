@@ -22,16 +22,11 @@ import com.mywidget.viewModel.ViewModelFactory
 import javax.inject.Inject
 
 class FragmentMemo : BaseFragment<MainFragmentRvBinding>() {
-    //private var mAdapter: MainTabMemoAdapter? = null
-
     @Inject lateinit var mAdapter: MainTabMemoAdapter
-    //@Inject lateinit var factory: ViewModelFactory
-    //private var viewModel: MainFragmentViewModel? = null
-    //@Inject lateinit var factory: ViewModelProvider.NewInstanceFactory
-    @Inject lateinit var viewModel: MainFragmentViewModel
-//    val viewModel: MainFragmentViewModel by lazy {
-//        ViewModelProvider(requireActivity(), factory).get(MainFragmentViewModel::class.java)}
+    @Inject lateinit var factory: ViewModelProvider.Factory
     @Inject lateinit var messageRepository: MessageRepository
+    val viewModel: MainFragmentViewModel by lazy {
+        ViewModelProvider(requireActivity(), factory).get(MainFragmentViewModel::class.java)}
     override fun getLayout(): Int {
         return R.layout.main_fragment_rv
     }
@@ -50,21 +45,18 @@ class FragmentMemo : BaseFragment<MainFragmentRvBinding>() {
     }
 
     private fun bindView() {
-
         mAdapter = MainTabMemoAdapter()
         binding.fragmentRv.layoutManager = LinearLayoutManager(binding.root.context)
         binding.fragmentRv.adapter = mAdapter
-        /*viewModel = ViewModelProvider(requireActivity(), factory)
-                .get(MainFragmentViewModel::class.java)*/
-        Log.d("ViewmodellFragment", viewModel.toString())
-        binding.data = viewModel?.memoData
+        binding.data = viewModel.memoData
         mAdapter.setViewModel(viewModel)
+
         selectCall()
     }
 
     private fun selectCall() {
         Thread(Runnable {
-            viewModel?.selectMemo()
+            viewModel.selectMemo()
         }).start()
     }
 }

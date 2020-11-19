@@ -8,8 +8,9 @@ import androidx.lifecycle.ViewModel
 import com.mywidget.data.room.User
 import com.mywidget.data.room.UserDB
 import com.mywidget.repository.UserRepository
+import javax.inject.Inject
 
-class UserViewModel(application: Application) : ViewModel() {
+class UserViewModel @Inject constructor(application: Application) : ViewModel() {
 
     var data: MutableLiveData<List<User>> = MutableLiveData()
     var dialogVisible: MutableLiveData<Boolean> = MutableLiveData()
