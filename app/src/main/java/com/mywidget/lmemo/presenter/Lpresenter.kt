@@ -41,23 +41,21 @@ class Lpresenter(view: LmemoContract.View) : LmemoContract.presenter {
         mView = WeakReference(view)
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun clickMemoadd(name:String, memo:String) {
         memo(name, memo)
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     private fun memo(name:String, memo:String) {
 
-        val current = LocalDateTime.now()
+        //val current = LocalDateTime.now()
 
-        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
-        val formatted = current.format(formatter)
+        //val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
+        //val formatted = current.format(formatter)
 
         var result: HashMap<String, String> = hashMapOf()
 
         result["memo"] = memo
-        result["date"] = formatted
+        result["date"] = "2020-11-11"
 
         database.child(name).push().setValue(result)
 

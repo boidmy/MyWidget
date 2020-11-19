@@ -31,9 +31,14 @@ class LMemoActivity : AppCompatActivity(), View.OnClickListener, LmemoContract.V
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_love_memo)
-        confirm_btn.setOnClickListener(this)
+        //confirm_btn.setOnClickListener(this)
         setupMVP()
         mPresenter?.selectNickName()
+
+        confirm_btn.setOnClickListener {
+            mPresenter?.clickMemoadd(name_edit.text.toString(), feel_edit.text.toString())
+
+        }
 
         var ee = Observable.create<String>{ha: ObservableEmitter<String> ->
             ha.onNext("방출하라삐리삐리")
@@ -41,12 +46,6 @@ class LMemoActivity : AppCompatActivity(), View.OnClickListener, LmemoContract.V
 
         val aa = PublishSubject.create<String>()
             .onNext("하하하하")
-
-        var qq = Observable.create<View> {confirm_btn.setOnClickListener {
-
-        }}
-            .subscribe{
-        }
 
         var ob2 = Observable.just(1.0)
 
@@ -81,7 +80,6 @@ class LMemoActivity : AppCompatActivity(), View.OnClickListener, LmemoContract.V
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun onClick(view: View) {
         when (view.id) {
             R.id.confirm_btn -> {

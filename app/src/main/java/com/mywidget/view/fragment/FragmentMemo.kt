@@ -2,23 +2,17 @@ package com.mywidget.view.fragment
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mywidget.R
 import com.mywidget.adapter.MainTabMemoAdapter
-import com.mywidget.data.room.Memo
 import com.mywidget.databinding.MainFragmentRvBinding
 import com.mywidget.repository.MessageRepository
 import com.mywidget.view.MainActivity
-import com.mywidget.viewModel.FragmentViewModelFactory
 import com.mywidget.viewModel.MainFragmentViewModel
-import com.mywidget.viewModel.ViewModelFactory
 import javax.inject.Inject
 
 class FragmentMemo : BaseFragment<MainFragmentRvBinding>() {
