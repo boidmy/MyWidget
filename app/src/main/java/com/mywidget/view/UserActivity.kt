@@ -25,9 +25,10 @@ import javax.inject.Inject
 class UserActivity : BaseActivity<ActivityUserBinding>() {
     private var mAdapter: UserAdapter? = null
 
-    @Inject lateinit var factory: ViewModelProvider.NewInstanceFactory
+    @Inject lateinit var factory: ViewModelProvider.Factory
 
-    private val viewModel by viewModels<UserViewModel> { factory }
+    val viewModel: UserViewModel by lazy {
+        ViewModelProvider(this, factory).get(UserViewModel::class.java)}
 
     override val layout: Int
         get() = R.layout.activity_user

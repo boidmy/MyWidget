@@ -10,11 +10,10 @@ import com.mywidget.data.room.UserDB
 import com.mywidget.repository.UserRepository
 import javax.inject.Inject
 
-class UserViewModel @Inject constructor(application: Application) : ViewModel() {
+class UserViewModel @Inject constructor(private val repository: UserRepository) : ViewModel() {
 
     var data: MutableLiveData<List<User>> = MutableLiveData()
     var dialogVisible: MutableLiveData<Boolean> = MutableLiveData()
-    private val repository = UserRepository(application)
 
     fun insertUser(user: String, phone: String) {
         Thread(Runnable {

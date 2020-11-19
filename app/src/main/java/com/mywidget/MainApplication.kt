@@ -11,13 +11,14 @@ import com.mywidget.data.room.User
 import com.mywidget.data.room.UserDB
 import com.mywidget.di.compoenet.ApplicationComponent
 import com.mywidget.di.compoenet.DaggerApplicationComponent
+import javax.inject.Inject
 
 class MainApplication : Application() {
 
     var editor: SharedPreferences.Editor? = null
     var mSharedPreference: SharedPreferences? = null
     var googleIdtoken: String? = null
-    var userDb: UserDB? = null
+    @Inject lateinit var userDb: UserDB
     private lateinit var component: ApplicationComponent
 
     override fun onCreate() {
@@ -26,7 +27,6 @@ class MainApplication : Application() {
         component = DaggerApplicationComponent.factory().create(this)
         component.inject(this)
 
-        userDb = UserDB.getInstance(INSTANSE)
         mSharedPreference = getSharedPreferences("unme", Context.MODE_PRIVATE)
         editor = mSharedPreference?.edit()
     }
@@ -46,7 +46,7 @@ class MainApplication : Application() {
             var userList: List<User>
 
             Thread(Runnable {
-                userList = INSTANSE.userDb?.userDao()?.getUser()!!
+                userList = INSTANSE.userDb.userDao().getUser()
                 val appWidgetManager = AppWidgetManager.getInstance(INSTANSE)
                 val thisWidget = ComponentName(INSTANSE, MyAppWidget::class.java)
                 val allWidgetIds = appWidgetManager.getAppWidgetIds(thisWidget)
