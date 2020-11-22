@@ -72,9 +72,9 @@ class GoogleLoginPresenter(view: GoogleLoginContract.View) : GoogleLoginContract
 
     private fun singupDb(email: String, id: String, token: String, friend: String, nickname: String) {
 
-        var mEmail = email.substring(0, email.indexOf('@'))
+        val mEmail = email.substring(0, email.indexOf('@'))
 
-        var result: HashMap<String, String> = hashMapOf()
+        val result: HashMap<String, String> = hashMapOf()
         result["id"] = id
         result["email"] = email
         result["token"] = token

@@ -109,20 +109,15 @@ class MainActivity : BaseActivity<DrawerlayoutMainBinding>()
         super.onActivityResult(requestCode, resultCode, data)
         when (requestCode) {
             3000 -> {
-                if("feel" == data?.getStringExtra("result")) {
-                    val intent = Intent(this, LMemoActivity::class.java)
-                    startActivity(intent)
-                } else if("dday" == data?.getStringExtra("result")){
+                if("dday" == data?.getStringExtra("result")){
                     loveDday()
                 }
             }
             4000 -> {
                 val userAct = GoogleSignIn.getLastSignedInAccount(this)
-
                 userAct?.let {
                     val name = it.givenName
                     val token = it.idToken
-
                     login_name.text = it.givenName
                 }
             }

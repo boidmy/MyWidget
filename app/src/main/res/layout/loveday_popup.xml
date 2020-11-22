@@ -1,59 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-        android:id="@+id/smart_talk_floating_popup_dim_layout"
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:background="#70000000"
-        >
+<androidx.constraintlayout.widget.ConstraintLayout android:id="@+id/smart_talk_floating_popup_dim_layout"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#70000000"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <RelativeLayout
-            android:id="@+id/smart_talk_floating_popup_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="56dp"
-            >
+    <TextView
+        android:id="@+id/condition"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:text="컨디션 등록하기"
+        android:textColor="@color/white"
+        android:gravity="center"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/dDay"/>
 
-        <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_marginBottom="9dp"
-                android:layout_marginRight="16dp"
-                >
+    <TextView
+        android:id="@+id/dDay"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:gravity="center"
+        android:text="디데이 등록하기"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/chatBtn"/>
 
-            <RelativeLayout
-                    android:id="@+id/loveday_feeling"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginBottom="20dp"
-                    >
-
-                <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="컨디션 등록하기"
-                        android:textColor="@color/white"/>
-
-            </RelativeLayout>
-
-            <RelativeLayout
-                    android:id="@+id/loveday_dday"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_below="@+id/loveday_feeling"
-                    >
-
-                <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="디데이 등록하기"/>
-
-            </RelativeLayout>
-        </RelativeLayout>
-    </RelativeLayout>
-</RelativeLayout>
+    <TextView
+        android:id="@+id/chatBtn"
+        android:layout_width="100dp"
+        android:layout_height="30dp"
+        android:text="채팅"
+        android:textColor="@color/white"
+        android:gravity="center"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+</androidx.constraintlayout.widget.ConstraintLayout>
