@@ -1,9 +1,12 @@
 package com.mywidget.di.compoenet
 
 import com.mywidget.chat.waiting.WaitingRoomActivity
+import com.mywidget.chat.waiting.WatingViewModelModule
 import dagger.Subcomponent
 
-@Subcomponent
+@Subcomponent(modules = [
+    WatingViewModelModule::class
+])
 interface WatingActivityComponent {
 
     fun inject(watingActivity: WaitingRoomActivity)

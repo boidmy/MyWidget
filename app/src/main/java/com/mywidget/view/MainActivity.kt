@@ -68,10 +68,10 @@ class MainActivity : BaseActivity<DrawerlayoutMainBinding>()
         get() = R.layout.drawerlayout_main
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         mainComponent = (application as MainApplication).getApplicationCompoenet()
             .mainActivityComponent().create(this)
         mainComponent.inject(this)
-        super.onCreate(savedInstanceState)
         binding.viewModel = viewModel
         database = FirebaseDatabase.getInstance().reference
 

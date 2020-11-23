@@ -1,28 +1,39 @@
 package com.mywidget.chat.waiting.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
 import com.mywidget.R
+import com.mywidget.chat.RoomDataModel
+import com.mywidget.chat.waiting.viewmodel.WatingRoomViewModel
+import com.mywidget.databinding.WatingRoomItemBinding
 
-class WatingRoomAdapter : RecyclerView.Adapter<WatingRoomAdapter.ChatRoomViewHolder>() {
+class WatingRoomAdapter(val viewModel: WatingRoomViewModel) : RecyclerView.Adapter<WatingRoomAdapter.ChatRoomViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChatRoomViewHolder {
-        return ChatRoomViewHolder(LayoutInflater.from(parent.context)
-            .inflate(R.layout.wating_room_item, parent, false))
+        val bind = WatingRoomItemBinding
+            .inflate(LayoutInflater.from(parent.context), parent, false)
+        return ChatRoomViewHolder(bind)
+    }
+
+    fun setVal(data: MutableLiveData<List<RoomDataModel>>) {
+        Log.d("aa", "bb")
     }
 
     override fun getItemCount(): Int {
-        return 3
+        return viewModel.roomList.value?.size?:0
     }
 
     override fun onBindViewHolder(holder: ChatRoomViewHolder, position: Int) {
-        holder.bindView()
+        viewModel.roomList.value?.get(position)?.let { holder.bindView(it) }
     }
 
-    inner class ChatRoomViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bindView() {
-
+    inner class ChatRoomViewHolder(val binding: WatingRoomItemBinding)
+        : RecyclerView.ViewHolder(binding.root) {
+        fun bindView(data: RoomDataModel) {
+            binding.data = data
         }
     }
 }

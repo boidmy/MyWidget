@@ -8,8 +8,8 @@ import com.mywidget.view.fragment.FragmentLoveDay
 import com.mywidget.view.fragment.FragmentMemo
 
 class TabPagerAdapter(fm: FragmentManager) : FragmentStatePagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
-    var mFragmentMemo: FragmentMemo? = null
-    var mFragmentLoveDay: FragmentLoveDay? = null
+    private var mFragmentMemo: FragmentMemo? = null
+    private var mFragmentLoveDay: FragmentLoveDay? = null
 
     override fun getItem(position: Int): Fragment {
         return if(position == 0) {

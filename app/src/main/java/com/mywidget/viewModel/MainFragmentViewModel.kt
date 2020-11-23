@@ -52,14 +52,12 @@ class MainFragmentViewModel @Inject constructor(
         loveday.postValue(repository.selectLoveDay())
     }
 
-    fun messageLeft(name: String): MutableLiveData<List<LmemoData>> {
+    fun messageLeft(name: String){
         leftMessage = repository.messageLeft(name)
-        return leftMessage
     }
 
-    fun messageRight(name: String): MutableLiveData<List<LmemoData>> {
+    fun messageRight(name: String) {
         rightMessage = repository.messageRight(name)
-        return rightMessage
     }
 
     fun leftClick() {

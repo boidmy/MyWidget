@@ -19,6 +19,8 @@ import com.mywidget.R
 import com.mywidget.Util
 import com.mywidget.adapter.MainTabMemoAdapter
 import com.mywidget.adapter.UserAdapter
+import com.mywidget.chat.RoomDataModel
+import com.mywidget.chat.waiting.adapter.WatingRoomAdapter
 import com.mywidget.data.room.Memo
 import com.mywidget.data.room.User
 import com.mywidget.viewModel.MainFragmentViewModel
@@ -151,6 +153,7 @@ fun setUserConfirm(button: Button, name: EditText, phone: EditText, viewModel: U
 
 @BindingAdapter("items")
 fun adapter(recyclerView: RecyclerView?, data: MutableLiveData<List<User>>) {
+
     val adapter: UserAdapter = recyclerView?.adapter as UserAdapter
     adapter.notifyDataSetChanged()
 }
@@ -160,4 +163,12 @@ fun memoAdapter(recyclerView: RecyclerView?, data: MutableLiveData<List<Memo>>?)
     val adapter: MainTabMemoAdapter = recyclerView?.adapter as MainTabMemoAdapter
     adapter.notifyDataSetChanged()
 }
+
+@BindingAdapter("items")
+fun roomAdapter(recyclerView: RecyclerView?, data: MutableLiveData<List<RoomDataModel>>) {
+    val adapter: WatingRoomAdapter = recyclerView?.adapter as WatingRoomAdapter
+    adapter.setVal(data)
+    adapter.notifyDataSetChanged()
+}
+
 

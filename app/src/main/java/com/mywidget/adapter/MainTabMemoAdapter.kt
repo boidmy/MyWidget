@@ -20,8 +20,8 @@ class MainTabMemoAdapter : RecyclerView.Adapter<MainTabMemoAdapter.MainTabMemoVi
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainTabMemoViewholder {
-        val bind = MainFragmentRvItemBinding.inflate(LayoutInflater.from(parent.context)
-            , parent, false)
+        val bind = MainFragmentRvItemBinding
+            .inflate(LayoutInflater.from(parent.context), parent, false)
         return MainTabMemoViewholder(bind)
     }
 

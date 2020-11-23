@@ -15,6 +15,11 @@ class FireBaseDataBaseModule {
     }
 
     @Provides
+    fun provideDatabaseReference(firebaseDatabase: FirebaseDatabase) : DatabaseReference {
+        return firebaseDatabase.reference
+    }
+
+    @Provides
     @Named("Room")
     fun provideDatabase(firebaseDatabase: FirebaseDatabase): DatabaseReference {
         return firebaseDatabase.reference.child("Room")
