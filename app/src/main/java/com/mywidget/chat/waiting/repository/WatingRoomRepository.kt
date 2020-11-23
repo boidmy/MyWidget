@@ -16,12 +16,12 @@ class WatingRoomRepository @Inject constructor() {
     var roomList: MutableLiveData<List<RoomDataModel>> = MutableLiveData()
 
     fun selectRoomList(id: String) : MutableLiveData<List<RoomDataModel>> {
-        val list: ArrayList<RoomDataModel> = arrayListOf()
         roomRef.child(id).addValueEventListener(object : ValueEventListener {
             override fun onCancelled(error: DatabaseError) {
             }
 
             override fun onDataChange(snapshot: DataSnapshot) {
+                val list: ArrayList<RoomDataModel> = arrayListOf()
                 for(snap: DataSnapshot in snapshot.children) {
                     val roomName = snap.value.toString()
                     val roomModel = RoomDataModel()

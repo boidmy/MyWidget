@@ -167,7 +167,6 @@ fun memoAdapter(recyclerView: RecyclerView?, data: MutableLiveData<List<Memo>>?)
 @BindingAdapter("items")
 fun roomAdapter(recyclerView: RecyclerView?, data: MutableLiveData<List<RoomDataModel>>) {
     val adapter: WatingRoomAdapter = recyclerView?.adapter as WatingRoomAdapter
-    adapter.setVal(data)
     adapter.notifyDataSetChanged()
 }
 

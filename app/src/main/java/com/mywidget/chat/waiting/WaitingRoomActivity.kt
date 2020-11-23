@@ -43,7 +43,6 @@ class WaitingRoomActivity : BaseActivity<ActivityWatingRoomBinding>() {
             viewModel.selectRoomList(it.substring(0, it.indexOf('@')))
         }
 
-
         createRoom.setOnClickListener {
             val email = userAct?.email
             email?.let { viewModel.createRoom(it) }

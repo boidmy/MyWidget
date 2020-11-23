@@ -4,25 +4,27 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-        <import type="java.util.List"/>
-        <import type="androidx.lifecycle.MutableLiveData"/>
+
+        <import type="java.util.List" />
+
+        <import type="androidx.lifecycle.MutableLiveData" />
+
         <variable
             name="data"
             type="MutableLiveData&lt;List&lt;com.mywidget.data.room.Memo&gt;&gt;" />
     </data>
-    <LinearLayout 
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-    
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/fragment_rv"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tools:listitem="@layout/main_fragment_rv_item"
-        app:items="@{data}">
 
-    </androidx.recyclerview.widget.RecyclerView>
-    
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/fragment_rv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:items="@{data}"
+            tools:listitem="@layout/main_fragment_rv_item" />
+
     </LinearLayout>
 </layout>

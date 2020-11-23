@@ -18,10 +18,6 @@ class WatingRoomAdapter(val viewModel: WatingRoomViewModel) : RecyclerView.Adapt
         return ChatRoomViewHolder(bind)
     }
 
-    fun setVal(data: MutableLiveData<List<RoomDataModel>>) {
-        Log.d("aa", "bb")
-    }
-
     override fun getItemCount(): Int {
         return viewModel.roomList.value?.size?:0
     }
