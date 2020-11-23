@@ -1,6 +1,5 @@
-package com.mywidget.chat.waiting.repository
+package com.mywidget.chat.repository
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -23,12 +22,12 @@ class WatingRoomRepository @Inject constructor() {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val list: ArrayList<RoomDataModel> = arrayListOf()
                 for(snap: DataSnapshot in snapshot.children) {
-                    val roomName = snap.value.toString()
                     val roomModel = RoomDataModel()
-                    roomModel.roomName = roomName
+                    roomModel.roomName = snap.child("roomName").value as String?
+                    roomModel.key = snap.key
                     list.add(roomModel)
-                    roomList.value = list
                 }
+                roomList.value = list
             }
 
         })
@@ -52,6 +51,7 @@ class WatingRoomRepository @Inject constructor() {
     private fun addUserRoomInformation(key: String, id: String) {
         val hopperUpdates: HashMap<String, Any> = hashMapOf()
         hopperUpdates["room"] = key
+        hopperUpdates["master"] = id //마스터 아디 수정해야함
         userRef.child(id).child("RoomList").push().setValue(hopperUpdates)
     }
 }

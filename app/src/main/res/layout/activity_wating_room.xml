@@ -6,7 +6,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.mywidget.chat.waiting.viewmodel.WatingRoomViewModel" />
+            type="com.mywidget.chat.viewmodel.WatingRoomViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

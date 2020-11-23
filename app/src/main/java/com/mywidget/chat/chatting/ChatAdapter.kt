@@ -1,4 +1,4 @@
-package com.mywidget.chat
+package com.mywidget.chat.chatting
 
 import android.view.LayoutInflater
 import android.view.View

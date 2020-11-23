@@ -20,6 +20,7 @@ interface ApplicationComponent {
     fun mainActivityComponent() : MainActivityComponent.Factory
     fun userActivityComponent() : UserActivityComponent.Factory
     fun watingActivityComponent() : WatingActivityComponent.Factory
+    fun chattingActivityComponent() : ChattingActivityComponent.Factory
 
     fun inject(application: MainApplication)
 

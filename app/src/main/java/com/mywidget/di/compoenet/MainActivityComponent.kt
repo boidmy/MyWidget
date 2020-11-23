@@ -22,6 +22,6 @@ interface MainActivityComponent {
 
     @Subcomponent.Factory
     interface Factory {
-        fun create(@BindsInstance activity: Activity) : MainActivityComponent
+        fun create(@BindsInstance activity: Activity): MainActivityComponent
     }
 }
