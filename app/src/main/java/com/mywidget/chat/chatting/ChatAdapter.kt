@@ -5,39 +5,52 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.mywidget.R
+import com.mywidget.chat.chatting.viewholder.ChatLeftViewHolder
+import com.mywidget.chat.chatting.viewholder.ChatRightViewHolder
+import com.mywidget.chat.viewmodel.ChatViewModel
+import com.mywidget.databinding.ChatLeftBinding
+import com.mywidget.databinding.ChatRightBinding
+import com.mywidget.databinding.WatingRoomItemBinding
 
-class ChatAdapter : RecyclerView.Adapter<ChatAdapter.ChatViewHoler>() {
+class ChatAdapter(val viewModel: ChatViewModel) :
+    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    val LEFTCHAT = 0
-    val RIGHTCHAT = 1
+    private val LEFTCHAT = 0
+    private val RIGHTCHAT = 1
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChatViewHoler {
-        val layout: Int =
-            if (viewType == LEFTCHAT) R.layout.chat_left
-            else R.layout.chat_right
-
-        return ChatViewHoler(
-            LayoutInflater.from(parent.context)
-                .inflate(layout, parent, false)
-        )
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int)
+            : RecyclerView.ViewHolder {
+        return if (viewType == RIGHTCHAT) {
+            val bind = ChatRightBinding
+                .inflate(LayoutInflater.from(parent.context), parent, false)
+            ChatRightViewHolder(bind)
+        } else {
+            val bind = ChatLeftBinding
+                .inflate(LayoutInflater.from(parent.context), parent, false)
+            ChatLeftViewHolder(bind)
+        }
     }
 
     override fun getItemViewType(position: Int): Int {
-        return 0
+        return if (viewModel.data.value?.get(position)?.id == viewModel.myId) {
+            RIGHTCHAT
+        } else {
+            LEFTCHAT
+        }
     }
 
     override fun getItemCount(): Int {
-        return 10
+        return viewModel.data.value?.size ?: 0
     }
 
-    override fun onBindViewHolder(holder: ChatViewHoler, position: Int) {
-        holder.bindView()
-    }
-
-    inner class ChatViewHoler(itemView: View) : RecyclerView.ViewHolder(itemView) {
-
-        fun bindView() {
-
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        val data = viewModel.data.value?.get(position)
+        data?.let {
+            if(holder is ChatRightViewHolder) {
+                holder.bindView(it)
+            } else if(holder is ChatLeftViewHolder){
+                holder.bindView(it)
+            }
         }
     }
 }

@@ -15,7 +15,7 @@ class WatingRoomRepository @Inject constructor() {
     var roomList: MutableLiveData<List<RoomDataModel>> = MutableLiveData()
 
     fun selectRoomList(id: String) : MutableLiveData<List<RoomDataModel>> {
-        roomRef.child(id).addValueEventListener(object : ValueEventListener {
+        userRef.child(id).child("RoomList").addValueEventListener(object : ValueEventListener {
             override fun onCancelled(error: DatabaseError) {
             }
 
@@ -24,7 +24,8 @@ class WatingRoomRepository @Inject constructor() {
                 for(snap: DataSnapshot in snapshot.children) {
                     val roomModel = RoomDataModel()
                     roomModel.roomName = snap.child("roomName").value as String?
-                    roomModel.key = snap.key
+                    roomModel.key = snap.child("roomKey").value as String?
+                    roomModel.master = snap.child("master").value as String?
                     list.add(roomModel)
                 }
                 roomList.value = list
@@ -38,20 +39,22 @@ class WatingRoomRepository @Inject constructor() {
         id.let {
             val mEmail = it.substring(0, it.indexOf('@'))
             val result: HashMap<String, String> = hashMapOf()
-            result["roomName"] = "콩이네방"
+            val roomName = "콩이네방"
+            result["roomName"] = roomName
 
             val ref = roomRef.child(mEmail).push()
             ref.setValue(result)
             ref.key?.let { keyVal ->
-                addUserRoomInformation(keyVal, mEmail)
+                addUserRoomInformation(keyVal, mEmail, roomName)
             }
         }
     }
 
-    private fun addUserRoomInformation(key: String, id: String) {
+    private fun addUserRoomInformation(key: String, id: String, roomName: String) {
         val hopperUpdates: HashMap<String, Any> = hashMapOf()
-        hopperUpdates["room"] = key
+        hopperUpdates["roomKey"] = key
         hopperUpdates["master"] = id //마스터 아디 수정해야함
+        hopperUpdates["roomName"] = roomName
         userRef.child(id).child("RoomList").push().setValue(hopperUpdates)
     }
 }

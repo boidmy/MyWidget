@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.firebase.database.DatabaseReference
@@ -19,9 +20,7 @@ class ChatActivity : BaseActivity<ActivityChattingBinding>() {
     @Inject lateinit var database: DatabaseReference
     @Inject lateinit var factory: ViewModelProvider.Factory
     val viewModel: ChatViewModel by lazy {
-        ViewModelProvider(this, factory).get(ChatViewModel::class.java)
-    }
-    private val roomRef: DatabaseReference by lazy { database.child("Room") }
+        ViewModelProvider(this, factory).get(ChatViewModel::class.java) }
     private val userAct: GoogleSignInAccount?
             by lazy { GoogleSignIn.getLastSignedInAccount(this) }
     override val layout: Int
@@ -33,24 +32,16 @@ class ChatActivity : BaseActivity<ActivityChattingBinding>() {
         (application as MainApplication).getApplicationCompoenet()
             .chattingActivityComponent().create().inject(this)
 
-        val roomKey = intent.getStringExtra("roomKey")
-        chat_rv.adapter = ChatAdapter()
-        var mEmail: List<String>? = null
+        val roomKey = intent.getStringExtra("roomKey")?:""
+        val master = intent.getStringExtra("master")?:""
+        binding.viewModel = viewModel
+        binding.chatRv.adapter = ChatAdapter(viewModel)
 
-        userAct?.email?.let {
-            mEmail = it.split("@")
-            if(mEmail != null && roomKey != null) {
-                viewModel.selectChat(mEmail!![0], roomKey)
-            }
-        }
+        viewModel.userId(userAct?.email?:"")
+        viewModel.selectChat(master, roomKey)
         sendBtn.setOnClickListener {
-            roomKey?.let {
-                val result: HashMap<String, String> = hashMapOf()
-                result["message"] = chatEdit.text.toString()
-                result["id"] = mEmail!![0]
-                roomRef.child(mEmail!![0]).child(it)
-                    .child("message").push().setValue(result)
-            }
+            viewModel.insertChat(master, roomKey,
+                userAct?.email?:"", chatEdit.text.toString())
         }
     }
 }

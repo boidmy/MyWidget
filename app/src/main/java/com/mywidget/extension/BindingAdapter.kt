@@ -19,7 +19,9 @@ import com.mywidget.R
 import com.mywidget.Util
 import com.mywidget.adapter.MainTabMemoAdapter
 import com.mywidget.adapter.UserAdapter
+import com.mywidget.chat.ChatDataModel
 import com.mywidget.chat.RoomDataModel
+import com.mywidget.chat.chatting.ChatAdapter
 import com.mywidget.chat.waiting.adapter.WatingRoomAdapter
 import com.mywidget.data.room.Memo
 import com.mywidget.data.room.User
@@ -167,6 +169,12 @@ fun memoAdapter(recyclerView: RecyclerView?, data: MutableLiveData<List<Memo>>?)
 @BindingAdapter("items")
 fun roomAdapter(recyclerView: RecyclerView?, data: MutableLiveData<List<RoomDataModel>>) {
     val adapter: WatingRoomAdapter = recyclerView?.adapter as WatingRoomAdapter
+    adapter.notifyDataSetChanged()
+}
+
+@BindingAdapter("items")
+fun chatAdapter(recyclerView: RecyclerView?, data: MutableLiveData<List<ChatDataModel>>) {
+    val adapter: ChatAdapter = recyclerView?.adapter as ChatAdapter
     adapter.notifyDataSetChanged()
 }
 

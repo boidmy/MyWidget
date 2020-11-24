@@ -32,6 +32,7 @@ class WatingRoomAdapter(val viewModel: WatingRoomViewModel) : RecyclerView.Adapt
             binding.rvContainer.setOnClickListener {
                 val intent = Intent(binding.root.context, ChatActivity::class.java)
                 intent.putExtra("roomKey", data.key)
+                intent.putExtra("master", data.master)
                 binding.root.context.startActivity(intent)
             }
         }
