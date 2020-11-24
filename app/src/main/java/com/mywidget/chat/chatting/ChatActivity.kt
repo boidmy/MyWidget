@@ -32,16 +32,23 @@ class ChatActivity : BaseActivity<ActivityChattingBinding>() {
         (application as MainApplication).getApplicationCompoenet()
             .chattingActivityComponent().create().inject(this)
 
+        binding.viewModel = viewModel
+        bind()
+    }
+
+    fun bind() {
+        binding.chatRv.adapter = ChatAdapter(viewModel)
         val roomKey = intent.getStringExtra("roomKey")?:""
         val master = intent.getStringExtra("master")?:""
-        binding.viewModel = viewModel
-        binding.chatRv.adapter = ChatAdapter(viewModel)
-
         viewModel.userId(userAct?.email?:"")
         viewModel.selectChat(master, roomKey)
-        sendBtn.setOnClickListener {
+        binding.sendBtn.setOnClickListener {
             viewModel.insertChat(master, roomKey,
                 userAct?.email?:"", chatEdit.text.toString())
+            binding.chatEdit.text.clear()
+        }
+        binding.inviteUser.setOnClickListener {
+            viewModel.inviteUser()
         }
     }
 }

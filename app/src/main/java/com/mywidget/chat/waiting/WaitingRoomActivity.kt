@@ -27,16 +27,18 @@ class WaitingRoomActivity : BaseActivity<ActivityWatingRoomBinding>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         (application as MainApplication).getApplicationCompoenet()
             .watingActivityComponent().create().inject(this)
+
+        bind()
+    }
+
+    fun bind() {
         binding.viewModel = viewModel
-        binding.watingRoomRv.layoutManager = LinearLayoutManager(binding.root.context)
         binding.watingRoomRv.adapter = WatingRoomAdapter(viewModel)
         userAct?.email?.let {
             viewModel.selectRoomList(it.substring(0, it.indexOf('@')))
         }
-
         createRoom.setOnClickListener {
             val email = userAct?.email
             email?.let { viewModel.createRoom(it) }

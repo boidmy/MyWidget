@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="viewModel"
             type="com.mywidget.chat.viewmodel.WatingRoomViewModel" />
@@ -25,11 +26,14 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/watingRoomRv"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
             app:items="@{viewModel.roomList}"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constrainedHeight="true"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/createRoom"
+            tools:itemCount="10"
             tools:listitem="@layout/wating_room_item" />
 
         <ImageView

@@ -22,4 +22,8 @@ class ChatViewModel @Inject constructor(val repository: ChatRepository) : ViewMo
     fun userId(userEmail: String) {
         myId = repository.userId(userEmail)
     }
+
+    fun inviteUser() {
+
+    }
 }

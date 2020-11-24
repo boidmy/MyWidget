@@ -12,8 +12,7 @@ import javax.inject.Inject
 
 class ChatRepository @Inject constructor() {
 
-    @Inject
-    lateinit var database: DatabaseReference
+    @Inject lateinit var database: DatabaseReference
     private val roomRef: DatabaseReference by lazy { database.child("Room") }
     var data: MutableLiveData<List<ChatDataModel>> = MutableLiveData()
 
@@ -48,10 +47,14 @@ class ChatRepository @Inject constructor() {
 
     fun userId(userEmail: String): String {
         val mEmail: List<String>? = userEmail.split("@")
-        var userEmail = ""
+        var userId = ""
         if (mEmail?.size ?: 0 > 0) {
-            userEmail = mEmail?.get(0) ?: ""
+            userId = mEmail?.get(0) ?: ""
         }
-        return userEmail
+        return userId
+    }
+
+    fun inviteUser() {
+
     }
 }
