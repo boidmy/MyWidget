@@ -1,13 +1,10 @@
 package com.mywidget.di.module
 
-import android.app.Activity
-import android.content.Context
 import androidx.fragment.app.FragmentManager
 import com.mywidget.BackPressAppFinish
 import com.mywidget.adapter.MainTabMemoAdapter
 import com.mywidget.adapter.TabPagerAdapter
 import com.mywidget.view.MainActivity
-import com.mywidget.viewModel.ViewModelFactory
 import dagger.Module
 import dagger.Provides
 

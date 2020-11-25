@@ -2,10 +2,8 @@ package com.mywidget.chat.waiting
 
 import android.os.Bundle
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
-import com.mywidget.MainApplication
 import com.mywidget.R
 import com.mywidget.chat.waiting.adapter.WatingRoomAdapter
 import com.mywidget.chat.viewmodel.WatingRoomViewModel

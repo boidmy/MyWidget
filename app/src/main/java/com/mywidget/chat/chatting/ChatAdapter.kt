@@ -1,16 +1,13 @@
 package com.mywidget.chat.chatting
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.mywidget.R
 import com.mywidget.chat.chatting.viewholder.ChatLeftViewHolder
 import com.mywidget.chat.chatting.viewholder.ChatRightViewHolder
 import com.mywidget.chat.viewmodel.ChatViewModel
 import com.mywidget.databinding.ChatLeftBinding
 import com.mywidget.databinding.ChatRightBinding
-import com.mywidget.databinding.WatingRoomItemBinding
 
 class ChatAdapter(val viewModel: ChatViewModel) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {

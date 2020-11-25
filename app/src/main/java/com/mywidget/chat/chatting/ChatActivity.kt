@@ -1,14 +1,10 @@
 package com.mywidget.chat.chatting
 
-import android.content.Intent
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.firebase.database.DatabaseReference
-import com.mywidget.MainApplication
 import com.mywidget.R
 import com.mywidget.chat.viewmodel.ChatViewModel
 import com.mywidget.databinding.ActivityChattingBinding

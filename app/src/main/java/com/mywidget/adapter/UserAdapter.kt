@@ -6,7 +6,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.mywidget.databinding.UserRvItemBinding
 import com.mywidget.viewModel.UserViewModel
-import kotlinx.android.synthetic.main.user_rv_item.view.*
 
 class UserAdapter(viewModel: UserViewModel?)
     : RecyclerView.Adapter<UserAdapter.MyViewHolder>() {

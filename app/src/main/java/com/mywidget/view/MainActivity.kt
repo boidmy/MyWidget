@@ -1,29 +1,19 @@
 package com.mywidget.view
 
 import android.Manifest
-import android.app.DatePickerDialog
 import android.app.Dialog
 import android.appwidget.AppWidgetManager
-import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
-import android.view.inputmethod.InputMethodManager
-import android.widget.PopupWindow
-import android.widget.RelativeLayout
-import android.widget.Toast
-import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.material.navigation.NavigationView
@@ -36,15 +26,10 @@ import com.mywidget.adapter.TabPagerAdapter
 import com.mywidget.databinding.DrawerlayoutMainBinding
 import com.mywidget.databinding.MainLovedayDialogBinding
 import com.mywidget.databinding.MemoDialogBinding
-import com.mywidget.di.compoenet.MainActivityComponent
-import com.mywidget.lmemo.view.LMemoActivity
 import com.mywidget.login.view.LoginGoogle
 import com.mywidget.viewModel.MainFragmentViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.layout_title.*
-import kotlinx.android.synthetic.main.main_loveday_dialog.view.*
-import kotlinx.android.synthetic.main.main_phone_dialog.view.confirm_btn
-import kotlinx.android.synthetic.main.memo_dialog.view.*
 import java.util.*
 import javax.inject.Inject
 

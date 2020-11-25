@@ -11,7 +11,6 @@ import com.mywidget.R
 import com.mywidget.adapter.MainTabMemoAdapter
 import com.mywidget.databinding.MainFragmentRvBinding
 import com.mywidget.repository.MessageRepository
-import com.mywidget.view.MainActivity
 import com.mywidget.viewModel.MainFragmentViewModel
 import javax.inject.Inject
 

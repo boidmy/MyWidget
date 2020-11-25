@@ -1,6 +1,5 @@
 package com.mywidget
 
-import android.app.Application
 import android.appwidget.AppWidgetManager
 import android.content.ComponentName
 import android.content.Context
@@ -26,9 +25,6 @@ class MainApplication : DaggerApplication() {
     override fun onCreate() {
         super.onCreate()
 
-        //component = DaggerApplicationComponent.factory().create(this)
-        //component.inject(this)
-
         mSharedPreference = getSharedPreferences("unme", Context.MODE_PRIVATE)
         editor = mSharedPreference?.edit()
     }
@@ -41,9 +37,6 @@ class MainApplication : DaggerApplication() {
         INSTANSE = this
     }
 
-    /*fun getApplicationCompoenet() : ApplicationComponent {
-        return component
-    }*/
     companion object {
 
         lateinit var INSTANSE: MainApplication
