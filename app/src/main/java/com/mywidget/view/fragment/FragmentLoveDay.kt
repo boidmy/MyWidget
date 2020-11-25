@@ -38,8 +38,6 @@ class FragmentLoveDay : BaseFragment<MainFragmentFragment2Binding>() {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-
-        (activity as MainActivity).mainComponent.inject(this)
     }
 
     private fun bindView() {

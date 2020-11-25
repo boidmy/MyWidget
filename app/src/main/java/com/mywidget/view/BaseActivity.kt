@@ -6,10 +6,12 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import dagger.android.DaggerActivity
+import dagger.android.support.DaggerAppCompatActivity
 import javax.inject.Inject
 
 abstract class BaseActivity<D : ViewDataBinding>
-    : AppCompatActivity() {
+    : DaggerAppCompatActivity() {
 
     //protected lateinit var viewModel: V
     protected lateinit var binding: D

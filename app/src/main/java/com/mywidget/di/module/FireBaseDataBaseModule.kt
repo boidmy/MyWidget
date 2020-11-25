@@ -10,12 +10,12 @@ import javax.inject.Named
 class FireBaseDataBaseModule {
 
     @Provides
-    fun provideFirebaseDatabase() : FirebaseDatabase {
+    fun provideFirebaseDatabase(): FirebaseDatabase {
         return FirebaseDatabase.getInstance()
     }
 
     @Provides
-    fun provideDatabaseReference(firebaseDatabase: FirebaseDatabase) : DatabaseReference {
+    fun provideDatabaseReference(firebaseDatabase: FirebaseDatabase): DatabaseReference {
         return firebaseDatabase.reference
     }
 

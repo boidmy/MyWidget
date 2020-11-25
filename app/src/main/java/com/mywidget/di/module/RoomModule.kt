@@ -15,21 +15,21 @@ class RoomModule {
 
     @Provides
     @Singleton
-    fun provideLoveday(application: Application) : LoveDayDB {
+    fun provideLoveday(application: Application): LoveDayDB {
         return Room.databaseBuilder(application, LoveDayDB::class.java, "loveday.db")
             .addCallback(object : RoomDatabase.Callback() {}).build()
     }
 
     @Provides
     @Singleton
-    fun provideMemo(application: Application) : MemoDB {
+    fun provideMemo(application: Application): MemoDB {
         return Room.databaseBuilder(application, MemoDB::class.java, "memo.db")
             .addCallback(object : RoomDatabase.Callback() {}).build()
     }
 
     @Provides
     @Singleton
-    fun provideWidgetDb(application: Application) : UserDB {
+    fun provideWidgetDb(application: Application): UserDB {
         return Room.databaseBuilder(application, UserDB::class.java, "user.db")
             .addCallback(object : RoomDatabase.Callback() {}).build()
     }

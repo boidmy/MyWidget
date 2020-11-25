@@ -9,9 +9,10 @@ import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
+import dagger.android.support.DaggerFragment
 import javax.inject.Inject
 
-abstract class BaseFragment<D : ViewDataBinding> : Fragment() {
+abstract class BaseFragment<D : ViewDataBinding> : DaggerFragment() {
 
     protected lateinit var binding: D
 

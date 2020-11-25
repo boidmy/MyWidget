@@ -2,30 +2,27 @@ package com.mywidget.di.compoenet
 
 import android.app.Application
 import com.mywidget.MainApplication
-import com.mywidget.di.module.FactoryModule
-import com.mywidget.di.module.FireBaseDataBaseModule
-import com.mywidget.di.module.RoomModule
-import com.mywidget.di.module.SubComponentModule
+import com.mywidget.di.module.*
 import dagger.BindsInstance
 import dagger.Component
+import dagger.android.AndroidInjector
+import dagger.android.support.AndroidSupportInjectionModule
 import javax.inject.Singleton
 
 @Singleton
-@Component(modules = [
-    SubComponentModule::class,
-    RoomModule::class,
-    FactoryModule::class,
-    FireBaseDataBaseModule::class])
-interface ApplicationComponent {
-    fun mainActivityComponent() : MainActivityComponent.Factory
-    fun userActivityComponent() : UserActivityComponent.Factory
-    fun watingActivityComponent() : WatingActivityComponent.Factory
-    fun chattingActivityComponent() : ChattingActivityComponent.Factory
-
-    fun inject(application: MainApplication)
+@Component(
+    modules = [
+        ActivityBindingModule::class,
+        RoomModule::class,
+        FactoryModule::class,
+        FireBaseDataBaseModule::class,
+        AndroidSupportInjectionModule::class
+    ]
+)
+interface ApplicationComponent : AndroidInjector<MainApplication> {
 
     @Component.Factory
     interface Factory {
-        fun create(@BindsInstance application: Application) : ApplicationComponent
+        fun create(@BindsInstance application: Application): ApplicationComponent
     }
 }

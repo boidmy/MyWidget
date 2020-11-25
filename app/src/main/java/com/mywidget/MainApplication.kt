@@ -11,9 +11,11 @@ import com.mywidget.data.room.User
 import com.mywidget.data.room.UserDB
 import com.mywidget.di.compoenet.ApplicationComponent
 import com.mywidget.di.compoenet.DaggerApplicationComponent
+import dagger.android.AndroidInjector
+import dagger.android.support.DaggerApplication
 import javax.inject.Inject
 
-class MainApplication : Application() {
+class MainApplication : DaggerApplication() {
 
     var editor: SharedPreferences.Editor? = null
     var mSharedPreference: SharedPreferences? = null
@@ -24,20 +26,24 @@ class MainApplication : Application() {
     override fun onCreate() {
         super.onCreate()
 
-        component = DaggerApplicationComponent.factory().create(this)
-        component.inject(this)
+        //component = DaggerApplicationComponent.factory().create(this)
+        //component.inject(this)
 
         mSharedPreference = getSharedPreferences("unme", Context.MODE_PRIVATE)
         editor = mSharedPreference?.edit()
+    }
+
+    override fun applicationInjector(): AndroidInjector<out DaggerApplication> {
+        return DaggerApplicationComponent.factory().create(this)
     }
 
     init {
         INSTANSE = this
     }
 
-    fun getApplicationCompoenet() : ApplicationComponent {
+    /*fun getApplicationCompoenet() : ApplicationComponent {
         return component
-    }
+    }*/
     companion object {
 
         lateinit var INSTANSE: MainApplication

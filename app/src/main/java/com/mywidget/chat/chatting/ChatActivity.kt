@@ -28,10 +28,6 @@ class ChatActivity : BaseActivity<ActivityChattingBinding>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        (application as MainApplication).getApplicationCompoenet()
-            .chattingActivityComponent().create().inject(this)
-
         binding.viewModel = viewModel
         bind()
     }

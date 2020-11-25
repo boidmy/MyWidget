@@ -34,8 +34,6 @@ class FragmentMemo : BaseFragment<MainFragmentRvBinding>() {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-
-        (activity as MainActivity).mainComponent.inject(this)
     }
 
     private fun bindView() {

@@ -55,7 +55,7 @@ class MainActivity : BaseActivity<DrawerlayoutMainBinding>()
     private var mSharedPreference = MainApplication.INSTANSE.mSharedPreference
     private var editor = MainApplication.INSTANSE.editor
     private var tabPosition: Int? = 0
-    lateinit var mainComponent: MainActivityComponent
+    //lateinit var mainComponent: MainActivityComponent
     private lateinit var database: DatabaseReference
     @Inject lateinit var factory: ViewModelProvider.Factory
 
@@ -69,9 +69,9 @@ class MainActivity : BaseActivity<DrawerlayoutMainBinding>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mainComponent = (application as MainApplication).getApplicationCompoenet()
+        /*mainComponent = (application as MainApplication).getApplicationCompoenet()
             .mainActivityComponent().create(this)
-        mainComponent.inject(this)
+        mainComponent.inject(this)*/
         binding.viewModel = viewModel
         database = FirebaseDatabase.getInstance().reference
 

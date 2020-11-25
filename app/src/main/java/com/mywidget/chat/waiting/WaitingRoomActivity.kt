@@ -27,9 +27,6 @@ class WaitingRoomActivity : BaseActivity<ActivityWatingRoomBinding>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        (application as MainApplication).getApplicationCompoenet()
-            .watingActivityComponent().create().inject(this)
-
         bind()
     }
 

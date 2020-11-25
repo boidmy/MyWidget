@@ -15,22 +15,22 @@ import dagger.Provides
 class MainActivityModule {
 
     @Provides
-    fun provideFinishApp(activity: Activity) : BackPressAppFinish{
+    fun provideFinishApp(activity: MainActivity): BackPressAppFinish {
         return BackPressAppFinish(activity)
     }
 
     @Provides
-    fun provideFragmentManager(activity: Activity) : FragmentManager {
-        return (activity as MainActivity).supportFragmentManager
+    fun provideFragmentManager(activity: MainActivity): FragmentManager {
+        return activity.supportFragmentManager
     }
 
     @Provides
-    fun provideTabPagerAdapter(fragmentManager: FragmentManager) : TabPagerAdapter {
+    fun provideTabPagerAdapter(fragmentManager: FragmentManager): TabPagerAdapter {
         return TabPagerAdapter(fragmentManager)
     }
 
     @Provides
-    fun provideMainTabMemoAdapter() : MainTabMemoAdapter {
+    fun provideMainTabMemoAdapter(): MainTabMemoAdapter {
         return MainTabMemoAdapter()
     }
 }

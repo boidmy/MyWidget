@@ -34,9 +34,6 @@ class UserActivity : BaseActivity<ActivityUserBinding>() {
         get() = R.layout.activity_user
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        (application as MainApplication).getApplicationCompoenet()
-            .userActivityComponent().create().inject(this)
-
         super.onCreate(savedInstanceState)
         binding.viewModel = viewModel
         mAdapter = UserAdapter(viewModel)
