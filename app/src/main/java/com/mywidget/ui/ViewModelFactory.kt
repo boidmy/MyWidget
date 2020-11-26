@@ -1,4 +1,4 @@
-package com.mywidget.viewModel
+package com.mywidget.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider

@@ -1,7 +1,7 @@
 package com.mywidget.di.module
 
 import androidx.lifecycle.ViewModelProvider
-import com.mywidget.viewModel.ViewModelFactory
+import com.mywidget.ui.ViewModelFactory
 import dagger.Binds
 import dagger.Module
 

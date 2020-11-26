@@ -1,4 +1,4 @@
-package com.mywidget.repository
+package com.mywidget.ui.main
 
 import androidx.lifecycle.MutableLiveData
 import com.google.gson.Gson
@@ -21,7 +21,7 @@ import java.util.ArrayList
 import javax.inject.Inject
 
 @ActivityScope
-class MessageRepository @Inject constructor(
+class MainRepository @Inject constructor(
     private val memoDb: MemoDB, private val loveDayDb: LoveDayDB) {
 
     private var unSubscripbe: CompositeDisposable = CompositeDisposable()

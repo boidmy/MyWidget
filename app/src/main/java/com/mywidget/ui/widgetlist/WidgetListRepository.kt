@@ -1,10 +1,10 @@
-package com.mywidget.repository
+package com.mywidget.ui.widgetlist
 
 import com.mywidget.data.room.User
 import com.mywidget.data.room.UserDB
 import javax.inject.Inject
 
-class UserRepository @Inject constructor(
+class WidgetListRepository @Inject constructor(
     private val userDb: UserDB) {
 
     fun insertUser(user: String, phone: String) {

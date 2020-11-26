@@ -3,11 +3,10 @@ package com.mywidget.ui.widgetlist
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.mywidget.data.room.User
-import com.mywidget.repository.UserRepository
 import javax.inject.Inject
 
 class WidgetListViewModel @Inject constructor(
-    private val repository: UserRepository
+    private val repository: WidgetListRepository
 ) : ViewModel() {
 
     var data: MutableLiveData<List<User>> = MutableLiveData()

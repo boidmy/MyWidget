@@ -4,11 +4,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.mywidget.data.model.LmemoData
 import com.mywidget.data.room.*
-import com.mywidget.repository.MessageRepository
 import javax.inject.Inject
 
 class MainFragmentViewModel @Inject constructor(
-    private val repository: MessageRepository
+    private val repository: MainRepository
 ) : ViewModel() {
     var memoData: MutableLiveData<List<Memo>> = MutableLiveData()
     var loveday: MutableLiveData<String> = MutableLiveData()
