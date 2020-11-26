@@ -1,8 +1,8 @@
 package com.mywidget.di.module
 
 import androidx.lifecycle.ViewModel
-import com.mywidget.viewModel.UserViewModel
-import com.mywidget.viewModel.ViewModelKey
+import com.mywidget.ui.widgetlist.WidgetListViewModel
+import com.mywidget.di.custom.ViewModelKey
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
@@ -12,6 +12,6 @@ abstract class UserViewModelModule {
 
     @Binds
     @IntoMap
-    @ViewModelKey(UserViewModel::class)
-    internal abstract fun bindViewModel(viewModel: UserViewModel): ViewModel
+    @ViewModelKey(WidgetListViewModel::class)
+    internal abstract fun bindViewModel(viewModel: WidgetListViewModel): ViewModel
 }

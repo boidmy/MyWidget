@@ -1,17 +1,17 @@
 package com.mywidget.repository
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.google.gson.Gson
 import com.google.gson.JsonObject
 import com.google.gson.reflect.TypeToken
-import com.mywidget.Util
+import util.Util
 import com.mywidget.data.apiConnect.ApiConnection
 import com.mywidget.data.model.LmemoData
 import com.mywidget.data.room.LoveDay
 import com.mywidget.data.room.LoveDayDB
 import com.mywidget.data.room.Memo
 import com.mywidget.data.room.MemoDB
+import com.mywidget.di.custom.ActivityScope
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -20,6 +20,7 @@ import org.json.JSONObject
 import java.util.ArrayList
 import javax.inject.Inject
 
+@ActivityScope
 class MessageRepository @Inject constructor(
     private val memoDb: MemoDB, private val loveDayDb: LoveDayDB) {
 

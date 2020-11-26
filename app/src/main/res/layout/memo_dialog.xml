@@ -1,97 +1,101 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="date"
             type="String" />
+
         <variable
             name="viewModel"
-            type="com.mywidget.viewModel.MainFragmentViewModel" />
+            type="com.mywidget.ui.main.MainFragmentViewModel" />
 
     </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/memo_dialog"
-        android:orientation="vertical"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/outline_white"
+        android:orientation="vertical"
         android:paddingLeft="20dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="8dp"
             android:text="제목"
             android:textColor="@color/text_pink"
-            android:layout_marginTop="20dp"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/cal_btn"
             app:layout_constraintRight_toLeftOf="@+id/memo_txt"
-            android:layout_marginBottom="8dp"
-            android:layout_marginRight="10dp"
-            app:layout_constraintBottom_toTopOf="@+id/cal_btn"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
             android:id="@+id/memo_txt"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
-            android:minWidth="140dp"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
             android:layout_marginTop="20dp"
+            android:layout_marginBottom="5dp"
             android:background="@drawable/outline_pink"
+            android:minWidth="140dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
             android:textColor="#000000"
             android:textColorHint="#9B9B9B"
-            android:layout_marginBottom="5dp"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"/>
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <View
             android:id="@+id/cal_btn"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:background="@drawable/img_calendar"
             android:layout_marginTop="5dp"
+            android:background="@drawable/img_calendar"
             app:NowDate="@{dateTxt}"
-            app:layout_constraintRight_toLeftOf="@+id/date_txt"
-            app:layout_constraintTop_toBottomOf="@+id/memo_txt"
-            app:layout_constraintHorizontal_chainStyle="packed"/>
+            app:layout_constraintEnd_toStartOf="@+id/date_txt"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/memo_txt" />
 
         <TextView
             android:id="@+id/date_txt"
             android:layout_width="120dp"
             android:layout_height="30dp"
-            android:gravity="center"
-            android:textColor="#ffffff"
-            android:layout_marginTop="10dp"
             android:layout_marginLeft="5dp"
-            app:layout_constraintTop_toBottomOf="@+id/memo_txt"
-            app:layout_constraintLeft_toRightOf="@+id/cal_btn"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/edge_round_blue"
+            android:gravity="center"
             android:text="@{date}"
-            tools:text="2019-09-24"
-            android:background="@drawable/edge_round_blue"/>
+            android:textColor="#ffffff"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/cal_btn"
+            app:layout_constraintTop_toBottomOf="@+id/memo_txt"
+            tools:text="2019-09-24" />
 
         <Button
             android:id="@+id/confirm_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="입력"
+            android:layout_marginTop="10dp"
             android:layout_marginBottom="20dp"
+            android:background="@drawable/edge_round_blue"
+            android:text="입력"
+            android:textColor="@color/white"
+            app:dateTxt="@{dateTxt}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHorizontal_bias="0.4"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/date_txt"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:background="@drawable/edge_round_blue"
-            android:layout_marginTop="10dp"
-            android:textColor="@color/white"
+            app:layout_constraintVertical_bias="0.0"
             app:memoTxt="@{memoTxt}"
-            app:dateTxt="@{dateTxt}"
-            app:viewModel="@{viewModel}"
-            app:layout_constraintHorizontal_bias="0.4"
-            app:layout_constraintVertical_bias="0.0"/>
+            app:viewModel="@{viewModel}" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

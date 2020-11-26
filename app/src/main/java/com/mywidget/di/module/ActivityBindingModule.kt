@@ -1,12 +1,13 @@
 package com.mywidget.di.module
 
-import com.mywidget.chat.chatting.ChatActivity
-import com.mywidget.chat.chatting.ChatModule
-import com.mywidget.chat.waiting.WaitingRoomActivity
-import com.mywidget.chat.waiting.WatingViewModelModule
-import com.mywidget.di.ActivityScope
-import com.mywidget.view.MainActivity
-import com.mywidget.view.UserActivity
+import com.mywidget.ui.chat.ChatActivity
+import com.mywidget.ui.chat.ChatModule
+import com.mywidget.ui.chatroom.ChatRoomActivity
+import com.mywidget.ui.chatroom.ChatRoomViewModelModule
+import com.mywidget.di.custom.ActivityScope
+import com.mywidget.ui.main.MainActivity
+import com.mywidget.ui.main.MainActivityModule
+import com.mywidget.ui.widgetlist.WidgetListActivity
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
@@ -24,11 +25,11 @@ abstract class ActivityBindingModule {
 
     @ActivityScope
     @ContributesAndroidInjector(modules = [UserViewModelModule::class])
-    abstract fun userActivity(): UserActivity
+    abstract fun userActivity(): WidgetListActivity
 
     @ActivityScope
-    @ContributesAndroidInjector(modules = [WatingViewModelModule::class])
-    abstract fun watingRoomActivity(): WaitingRoomActivity
+    @ContributesAndroidInjector(modules = [ChatRoomViewModelModule::class])
+    abstract fun watingRoomActivity(): ChatRoomActivity
 
     @ActivityScope
     @ContributesAndroidInjector(modules = [ChatModule::class])

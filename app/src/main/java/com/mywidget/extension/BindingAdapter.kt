@@ -2,33 +2,25 @@ package com.mywidget.extension
 
 import android.app.DatePickerDialog
 import android.appwidget.AppWidgetManager
-import android.content.Context
 import android.content.Intent
 import android.view.View
-import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
-import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
-import com.mywidget.CalendarUtil
+import util.CalendarUtil
 import com.mywidget.MyAppWidget
-import com.mywidget.R
-import com.mywidget.Util
-import com.mywidget.adapter.MainTabMemoAdapter
-import com.mywidget.adapter.UserAdapter
-import com.mywidget.chat.ChatDataModel
-import com.mywidget.chat.RoomDataModel
-import com.mywidget.chat.chatting.ChatAdapter
-import com.mywidget.chat.waiting.adapter.WatingRoomAdapter
+import com.mywidget.ui.main.recyclerview.MainTabMemoAdapter
+import com.mywidget.ui.widgetlist.recyclerview.WidgetListRecyclerView
+import com.mywidget.data.model.ChatDataModel
+import com.mywidget.data.model.RoomDataModel
+import com.mywidget.ui.chat.recyclerview.ChatAdapter
+import com.mywidget.ui.chatroom.recyclerview.ChatRoomRecyclerView
 import com.mywidget.data.room.Memo
 import com.mywidget.data.room.User
-import com.mywidget.viewModel.MainFragmentViewModel
-import com.mywidget.viewModel.UserViewModel
-import kotlinx.android.synthetic.main.main_loveday_dialog.view.*
-import kotlinx.android.synthetic.main.main_phone_dialog.view.*
+import com.mywidget.ui.main.MainFragmentViewModel
+import com.mywidget.ui.widgetlist.WidgetListViewModel
 import java.util.*
 
 @BindingAdapter("text")
@@ -56,7 +48,8 @@ fun termProcessing(textView: TextView?, data: String?) {
     val cal = CalendarUtil.calendar(data)
     var value = ""
     cal?.let {
-        value = CalendarUtil.dDay(CalendarUtil.getYear(cal)
+        value = CalendarUtil.dDay(
+            CalendarUtil.getYear(cal)
             , CalendarUtil.getMonth(cal)+1
             , CalendarUtil.getNowdate(cal)).toString()
     }
@@ -129,7 +122,7 @@ fun setLoveDay(button: Button, viewModel: MainFragmentViewModel, textView: TextV
 }
 
 @BindingAdapter("userConfirm", "userPhone", "userviewModel")
-fun setUserConfirm(button: Button, name: EditText, phone: EditText, viewModel: UserViewModel) {
+fun setUserConfirm(button: Button, name: EditText, phone: EditText, viewModel: WidgetListViewModel) {
     val context = button.context
     button.setOnClickListener {
         AlertDialog.Builder(context)
@@ -156,7 +149,7 @@ fun setUserConfirm(button: Button, name: EditText, phone: EditText, viewModel: U
 @BindingAdapter("items")
 fun adapter(recyclerView: RecyclerView?, data: MutableLiveData<List<User>>) {
 
-    val adapter: UserAdapter = recyclerView?.adapter as UserAdapter
+    val adapter: WidgetListRecyclerView = recyclerView?.adapter as WidgetListRecyclerView
     adapter.notifyDataSetChanged()
 }
 
@@ -168,7 +161,7 @@ fun memoAdapter(recyclerView: RecyclerView?, data: MutableLiveData<List<Memo>>?)
 
 @BindingAdapter("items")
 fun roomAdapter(recyclerView: RecyclerView?, data: MutableLiveData<List<RoomDataModel>>) {
-    val adapter: WatingRoomAdapter = recyclerView?.adapter as WatingRoomAdapter
+    val adapter: ChatRoomRecyclerView = recyclerView?.adapter as ChatRoomRecyclerView
     adapter.notifyDataSetChanged()
 }
 

@@ -12,7 +12,7 @@ import android.util.Log;
 import androidx.core.app.NotificationCompat;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
-import com.mywidget.view.MainActivity;
+import com.mywidget.ui.main.MainActivity;
 import com.mywidget.R;
 
 import java.util.Objects;

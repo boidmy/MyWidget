@@ -1,7 +1,7 @@
 package com.mywidget.di.module
 
-import com.mywidget.view.fragment.FragmentLoveDay
-import com.mywidget.view.fragment.FragmentMemo
+import com.mywidget.ui.main.fragment.FragmentLoveDay
+import com.mywidget.ui.main.fragment.FragmentMemo
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 

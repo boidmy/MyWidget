@@ -6,7 +6,7 @@
     <data>
         <variable
             name="data"
-            type="com.mywidget.chat.RoomDataModel" />
+            type="com.mywidget.data.model.RoomDataModel" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/rvContainer"

@@ -6,7 +6,7 @@
 
         <variable
             name="viewModel"
-            type="com.mywidget.chat.viewmodel.ChatViewModel" />
+            type="com.mywidget.ui.chat.ChatViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
