@@ -15,8 +15,8 @@ class ChatViewModel @Inject constructor(private val repository: ChatRepository) 
         data = repository.selectChat(id, key)
     }
 
-    fun insertChat(master: String, roomKey: String, sendUserEmail: String, text: String) {
-        repository.insertChat(master, roomKey, sendUserEmail, text)
+    fun insertChat(sendUserEmail: String, text: String) {
+        repository.insertChat(sendUserEmail, text)
     }
 
     fun userId(userEmail: String) {

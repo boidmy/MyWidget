@@ -8,4 +8,6 @@
     <color name="blue">#5771FA</color>
     <color name="tab_gray">#EEEEEE</color>
     <color name="text_pink">#FF6F6F</color>
+
+    <color name="textInputLayout">#96ffffff</color>
 </resources>

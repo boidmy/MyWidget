@@ -16,8 +16,7 @@ class ChatRoomActivity : BaseActivity<ActivityWatingRoomBinding>() {
     private val userAct: GoogleSignInAccount? by lazy { GoogleSignIn.getLastSignedInAccount(this) }
     @Inject lateinit var factory: ViewModelProvider.Factory
     val viewModel: ChatRoomViewModel by lazy {
-        ViewModelProvider(this, factory).get(ChatRoomViewModel::class.java)
-    }
+        ViewModelProvider(this, factory).get(ChatRoomViewModel::class.java)}
 
     override val layout: Int
         get() = R.layout.activity_wating_room

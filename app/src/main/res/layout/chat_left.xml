@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
@@ -8,29 +8,24 @@
             name="data"
             type="com.mywidget.data.model.ChatDataModel" />
     </data>
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="wrap_content"
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content">
-
-        <LinearLayout
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/chat_txt"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <TextView
-                android:id="@+id/chat_txt"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.5"
-                android:textSize="20dp"
-                android:text="@{data.message}"
-                tools:text="지금뭐하구있는거야??"/>
-
-            <View
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_weight="0.5"/>
-        </LinearLayout>
-
+            android:background="@drawable/chat_text_area_left"
+            android:paddingStart="25dp"
+            android:paddingTop="10dp"
+            android:paddingEnd="25dp"
+            android:paddingBottom="10dp"
+            android:text="@{data.message}"
+            android:textSize="20dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_percent="0.5"
+            tools:text="지금뭐하구있는거야??" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

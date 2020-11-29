@@ -12,7 +12,6 @@ class ChatAdapter(val viewModel: ChatViewModel) :
 
     private val LEFTCHAT = 0
     private val RIGHTCHAT = 1
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int)
             : RecyclerView.ViewHolder {
         return if (viewType == RIGHTCHAT) {
@@ -36,6 +35,10 @@ class ChatAdapter(val viewModel: ChatViewModel) :
 
     override fun getItemCount(): Int {
         return viewModel.data.value?.size ?: 0
+    }
+
+    override fun getItemId(position: Int): Long {
+        return position.toLong()
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {

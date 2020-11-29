@@ -6,7 +6,7 @@ import com.mywidget.data.model.RoomDataModel
 import javax.inject.Inject
 
 class ChatRoomViewModel @Inject constructor(
-    val repository: ChatRoomRepository
+    private val repository: ChatRoomRepository
 ) : ViewModel() {
     var roomList: MutableLiveData<List<RoomDataModel>> = MutableLiveData()
 

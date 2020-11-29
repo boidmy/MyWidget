@@ -10,6 +10,7 @@ import com.mywidget.ui.chat.recyclerview.ChatAdapter
 import com.mywidget.databinding.ActivityChattingBinding
 import com.mywidget.ui.base.BaseActivity
 import kotlinx.android.synthetic.main.activity_chatting.*
+import util.ItemDecoration
 import javax.inject.Inject
 
 class ChatActivity : BaseActivity<ActivityChattingBinding>() {
@@ -28,20 +29,23 @@ class ChatActivity : BaseActivity<ActivityChattingBinding>() {
         bind()
     }
 
-    fun bind() {
-        binding.chatRv.adapter =
-            ChatAdapter(viewModel)
+    private fun bind() {
+        val adapter = ChatAdapter(viewModel)
+        adapter.setHasStableIds(true)
+        binding.chatRv.adapter = adapter
+        binding.chatRv.addItemDecoration(ItemDecoration(this, 10))
+
         val roomKey = intent.getStringExtra("roomKey")?:""
         val master = intent.getStringExtra("master")?:""
         viewModel.userId(userAct?.email?:"")
         viewModel.selectChat(master, roomKey)
         binding.sendBtn.setOnClickListener {
-            viewModel.insertChat(master, roomKey,
-                userAct?.email?:"", chatEdit.text.toString())
+            viewModel.insertChat(userAct?.email?:"", chatEdit.text.toString())
             binding.chatEdit.text.clear()
         }
         binding.inviteUser.setOnClickListener {
             viewModel.inviteUser()
         }
+
     }
 }
