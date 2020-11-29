@@ -32,7 +32,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:text="친구 초대"
-            android:textColor="#000000"
+            android:textColor="#ffffff"
             app:layout_constraintBottom_toBottomOf="@+id/chat_user_add_icon"
             app:layout_constraintStart_toEndOf="@+id/chat_user_add_icon"
             app:layout_constraintTop_toTopOf="@+id/chat_user_add_icon" />
@@ -44,7 +44,7 @@
             android:layout_marginStart="20dp"
             android:layout_marginTop="20dp"
             android:text="초대할 이메일을 입력하세요"
-            android:textColor="#000000"
+            android:textColor="#ffffff"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/chat_user_add_icon" />
 
