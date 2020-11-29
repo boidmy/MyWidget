@@ -11,7 +11,7 @@ import dagger.Provides
 class GoogleLoginModule {
 
     @Provides
-    fun bindGetLastSigned(application: Application): GoogleSignInAccount? {
+    fun provideGetLastSigned(application: Application): GoogleSignInAccount? {
         return GoogleSignIn.getLastSignedInAccount(application)
     }
 }

@@ -5,8 +5,12 @@ import com.mywidget.ui.chat.ChatModule
 import com.mywidget.ui.chatroom.ChatRoomActivity
 import com.mywidget.ui.chatroom.ChatRoomViewModelModule
 import com.mywidget.di.custom.ActivityScope
+import com.mywidget.ui.login.LoginActivity
+import com.mywidget.ui.login.LoginGoogleModule
 import com.mywidget.ui.main.MainActivity
 import com.mywidget.ui.main.MainActivityModule
+import com.mywidget.ui.signup.SignUpActivity
+import com.mywidget.ui.signup.SignUpViewModelModule
 import com.mywidget.ui.widgetlist.WidgetListActivity
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
@@ -34,4 +38,12 @@ abstract class ActivityBindingModule {
     @ActivityScope
     @ContributesAndroidInjector(modules = [ChatModule::class])
     abstract fun chattingActivity(): ChatActivity
+
+    @ActivityScope
+    @ContributesAndroidInjector(modules = [LoginGoogleModule::class])
+    abstract fun loginActivity(): LoginActivity
+
+    @ActivityScope
+    @ContributesAndroidInjector(modules = [SignUpViewModelModule::class])
+    abstract fun signUpActivity(): SignUpActivity
 }

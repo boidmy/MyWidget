@@ -26,6 +26,7 @@ import com.mywidget.databinding.MainLovedayDialogBinding
 import com.mywidget.databinding.MemoDialogBinding
 import com.mywidget.login.view.LoginGoogle
 import com.mywidget.ui.base.BaseActivity
+import com.mywidget.ui.login.LoginActivity
 import com.mywidget.ui.loveday.LoveDayPopupActivity
 import com.mywidget.ui.widgetlist.WidgetListActivity
 import kotlinx.android.synthetic.main.activity_main.*
@@ -173,7 +174,7 @@ class MainActivity : BaseActivity<DrawerlayoutMainBinding>()
                 startActivity(intent)
             }
             R.id.login_google -> {
-                val intent = Intent(this, LoginGoogle::class.java)
+                val intent = Intent(this, LoginActivity::class.java)
                 startActivityForResult(intent, 4000)
             }
         }

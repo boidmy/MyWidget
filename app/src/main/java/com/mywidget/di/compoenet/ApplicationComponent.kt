@@ -16,6 +16,7 @@ import javax.inject.Singleton
         RoomModule::class,
         FactoryModule::class,
         FireBaseDataBaseModule::class,
+        GoogleLoginModule::class,
         AndroidSupportInjectionModule::class
     ]
 )
