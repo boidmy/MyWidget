@@ -8,6 +8,7 @@ import com.mywidget.ui.chat.ChatActivity
 import com.mywidget.data.model.RoomDataModel
 import com.mywidget.databinding.WatingRoomItemBinding
 import com.mywidget.ui.chatroom.ChatRoomViewModel
+import java.io.Serializable
 
 class ChatRoomRecyclerView(val viewModel: ChatRoomViewModel) : RecyclerView.Adapter<ChatRoomRecyclerView.ChatRoomViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChatRoomViewHolder {
@@ -33,6 +34,8 @@ class ChatRoomRecyclerView(val viewModel: ChatRoomViewModel) : RecyclerView.Adap
                 val intent = Intent(binding.root.context, ChatActivity::class.java)
                 intent.putExtra("roomKey", data.key)
                 intent.putExtra("master", data.master)
+                intent.putExtra("roomName", data.roomName)
+                intent.putExtra("data", data)
                 binding.root.context.startActivity(intent)
             }
         }

@@ -6,22 +6,24 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
 import com.mywidget.data.model.RoomDataModel
+import util.Util
 import javax.inject.Inject
 
 class ChatRoomRepository @Inject constructor() {
-    @Inject lateinit var database: DatabaseReference
-    private val roomRef: DatabaseReference by lazy {database.child("Room")}
-    private val userRef: DatabaseReference by lazy {database.child("User")}
+    @Inject
+    lateinit var database: DatabaseReference
+    private val roomRef: DatabaseReference by lazy { database.child("Room") }
+    private val userRef: DatabaseReference by lazy { database.child("User") }
     var roomList: MutableLiveData<List<RoomDataModel>> = MutableLiveData()
 
-    fun selectRoomList(id: String) : MutableLiveData<List<RoomDataModel>> {
+    fun selectRoomList(id: String): MutableLiveData<List<RoomDataModel>> {
         userRef.child(id).child("RoomList").addValueEventListener(object : ValueEventListener {
             override fun onCancelled(error: DatabaseError) {
             }
 
             override fun onDataChange(snapshot: DataSnapshot) {
                 val list: ArrayList<RoomDataModel> = arrayListOf()
-                for(snap: DataSnapshot in snapshot.children) {
+                for (snap: DataSnapshot in snapshot.children) {
                     val roomModel = RoomDataModel(
                         snap.child("roomName").value.toString(),
                         snap.child("roomKey").value.toString(),
@@ -31,31 +33,25 @@ class ChatRoomRepository @Inject constructor() {
                 }
                 roomList.value = list
             }
-
         })
         return roomList
     }
 
-    fun createRoom(id: String) {
+    fun createRoom(id: String, subject: String) {
         id.let {
-            val mEmail = it.substring(0, it.indexOf('@'))
-            val result: HashMap<String, String> = hashMapOf()
-            val roomName = "콩이네방"
-            result["roomName"] = roomName
+            val mEmail = Util.userIdFormat(it)
 
+            val result: HashMap<String, String> = hashMapOf()
+            result["roomName"] = subject
             val ref = roomRef.child(mEmail).push()
             ref.setValue(result)
             ref.key?.let { keyVal ->
-                addUserRoomInformation(keyVal, mEmail, roomName)
+                addUserRoomInformation(RoomDataModel(subject, keyVal, mEmail))
             }
         }
     }
 
-    private fun addUserRoomInformation(key: String, id: String, roomName: String) {
-        val hopperUpdates: HashMap<String, Any> = hashMapOf()
-        hopperUpdates["roomKey"] = key
-        hopperUpdates["master"] = id //마스터 아디 수정해야함
-        hopperUpdates["roomName"] = roomName
-        userRef.child(id).child("RoomList").push().setValue(hopperUpdates)
+    private fun addUserRoomInformation(roomDataModel: RoomDataModel) {
+        userRef.child(roomDataModel.master).child("RoomList").push().setValue(roomDataModel)
     }
 }

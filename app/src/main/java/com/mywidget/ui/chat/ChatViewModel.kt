@@ -3,7 +3,9 @@ package com.mywidget.ui.chat
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.mywidget.data.model.ChatDataModel
+import com.mywidget.data.model.RoomDataModel
 import com.mywidget.ui.chat.ChatRepository
+import util.Util
 import javax.inject.Inject
 
 class ChatViewModel @Inject constructor(private val repository: ChatRepository) : ViewModel() {
@@ -11,8 +13,8 @@ class ChatViewModel @Inject constructor(private val repository: ChatRepository) 
     var data: MutableLiveData<List<ChatDataModel>> = MutableLiveData()
     var myId: String? = null
 
-    fun selectChat(id: String, key: String) {
-        data = repository.selectChat(id, key)
+    fun selectChat(roomDataModel: RoomDataModel) {
+        data = repository.selectChat(roomDataModel)
     }
 
     fun insertChat(sendUserEmail: String, text: String) {
@@ -20,10 +22,10 @@ class ChatViewModel @Inject constructor(private val repository: ChatRepository) 
     }
 
     fun userId(userEmail: String) {
-        myId = repository.userId(userEmail)
+        myId = Util.userIdFormat(userEmail)
     }
 
-    fun inviteUser() {
-
+    fun inviteUser(email: String) {
+        repository.inviteUser(email)
     }
 }

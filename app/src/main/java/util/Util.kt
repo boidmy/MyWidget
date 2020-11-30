@@ -60,4 +60,13 @@ object Util {
         val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0)
     }
+
+    fun userIdFormat(userEmail: String): String {
+        val mEmail: List<String>? = userEmail.split("@")
+        var userId = ""
+        if (mEmail?.size ?: 0 > 0) {
+            userId = mEmail?.get(0) ?: ""
+        }
+        return userId
+    }
 }

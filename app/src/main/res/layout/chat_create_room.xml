@@ -4,8 +4,11 @@
 
     <data>
         <variable
+            name="id"
+            type="String" />
+        <variable
             name="viewModel"
-            type="com.mywidget.ui.chat.ChatViewModel" />
+            type="com.mywidget.ui.chatroom.ChatRoomViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -26,7 +29,7 @@
             android:layout_height="40dp"
             android:layout_marginStart="20dp"
             android:layout_marginTop="20dp"
-            android:src="@drawable/chat_user_add_icon"
+            android:src="@drawable/chat_add_room"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -34,7 +37,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
-            android:text="친구 초대"
+            android:text="방생성"
             android:textColor="#ffffff"
             app:layout_constraintBottom_toBottomOf="@+id/chatUserAddIcon"
             app:layout_constraintStart_toEndOf="@+id/chatUserAddIcon"
@@ -46,7 +49,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginTop="20dp"
-            android:text="초대할 이메일을 입력하세요"
+            android:text="방 제목을 입력하세요"
             android:textColor="#ffffff"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/chatUserAddIcon" />
@@ -69,8 +72,7 @@
             android:layout_marginTop="20dp"
             android:layout_marginEnd="20dp"
             android:src="@drawable/confirm_btn"
-            app:inviteUserAdd="@{viewModel}"
-            app:userEmail="@{chatUserEmailEdit}"
+            android:onClick="@{() -> viewModel.createRoom(id, chatUserEmailEdit.text.toString())}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/chatUserEmailEdit" />
     </androidx.constraintlayout.widget.ConstraintLayout>
