@@ -46,9 +46,3 @@ fun inviteUserOnClick(imageView: ImageView, viewModel: ChatViewModel) {
     }
 }
 
-@BindingAdapter("inviteUserAdd", "userEmail")
-fun inviteUserAdd(imageView: ImageView, viewModel: ChatViewModel, editText: EditText) {
-    imageView.setOnClickListener {
-        viewModel.inviteUser(editText.text.toString())
-    }
-}

@@ -5,6 +5,9 @@
 
     <data>
         <variable
+            name="id"
+            type="String" />
+        <variable
             name="viewModel"
             type="com.mywidget.ui.chatroom.ChatRoomViewModel" />
     </data>

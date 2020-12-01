@@ -10,6 +10,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
+import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -46,9 +47,7 @@ class MainActivity : BaseActivity<DrawerlayoutMainBinding>()
     @Inject lateinit var mTabPagerAdapter: MainTabPagerAdapter
     @Inject lateinit var backPressAppFinish: BackPressAppFinish
     @Inject lateinit var factory: ViewModelProvider.Factory
-
-    val viewModel: MainFragmentViewModel by lazy {
-        ViewModelProvider(this, factory).get(MainFragmentViewModel::class.java)}
+    private val viewModel by viewModels<MainFragmentViewModel> { factory }
 
     override val layout: Int
         get() = R.layout.drawerlayout_main
@@ -197,9 +196,9 @@ class MainActivity : BaseActivity<DrawerlayoutMainBinding>()
     private fun loveDday() {
         loveDayDialogBinding.viewModel = viewModel
         viewModel.dialogVisible.value = true
-        lovedayDialog?.show()
         viewModel.dialogVisible.observe(this, androidx.lifecycle.Observer {
-            if(!it) lovedayDialog?.dismiss()
+            if(it) lovedayDialog?.show()
+            else lovedayDialog?.dismiss()
         })
     }
 
@@ -212,14 +211,15 @@ class MainActivity : BaseActivity<DrawerlayoutMainBinding>()
     }
 
     private fun onClickMemo() {
-        memoDialog?.show()
-        viewModel.dialogVisible.value = true
         viewModel.dialogVisible.observe(this, androidx.lifecycle.Observer {
-            if(!it) {
+            if(it) {
+                memoDialog?.show()
+            } else {
                 memoDialog?.dismiss()
                 Util.downKeyboard(this)
             }
         })
+        viewModel.dialogVisible.value = true
 
         memoDialogBinding.apply {
             memoTxt.requestFocus()

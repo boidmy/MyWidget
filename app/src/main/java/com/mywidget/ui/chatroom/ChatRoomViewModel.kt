@@ -9,6 +9,8 @@ class ChatRoomViewModel @Inject constructor(
     private val repository: ChatRoomRepository
 ) : ViewModel() {
     var roomList: MutableLiveData<List<RoomDataModel>> = MutableLiveData()
+    var myId: String? = null
+    var isDialogVisibility: MutableLiveData<Boolean> = MutableLiveData()
 
     fun selectRoomList(id: String) {
         roomList = repository.selectRoomList(id)

@@ -1,6 +1,7 @@
 package com.mywidget.ui.chat
 
 import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
@@ -17,8 +18,7 @@ import javax.inject.Inject
 class ChatActivity : BaseActivity<ActivityChattingBinding>() {
     @Inject lateinit var database: DatabaseReference
     @Inject lateinit var factory: ViewModelProvider.Factory
-    val viewModel: ChatViewModel by lazy {
-        ViewModelProvider(this, factory).get(ChatViewModel::class.java) }
+    private val viewModel by viewModels<ChatViewModel> { factory }
     private val userAct: GoogleSignInAccount?
             by lazy { GoogleSignIn.getLastSignedInAccount(this) }
     override val layout: Int

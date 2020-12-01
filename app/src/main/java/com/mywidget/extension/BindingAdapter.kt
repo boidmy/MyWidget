@@ -19,6 +19,7 @@ import com.mywidget.ui.chat.recyclerview.ChatAdapter
 import com.mywidget.ui.chatroom.recyclerview.ChatRoomRecyclerView
 import com.mywidget.data.room.Memo
 import com.mywidget.data.room.User
+import com.mywidget.ui.chat.ChatViewModel
 import com.mywidget.ui.main.MainFragmentViewModel
 import com.mywidget.ui.widgetlist.WidgetListViewModel
 import java.util.*
@@ -145,5 +146,3 @@ fun chatAdapter(recyclerView: RecyclerView?, data: MutableLiveData<List<ChatData
     val adapter: ChatAdapter = recyclerView?.adapter as ChatAdapter
     adapter.notifyDataSetChanged()
 }
-
-

@@ -3,6 +3,10 @@ package com.mywidget.ui.chatroom
 import android.app.Dialog
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.View
+import android.widget.ImageView
+import androidx.activity.viewModels
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
@@ -18,8 +22,9 @@ class ChatRoomActivity : BaseActivity<ActivityWatingRoomBinding>() {
 
     private val userAct: GoogleSignInAccount? by lazy { GoogleSignIn.getLastSignedInAccount(this) }
     @Inject lateinit var factory: ViewModelProvider.Factory
-    val viewModel: ChatRoomViewModel by lazy {
-        ViewModelProvider(this, factory).get(ChatRoomViewModel::class.java)}
+    private val viewModel by viewModels<ChatRoomViewModel> { factory }
+    private val dialogBinding by lazy { ChatCreateRoomBinding.inflate(LayoutInflater.from(this)) }
+    private val createRoomDialog by lazy { Dialog(this) }
 
     override val layout: Int
         get() = R.layout.activity_wating_room
@@ -34,18 +39,23 @@ class ChatRoomActivity : BaseActivity<ActivityWatingRoomBinding>() {
         binding.watingRoomRv.adapter = ChatRoomRecyclerView(viewModel)
         userAct?.email?.let {
             viewModel.selectRoomList(it.substring(0, it.indexOf('@')))
+            viewModel.myId = it
         }
-        createRoom.setOnClickListener {
-            /*val email = userAct?.email
-            email?.let { viewModel.createRoom(it) }*/
+        createRoom.setOnClickListener(onClickCreateRoom)
+        createRoomDialog()
+    }
 
-            val binding = ChatCreateRoomBinding.inflate(LayoutInflater.from(this))
-            binding.viewModel = viewModel
-            binding.id = userAct?.email
-            val dialog = Dialog(this)
-            dialog.setContentView(binding.root)
-            dialog.show()
+    private fun createRoomDialog() {
+        dialogBinding.viewModel = viewModel
+        dialogBinding.id = userAct?.email
+        createRoomDialog.setContentView(dialogBinding.root)
+    }
 
-        }
+    private val onClickCreateRoom = View.OnClickListener {
+        viewModel.isDialogVisibility.value = true
+        viewModel.isDialogVisibility.observe(this, Observer {
+            if(it) createRoomDialog.show()
+            else createRoomDialog.dismiss()
+        })
     }
 }
