@@ -39,7 +39,7 @@ class ChatRoomActivity : BaseActivity<ActivityWatingRoomBinding>() {
             /*val email = userAct?.email
             email?.let { viewModel.createRoom(it) }*/
 
-            val binding: ChatCreateRoomBinding = ChatCreateRoomBinding.inflate(LayoutInflater.from(this))
+            val binding = ChatCreateRoomBinding.inflate(LayoutInflater.from(this))
             binding.viewModel = viewModel
             binding.id = userAct?.email
             val dialog = Dialog(this)
