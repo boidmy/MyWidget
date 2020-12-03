@@ -1,16 +1,13 @@
 package com.mywidget.extension
 
-import android.app.Dialog
 import android.text.TextUtils
-import android.view.LayoutInflater
 import android.view.View
 import android.widget.*
 import androidx.databinding.BindingAdapter
-import com.mywidget.databinding.ChatCreateRoomBinding
 import com.mywidget.ui.chat.ChatViewModel
 import com.mywidget.ui.chatroom.ChatRoomViewModel
+import com.mywidget.ui.login.LoginActivity
 import com.mywidget.ui.signup.SignUpActivity
-import kotlinx.android.synthetic.main.activity_signup.*
 
 @BindingAdapter("email", "password", "confirmPassword", "missId", "missPassword", "activity")
 fun firebaseSignUp(
@@ -39,6 +36,25 @@ fun firebaseSignUp(
         }
 
         activity.singUpFirebase(email, vinputPassword)
+    }
+}
+
+@BindingAdapter("email", "password", "activity")
+fun loginUser(button: Button, email: EditText, password: EditText, activity: LoginActivity) {
+    button.setOnClickListener {
+        val emailVal = email.text.toString()
+        val passwordVal = password.text.toString()
+        when {
+            emailVal.isEmpty() -> {
+                Toast.makeText(button.context, "이메일을 입력해주세요", Toast.LENGTH_LONG).show()
+            }
+            passwordVal.isEmpty() -> {
+                Toast.makeText(button.context, "비밀번호를 입력해주세요", Toast.LENGTH_LONG).show()
+            }
+            else -> {
+                activity.signInPassword(emailVal, passwordVal)
+            }
+        }
     }
 }
 

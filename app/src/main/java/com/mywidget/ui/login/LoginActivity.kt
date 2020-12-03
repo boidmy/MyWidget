@@ -2,7 +2,9 @@ package com.mywidget.ui.login
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
+import android.widget.Toast
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -12,6 +14,7 @@ import com.mywidget.databinding.ActivityLoginBinding
 import com.mywidget.ui.base.BaseActivity
 import com.mywidget.ui.signup.SignUpActivity
 import kotlinx.android.synthetic.main.activity_login.*
+import util.Util
 import javax.inject.Inject
 
 class LoginActivity: BaseActivity<ActivityLoginBinding>() {
@@ -27,7 +30,12 @@ class LoginActivity: BaseActivity<ActivityLoginBinding>() {
         super.onCreate(savedInstanceState)
 
         account = GoogleSignIn.getLastSignedInAccount(this)
+        bindView()
         signInGoogle.setOnClickListener { signInGoogleLogin() }
+    }
+
+    private fun bindView() {
+        binding.activity = this
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -35,7 +43,6 @@ class LoginActivity: BaseActivity<ActivityLoginBinding>() {
 
         if (requestCode == RC_SIGN_IN) {
             val task = GoogleSignIn.getSignedInAccountFromIntent(data)
-
         }
     }
 
@@ -49,10 +56,15 @@ class LoginActivity: BaseActivity<ActivityLoginBinding>() {
         startActivityForResult(signInIntent, RC_SIGN_IN)
     }
 
-    private fun signOut() {
-        mGoogleSignInClient.signOut()
-            ?.addOnCompleteListener(this) {
-                // ...
+    fun signInPassword(email: String, password: String) {
+        firebaseAuth.signInWithEmailAndPassword(email, password)
+            .addOnCompleteListener(this) { task ->
+                if (task.isSuccessful) {
+                    finish()
+                } else {
+                    Toast.makeText(this, task.exception?.message, Toast.LENGTH_SHORT).show()
+                    Util.toast(this, task.exception?.message?:"잠시 후 다시 시도해 주세요")
+                }
             }
     }
 }

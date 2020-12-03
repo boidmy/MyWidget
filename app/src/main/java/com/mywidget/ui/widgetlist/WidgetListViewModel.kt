@@ -11,6 +11,8 @@ class WidgetListViewModel @Inject constructor(
 
     var data: MutableLiveData<List<User>> = MutableLiveData()
     var dialogVisible: MutableLiveData<Boolean> = MutableLiveData()
+    var userEmail: MutableLiveData<String> = MutableLiveData()
+
 
     fun insertUser(user: String, phone: String) {
         Thread(Runnable {

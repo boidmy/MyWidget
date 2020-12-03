@@ -2,7 +2,8 @@
 <layout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/apk/res-auto">
 
     <data>
         <variable
@@ -17,8 +18,9 @@
         android:background="#F7F7F7">
 
         <include
-            android:id="@+id/title_container"
+            android:id="@+id/titleContainer"
             layout="@layout/layout_title"
+            bind:loginEmail="@{viewModel.userEmail}"
             app:layout_constraintTop_toTopOf="parent"/>
 
         <androidx.recyclerview.widget.RecyclerView
@@ -29,7 +31,7 @@
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             android:orientation="vertical"
             tools:listitem="@layout/user_rv_item"
-            app:layout_constraintTop_toBottomOf="@+id/title_container"/>
+            app:layout_constraintTop_toBottomOf="@+id/titleContainer"/>
 
         <ImageView
             android:id="@+id/add_txt"

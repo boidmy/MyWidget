@@ -2,6 +2,7 @@ package util
 
 import android.content.Context
 import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -68,5 +69,9 @@ object Util {
             userId = mEmail?.get(0) ?: ""
         }
         return userId
+    }
+
+    fun toast(context: Context, text: String) {
+        Toast.makeText(context, text, Toast.LENGTH_LONG).show()
     }
 }

@@ -17,6 +17,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
+import androidx.core.view.get
 import androidx.lifecycle.ViewModelProvider
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.IdpResponse
@@ -24,7 +25,9 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.tabs.TabLayout
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.iid.FirebaseInstanceId
+import com.google.firebase.ktx.Firebase
 import com.mywidget.*
 import com.mywidget.common.BackPressAppFinish
 import com.mywidget.databinding.DrawerlayoutMainBinding
@@ -65,16 +68,19 @@ class MainActivity : BaseActivity<DrawerlayoutMainBinding>()
         addWidget()
         leftMenu()
         tabInit()
-        googleLogin()
+        loginCheck()
         memoDialogBind()
         loveDayBind()
 
         floating_btn.setOnClickListener(onClickFloating)
     }
 
-    private fun googleLogin() {
-        val userAct = GoogleSignIn.getLastSignedInAccount(this)
-        //fcmtest("")
+    private fun loginCheck() {
+        val email = loginChk()
+        if(email.isNotEmpty()) {
+            viewModel.userEmail.value = email
+            binding.navView.menu.getItem(1).title = "로그아웃"
+        }
     }
 
     private fun tabInit() {
@@ -102,24 +108,13 @@ class MainActivity : BaseActivity<DrawerlayoutMainBinding>()
                 }
             }
             4000 -> {
-                /*val userAct = GoogleSignIn.getLastSignedInAccount(this)
-                userAct?.let {
-                    val name = it.givenName
-                    val token = it.idToken
-                    login_name.text = it.givenName
-                }*/
                 val response = IdpResponse.fromResultIntent(data)
-
-                if (resultCode == Activity.RESULT_OK) {
-                    // Successfully signed in
-                    val user = FirebaseAuth.getInstance().currentUser
-                    Log.d("aaa", user?.email?:"")
-                    // ...
-                } else {
-                    // Sign in failed. If response is null the user canceled the
-                    // sign-in flow using the back button. Otherwise check
-                    // response.getError().getErrorCode() and handle the error.
-                    // ...
+                // Successfully signed in
+                val user = FirebaseAuth.getInstance().currentUser
+                user?.email?.let {
+                    Util.toast(this, it+"님 환영합니다!")
+                    viewModel.userEmail.value = user.email?:""
+                    loginTxt("로그아웃")
                 }
             }
         }
@@ -153,7 +148,7 @@ class MainActivity : BaseActivity<DrawerlayoutMainBinding>()
     }
 
     private fun leftMenu() {
-        left_btn.setOnClickListener {
+        binding.mainContainer.titleContainer.leftMenu.setOnClickListener {
             binding.drawerLayout.openDrawer(GravityCompat.START)
         }
         binding.navView.setNavigationItemSelectedListener(this)
@@ -183,26 +178,26 @@ class MainActivity : BaseActivity<DrawerlayoutMainBinding>()
         }
     }
 
+    private fun loginTxt(text: String) {
+        binding.navView.menu.getItem(1).title = text
+    }
+
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         // Handle navigation view item clicks here.
         when (item.itemId) {
-            R.id.left_delete -> {
+            R.id.widget_phone_add -> {
                 val intent = Intent(this, WidgetListActivity::class.java)
                 startActivity(intent)
             }
-            R.id.login_google -> {
-                val intent = Intent(this, LoginActivity::class.java)
-                startActivityForResult(intent, 4000)
-                /*val providers = arrayListOf(
-                    AuthUI.IdpConfig.EmailBuilder().build(),
-                    AuthUI.IdpConfig.PhoneBuilder().build(),
-                    AuthUI.IdpConfig.GoogleBuilder().build())
-                startActivityForResult(
-                    AuthUI.getInstance()
-                    .createSignInIntentBuilder()
-                    .setAvailableProviders(providers)
-                    .build(),
-                    4000)*/
+            R.id.login -> {
+                if(binding.navView.menu.getItem(1).title.toString() == "로그인") {
+                    val intent = Intent(this, LoginActivity::class.java)
+                    startActivityForResult(intent, 4000)
+                } else {
+                    Firebase.auth.signOut()
+                    viewModel.userEmail.value = ""
+                    loginTxt("로그인")
+                }
             }
         }
         binding.drawerLayout.closeDrawer(GravityCompat.START)

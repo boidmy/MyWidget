@@ -21,4 +21,10 @@ abstract class BaseActivity<D : ViewDataBinding>
         binding = DataBindingUtil.setContentView(this, layout)
         binding.lifecycleOwner = this
     }
+
+    fun loginChk(): String {
+        return firebaseAuth.currentUser?.email?:""
+    }
+
+
 }
