@@ -1,10 +1,8 @@
 package com.mywidget.data.model
 
-class UserData {
+data class UserData(var email: String,
+                    var friendName: String,
+                    var id: String,
+                    var token: String,
+                    var nickName: String)
 
-    var email: String?= null
-    var friendName: String?= null
-    var id: String?= null
-    var token: String?= null
-    var nickName: String?= null
-}

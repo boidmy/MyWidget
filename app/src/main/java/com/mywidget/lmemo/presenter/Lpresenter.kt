@@ -86,7 +86,7 @@ class Lpresenter(view: LmemoContract.View) : LmemoContract.presenter {
 
         disposable.add(
             ApiConnection.Instance().retrofitService
-            .UserData(id)
+            .userData(id)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe ({

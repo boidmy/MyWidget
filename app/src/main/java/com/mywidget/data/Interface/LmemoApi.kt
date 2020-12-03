@@ -14,7 +14,7 @@ interface LmemoApi {
     fun lmemoData(@Path("name") name: String): Observable<JsonObject>
 
     @GET("User/{id}.json")
-    fun UserData(@Path("id") id: String?): Observable<UserData>
+    fun userData(@Path("id") id: String?): Observable<UserData>
 
     @POST
     fun fcmTest(@Url url: String, @HeaderMap map: HashMap<String, String>, @Body body: JSONObject): Observable<Response<*>>

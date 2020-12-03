@@ -10,7 +10,7 @@ class SignUpViewModel @Inject constructor(
     var signUpComplete: MutableLiveData<Boolean> = MutableLiveData()
     var data: MutableLiveData<String> = MutableLiveData()
 
-    fun singUpFirebase(email: String, password: String) {
-        signUpComplete = signUpRepository.singUpFirebase(email, password)
+    fun singUpFirebase(email: String) {
+        signUpComplete = signUpRepository.singUpFirebase(email)
     }
 }

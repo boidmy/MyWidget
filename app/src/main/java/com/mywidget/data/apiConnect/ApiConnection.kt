@@ -38,6 +38,6 @@ class ApiConnection private constructor() {
 
     fun selectNickName(mail: String): Observable<UserData> =
         retrofitService
-            .UserData(mail)
+            .userData(mail)
             .subscribeOn(Schedulers.io())
 }
