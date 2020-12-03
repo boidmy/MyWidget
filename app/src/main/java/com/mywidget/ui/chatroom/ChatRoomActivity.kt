@@ -2,6 +2,7 @@ package com.mywidget.ui.chatroom
 
 import android.app.Dialog
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageView
@@ -20,7 +21,6 @@ import javax.inject.Inject
 
 class ChatRoomActivity : BaseActivity<ActivityWatingRoomBinding>() {
 
-    private val userAct: GoogleSignInAccount? by lazy { GoogleSignIn.getLastSignedInAccount(this) }
     @Inject lateinit var factory: ViewModelProvider.Factory
     private val viewModel by viewModels<ChatRoomViewModel> { factory }
     private val dialogBinding by lazy { ChatCreateRoomBinding.inflate(LayoutInflater.from(this)) }
@@ -37,17 +37,19 @@ class ChatRoomActivity : BaseActivity<ActivityWatingRoomBinding>() {
     private fun bind() {
         binding.viewModel = viewModel
         binding.watingRoomRv.adapter = ChatRoomRecyclerView(viewModel)
-        userAct?.email?.let {
-            viewModel.selectRoomList(it.substring(0, it.indexOf('@')))
-            viewModel.myId = it
+
+        with(loginEmail()) {
+            viewModel.selectRoomList(this)
+            viewModel.myId = this
         }
+
         createRoom.setOnClickListener(onClickCreateRoom)
         createRoomDialog()
     }
 
     private fun createRoomDialog() {
         dialogBinding.viewModel = viewModel
-        dialogBinding.id = userAct?.email
+        dialogBinding.id = loginEmail()
         createRoomDialog.setContentView(dialogBinding.root)
     }
 

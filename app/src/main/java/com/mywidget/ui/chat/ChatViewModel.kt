@@ -22,7 +22,7 @@ class ChatViewModel @Inject constructor(private val repository: ChatRepository) 
     }
 
     fun userId(userEmail: String) {
-        myId = Util.userIdFormat(userEmail)
+        myId = Util.replacePointToComma(userEmail)
     }
 
     fun inviteUser(email: String) {

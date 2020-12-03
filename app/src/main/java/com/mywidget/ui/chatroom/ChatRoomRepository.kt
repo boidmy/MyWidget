@@ -17,7 +17,7 @@ class ChatRoomRepository @Inject constructor() {
     var roomList: MutableLiveData<List<RoomDataModel>> = MutableLiveData()
 
     fun selectRoomList(id: String): MutableLiveData<List<RoomDataModel>> {
-        userRef.child(id).child("RoomList").addValueEventListener(object : ValueEventListener {
+        userRef.child(Util.replacePointToComma(id)).child("RoomList").addValueEventListener(object : ValueEventListener {
             override fun onCancelled(error: DatabaseError) {
             }
 
@@ -39,7 +39,7 @@ class ChatRoomRepository @Inject constructor() {
 
     fun createRoom(id: String, subject: String) {
         id.let {
-            val mEmail = Util.userIdFormat(it)
+            val mEmail = Util.replacePointToComma(id)
 
             val result: HashMap<String, String> = hashMapOf()
             result["roomName"] = subject

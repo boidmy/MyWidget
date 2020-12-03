@@ -37,10 +37,10 @@ class ChatActivity : BaseActivity<ActivityChattingBinding>() {
         binding.chatRv.addItemDecoration(ItemDecoration(this, 10))
 
         val roomDataModel = intent.getSerializableExtra("data") as RoomDataModel
-        viewModel.userId(userAct?.email?:"")
+        viewModel.userId(loginEmail())
         viewModel.selectChat(roomDataModel)
         binding.sendBtn.setOnClickListener {
-            viewModel.insertChat(userAct?.email?:"", chatEdit.text.toString())
+            viewModel.insertChat(loginEmail(), chatEdit.text.toString())
             binding.chatEdit.text.clear()
         }
     }

@@ -33,12 +33,12 @@ class ChatRepository @Inject constructor() {
     }
 
     fun insertChat(sendUserEmail: String, text: String) {
-        val userEmail = Util.userIdFormat(sendUserEmail)
+        val userEmail = Util.replacePointToComma(sendUserEmail)
         message.push().setValue(ChatDataModel(text, userEmail))
     }
 
     fun inviteUser(email: String) {
-        val mEmail = Util.userIdFormat(email)
+        val mEmail = Util.replacePointToComma(email)
         userRef.child(mEmail).child("RoomList").push().setValue(roomDataModel)
     }
 

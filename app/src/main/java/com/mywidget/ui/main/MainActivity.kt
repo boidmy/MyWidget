@@ -76,7 +76,7 @@ class MainActivity : BaseActivity<DrawerlayoutMainBinding>()
     }
 
     private fun loginCheck() {
-        val email = loginChk()
+        val email = loginEmail()
         if(email.isNotEmpty()) {
             viewModel.userEmail.value = email
             binding.navView.menu.getItem(1).title = "로그아웃"

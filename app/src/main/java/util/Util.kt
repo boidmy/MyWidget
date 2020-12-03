@@ -74,4 +74,8 @@ object Util {
     fun toast(context: Context, text: String) {
         Toast.makeText(context, text, Toast.LENGTH_LONG).show()
     }
+
+    fun replacePointToComma(email: String): String {
+        return email.replace(".", ",")
+    }
 }

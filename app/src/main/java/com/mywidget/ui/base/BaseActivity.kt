@@ -22,9 +22,7 @@ abstract class BaseActivity<D : ViewDataBinding>
         binding.lifecycleOwner = this
     }
 
-    fun loginChk(): String {
+    fun loginEmail(): String {
         return firebaseAuth.currentUser?.email?:""
     }
-
-
 }
