@@ -89,7 +89,7 @@ fun setLoveDay(button: Button, viewModel: MainFragmentViewModel, textView: TextV
                 textView.tag?.let {
                     viewModel.addLoveDay(it.toString())
                     Toast.makeText(button.context, "저장했대요!!", Toast.LENGTH_SHORT).show()
-                    viewModel.dialogVisible.value = false
+                    viewModel.loveDayDialogVisible.value = false
                 } ?: run {
                     Toast.makeText(button.context, "날짜를 선택해주세요!", Toast.LENGTH_SHORT).show()
                 }
@@ -99,7 +99,7 @@ fun setLoveDay(button: Button, viewModel: MainFragmentViewModel, textView: TextV
             ) { _, _ ->
                 // 취소시 처리 로직
                 Toast.makeText(button.context, "취소했대요ㅠㅠ.", Toast.LENGTH_SHORT).show()
-                viewModel.dialogVisible.value = false
+                viewModel.loveDayDialogVisible.value = false
             }.show()
     }
 }

@@ -1,14 +1,12 @@
 package com.mywidget.ui.main
 
 import android.Manifest
-import android.app.Activity
 import android.app.Dialog
 import android.appwidget.AppWidgetManager
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
@@ -17,11 +15,8 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
-import androidx.core.view.get
 import androidx.lifecycle.ViewModelProvider
-import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.IdpResponse
-import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.tabs.TabLayout
 import com.google.firebase.auth.FirebaseAuth
@@ -33,13 +28,11 @@ import com.mywidget.common.BackPressAppFinish
 import com.mywidget.databinding.DrawerlayoutMainBinding
 import com.mywidget.databinding.MainLovedayDialogBinding
 import com.mywidget.databinding.MemoDialogBinding
-import com.mywidget.login.view.LoginGoogle
 import com.mywidget.ui.base.BaseActivity
 import com.mywidget.ui.login.LoginActivity
 import com.mywidget.ui.loveday.LoveDayPopupActivity
 import com.mywidget.ui.widgetlist.WidgetListActivity
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.layout_title.*
 import util.CalendarUtil
 import util.Util
 import java.util.*
@@ -218,8 +211,8 @@ class MainActivity : BaseActivity<DrawerlayoutMainBinding>()
 
     private fun loveDday() {
         loveDayDialogBinding.viewModel = viewModel
-        viewModel.dialogVisible.value = true
-        viewModel.dialogVisible.observe(this, androidx.lifecycle.Observer {
+        viewModel.loveDayDialogVisible.value = true
+        viewModel.loveDayDialogVisible.observe(this, androidx.lifecycle.Observer {
             if(it) lovedayDialog?.show()
             else lovedayDialog?.dismiss()
         })
@@ -234,7 +227,7 @@ class MainActivity : BaseActivity<DrawerlayoutMainBinding>()
     }
 
     private fun onClickMemo() {
-        viewModel.dialogVisible.observe(this, androidx.lifecycle.Observer {
+        viewModel.memoDialogVisible.observe(this, androidx.lifecycle.Observer {
             if(it) {
                 memoDialog?.show()
             } else {
@@ -242,7 +235,7 @@ class MainActivity : BaseActivity<DrawerlayoutMainBinding>()
                 Util.downKeyboard(this)
             }
         })
-        viewModel.dialogVisible.value = true
+        viewModel.memoDialogVisible.value = true
 
         memoDialogBinding.apply {
             memoTxt.requestFocus()

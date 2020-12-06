@@ -10,7 +10,7 @@ object CalendarUtil {
 
         }
         if(data != "null") {
-            val cal: Calendar = Calendar.getInstance()
+            val cal: Calendar = Calendar.getInstance(Locale.KOREA)
             cal.time = SimpleDateFormat("yyyyMMdd").parse(data)
             return cal
         }
@@ -18,7 +18,7 @@ object CalendarUtil {
     }
 
     fun dDay(year: Int, month: Int, day: Int): Int {
-        val today = GregorianCalendar()
+        val today = GregorianCalendar(Locale.KOREA)
         val nYear2 = today[Calendar.YEAR]
         val nMonth2 = today[Calendar.MONTH] + 1
         val nDate2 = today[Calendar.DATE]

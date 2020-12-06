@@ -16,26 +16,26 @@ class LoveDayPopupActivity : Activity() {
 
         setContentView(R.layout.loveday_popup)
 
-        condition.setOnClickListener(clickListener)
-        dDay.setOnClickListener(clickListener)
-        chatBtn.setOnClickListener(clickListener)
+        conditionContainer.setOnClickListener(clickListener)
+        loveDayContainer.setOnClickListener(clickListener)
+        chatContainer.setOnClickListener(clickListener)
         smart_talk_floating_popup_dim_layout.setOnClickListener(clickListener)
     }
 
     private val clickListener = View.OnClickListener { v ->
         when (v.id){
-            R.id.condition -> {
+            R.id.conditionContainer -> {
                 val intent = Intent(this, LMemoActivity::class.java)
                 startActivity(intent)
                 finish()
             }
-            R.id.dDay -> {
+            R.id.loveDayContainer -> {
                 val intent = Intent()
                 intent.putExtra("result", "dday")
                 setResult(RESULT_OK, intent)
                 finish()
             }
-            R.id.chatBtn -> {
+            R.id.chatContainer -> {
                 val intent = Intent(this, ChatRoomActivity::class.java)
                 startActivity(intent)
                 finish()

@@ -6,7 +6,6 @@ import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.databinding.BindingAdapter
 import com.mywidget.databinding.ChatInviteUserAddBinding
-import com.mywidget.databinding.MemoDialogBinding
 import com.mywidget.ui.chat.ChatViewModel
 import com.mywidget.ui.main.MainFragmentViewModel
 
@@ -31,7 +30,7 @@ fun memoOnclick(button: Button, memo: EditText, date: TextView, viewModel: MainF
                 // 취소시 처리 로직
                 Toast.makeText(button.context, "취소했대요ㅠㅠ.", Toast.LENGTH_SHORT).show()
             }.show()
-        viewModel.dialogVisible.value = false
+        viewModel.memoDialogVisible.value = false
     }
 }
 

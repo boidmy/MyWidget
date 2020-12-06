@@ -18,7 +18,8 @@ class MainFragmentViewModel @Inject constructor(
     var rightString: MutableLiveData<LmemoData> = MutableLiveData()
     var userEmail: MutableLiveData<String> = MutableLiveData()
 
-    var dialogVisible: MutableLiveData<Boolean> = MutableLiveData()
+    var memoDialogVisible: MutableLiveData<Boolean> = MutableLiveData()
+    var loveDayDialogVisible: MutableLiveData<Boolean> = MutableLiveData()
 
     fun insertMemo(memo: String, data: String) {
         Thread(Runnable {
