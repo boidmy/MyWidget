@@ -12,23 +12,20 @@ import javax.inject.Inject
 @ActivityScope
 class ChatRepository @Inject constructor() {
 
-    @Inject
-    lateinit var database: DatabaseReference
+    @Inject lateinit var database: DatabaseReference
     private val roomRef: DatabaseReference by lazy { database.child("Room") }
     private val userRef: DatabaseReference by lazy { database.child("User") }
     private val message: DatabaseReference by lazy {
-        roomRef.child(roomDataModel.master).child(roomDataModel.key).child("message")
+        roomRef.child(roomDataModel.master).child(roomDataModel.roomKey).child("message")
     }
 
     var data: MutableLiveData<List<ChatDataModel>> = MutableLiveData()
     val list: ArrayList<ChatDataModel> = arrayListOf()
     private lateinit var roomDataModel: RoomDataModel
 
-    private var limitCount = 20
     fun selectChat(roomDataModel: RoomDataModel): MutableLiveData<List<ChatDataModel>> {
         this.roomDataModel = roomDataModel
-        message.limitToLast(limitCount).addValueEventListener(itemSelectListener)
-        limitCount = 1
+        message.addChildEventListener(itemSelectListener)
         return data
     }
 
@@ -42,19 +39,34 @@ class ChatRepository @Inject constructor() {
         userRef.child(mEmail).child("RoomList").push().setValue(roomDataModel)
     }
 
-    private val itemSelectListener = object : ValueEventListener {
+    private val itemSelectListener = object : ChildEventListener {
         override fun onCancelled(error: DatabaseError) {
+            Log.d("","")
         }
 
-        override fun onDataChange(snapshot: DataSnapshot) {
-            for (snap: DataSnapshot in snapshot.children) {
-                val chatModel = ChatDataModel(
-                    snap.child("message").value.toString(),
-                    snap.child("id").value.toString()
-                )
-                list.add(0, chatModel)
+        override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {
+            Log.d("","")
+        }
+
+        override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
+            Log.d("","")
+        }
+
+        override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
+
+            val i = snapshot.children.iterator()
+            var id = ""
+            var message = ""
+            while (i.hasNext()) {
+                id = i.next().value as String
+                message = i.next().value as String
             }
+            list.add(0, ChatDataModel(message, id))
             data.value = list
         }
+        override fun onChildRemoved(snapshot: DataSnapshot) {
+            Log.d("","")
+        }
+
     }
 }

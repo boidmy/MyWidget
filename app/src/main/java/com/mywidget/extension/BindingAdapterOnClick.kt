@@ -4,6 +4,7 @@ import android.text.TextUtils
 import android.view.View
 import android.widget.*
 import androidx.databinding.BindingAdapter
+import com.google.android.gms.common.SignInButton
 import com.mywidget.ui.chat.ChatViewModel
 import com.mywidget.ui.chatroom.ChatRoomViewModel
 import com.mywidget.ui.login.LoginActivity
@@ -55,6 +56,14 @@ fun loginUser(button: Button, email: EditText, password: EditText, activity: Log
                 activity.signInPassword(emailVal, passwordVal)
             }
         }
+    }
+}
+
+@BindingAdapter("activity")
+fun loginGoogle(button: SignInButton, activity: LoginActivity) {
+    button.setOnClickListener {
+        val signInIntent= activity.mGoogleSignInClient.signInIntent
+        activity.startActivityForResult(signInIntent, activity.RC_SIGN_IN)
     }
 }
 
