@@ -1,6 +1,7 @@
 package util
 
 import android.content.Context
+import android.util.TypedValue
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import java.text.SimpleDateFormat
@@ -77,5 +78,13 @@ object Util {
 
     fun replacePointToComma(email: String): String {
         return email.replace(".", ",")
+    }
+
+    fun dpToPx(context: Context, dp: Int): Int {
+        return TypedValue.applyDimension(
+            TypedValue.COMPLEX_UNIT_DIP,
+            dp.toFloat(),
+            context.resources.displayMetrics
+        ).toInt()
     }
 }

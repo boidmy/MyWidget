@@ -22,6 +22,7 @@ import com.mywidget.data.room.User
 import com.mywidget.ui.chat.ChatViewModel
 import com.mywidget.ui.main.MainFragmentViewModel
 import com.mywidget.ui.widgetlist.WidgetListViewModel
+import util.Util
 import java.util.*
 
 @BindingAdapter("text")
@@ -40,7 +41,6 @@ fun dateProcessing(textView: TextView?, data: String?) {
                 CalendarUtil.getNowdate(it).toString() +
                 " (" + CalendarUtil.week(dayOfWeek) + ")"
     }
-
     text(textView, value)
 }
 
@@ -55,7 +55,14 @@ fun termProcessing(textView: TextView?, data: String?) {
             , CalendarUtil.getNowdate(cal)).toString()
     }
 
-    text(textView, value)
+    textView?.let {
+        if(value.toInt() >= 0) {
+            text(it, "D - $value")
+        } else {
+                it.textSize = 15f
+            text(it, "지나간 일정입니다")
+        }
+    }
 }
 
 @BindingAdapter("NowDate")

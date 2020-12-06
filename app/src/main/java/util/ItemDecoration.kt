@@ -12,21 +12,12 @@ class ItemDecoration(
     private val size: Int
 ) : RecyclerView.ItemDecoration() {
 
-
     override fun getItemOffsets(
         outRect: Rect,
         view: View,
         parent: RecyclerView,
         state: RecyclerView.State
     ) {
-        outRect.bottom = dpToPx(context, size)
-    }
-
-    private fun dpToPx(context: Context, dp: Int): Int {
-        return TypedValue.applyDimension(
-            TypedValue.COMPLEX_UNIT_DIP,
-            dp.toFloat(),
-            context.resources.displayMetrics
-        ).toInt()
+        outRect.bottom = Util.dpToPx(context, size)
     }
 }
