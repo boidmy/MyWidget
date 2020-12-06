@@ -31,10 +31,6 @@ class FragmentMemo : BaseFragment<MainFragmentRvBinding>() {
         return binding.root
     }
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-    }
-
     private fun bindView() {
         mAdapter = MainTabMemoAdapter()
         binding.fragmentRv.layoutManager = LinearLayoutManager(binding.root.context)

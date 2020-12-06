@@ -19,8 +19,6 @@ class ChatActivity : BaseActivity<ActivityChattingBinding>() {
     @Inject lateinit var database: DatabaseReference
     @Inject lateinit var factory: ViewModelProvider.Factory
     private val viewModel by viewModels<ChatViewModel> { factory }
-    private val userAct: GoogleSignInAccount?
-            by lazy { GoogleSignIn.getLastSignedInAccount(this) }
     override val layout: Int
         get() = R.layout.activity_chatting
 

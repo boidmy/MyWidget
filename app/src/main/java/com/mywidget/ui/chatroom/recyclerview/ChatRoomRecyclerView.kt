@@ -32,9 +32,6 @@ class ChatRoomRecyclerView(val viewModel: ChatRoomViewModel) : RecyclerView.Adap
 
             binding.rvContainer.setOnClickListener {
                 val intent = Intent(binding.root.context, ChatActivity::class.java)
-                intent.putExtra("roomKey", data.roomKey)
-                intent.putExtra("master", data.master)
-                intent.putExtra("roomName", data.roomName)
                 intent.putExtra("data", data)
                 binding.root.context.startActivity(intent)
             }
