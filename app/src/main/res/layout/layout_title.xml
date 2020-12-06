@@ -4,54 +4,61 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="loginEmail"
             type="String" />
     </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#8ED8E2">
+        android:background="#8ED8E2"
+        android:orientation="vertical">
 
         <View
             android:id="@+id/titleContainer"
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:layout_width="match_parent"
+            android:id="@+id/titleTxt"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/app_name"
-            android:textSize="25dp"
-            android:textColor="@color/white"
             android:layout_marginLeft="10dp"
-            app:layout_constraintTop_toTopOf="@+id/titleContainer"
+            android:text="@string/app_name"
+            android:textColor="@color/white"
+            android:textSize="25dp"
             app:layout_constraintBottom_toBottomOf="@+id/titleContainer"
-            app:layout_constraintLeft_toLeftOf="parent"/>
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/titleContainer" />
 
         <TextView
             android:id="@+id/loginName"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            tools:text="abcd1234님"
+            android:layout_marginStart="10dp"
+            android:gravity="end"
+            android:lines="1"
             android:text="@{loginEmail}"
-            app:layout_constraintRight_toLeftOf="@+id/leftMenu"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/leftMenu"
+            app:layout_constraintStart_toEndOf="@+id/titleTxt"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            tools:text="abcd1234님" />
 
         <ImageView
             android:id="@+id/leftMenu"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_marginLeft="5dp"
+            android:layout_marginRight="10dp"
             android:layout_marginBottom="5dp"
             android:background="@drawable/icon_category"
-            android:layout_marginRight="10dp"
-            app:layout_constraintTop_toTopOf="@+id/titleContainer"
             app:layout_constraintBottom_toBottomOf="@+id/titleContainer"
-            app:layout_constraintRight_toRightOf="parent"/>
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/titleContainer" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
