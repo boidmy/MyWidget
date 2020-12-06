@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="data"
             type="com.mywidget.data.model.ChatDataModel" />
@@ -12,8 +13,24 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <TextView
-            android:id="@+id/chat_txt"
+            android:id="@+id/chatUserId"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="18dp"
+            android:gravity="start"
+            android:lines="1"
+            android:text="@{data.id}"
+            android:textColor="#000000"
+            android:textSize="15dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_percent="0.5"
+            tools:text="abcd1234" />
+
+        <TextView
+            android:id="@+id/chatTxt"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:background="@drawable/chat_text_area_left"
@@ -24,7 +41,7 @@
             android:text="@{data.message}"
             android:textSize="20dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/chatUserId"
             app:layout_constraintWidth_percent="0.5"
             tools:text="지금뭐하구있는거야??" />
     </androidx.constraintlayout.widget.ConstraintLayout>
