@@ -4,6 +4,6 @@ import java.io.Serializable
 
 data class RoomDataModel (
     var roomName: String,
-    var key: String,
+    var roomKey: String,
     var master: String
 ): Serializable
