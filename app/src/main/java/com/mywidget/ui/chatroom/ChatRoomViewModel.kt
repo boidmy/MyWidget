@@ -19,4 +19,8 @@ class ChatRoomViewModel @Inject constructor(
     fun createRoom(id: String, subject: String) {
         repository.createRoom(id, subject)
     }
+
+    fun deleteRoom(roomKey: String) {
+        repository.deleteRoom(roomKey, myId?:"")
+    }
 }

@@ -14,10 +14,11 @@ class ChatRoomRepository @Inject constructor() {
     private val roomRef: DatabaseReference by lazy { database.child("Room") }
     private val userRef: DatabaseReference by lazy { database.child("User") }
     var roomList: MutableLiveData<List<RoomDataModel>> = MutableLiveData()
+    private val ROOMLIST = "RoomList"
 
     fun selectRoomList(id: String): MutableLiveData<List<RoomDataModel>> {
         userRef.child(Util.replacePointToComma(id))
-            .child("RoomList").addValueEventListener(object : ValueEventListener {
+            .child(ROOMLIST).addValueEventListener(object : ValueEventListener {
             override fun onCancelled(error: DatabaseError) {
             }
 
@@ -53,6 +54,11 @@ class ChatRoomRepository @Inject constructor() {
 
     private fun addUserRoomInformation(roomDataModel: RoomDataModel) {
         userRef.child(roomDataModel.master)
-            .child("RoomList").child(roomDataModel.roomKey).setValue(roomDataModel)
+            .child(ROOMLIST).child(roomDataModel.roomKey).setValue(roomDataModel)
+    }
+
+    fun deleteRoom(roomKey: String, myId: String) {
+        userRef.child(Util.replacePointToComma(myId))
+            .child(ROOMLIST).child(roomKey).setValue(null)
     }
 }
