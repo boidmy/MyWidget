@@ -2,15 +2,11 @@ package com.mywidget.ui.chatroom
 
 import android.app.Dialog
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.ImageView
 import androidx.activity.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.mywidget.R
 import com.mywidget.databinding.ActivityWatingRoomBinding
 import com.mywidget.databinding.ChatCreateRoomBinding
@@ -23,7 +19,8 @@ class ChatRoomActivity : BaseActivity<ActivityWatingRoomBinding>() {
 
     @Inject lateinit var factory: ViewModelProvider.Factory
     private val viewModel by viewModels<ChatRoomViewModel> { factory }
-    private val dialogBinding by lazy { ChatCreateRoomBinding.inflate(LayoutInflater.from(this)) }
+    private val dialogBinding
+            by lazy { ChatCreateRoomBinding.inflate(LayoutInflater.from(this)) }
     private val createRoomDialog by lazy { Dialog(this) }
 
     override val layout: Int
