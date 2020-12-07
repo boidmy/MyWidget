@@ -4,11 +4,14 @@ import android.text.TextUtils
 import android.view.View
 import android.widget.*
 import androidx.databinding.BindingAdapter
+import androidx.lifecycle.Observer
 import com.google.android.gms.common.SignInButton
+import com.mywidget.ui.chat.ChatActivity
 import com.mywidget.ui.chat.ChatViewModel
 import com.mywidget.ui.chatroom.ChatRoomViewModel
 import com.mywidget.ui.login.LoginActivity
-import com.mywidget.ui.signup.SignUpActivity
+import com.mywidget.ui.login.signup.SignUpActivity
+import util.Util
 
 @BindingAdapter("email", "password", "confirmPassword", "missId", "missPassword", "activity")
 fun firebaseSignUp(
@@ -67,10 +70,16 @@ fun loginGoogle(button: SignInButton, activity: LoginActivity) {
     }
 }
 
-@BindingAdapter("inviteUserAdd", "userEmail")
-fun inviteUserAdd(imageView: ImageView, viewModel: ChatViewModel, editText: EditText) {
+@BindingAdapter("inviteUserAdd", "editText", "activity")
+fun inviteUserAdd(imageView: ImageView, viewModel: ChatViewModel
+                  , editText: EditText, activity: ChatActivity) {
     imageView.setOnClickListener {
-        viewModel.inviteUser(editText.text.toString())
+        val userEmail = editText.text.toString()
+        if(userEmail.isEmpty()) {
+            Util.toast(activity, "이메일을 입력하세요")
+        } else {
+            viewModel.userExistenceChk(userEmail)
+        }
     }
 }
 

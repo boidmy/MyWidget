@@ -34,14 +34,3 @@ fun memoOnclick(button: Button, memo: EditText, date: TextView, viewModel: MainF
     }
 }
 
-@BindingAdapter("inviteUserDialog")
-fun inviteUserOnClick(imageView: ImageView, viewModel: ChatViewModel) {
-    val binding = ChatInviteUserAddBinding.inflate(LayoutInflater.from(imageView.context))
-    binding.viewModel = viewModel
-    imageView.setOnClickListener {
-        val dialog = Dialog(imageView.context)
-        dialog.setContentView(binding.root)
-        dialog.show()
-    }
-}
-

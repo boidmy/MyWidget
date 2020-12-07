@@ -12,6 +12,8 @@ class ChatViewModel @Inject constructor(private val repository: ChatRepository) 
 
     var data: MutableLiveData<List<ChatDataModel>> = MutableLiveData()
     var myId: String? = null
+    var inviteUserExistence: MutableLiveData<Boolean> = MutableLiveData()
+    var inviteDialogVisibility: MutableLiveData<Boolean> = MutableLiveData()
 
     fun getListChat(roomDataModel: RoomDataModel) {
         data = repository.getListChat(roomDataModel)
@@ -29,7 +31,19 @@ class ChatViewModel @Inject constructor(private val repository: ChatRepository) 
         repository.inviteUser(email)
     }
 
+    fun userExistenceChk(email: String) {
+        repository.userExistenceChk(email)
+    }
+
     fun chatLoadMore(startPosition: Int) {
         repository.chatLoadMore(startPosition)
+    }
+
+    fun inviteUserExistence() {
+        inviteUserExistence = repository.inviteUserExistence()
+    }
+
+    fun inviteDialogVisibility() {
+        inviteDialogVisibility = repository.inviteDialogVisibility()
     }
 }

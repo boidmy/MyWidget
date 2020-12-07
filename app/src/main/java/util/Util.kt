@@ -77,7 +77,7 @@ object Util {
     }
 
     fun replacePointToComma(email: String): String {
-        return email.replace(".", ",")
+        return email.replace(".", ",").trim()
     }
 
     fun dpToPx(context: Context, dp: Int): Int {

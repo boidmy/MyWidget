@@ -1,8 +1,11 @@
 package com.mywidget.ui.chat
 
+import android.app.Dialog
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
 import androidx.activity.viewModels
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.database.DatabaseReference
@@ -10,15 +13,21 @@ import com.mywidget.R
 import com.mywidget.data.model.RoomDataModel
 import com.mywidget.ui.chat.recyclerview.ChatAdapter
 import com.mywidget.databinding.ActivityChattingBinding
+import com.mywidget.databinding.ChatInviteUserAddBinding
 import com.mywidget.ui.base.BaseActivity
 import kotlinx.android.synthetic.main.activity_chatting.*
 import util.ItemDecoration
+import util.Util
 import javax.inject.Inject
 
 class ChatActivity : BaseActivity<ActivityChattingBinding>() {
     @Inject lateinit var database: DatabaseReference
     @Inject lateinit var factory: ViewModelProvider.Factory
     private val viewModel by viewModels<ChatViewModel> { factory }
+    private val inviteUserAddBinding by lazy {
+        ChatInviteUserAddBinding.inflate(LayoutInflater.from(this)) }
+    private var inviteDialog: Dialog? = null
+
     override val layout: Int
         get() = R.layout.activity_chatting
 
@@ -26,6 +35,7 @@ class ChatActivity : BaseActivity<ActivityChattingBinding>() {
         super.onCreate(savedInstanceState)
         binding.viewModel = viewModel
         bind()
+        inviteDialog()
     }
 
     private fun bind() {
@@ -53,5 +63,31 @@ class ChatActivity : BaseActivity<ActivityChattingBinding>() {
     fun onClickSendMessage(v: View) {
         viewModel.insertChat(loginEmail(), chatEdit.text.toString())
         binding.chatEdit.text.clear()
+    }
+
+    private fun inviteDialog() {
+        inviteDialog = Dialog(this)
+        inviteDialog?.setContentView(inviteUserAddBinding.root)
+        inviteUserAddBinding.viewModel = viewModel
+        inviteUserAddBinding.activity = this
+        viewModel.inviteUserExistence()
+        viewModel.inviteDialogVisibility()
+        viewModel.inviteDialogVisibility.observe(this, Observer {
+            if(it) inviteDialog?.show()
+            else inviteDialog?.dismiss()
+        })
+        viewModel.inviteUserExistence.observe(this, Observer {
+            val userEmail = inviteUserAddBinding.chatUserEmailEdit.text.toString()
+            if(it) {
+                viewModel.inviteUser(userEmail)
+                Util.toast(this, userEmail+"님을 초대했습니다")
+            } else {
+                Util.toast(this, "이메일을 다시 확인해주세요")
+            }
+        })
+    }
+
+    fun onClickInviteUser(v: View) {
+        viewModel.inviteDialogVisibility.value = true
     }
 }
