@@ -1,8 +1,11 @@
 package com.mywidget.ui.chat
 
 import android.os.Bundle
+import android.util.Log
+import android.view.View
 import androidx.activity.viewModels
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.firebase.database.DatabaseReference
@@ -21,6 +24,7 @@ class ChatActivity : BaseActivity<ActivityChattingBinding>() {
     private val viewModel by viewModels<ChatViewModel> { factory }
     override val layout: Int
         get() = R.layout.activity_chatting
+    private var chatListCount = 20
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,10 +40,23 @@ class ChatActivity : BaseActivity<ActivityChattingBinding>() {
 
         val roomDataModel = intent.getSerializableExtra("data") as RoomDataModel
         viewModel.userId(loginEmail())
-        viewModel.selectChat(roomDataModel)
-        binding.sendBtn.setOnClickListener {
-            viewModel.insertChat(loginEmail(), chatEdit.text.toString())
-            binding.chatEdit.text.clear()
-        }
+        viewModel.getListChat(roomDataModel)
+
+        binding.chatRv.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                val last = binding.chatRv.layoutManager?.itemCount?:0
+                if (!recyclerView.canScrollVertically(-1)) {
+                    //loadMore
+                    viewModel.chatLoadMore(last)
+                    chatListCount+=20
+                }
+            }
+        })
+    }
+//recyclerViewAdapter.notifyItemInserted(rowsArrayList.size() - 1);
+    fun onClickSendMessage(v: View) {
+        viewModel.insertChat(loginEmail(), chatEdit.text.toString())
+        binding.chatEdit.text.clear()
     }
 }

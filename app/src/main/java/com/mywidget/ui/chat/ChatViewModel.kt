@@ -13,8 +13,8 @@ class ChatViewModel @Inject constructor(private val repository: ChatRepository) 
     var data: MutableLiveData<List<ChatDataModel>> = MutableLiveData()
     var myId: String? = null
 
-    fun selectChat(roomDataModel: RoomDataModel) {
-        data = repository.selectChat(roomDataModel)
+    fun getListChat(roomDataModel: RoomDataModel) {
+        data = repository.getListChat(roomDataModel)
     }
 
     fun insertChat(sendUserEmail: String, text: String) {
@@ -27,5 +27,9 @@ class ChatViewModel @Inject constructor(private val repository: ChatRepository) 
 
     fun inviteUser(email: String) {
         repository.inviteUser(email)
+    }
+
+    fun chatLoadMore(startPosition: Int) {
+        repository.chatLoadMore(startPosition)
     }
 }

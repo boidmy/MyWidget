@@ -21,11 +21,13 @@ class ChatRepository @Inject constructor() {
 
     var data: MutableLiveData<List<ChatDataModel>> = MutableLiveData()
     val list: ArrayList<ChatDataModel> = arrayListOf()
+    var lastMessageKey: String? = null
+    var loadFirstMessage = false
     private lateinit var roomDataModel: RoomDataModel
 
-    fun selectChat(roomDataModel: RoomDataModel): MutableLiveData<List<ChatDataModel>> {
+    fun getListChat(roomDataModel: RoomDataModel): MutableLiveData<List<ChatDataModel>> {
         this.roomDataModel = roomDataModel
-        message.addChildEventListener(itemSelectListener)
+        message.limitToLast(20).addChildEventListener(itemSelectListener)
         return data
     }
 
@@ -53,7 +55,6 @@ class ChatRepository @Inject constructor() {
         }
 
         override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
-
             val i = snapshot.children.iterator()
             var id = ""
             var message = ""
@@ -63,10 +64,51 @@ class ChatRepository @Inject constructor() {
             }
             list.add(0, ChatDataModel(message, id))
             data.value = list
+            if(!loadFirstMessage) {
+                lastMessageKey = snapshot.key
+                loadFirstMessage = true
+            }
         }
         override fun onChildRemoved(snapshot: DataSnapshot) {
             Log.d("","")
         }
+    }
 
+    fun chatLoadMore(startPosition: Int) {
+        loadFirstMessage = false
+        val loadMoreSelectKey = lastMessageKey
+        message.orderByKey().endAt(lastMessageKey).limitToLast(20)
+            .addChildEventListener(object : ChildEventListener{
+            override fun onCancelled(error: DatabaseError) {
+            }
+
+            override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {
+            }
+
+            override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
+            }
+
+            override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
+                val i = snapshot.children.iterator()
+                var id = ""
+                var message = ""
+                while (i.hasNext()) {
+                    id = i.next().value as String
+                    message = i.next().value as String
+                }
+                if(loadMoreSelectKey != snapshot.key) {
+                    list.add(startPosition, ChatDataModel(message, id))
+                    data.value = list
+                }
+                if(!loadFirstMessage) {
+                    lastMessageKey = snapshot.key
+                    loadFirstMessage = true
+                }
+            }
+
+            override fun onChildRemoved(snapshot: DataSnapshot) {
+            }
+
+        })
     }
 }
