@@ -1,22 +1,21 @@
-package com.mywidget.ui.signup
+package com.mywidget.ui.login.signup
 
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.mywidget.R
 import com.mywidget.databinding.ActivitySignupBinding
 import com.mywidget.ui.base.BaseActivity
+import com.mywidget.ui.login.LoginViewModel
 import java.lang.Exception
 import javax.inject.Inject
 
 class SignUpActivity : BaseActivity<ActivitySignupBinding>() {
 
     @Inject lateinit var factory: ViewModelProvider.Factory
-    private val viewModel by viewModels<SignUpViewModel> { factory }
+    private val viewModel by viewModels<LoginViewModel> { factory }
 
     override val layout: Int
         get() = R.layout.activity_signup
@@ -32,7 +31,7 @@ class SignUpActivity : BaseActivity<ActivitySignupBinding>() {
             if (task.isSuccessful) {
                 val user = firebaseAuth.currentUser
                 user?.email?.let { userVal ->
-                    viewModel.singUpFirebase(userVal)
+                    viewModel.singUpFirebase(userVal, user.uid)
                 }
             } else {
                 task.exception?.let {

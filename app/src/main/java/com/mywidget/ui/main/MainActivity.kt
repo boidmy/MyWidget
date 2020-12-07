@@ -207,10 +207,10 @@ class MainActivity : BaseActivity<DrawerlayoutMainBinding>()
     private fun loveDayBind() {
         lovedayDialog = Dialog(this)
         lovedayDialog?.setContentView(loveDayDialogBinding.root)
+        loveDayDialogBinding.viewModel = viewModel
     }
 
     private fun loveDday() {
-        loveDayDialogBinding.viewModel = viewModel
         viewModel.loveDayDialogVisible.value = true
         viewModel.loveDayDialogVisible.observe(this, androidx.lifecycle.Observer {
             if(it) lovedayDialog?.show()

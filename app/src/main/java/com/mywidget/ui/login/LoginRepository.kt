@@ -1,20 +1,20 @@
-package com.mywidget.ui.signup
+package com.mywidget.ui.login
 
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.database.DatabaseReference
 import com.mywidget.data.model.UserData
 import javax.inject.Inject
 
-class SignUpRepository @Inject constructor() {
+class LoginRepository @Inject constructor() {
 
     @Inject lateinit var database: DatabaseReference
     private val userRef: DatabaseReference by lazy { database.child("User") }
     var signUpComplete: MutableLiveData<Boolean> = MutableLiveData()
     var data: MutableLiveData<String> = MutableLiveData()
 
-    fun singUpFirebase(email: String): MutableLiveData<Boolean> {
+    fun singUpFirebase(email: String, uid: String): MutableLiveData<Boolean> {
         val mEmail = email.replace(".", ",")
-        val value = UserData(email, "", "", "", "")
+        val value = UserData(email, "", uid, "", "")
         userRef.child(mEmail).setValue(value)
         return signUpComplete
     }

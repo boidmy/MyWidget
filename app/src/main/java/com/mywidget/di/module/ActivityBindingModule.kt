@@ -9,8 +9,8 @@ import com.mywidget.ui.login.LoginActivity
 import com.mywidget.ui.login.LoginGoogleModule
 import com.mywidget.ui.main.MainActivity
 import com.mywidget.ui.main.MainActivityModule
-import com.mywidget.ui.signup.SignUpActivity
-import com.mywidget.ui.signup.SignUpViewModelModule
+import com.mywidget.ui.login.signup.SignUpActivity
+import com.mywidget.ui.login.LoginViewModelModule
 import com.mywidget.ui.widgetlist.WidgetListActivity
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
@@ -40,10 +40,12 @@ abstract class ActivityBindingModule {
     abstract fun chattingActivity(): ChatActivity
 
     @ActivityScope
-    @ContributesAndroidInjector(modules = [LoginGoogleModule::class])
+    @ContributesAndroidInjector(modules = [
+        LoginGoogleModule::class,
+        LoginViewModelModule::class])
     abstract fun loginActivity(): LoginActivity
 
     @ActivityScope
-    @ContributesAndroidInjector(modules = [SignUpViewModelModule::class])
+    @ContributesAndroidInjector(modules = [LoginViewModelModule::class])
     abstract fun signUpActivity(): SignUpActivity
 }

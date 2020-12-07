@@ -4,7 +4,8 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.Toast
+import androidx.activity.viewModels
+import androidx.lifecycle.ViewModelProvider
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.common.api.ApiException
@@ -15,7 +16,7 @@ import com.google.firebase.auth.GoogleAuthProvider
 import com.mywidget.R
 import com.mywidget.databinding.ActivityLoginBinding
 import com.mywidget.ui.base.BaseActivity
-import com.mywidget.ui.signup.SignUpActivity
+import com.mywidget.ui.login.signup.SignUpActivity
 import util.Util
 import javax.inject.Inject
 
@@ -23,6 +24,10 @@ import javax.inject.Inject
 class LoginActivity: BaseActivity<ActivityLoginBinding>() {
 
     @Inject lateinit var mGoogleSignInClient: GoogleSignInClient
+    @Inject lateinit var factory: ViewModelProvider.Factory
+    private val viewModel by viewModels<LoginViewModel> { factory }
+    private val errorMsg = "잠시 후 다시 시도해 주세요"
+
     val RC_SIGN_IN = 101
 
     override val layout: Int
@@ -59,20 +64,39 @@ class LoginActivity: BaseActivity<ActivityLoginBinding>() {
 
     fun signInPassword(email: String, password: String) {
         firebaseAuth.signInWithEmailAndPassword(email, password)
-            .addOnCompleteListener(completeListener)
+            .addOnCompleteListener(passwordCompleteListener)
     }
 
     private fun signInGoogle(idToken: String) {
         val credential = GoogleAuthProvider.getCredential(idToken, null)
         firebaseAuth.signInWithCredential(credential)
-            .addOnCompleteListener(completeListener)
+            .addOnCompleteListener(googleCompleteListener)
     }
 
-    private var completeListener = OnCompleteListener { task: Task<AuthResult?> ->
+    private var passwordCompleteListener = OnCompleteListener { task: Task<AuthResult?> ->
         if (task.isSuccessful) {
             finish()
         } else {
-            Util.toast(this, task.exception?.message?:"잠시 후 다시 시도해 주세요")
+            Util.toast(this, task.exception?.message?: errorMsg)
+        }
+    }
+
+    private var googleCompleteListener = OnCompleteListener { task: Task<AuthResult?> ->
+        val firstLoginChk = task.result?.additionalUserInfo?.isNewUser?: false
+        if (firstLoginChk) {
+            if (task.isSuccessful) {
+                val user = firebaseAuth.currentUser
+                user?.email?.let { userVal ->
+                    viewModel.singUpFirebase(userVal, user.uid)
+                    finish()
+                }
+            }
+        } else {
+            if (task.isSuccessful) {
+                finish()
+            } else {
+                Util.toast(this, task.exception?.message?: errorMsg)
+            }
         }
     }
 }
