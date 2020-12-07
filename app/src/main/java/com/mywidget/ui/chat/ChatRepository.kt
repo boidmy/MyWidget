@@ -18,8 +18,8 @@ class ChatRepository @Inject constructor() {
     private val message: DatabaseReference by lazy {
         roomRef.child(roomDataModel.master).child(roomDataModel.roomKey).child("message")
     }
-    private val inviteUserExistence: MutableLiveData<Boolean> = MutableLiveData()
-    private val inviteDialogVisibility: MutableLiveData<Boolean> = MutableLiveData()
+    private var inviteUserExistence: MutableLiveData<Boolean> = MutableLiveData()
+    private var inviteDialogVisibility: MutableLiveData<Boolean> = MutableLiveData()
 
     var data: MutableLiveData<List<ChatDataModel>> = MutableLiveData()
     val list: ArrayList<ChatDataModel> = arrayListOf()
@@ -40,13 +40,12 @@ class ChatRepository @Inject constructor() {
 
     fun userExistenceChk(email: String) {
         userRef.child(Util.replacePointToComma(email))
-            .addValueEventListener(object : ValueEventListener {
+            .addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onCancelled(error: DatabaseError) {
             }
 
             override fun onDataChange(snapshot: DataSnapshot) {
-                if(snapshot.value == null) inviteUserExistence.value = false
-                else inviteUserExistence.value = true
+                inviteUserExistence.value = snapshot.value != null
             }
         })
     }
@@ -61,7 +60,8 @@ class ChatRepository @Inject constructor() {
 
     fun inviteUser(email: String) {
         val mEmail = Util.replacePointToComma(email)
-        userRef.child(mEmail).child("RoomList").push().setValue(roomDataModel)
+        userRef.child(mEmail).child("RoomList").child(roomDataModel.roomKey)
+            .setValue(roomDataModel)
         inviteDialogVisibility.value = false
     }
 

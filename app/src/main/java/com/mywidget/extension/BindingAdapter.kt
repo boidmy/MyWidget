@@ -60,7 +60,7 @@ fun termProcessing(textView: TextView?, data: String?) {
             text(it, "D - $value")
         } else {
                 it.textSize = 15f
-            text(it, "지나간 일정입니다")
+            text(it, "지난 일정입니다")
         }
     }
 }

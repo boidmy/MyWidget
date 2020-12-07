@@ -10,14 +10,14 @@ import util.Util
 import javax.inject.Inject
 
 class ChatRoomRepository @Inject constructor() {
-    @Inject
-    lateinit var database: DatabaseReference
+    @Inject lateinit var database: DatabaseReference
     private val roomRef: DatabaseReference by lazy { database.child("Room") }
     private val userRef: DatabaseReference by lazy { database.child("User") }
     var roomList: MutableLiveData<List<RoomDataModel>> = MutableLiveData()
 
     fun selectRoomList(id: String): MutableLiveData<List<RoomDataModel>> {
-        userRef.child(Util.replacePointToComma(id)).child("RoomList").addValueEventListener(object : ValueEventListener {
+        userRef.child(Util.replacePointToComma(id))
+            .child("RoomList").addValueEventListener(object : ValueEventListener {
             override fun onCancelled(error: DatabaseError) {
             }
 
@@ -52,6 +52,7 @@ class ChatRoomRepository @Inject constructor() {
     }
 
     private fun addUserRoomInformation(roomDataModel: RoomDataModel) {
-        userRef.child(roomDataModel.master).child("RoomList").push().setValue(roomDataModel)
+        userRef.child(roomDataModel.master)
+            .child("RoomList").child(roomDataModel.roomKey).setValue(roomDataModel)
     }
 }

@@ -74,7 +74,10 @@ class ChatActivity : BaseActivity<ActivityChattingBinding>() {
         viewModel.inviteDialogVisibility()
         viewModel.inviteDialogVisibility.observe(this, Observer {
             if(it) inviteDialog?.show()
-            else inviteDialog?.dismiss()
+            else {
+                inviteUserAddBinding.chatUserEmailEdit.text = null
+                inviteDialog?.dismiss()
+            }
         })
         viewModel.inviteUserExistence.observe(this, Observer {
             val userEmail = inviteUserAddBinding.chatUserEmailEdit.text.toString()
