@@ -3,7 +3,7 @@
                     android:minWidth="400dp"
                     android:minHeight="40dp"
                     android:updatePeriodMillis="21600000"
-                    android:previewImage="@drawable/app_icon"
+                    android:previewImage="@drawable/launcher_my"
                     android:initialLayout="@layout/my_app_widget"
                     android:resizeMode="horizontal|vertical"
                     android:widgetCategory="home_screen"
