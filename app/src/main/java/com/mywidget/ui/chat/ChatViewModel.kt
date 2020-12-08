@@ -46,4 +46,8 @@ class ChatViewModel @Inject constructor(private val repository: ChatRepository) 
     fun inviteDialogVisibility() {
         inviteDialogVisibility = repository.inviteDialogVisibility()
     }
+
+    fun inviteDialogShow() {
+        repository.inviteDialogShow(true)
+    }
 }

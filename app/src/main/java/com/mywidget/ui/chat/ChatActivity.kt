@@ -91,6 +91,6 @@ class ChatActivity : BaseActivity<ActivityChattingBinding>() {
     }
 
     fun onClickInviteUser(v: View) {
-        viewModel.inviteDialogVisibility.value = true
+        viewModel.inviteDialogShow()
     }
 }

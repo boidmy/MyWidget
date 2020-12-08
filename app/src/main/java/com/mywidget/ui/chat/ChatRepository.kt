@@ -62,7 +62,11 @@ class ChatRepository @Inject constructor() {
         val mEmail = Util.replacePointToComma(email)
         userRef.child(mEmail).child("RoomList").child(roomDataModel.roomKey)
             .setValue(roomDataModel)
-        inviteDialogVisibility.value = false
+        inviteDialogShow(false)
+    }
+
+    fun inviteDialogShow(flag: Boolean) {
+        inviteDialogVisibility.value = flag
     }
 
     private val itemSelectListener = object : ChildEventListener {
