@@ -3,14 +3,14 @@
       xmlns:tools="http://schemas.android.com/tools"
       tools:showIn="navigation_view">
 
-    <group android:checkableBehavior="single">
+    <group android:checkableBehavior="none">
         <item
                 android:id="@+id/widget_phone_add"
-                android:icon="@drawable/delete_icon"
+                android:icon="@drawable/menu_widget_icon"
                 android:title="@string/menu_home"/>
         <item
                 android:id="@+id/login"
-                android:icon="@drawable/ic_menu_slideshow"
+                android:icon="@drawable/menu_login_icon"
                 android:title="@string/menu_slideshow"/>
         <item
                 android:id="@+id/nav_tools"
