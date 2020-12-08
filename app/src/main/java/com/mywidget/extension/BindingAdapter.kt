@@ -80,53 +80,21 @@ fun setNowDate(view: View, textView: TextView) {
 @BindingAdapter("loveDayConfirm", "textTag")
 fun setLoveDay(button: Button, viewModel: MainFragmentViewModel, textView: TextView) {
     button.setOnClickListener {
-        AlertDialog.Builder(button.context)
-            .setTitle("아싸~")
-            .setMessage("♥입력됐대용♥")
-            .setIcon(android.R.drawable.ic_menu_save)
-            .setPositiveButton("yes") { _, _ ->
-                // 확인시 처리 로직
-                textView.tag?.let {
-                    viewModel.addLoveDay(it.toString())
-                    Toast.makeText(button.context, "저장했대요!!", Toast.LENGTH_SHORT).show()
-                    viewModel.loveDayDialogVisible.value = false
-                } ?: run {
-                    Toast.makeText(button.context, "날짜를 선택해주세요!", Toast.LENGTH_SHORT).show()
-                }
-            }
-            .setNegativeButton(
-                android.R.string.no
-            ) { _, _ ->
-                // 취소시 처리 로직
-                Toast.makeText(button.context, "취소했대요ㅠㅠ.", Toast.LENGTH_SHORT).show()
-                viewModel.loveDayDialogVisible.value = false
-            }.show()
+        textView.tag?.let {
+            viewModel.addLoveDay(it.toString())
+            viewModel.loveDayDialogVisible.value = false
+        } ?: run {
+            Toast.makeText(button.context, "날짜를 선택해주세요!", Toast.LENGTH_SHORT).show()
+        }
     }
 }
 
 @BindingAdapter("userConfirm", "userPhone", "userviewModel")
 fun setUserConfirm(button: Button, name: EditText, phone: EditText, viewModel: WidgetListViewModel) {
-    val context = button.context
     button.setOnClickListener {
-        AlertDialog.Builder(context)
-                .setTitle("아싸~")
-                .setMessage("입력됐어요!")
-                .setIcon(android.R.drawable.ic_menu_save)
-                .setPositiveButton("yes") { _, _ ->
-                    viewModel.insertUser(name.text.toString(), phone.text.toString())
-                    Toast.makeText(context, "저장했대요!!", Toast.LENGTH_SHORT).show()
-                    val intent = Intent(context, MyAppWidget::class.java)
-                    intent.action = AppWidgetManager.ACTION_APPWIDGET_UPDATE
-                    context.sendBroadcast(intent)
-                    viewModel.dialogVisible.value = false
-                }
-                .setNegativeButton("no") { _, _ ->
-                    // 취소시 처리 로직
-                    Toast.makeText(context, "취소했대요", Toast.LENGTH_SHORT).show()
-                    viewModel.dialogVisible.value = false
-                }.show()
+        viewModel.insertUser(name.text.toString(), phone.text.toString())
+        viewModel.dialogVisible.value = false
     }
-
 }
 
 @BindingAdapter("items")

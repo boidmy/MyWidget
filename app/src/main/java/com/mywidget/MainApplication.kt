@@ -16,17 +16,8 @@ import javax.inject.Inject
 
 class MainApplication : DaggerApplication() {
 
-    var editor: SharedPreferences.Editor? = null
-    var mSharedPreference: SharedPreferences? = null
-    var googleIdtoken: String? = null
-    @Inject lateinit var userDb: UserDB
-    private lateinit var component: ApplicationComponent
-
     override fun onCreate() {
         super.onCreate()
-
-        mSharedPreference = getSharedPreferences("unme", Context.MODE_PRIVATE)
-        editor = mSharedPreference?.edit()
     }
 
     override fun applicationInjector(): AndroidInjector<out DaggerApplication> {
@@ -40,67 +31,6 @@ class MainApplication : DaggerApplication() {
     companion object {
 
         lateinit var INSTANSE: MainApplication
-
-        fun widgetBroad() {
-            var userList: List<User>
-
-            Thread(Runnable {
-                userList = INSTANSE.userDb.userDao().getUser()
-                val appWidgetManager = AppWidgetManager.getInstance(INSTANSE)
-                val thisWidget = ComponentName(INSTANSE, MyAppWidget::class.java)
-                val allWidgetIds = appWidgetManager.getAppWidgetIds(thisWidget)
-                for(widgetId in allWidgetIds) {
-                    val remoteViews = RemoteViews(INSTANSE.packageName, R.layout.my_app_widget)
-
-                    INSTANSE.editor = INSTANSE.mSharedPreference?.edit()
-
-                    remoteViews.setViewVisibility(R.id.widgetitemcontainer1, View.GONE)
-                    remoteViews.setViewVisibility(R.id.widgetitemcontainer2, View.GONE)
-                    remoteViews.setViewVisibility(R.id.widgetitemcontainer3, View.GONE)
-                    remoteViews.setViewVisibility(R.id.widgetitemcontainer4, View.GONE)
-                    remoteViews.setViewVisibility(R.id.widgetitemcontainer5, View.GONE)
-                    remoteViews.setViewVisibility(R.id.itemcontainer, View.GONE)
-
-                    if(userList.isEmpty()) {
-                        INSTANSE.editor?.remove("number1")?.remove("number2")?.remove("number3")?.remove("number4")?.remove("number5")
-                        INSTANSE.editor?.apply()
-                    }
-
-                    for(i in userList.indices) {
-                        remoteViews.setViewVisibility(R.id.itemcontainer, View.VISIBLE)
-                        if(i == 0) {
-                            remoteViews.setTextViewText(R.id.name1, userList[i].name)
-                            remoteViews.setViewVisibility(R.id.widgetitemcontainer1, View.VISIBLE)
-                            INSTANSE.editor?.putString("number1", userList[i].number)
-                        }
-                        if(i == 1) {
-                            remoteViews.setTextViewText(R.id.name2, userList[i].name)
-                            remoteViews.setViewVisibility(R.id.widgetitemcontainer2, View.VISIBLE)
-                            INSTANSE.editor?.putString("number2", userList[i].number)
-                        }
-                        if(i == 2) {
-                            remoteViews.setTextViewText(R.id.name3, userList[i].name)
-                            remoteViews.setViewVisibility(R.id.widgetitemcontainer3, View.VISIBLE)
-                            INSTANSE.editor?.putString("number3", userList[i].number)
-                        }
-                        if(i == 3) {
-                            remoteViews.setTextViewText(R.id.name4, userList[i].name)
-                            remoteViews.setViewVisibility(R.id.widgetitemcontainer4, View.VISIBLE)
-                            INSTANSE.editor?.putString("number4", userList[i].number)
-                        }
-                        if(i == 4) {
-                            remoteViews.setTextViewText(R.id.name5, userList[i].name)
-                            remoteViews.setViewVisibility(R.id.widgetitemcontainer5, View.VISIBLE)
-                            INSTANSE.editor?.putString("number5", userList[i].number)
-                        }
-
-                        INSTANSE.editor?.commit()
-
-                    }
-                    appWidgetManager.updateAppWidget(widgetId, remoteViews)
-                }
-            }).start()
-        }
     }
 
 }

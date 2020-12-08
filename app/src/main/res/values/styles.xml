@@ -12,7 +12,7 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">#8ED8E2</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorAccent">@color/colorAccent</item>lay
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
@@ -34,5 +34,9 @@
         <item name="colorControlHighlight">@color/textInputLayout</item>
         <item name="colorAccent">@color/textInputLayout</item>
         <item name="android:textColorHint">@color/textInputLayout</item>
+    </style>
+
+    <style name="widgetButtonSize">
+        <item name="android:layout_width">60dp</item>
     </style>
 </resources>

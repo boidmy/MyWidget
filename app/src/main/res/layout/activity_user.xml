@@ -26,12 +26,13 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/user_rv"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             app:items="@{viewModel.data}"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             android:orientation="vertical"
             tools:listitem="@layout/user_rv_item"
-            app:layout_constraintTop_toBottomOf="@+id/titleContainer"/>
+            app:layout_constraintTop_toBottomOf="@+id/titleContainer"
+            app:layout_constraintBottom_toBottomOf="parent"/>
 
         <ImageView
             android:id="@+id/add_txt"

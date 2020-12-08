@@ -2,7 +2,6 @@ package com.mywidget.ui.main
 
 import android.Manifest
 import android.app.Dialog
-import android.appwidget.AppWidgetManager
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
@@ -31,6 +30,7 @@ import com.mywidget.databinding.MemoDialogBinding
 import com.mywidget.ui.base.BaseActivity
 import com.mywidget.ui.login.LoginActivity
 import com.mywidget.ui.loveday.LoveDayPopupActivity
+import com.mywidget.ui.main.fragment.MainTabPagerAdapter
 import com.mywidget.ui.widgetlist.WidgetListActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import util.CalendarUtil
@@ -42,8 +42,6 @@ import javax.inject.Inject
 class MainActivity : BaseActivity<DrawerlayoutMainBinding>()
     , NavigationView.OnNavigationItemSelectedListener {
 
-    private var mSharedPreference = MainApplication.INSTANSE.mSharedPreference
-    private var editor = MainApplication.INSTANSE.editor
     private var tabPosition: Int? = 0
     @Inject lateinit var mTabPagerAdapter: MainTabPagerAdapter
     @Inject lateinit var backPressAppFinish: BackPressAppFinish
@@ -58,7 +56,6 @@ class MainActivity : BaseActivity<DrawerlayoutMainBinding>()
         binding.viewModel = viewModel
 
         permissionChk()
-        addWidget()
         leftMenu()
         tabInit()
         loginCheck()
@@ -131,13 +128,6 @@ class MainActivity : BaseActivity<DrawerlayoutMainBinding>()
                 ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CALL_PHONE), 1)
             }
         }
-    }
-
-    private fun addWidget() {
-        MainApplication.widgetBroad()
-        intent = Intent(this, MyAppWidget::class.java)
-        intent.action = AppWidgetManager.ACTION_APPWIDGET_UPDATE
-        this.sendBroadcast(intent)
     }
 
     private fun leftMenu() {

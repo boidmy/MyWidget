@@ -1,201 +1,165 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <LinearLayout
-            android:id="@+id/itemcontainer"
+        android:id="@+id/itemContainer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:id="@+id/widgetItemContainer1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_marginLeft="10dp"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:visibility="gone"
+            tools:visibility="visible">
 
-        <LinearLayout
-                android:id="@+id/widgetitemcontainer1"
+            <TextView
+                android:id="@+id/name1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:gravity="center"
-                android:layout_marginLeft="10dp"
-                android:visibility="gone">
-
-            <TextView
-                    android:id="@+id/name1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="#FFFFFF"
-                    android:textSize="24sp"
-                    android:text="ㅁㅁ"/>
+                android:textColor="#FFFFFF"
+                android:textSize="24sp"
+                tools:text="홍길동" />
 
             <Button
-                    android:id="@+id/button1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/btn_img"
-                    android:layout_centerHorizontal="true"/>
+                android:id="@+id/button1"
+                style="@style/widgetButtonSize"
+                android:layout_height="60dp"
+                android:background="@drawable/widget_phone_icon" />
 
             <TextView
-                    android:id="@+id/phoneNumber1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:visibility="gone"/>
+                android:id="@+id/phoneNumber1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone" />
 
         </LinearLayout>
 
         <LinearLayout
-                android:id="@+id/widgetitemcontainer2"
+            android:id="@+id/widgetItemContainer2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:visibility="gone"
+            tools:visibility="visible">
+
+            <TextView
+                android:id="@+id/name2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:gravity="center"
-                android:layout_marginLeft="10dp"
-                android:visibility="gone">
-
-            <TextView
-                    android:id="@+id/name2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="#FFFFFF"
-                    android:textSize="24sp"
-                    android:text="ㅁㅁ"/>
+                android:textColor="#FFFFFF"
+                android:textSize="24sp" />
 
             <Button
-                    android:id="@+id/button2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/btn_img"
-                    android:layout_centerHorizontal="true"/>
+                android:id="@+id/button2"
+                style="@style/widgetButtonSize"
+                android:layout_height="60dp"
+                android:background="@drawable/widget_phone_icon" />
 
             <TextView
-                    android:id="@+id/phoneNumber2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:visibility="gone"/>
+                android:id="@+id/phoneNumber2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone" />
 
         </LinearLayout>
 
         <LinearLayout
-                android:id="@+id/widgetitemcontainer3"
+            android:id="@+id/widgetItemContainer3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/name3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:gravity="center"
-                android:layout_marginLeft="10dp"
-                android:visibility="gone">
-
-            <TextView
-                    android:id="@+id/name3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="#FFFFFF"
-                    android:textSize="24sp"
-                    android:text="ㅁㅁ"/>
+                android:textColor="#FFFFFF"
+                android:textSize="24sp" />
 
             <Button
-                    android:id="@+id/button3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/btn_img"
-                    android:layout_centerHorizontal="true"/>
+                android:id="@+id/button3"
+                style="@style/widgetButtonSize"
+                android:layout_height="60dp"
+                android:background="@drawable/widget_phone_icon" />
 
             <TextView
-                    android:id="@+id/phoneNumber3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:visibility="gone"/>
+                android:id="@+id/phoneNumber3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone" />
 
         </LinearLayout>
 
         <LinearLayout
-                android:id="@+id/widgetitemcontainer4"
+            android:id="@+id/widgetItemContainer4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/name4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:gravity="center"
-                android:layout_marginLeft="10dp"
-                android:visibility="gone">
-
-            <TextView
-                    android:id="@+id/name4"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="#FFFFFF"
-                    android:textSize="24sp"
-                    android:text="ㅁㅁ"/>
+                android:textColor="#FFFFFF"
+                android:textSize="24sp" />
 
             <Button
-                    android:id="@+id/button4"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/btn_img"
-                    android:layout_centerHorizontal="true"/>
+                android:id="@+id/button4"
+                style="@style/widgetButtonSize"
+                android:layout_height="60dp"
+                android:background="@drawable/widget_phone_icon" />
 
             <TextView
-                    android:id="@+id/phoneNumber4"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:visibility="gone"/>
+                android:id="@+id/phoneNumber4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone" />
 
         </LinearLayout>
 
         <LinearLayout
-                android:id="@+id/widgetitemcontainer5"
+            android:id="@+id/widgetItemContainer5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/name5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:gravity="center"
-                android:layout_marginLeft="10dp"
-                android:visibility="gone">
-
-            <TextView
-                    android:id="@+id/name5"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="#FFFFFF"
-                    android:textSize="24sp"
-                    android:text="ㅁㅁ"/>
+                android:textColor="#FFFFFF"
+                android:textSize="24sp" />
 
             <Button
-                    android:id="@+id/button5"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/btn_img"
-                    android:layout_centerHorizontal="true"/>
+                android:id="@+id/button5"
+                style="@style/widgetButtonSize"
+                android:layout_height="60dp"
+                android:background="@drawable/widget_phone_icon" />
 
             <TextView
-                    android:id="@+id/phoneNumber5"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:visibility="gone"/>
+                android:id="@+id/phoneNumber5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone" />
 
         </LinearLayout>
     </LinearLayout>
-
-
-    <!--<LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="center">
-
-        <TextView
-                android:id="@+id/day"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
-                android:text="73일"
-                android:textColor="#FFFFFF"
-                android:textSize="24sp"
-                android:textStyle="bold|normal"
-                android:layout_margin="8dp"
-                android:contentDescription="@string/appwidget_text"/>
-
-        <Button
-                android:id="@+id/button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/btn_img"
-                android:layout_centerHorizontal="true"/>
-
-    </LinearLayout>-->
-
 </RelativeLayout>

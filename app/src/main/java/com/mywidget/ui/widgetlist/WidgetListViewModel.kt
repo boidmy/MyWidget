@@ -3,6 +3,7 @@ package com.mywidget.ui.widgetlist
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.mywidget.data.room.User
+import org.json.JSONArray
 import javax.inject.Inject
 
 class WidgetListViewModel @Inject constructor(
@@ -12,23 +13,25 @@ class WidgetListViewModel @Inject constructor(
     var data: MutableLiveData<List<User>> = MutableLiveData()
     var dialogVisible: MutableLiveData<Boolean> = MutableLiveData()
     var userEmail: MutableLiveData<String> = MutableLiveData()
-
+    var widgetJsonArrayData: MutableLiveData<JSONArray> = MutableLiveData()
 
     fun insertUser(user: String, phone: String) {
-        Thread(Runnable {
-            repository.insertUser(user, phone)
-            selectUser()
-        }).start()
+        repository.insertUser(user, phone)
     }
 
     fun deleteUser(user: String) {
-        Thread(Runnable {
-            repository.deleteUser(user)
-            selectUser()
-        }).start()
+        repository.deleteUser(user)
+    }
+
+    fun setWidgetData() {
+        data = repository.setWidgetData()
+    }
+
+    fun setWidgetDataJsonArray() {
+        widgetJsonArrayData = repository.setWidgetDataJsonArray()
     }
 
     fun selectUser() {
-        data.postValue(repository.selectUser())
+        repository.selectUser()
     }
 }
