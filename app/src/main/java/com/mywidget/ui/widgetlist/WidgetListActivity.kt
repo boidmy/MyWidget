@@ -1,13 +1,17 @@
 package com.mywidget.ui.widgetlist
 
+import android.Manifest
 import android.app.Dialog
 import android.appwidget.AppWidgetManager
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import androidx.activity.viewModels
+import androidx.core.app.ActivityCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.mywidget.MyAppWidget
@@ -39,6 +43,7 @@ class WidgetListActivity : BaseActivity<ActivityUserBinding>() {
         binding.viewModel = viewModel
         mAdapter = WidgetListRecyclerView(viewModel)
         binding.userRv.adapter = mAdapter
+        permissionChk()
         selectUser()
         setWidgetAddDialog()
         bindWidgetUpdate()
@@ -89,5 +94,27 @@ class WidgetListActivity : BaseActivity<ActivityUserBinding>() {
         editor.remove("data")
         editor.putString("data", jsonArray.toString())
         editor.apply()
+    }
+
+    private fun permissionChk() {
+        //CALL_DIAL 로 바꾼 상태라 권한이 필요 없어짐 추후 사용할수 있다
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (checkSelfPermission(Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED) {
+
+            } else {
+                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CALL_PHONE), 1)
+            }
+        }
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        when (requestCode) {
+            1 -> if(grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                Util.toast(this, "동의하신 권한은 위젯 사용 시 사용됩니다.")
+            } else {
+                finish()
+            }
+        }
     }
 }

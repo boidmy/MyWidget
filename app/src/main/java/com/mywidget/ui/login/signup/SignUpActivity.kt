@@ -5,6 +5,7 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.google.firebase.auth.FirebaseAuth
 import com.mywidget.R
 import com.mywidget.databinding.ActivitySignupBinding
 import com.mywidget.ui.base.BaseActivity
@@ -15,6 +16,7 @@ import javax.inject.Inject
 class SignUpActivity : BaseActivity<ActivitySignupBinding>() {
 
     @Inject lateinit var factory: ViewModelProvider.Factory
+    @Inject lateinit var firebaseAuth: FirebaseAuth
     private val viewModel by viewModels<LoginViewModel> { factory }
 
     override val layout: Int

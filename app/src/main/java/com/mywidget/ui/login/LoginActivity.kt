@@ -12,6 +12,7 @@ import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.mywidget.R
 import com.mywidget.databinding.ActivityLoginBinding
@@ -25,6 +26,7 @@ class LoginActivity: BaseActivity<ActivityLoginBinding>() {
 
     @Inject lateinit var mGoogleSignInClient: GoogleSignInClient
     @Inject lateinit var factory: ViewModelProvider.Factory
+    @Inject lateinit var firebaseAuth: FirebaseAuth
     private val viewModel by viewModels<LoginViewModel> { factory }
     private val errorMsg = "잠시 후 다시 시도해 주세요"
 

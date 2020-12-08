@@ -55,7 +55,6 @@ class MainActivity : BaseActivity<DrawerlayoutMainBinding>()
         super.onCreate(savedInstanceState)
         binding.viewModel = viewModel
 
-        permissionChk()
         leftMenu()
         tabInit()
         loginCheck()
@@ -120,45 +119,11 @@ class MainActivity : BaseActivity<DrawerlayoutMainBinding>()
         }
     }
 
-    private fun permissionChk() {
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (checkSelfPermission(Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED) {
-
-            } else {
-                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CALL_PHONE), 1)
-            }
-        }
-    }
-
     private fun leftMenu() {
         binding.mainContainer.titleContainer.leftMenu.setOnClickListener {
             binding.drawerLayout.openDrawer(GravityCompat.START)
         }
         binding.navView.setNavigationItemSelectedListener(this)
-    }
-
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        val alert: AlertDialog?
-        val alertDialog = AlertDialog.Builder(this)
-        when (requestCode) {
-            1 -> if(grantResults[0] == PackageManager.PERMISSION_GRANTED){
-                alertDialog.setTitle("권한에 동의하셨네요?")
-                    ?.setMessage("이젠 취소할 수 없습니다.")
-                    ?.setPositiveButton("확인") { _, _ -> }
-                alert = alertDialog.create()
-                alert.show()
-            } else {
-                alertDialog.setTitle("권한을 동의하지 않으셨네요?")
-                    ?.setMessage("어쩔수없이 앱을 종료합니다 ㅠㅠ")
-                    ?.setCancelable(false)
-                    ?.setPositiveButton("확인") { _, _ ->
-                        finish()
-                    }
-                alert = alertDialog.create()
-                alert.show()
-            }
-        }
     }
 
     private fun loginTxt(text: String) {
