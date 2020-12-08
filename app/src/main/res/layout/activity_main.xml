@@ -16,7 +16,7 @@
         android:id="@+id/mainContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#8ED8E2"
+        android:background="@color/myAppThemaColor"
         tools:context=".ui.main.MainActivity">
 
         <include
@@ -32,7 +32,7 @@
             app:layout_constraintTop_toBottomOf="@id/titleContainer"
             app:tabIndicatorColor="#ffffff"
             app:tabSelectedTextColor="#ffffff"
-            app:tabTextColor="#989696" />
+            app:tabTextColor="#ffffff" />
 
         <androidx.viewpager.widget.ViewPager
             android:id="@+id/vp_tab"
