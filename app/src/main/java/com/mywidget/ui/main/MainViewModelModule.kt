@@ -1,4 +1,4 @@
-package com.mywidget.di.module
+package com.mywidget.ui.main
 
 import androidx.lifecycle.ViewModel
 import com.mywidget.ui.main.MainFragmentViewModel

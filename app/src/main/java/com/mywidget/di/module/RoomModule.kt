@@ -15,7 +15,7 @@ class RoomModule {
 
     @Provides
     @Singleton
-    fun provideLoveday(application: Application): LoveDayDB {
+    fun provideLoveDay(application: Application): LoveDayDB {
         return Room.databaseBuilder(application, LoveDayDB::class.java, "loveday.db")
             .addCallback(object : RoomDatabase.Callback() {}).build()
     }

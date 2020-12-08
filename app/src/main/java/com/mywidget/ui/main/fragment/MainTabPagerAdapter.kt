@@ -1,4 +1,4 @@
-package com.mywidget.ui.main
+package com.mywidget.ui.main.fragment
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager

@@ -11,7 +11,10 @@ import com.mywidget.ui.main.MainActivity
 import com.mywidget.ui.main.MainActivityModule
 import com.mywidget.ui.login.signup.SignUpActivity
 import com.mywidget.ui.login.LoginViewModelModule
+import com.mywidget.ui.main.MainViewModelModule
+import com.mywidget.ui.widgetlist.WidgetListViewModelModule
 import com.mywidget.ui.widgetlist.WidgetListActivity
+import com.mywidget.ui.widgetlist.WidgetListModule
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
@@ -28,12 +31,14 @@ abstract class ActivityBindingModule {
     abstract fun mainActivity(): MainActivity
 
     @ActivityScope
-    @ContributesAndroidInjector(modules = [UserViewModelModule::class])
-    abstract fun userActivity(): WidgetListActivity
+    @ContributesAndroidInjector(modules = [
+        WidgetListViewModelModule::class,
+        WidgetListModule::class ])
+    abstract fun widgetListActivity(): WidgetListActivity
 
     @ActivityScope
     @ContributesAndroidInjector(modules = [ChatRoomViewModelModule::class])
-    abstract fun watingRoomActivity(): ChatRoomActivity
+    abstract fun chatRoomActivity(): ChatRoomActivity
 
     @ActivityScope
     @ContributesAndroidInjector(modules = [ChatModule::class])
