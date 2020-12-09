@@ -31,7 +31,7 @@ public class sendTest {
             notification.put("title", myNickname+" 의 메세지♡");
             notification.put("body", memo);
             root.put("notification", notification);
-            root.put("to", data.getToken());
+            //root.put("to", data.getToken());
             root.put("content_available", true);
             root.put("priority", "high");
 

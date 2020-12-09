@@ -13,6 +13,7 @@ import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import com.mywidget.R
 import com.mywidget.databinding.ActivityLoginBinding
@@ -76,29 +77,33 @@ class LoginActivity: BaseActivity<ActivityLoginBinding>() {
     }
 
     private var passwordCompleteListener = OnCompleteListener { task: Task<AuthResult?> ->
-        if (task.isSuccessful) {
-            finish()
-        } else {
-            this.toast(task.exception?.message?: errorMsg)
-        }
+        successLogin(task)
     }
 
     private var googleCompleteListener = OnCompleteListener { task: Task<AuthResult?> ->
         val firstLoginChk = task.result?.additionalUserInfo?.isNewUser?: false
         if (firstLoginChk) {
             if (task.isSuccessful) {
-                val user = firebaseAuth.currentUser
-                user?.email?.let { userVal ->
-                    viewModel.singUpFirebase(userVal, user.uid)
+                getUser()?.let { userVal ->
+                    viewModel.singUpFirebase(userVal.email?:"", userVal.uid)
                     finish()
                 }
             }
         } else {
-            if (task.isSuccessful) {
-                finish()
-            } else {
-                this.toast(task.exception?.message?: errorMsg)
-            }
+            successLogin(task)
         }
+    }
+
+    private fun successLogin(task: Task<AuthResult?>) {
+        if (task.isSuccessful) {
+            viewModel.loginSetToken(getUser()?.email?:"")
+            finish()
+        } else {
+            this.toast(task.exception?.message?: errorMsg)
+        }
+    }
+
+    private fun getUser() : FirebaseUser? {
+        return firebaseAuth.currentUser
     }
 }

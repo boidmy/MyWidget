@@ -14,14 +14,7 @@ class MainApplication : DaggerApplication() {
 
     override fun onCreate() {
         super.onCreate()
-
-        FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
-            if (!task.isSuccessful) {
-                return@addOnCompleteListener
-            }
-            val token = task.result
-
-        }
+        
     }
 
     override fun applicationInjector(): AndroidInjector<out DaggerApplication> {
