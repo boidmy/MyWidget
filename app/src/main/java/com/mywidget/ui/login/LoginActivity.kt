@@ -18,7 +18,7 @@ import com.mywidget.R
 import com.mywidget.databinding.ActivityLoginBinding
 import com.mywidget.ui.base.BaseActivity
 import com.mywidget.ui.login.signup.SignUpActivity
-import util.Util
+import util.Util.toast
 import javax.inject.Inject
 
 
@@ -79,7 +79,7 @@ class LoginActivity: BaseActivity<ActivityLoginBinding>() {
         if (task.isSuccessful) {
             finish()
         } else {
-            Util.toast(this, task.exception?.message?: errorMsg)
+            this.toast(task.exception?.message?: errorMsg)
         }
     }
 
@@ -97,7 +97,7 @@ class LoginActivity: BaseActivity<ActivityLoginBinding>() {
             if (task.isSuccessful) {
                 finish()
             } else {
-                Util.toast(this, task.exception?.message?: errorMsg)
+                this.toast(task.exception?.message?: errorMsg)
             }
         }
     }

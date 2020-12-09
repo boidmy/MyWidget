@@ -12,6 +12,7 @@ import com.mywidget.ui.chatroom.ChatRoomViewModel
 import com.mywidget.ui.login.LoginActivity
 import com.mywidget.ui.login.signup.SignUpActivity
 import util.Util
+import util.Util.toast
 
 @BindingAdapter("email", "password", "confirmPassword", "missId", "missPassword", "activity")
 fun firebaseSignUp(
@@ -76,7 +77,7 @@ fun inviteUserAdd(imageView: ImageView, viewModel: ChatViewModel
     imageView.setOnClickListener {
         val userEmail = editText.text.toString()
         if(userEmail.isEmpty()) {
-            Util.toast(activity, "이메일을 입력하세요")
+            imageView.context.toast("이메일을 입력하세요")
         } else {
             viewModel.userExistenceChk(userEmail)
         }

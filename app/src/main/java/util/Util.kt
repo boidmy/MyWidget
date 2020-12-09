@@ -8,6 +8,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 object Util {
+
     fun howMuchloveDay(value: String?): String {
         value?.let {
             val simpleData = SimpleDateFormat("yyyyMMdd").parse(it)
@@ -72,9 +73,8 @@ object Util {
         return userId
     }
 
-    fun toast(context: Context, text: String) {
-        Toast.makeText(context, text, Toast.LENGTH_LONG).show()
-    }
+    fun Context.toast(message: CharSequence) =
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show()
 
     fun replacePointToComma(email: String): String {
         return email.replace(".", ",").trim()

@@ -35,6 +35,7 @@ import com.mywidget.ui.widgetlist.WidgetListActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import util.CalendarUtil
 import util.Util
+import util.Util.toast
 import java.util.*
 import javax.inject.Inject
 
@@ -101,7 +102,7 @@ class MainActivity : BaseActivity<DrawerlayoutMainBinding>()
                 // Successfully signed in
                 val user = FirebaseAuth.getInstance().currentUser
                 user?.email?.let {
-                    Util.toast(this, it+"님 환영합니다!")
+                    this.toast(it+"님 환영합니다!")
                     viewModel.userEmail.value = user.email?:""
                     loginTxt("로그아웃")
                 }

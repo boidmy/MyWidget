@@ -23,6 +23,7 @@ import com.mywidget.databinding.MainPhoneDialogBinding
 import com.mywidget.ui.base.BaseActivity
 import kotlinx.android.synthetic.main.activity_user.*
 import org.json.JSONArray
+import util.Util.toast
 import javax.inject.Inject
 
 class WidgetListActivity : BaseActivity<ActivityUserBinding>() {
@@ -111,7 +112,7 @@ class WidgetListActivity : BaseActivity<ActivityUserBinding>() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         when (requestCode) {
             1 -> if(grantResults[0] == PackageManager.PERMISSION_GRANTED){
-                Util.toast(this, "동의하신 권한은 위젯 사용 시 사용됩니다.")
+                this.toast("동의하신 권한은 위젯 사용 시 사용됩니다.")
             } else {
                 finish()
             }

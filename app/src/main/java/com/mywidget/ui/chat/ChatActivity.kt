@@ -17,7 +17,7 @@ import com.mywidget.databinding.ChatInviteUserAddBinding
 import com.mywidget.ui.base.BaseActivity
 import kotlinx.android.synthetic.main.activity_chatting.*
 import util.ItemDecoration
-import util.Util
+import util.Util.toast
 import javax.inject.Inject
 
 class ChatActivity : BaseActivity<ActivityChattingBinding>() {
@@ -83,9 +83,9 @@ class ChatActivity : BaseActivity<ActivityChattingBinding>() {
             val userEmail = inviteUserAddBinding.chatUserEmailEdit.text.toString()
             if(it) {
                 viewModel.inviteUser(userEmail)
-                Util.toast(this, userEmail+"님을 초대했습니다")
+                this.toast(userEmail+"님을 초대했습니다")
             } else {
-                Util.toast(this, "이메일을 다시 확인해주세요")
+                this.toast("이메일을 다시 확인해주세요")
             }
         })
     }
