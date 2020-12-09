@@ -1,6 +1,8 @@
 package com.mywidget
 
+import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.messaging.FirebaseMessaging
 import com.mywidget.di.compoenet.DaggerApplicationComponent
 import dagger.android.AndroidInjector
 import dagger.android.support.DaggerApplication
@@ -12,6 +14,14 @@ class MainApplication : DaggerApplication() {
 
     override fun onCreate() {
         super.onCreate()
+
+        FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
+            if (!task.isSuccessful) {
+                return@addOnCompleteListener
+            }
+            val token = task.result
+
+        }
     }
 
     override fun applicationInjector(): AndroidInjector<out DaggerApplication> {
