@@ -4,7 +4,6 @@ import androidx.lifecycle.MutableLiveData
 import com.google.gson.Gson
 import com.google.gson.JsonObject
 import com.google.gson.reflect.TypeToken
-import util.Util
 import com.mywidget.data.apiConnect.ApiConnection
 import com.mywidget.data.model.LmemoData
 import com.mywidget.data.room.LoveDay
@@ -17,6 +16,7 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import org.json.JSONArray
 import org.json.JSONObject
+import util.CalendarUtil.howMuchloveDay
 import java.util.ArrayList
 import javax.inject.Inject
 
@@ -58,7 +58,7 @@ class MainRepository @Inject constructor(
         return rightMessage
     }
 
-    fun getGsonMessage(jsonObject: JsonObject) : List<LmemoData> {
+    private fun getGsonMessage(jsonObject: JsonObject) : List<LmemoData> {
         val obj = JSONObject(Gson().toJson(jsonObject))
         val x = obj.keys()
         val array = JSONArray()
@@ -71,10 +71,10 @@ class MainRepository @Inject constructor(
         return Gson().fromJson(array.toString(), object: TypeToken<ArrayList<LmemoData>>(){}.type)
     }
 
-    fun lovedayFormatt(data: List<LoveDay>?): String {
+    private fun lovedayFormatt(data: List<LoveDay>?): String {
         data?.let {
             return if(it.isNotEmpty()) {
-                Util.howMuchloveDay(it[data.size-1].date)
+                howMuchloveDay(it[data.size-1].date)
             } else "0"
         } ?: run {
             return "0"

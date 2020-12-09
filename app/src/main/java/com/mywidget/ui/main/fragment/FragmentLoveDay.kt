@@ -1,6 +1,5 @@
 package com.mywidget.ui.main.fragment
 
-import android.content.Context
 import android.os.Bundle
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -33,10 +32,6 @@ class FragmentLoveDay : BaseFragment<MainFragmentFragment2Binding>() {
         bindView()
         messagePop()
         return binding.root
-    }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
     }
 
     private fun bindView() {
