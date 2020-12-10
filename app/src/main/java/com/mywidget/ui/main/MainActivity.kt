@@ -22,6 +22,9 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.iid.FirebaseInstanceId
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.messaging.Constants.MessagePayloadKeys.SENDER_ID
+import com.google.firebase.messaging.ktx.messaging
+import com.google.firebase.messaging.ktx.remoteMessage
 import com.mywidget.*
 import com.mywidget.common.BackPressAppFinish
 import com.mywidget.databinding.DrawerlayoutMainBinding
@@ -61,8 +64,29 @@ class MainActivity : BaseActivity<DrawerlayoutMainBinding>()
         loginCheck()
         memoDialogBind()
         loveDayBind()
-
+        messageT()
         floating_btn.setOnClickListener(onClickFloating)
+        fcmtest()
+    }
+
+    fun fcmtest() {
+
+        var test = sendTest()
+        var token: String
+        test.haha2(null, "dd", "qqq")
+        FirebaseInstanceId.getInstance().instanceId.addOnSuccessListener {itemcontainer ->
+            token = itemcontainer.token
+            //test.haha2()
+        }
+    }
+
+    fun messageT() {
+        val fm = Firebase.messaging
+        fm.send(remoteMessage("c8oDWDydRBifDHHzyjGB84:APA91bH_kMvzOZOEwHWxNZme5yU35UrC2HFH3sIYsMoD8qNJJyZbWCsHnvAqssoDsmL4CG0RzQoyknZORTqq8e1uzlTNM_KbtYo6gwkZlOcwOZglAWtagFDDtx86asIYK4UtZyGyGBxE@fcm.googleapis.com") {
+            setMessageId("c8oDWDydRBifDHHzyjGB84:APA91bH_kMvzOZOEwHWxNZme5yU35UrC2HFH3sIYsMoD8qNJJyZbWCsHnvAqssoDsmL4CG0RzQoyknZORTqq8e1uzlTNM_KbtYo6gwkZlOcwOZglAWtagFDDtx86asIYK4UtZyGyGBxE")
+            addData("my_message", "Hello World")
+            addData("my_action", "SAY_HELLO")
+        })
     }
 
     private fun loginCheck() {
@@ -107,16 +131,6 @@ class MainActivity : BaseActivity<DrawerlayoutMainBinding>()
                     loginTxt("로그아웃")
                 }
             }
-        }
-    }
-
-    fun fcmtest(token2: String?) {
-
-        var test = sendTest()
-        var token: String
-        FirebaseInstanceId.getInstance().instanceId.addOnSuccessListener {itemcontainer ->
-            token = itemcontainer.token
-            //test.haha2(token,"")
         }
     }
 

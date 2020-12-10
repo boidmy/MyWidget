@@ -31,14 +31,14 @@ public class sendTest {
             notification.put("title", myNickname+" 의 메세지♡");
             notification.put("body", memo);
             root.put("notification", notification);
-            //root.put("to", data.getToken());
+            root.put("token", "e8p4cID-QcalriYzTdjeZK:APA91bFSgIcTH0LZrbN5HPn643Gm1UArCCDIGfx6Puw9Wn-AFBTadZwKnc1Y6iP3zs25-Irujs8OXYo9cW8pnKA8s3A1kFDGhsK0db753jiYNU_ZAJw_nQfsf6DAkLwtQ7k7NZbTnxQk");
             root.put("content_available", true);
             root.put("priority", "high");
 
             RequestBody body = RequestBody.create(json, String.valueOf(root));
             Request request = new Request.Builder()
                     .addHeader("Content-Type", "application/json")
-                    .addHeader("Authorization", "key=AAAAc7jMs94:APA91bEaUUpvn4eGas12VITCoc4zU0dLM3RuXVoulz3Qphx3fHDU_tzxcmgUDmWTI6R7WsPLBTZaTCFVvdmrSTvBEF9iuB_WtTtqf3lFTgX0UpdFo-8i2FxcRQ2QYSRU3ns-uBjONTg_")
+                    .addHeader("Authorization", "key=e8p4cID-QcalriYzTdjeZK:APA91bFSgIcTH0LZrbN5HPn643Gm1UArCCDIGfx6Puw9Wn-AFBTadZwKnc1Y6iP3zs25-Irujs8OXYo9cW8pnKA8s3A1kFDGhsK0db753jiYNU_ZAJw_nQfsf6DAkLwtQ7k7NZbTnxQk")
                     .url("https://fcm.googleapis.com/fcm/send")
                     .post(body)
                     .build();
