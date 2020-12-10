@@ -6,7 +6,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
 import com.mywidget.data.model.RoomDataModel
-import util.Util
+import util.Util.replacePointToComma
 import javax.inject.Inject
 
 class ChatRoomRepository @Inject constructor() {
@@ -17,7 +17,7 @@ class ChatRoomRepository @Inject constructor() {
     private val ROOMLIST = "RoomList"
 
     fun selectRoomList(id: String): MutableLiveData<List<RoomDataModel>> {
-        userRef.child(Util.replacePointToComma(id))
+        userRef.child(replacePointToComma(id))
             .child(ROOMLIST).addValueEventListener(object : ValueEventListener {
             override fun onCancelled(error: DatabaseError) {
             }
@@ -40,16 +40,32 @@ class ChatRoomRepository @Inject constructor() {
 
     fun createRoom(id: String, subject: String) {
         id.let {
-            val mEmail = Util.replacePointToComma(id)
+            val mEmail = replacePointToComma(id)
 
             val result: HashMap<String, String> = hashMapOf()
             result["roomName"] = subject
             val ref = roomRef.child(mEmail).push()
             ref.setValue(result)
+            roomMasterTokenSave(id, ref)
             ref.key?.let { keyVal ->
                 addUserRoomInformation(RoomDataModel(subject, keyVal, mEmail))
             }
         }
+    }
+
+    private fun roomMasterTokenSave(email: String, ref: DatabaseReference) {
+        userRef.child(replacePointToComma(email))
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    if (snapshot.value != null) {
+                        val userEmail: String = snapshot.child("email").value.toString()
+                        val userToken: String = snapshot.child("token").value.toString()
+                        ref.child("invite").child(replacePointToComma(userEmail))
+                            .setValue(userToken)
+                    }
+                }
+                override fun onCancelled(error: DatabaseError) {}
+            })
     }
 
     private fun addUserRoomInformation(roomDataModel: RoomDataModel) {
@@ -57,8 +73,10 @@ class ChatRoomRepository @Inject constructor() {
             .child(ROOMLIST).child(roomDataModel.roomKey).setValue(roomDataModel)
     }
 
-    fun deleteRoom(roomKey: String, myId: String) {
-        userRef.child(Util.replacePointToComma(myId))
+    fun deleteRoom(master: String, roomKey: String, myId: String) {
+        userRef.child(replacePointToComma(myId))
             .child(ROOMLIST).child(roomKey).setValue(null)
+        roomRef.child(replacePointToComma(master)).child(roomKey)
+            .child("invite").child(replacePointToComma(myId)).setValue(null)
     }
 }

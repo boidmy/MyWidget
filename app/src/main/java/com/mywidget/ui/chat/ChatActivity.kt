@@ -3,8 +3,10 @@ package com.mywidget.ui.chat
 import android.app.Dialog
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import androidx.activity.viewModels
+import androidx.core.view.GravityCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
@@ -15,6 +17,7 @@ import com.mywidget.ui.chat.recyclerview.ChatAdapter
 import com.mywidget.databinding.ActivityChattingBinding
 import com.mywidget.databinding.ChatInviteUserAddBinding
 import com.mywidget.ui.base.BaseActivity
+import com.mywidget.ui.chat.recyclerview.UserListRecyclerView
 import kotlinx.android.synthetic.main.activity_chatting.*
 import util.ItemDecoration
 import util.Util.toast
@@ -43,10 +46,12 @@ class ChatActivity : BaseActivity<ActivityChattingBinding>() {
         adapter.setHasStableIds(true)
         binding.chatRv.adapter = adapter
         binding.chatRv.addItemDecoration(ItemDecoration(this, 10))
+        binding.drawerUserListRv.adapter = UserListRecyclerView(viewModel)
 
         val roomDataModel = intent.getSerializableExtra("data") as RoomDataModel
         viewModel.userId(loginEmail())
         viewModel.getListChat(roomDataModel)
+        viewModel.inviteUserList()
 
         binding.chatRv.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
@@ -90,7 +95,12 @@ class ChatActivity : BaseActivity<ActivityChattingBinding>() {
         })
     }
 
+    fun onClickOpenDrawer(v: View) {
+        binding.chatDrawLayout.openDrawer(GravityCompat.END)
+    }
+
     fun onClickInviteUser(v: View) {
         viewModel.inviteDialogShow()
+        binding.chatDrawLayout.closeDrawer(GravityCompat.END)
     }
 }

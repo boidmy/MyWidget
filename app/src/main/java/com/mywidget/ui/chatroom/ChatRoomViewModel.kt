@@ -20,7 +20,7 @@ class ChatRoomViewModel @Inject constructor(
         repository.createRoom(id, subject)
     }
 
-    fun deleteRoom(roomKey: String) {
-        repository.deleteRoom(roomKey, myId?:"")
+    fun deleteRoom(master: String, roomKey: String) {
+        repository.deleteRoom(master, roomKey, myId?:"")
     }
 }

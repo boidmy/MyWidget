@@ -12,8 +12,8 @@ import com.mywidget.databinding.WatingRoomItemBinding
 import com.mywidget.ui.chatroom.ChatRoomViewModel
 import java.io.Serializable
 
-class ChatRoomRecyclerView(val viewModel: ChatRoomViewModel)
-    : RecyclerView.Adapter<ChatRoomViewHolder>() {
+class ChatRoomRecyclerView(val viewModel: ChatRoomViewModel) :
+    RecyclerView.Adapter<ChatRoomViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChatRoomViewHolder {
         val bind = WatingRoomItemBinding
             .inflate(LayoutInflater.from(parent.context), parent, false)
@@ -21,7 +21,7 @@ class ChatRoomRecyclerView(val viewModel: ChatRoomViewModel)
     }
 
     override fun getItemCount(): Int {
-        return viewModel.roomList.value?.size?:0
+        return viewModel.roomList.value?.size ?: 0
     }
 
     override fun onBindViewHolder(holder: ChatRoomViewHolder, position: Int) {
@@ -29,8 +29,8 @@ class ChatRoomRecyclerView(val viewModel: ChatRoomViewModel)
     }
 }
 
-class ChatRoomViewHolder(val binding: WatingRoomItemBinding)
-    : RecyclerView.ViewHolder(binding.root) {
+class ChatRoomViewHolder(val binding: WatingRoomItemBinding) :
+    RecyclerView.ViewHolder(binding.root) {
     fun bindView(data: RoomDataModel, viewModel: ChatRoomViewModel) {
         binding.data = data
 
@@ -44,7 +44,7 @@ class ChatRoomViewHolder(val binding: WatingRoomItemBinding)
             alert
                 .setTitle("방에서 나오시겠습니까?")
                 .setPositiveButton("나가기") { _, _ ->
-                    viewModel.deleteRoom(data.roomKey)
+                    viewModel.deleteRoom(data.master, data.roomKey)
                 }
                 .setNegativeButton("취소") { _, _ ->
                 }.show()

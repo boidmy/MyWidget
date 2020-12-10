@@ -11,9 +11,10 @@ import javax.inject.Inject
 class ChatViewModel @Inject constructor(private val repository: ChatRepository) : ViewModel() {
 
     var data: MutableLiveData<List<ChatDataModel>> = MutableLiveData()
-    var myId: String? = null
     var inviteUserExistence: MutableLiveData<Boolean> = MutableLiveData()
     var inviteDialogVisibility: MutableLiveData<Boolean> = MutableLiveData()
+    var myId: String? = null
+    var inviteUserList: MutableLiveData<ArrayList<String>> = MutableLiveData()
 
     fun getListChat(roomDataModel: RoomDataModel) {
         data = repository.getListChat(roomDataModel)
@@ -29,6 +30,10 @@ class ChatViewModel @Inject constructor(private val repository: ChatRepository) 
 
     fun inviteUser(email: String) {
         repository.inviteUser(email)
+    }
+
+    fun inviteUserList() {
+        inviteUserList = repository.inviteUserList()
     }
 
     fun userExistenceChk(email: String) {

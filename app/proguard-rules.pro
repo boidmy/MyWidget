@@ -19,3 +19,13 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+-keepattributes Signature
+
+-keep class com.mywidget.data.** {*;}
+
+#-keep class com.mywidget.data.model.*
+#-keep class com.mywidget.data.room.*
+#-keepclassmembers class com.mywidget.data.model.RoomDataModel{*;}
+#-keepclassmembers class com.mywidget.data.model.LmemoData{*;}
+#-keepclassmembers class com.mywidget.data.model.ChatDataModel{*;}

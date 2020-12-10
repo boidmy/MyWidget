@@ -5,21 +5,24 @@ import androidx.lifecycle.MutableLiveData
 import com.google.firebase.database.*
 import com.mywidget.data.model.ChatDataModel
 import com.mywidget.data.model.RoomDataModel
+import com.mywidget.data.model.RoomInviteUser
 import com.mywidget.di.custom.ActivityScope
 import util.Util
+import util.Util.replaceCommaToPoint
+import util.Util.replacePointToComma
 import javax.inject.Inject
 
 @ActivityScope
 class ChatRepository @Inject constructor() {
 
     @Inject lateinit var database: DatabaseReference
-    private val roomRef: DatabaseReference by lazy { database.child("Room") }
+    private val roomRef: DatabaseReference by lazy { database.child("Room")
+        .child(roomDataModel.master).child(roomDataModel.roomKey) }
     private val userRef: DatabaseReference by lazy { database.child("User") }
-    private val message: DatabaseReference by lazy {
-        roomRef.child(roomDataModel.master).child(roomDataModel.roomKey).child("message")
-    }
-    private var inviteUserExistence: MutableLiveData<Boolean> = MutableLiveData()
-    private var inviteDialogVisibility: MutableLiveData<Boolean> = MutableLiveData()
+    private val message: DatabaseReference by lazy { roomRef.child("message") }
+    private val inviteUserExistence: MutableLiveData<Boolean> = MutableLiveData()
+    private val inviteDialogVisibility: MutableLiveData<Boolean> = MutableLiveData()
+    private val inviteUserList: MutableLiveData<ArrayList<String>> = MutableLiveData()
 
     var data: MutableLiveData<List<ChatDataModel>> = MutableLiveData()
     val list: ArrayList<ChatDataModel> = arrayListOf()
@@ -34,20 +37,44 @@ class ChatRepository @Inject constructor() {
     }
 
     fun insertChat(sendUserEmail: String, text: String) {
-        val userEmail = Util.replacePointToComma(sendUserEmail)
+        val userEmail = replacePointToComma(sendUserEmail)
         message.push().setValue(ChatDataModel(text, userEmail))
     }
 
-    fun userExistenceChk(email: String) {
-        userRef.child(Util.replacePointToComma(email))
-            .addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onCancelled(error: DatabaseError) {
-            }
+    fun inviteUserList() : MutableLiveData<ArrayList<String>> {
+        roomRef.child("invite").addValueEventListener(object : ValueEventListener {
+            override fun onCancelled(error: DatabaseError) {}
 
             override fun onDataChange(snapshot: DataSnapshot) {
-                inviteUserExistence.value = snapshot.value != null
+                val list: ArrayList<String> = arrayListOf()
+                for(snap: DataSnapshot in snapshot.children) {
+                    list.add(replaceCommaToPoint(snap.key.toString()))
+                }
+                inviteUserList.value = list
             }
+
         })
+        return inviteUserList
+    }
+
+    fun userExistenceChk(email: String) {
+        userRef.child(replacePointToComma(email))
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    if (snapshot.value != null) {
+                        val userEmail: String = snapshot.child("email").value.toString()
+                        val userToken: String = snapshot.child("token").value.toString()
+
+                        roomRef.child("invite")
+                            .child(replacePointToComma(userEmail)).setValue(userToken)
+                        inviteUserExistence.value = true
+                    } else {
+                        inviteUserExistence.value = false
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {}
+            })
     }
 
     fun inviteUserExistence(): MutableLiveData<Boolean> {
@@ -59,7 +86,7 @@ class ChatRepository @Inject constructor() {
     }
 
     fun inviteUser(email: String) {
-        val mEmail = Util.replacePointToComma(email)
+        val mEmail = replacePointToComma(email)
         userRef.child(mEmail).child("RoomList").child(roomDataModel.roomKey)
             .setValue(roomDataModel)
         inviteDialogShow(false)

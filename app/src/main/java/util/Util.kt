@@ -35,6 +35,10 @@ object Util {
         return email.replace(".", ",").trim()
     }
 
+    fun replaceCommaToPoint(email: String): String {
+        return email.replace(",", ".").trim()
+    }
+
     fun dpToPx(context: Context, dp: Int): Int {
         return TypedValue.applyDimension(
             TypedValue.COMPLEX_UNIT_DIP,

@@ -10,75 +10,151 @@
             type="com.mywidget.ui.chat.ChatViewModel" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.drawerlayout.widget.DrawerLayout
+        android:id="@+id/chatDrawLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
+        tools:openDrawer="end">
 
-        <ImageView
-            android:id="@+id/loveday_bg"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:alpha="0.2"
-            android:background="@drawable/loveday_bg"
-            android:scaleType="fitCenter"
-            android:visibility="visible"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:background="#CCACED">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/chatRv"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:orientation="vertical"
-            app:items="@{viewModel.data}"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintBottom_toTopOf="@+id/chatEdit"
-            app:layout_constraintTop_toTopOf="parent"
-            app:reverseLayout="true"
-            tools:listitem="@layout/chat_right" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/chatRv"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:orientation="vertical"
+                app:items="@{viewModel.data}"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintBottom_toTopOf="@+id/chatEdit"
+                app:layout_constraintTop_toTopOf="parent"
+                app:reverseLayout="true"
+                tools:listitem="@layout/chat_right" />
 
-        <View
-            android:id="@+id/editContainer"
-            android:layout_width="match_parent"
-            android:layout_height="80dp"
-            android:background="#ffffff"
-            app:layout_constraintBottom_toBottomOf="parent" />
+            <View
+                android:id="@+id/editContainer"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:background="#ffffff"
+                app:layout_constraintBottom_toBottomOf="parent" />
 
-        <EditText
-            android:id="@+id/chatEdit"
-            android:layout_width="0dp"
-            android:layout_height="80dp"
-            android:layout_marginEnd="10dp"
-            android:background="#ffffff"
-            android:gravity="top"
-            android:hint="메시지를 입력하세요~"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/sendBtn"
-            app:layout_constraintStart_toStartOf="parent" />
+            <EditText
+                android:id="@+id/chatEdit"
+                android:layout_width="0dp"
+                android:layout_height="80dp"
+                android:layout_marginEnd="10dp"
+                android:background="#ffffff"
+                android:gravity="top"
+                android:hint="메시지를 입력하세요~"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/sendBtn"
+                app:layout_constraintStart_toStartOf="parent" />
 
-        <TextView
-            android:id="@+id/sendBtn"
-            android:layout_width="90dp"
-            android:layout_height="50dp"
-            android:layout_marginEnd="15dp"
-            android:background="@drawable/edge_round_smal_corner"
-            android:gravity="center"
-            android:onClick="onClickSendMessage"
-            android:text="보내기"
-            android:textColor="#000000"
-            android:textSize="20dp"
-            app:layout_constraintBottom_toBottomOf="@+id/editContainer"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/editContainer" />
+            <TextView
+                android:id="@+id/sendBtn"
+                android:layout_width="90dp"
+                android:layout_height="50dp"
+                android:layout_marginEnd="15dp"
+                android:background="@drawable/edge_round_smal_corner"
+                android:gravity="center"
+                android:onClick="onClickSendMessage"
+                android:text="보내기"
+                android:textColor="#000000"
+                android:textSize="20dp"
+                app:layout_constraintBottom_toBottomOf="@+id/editContainer"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/editContainer" />
 
-        <ImageView
-            android:id="@+id/inviteUser"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_marginEnd="20dp"
-            android:onClick="onClickInviteUser"
-            android:src="@drawable/chat_invite_img"
+            <ImageView
+                android:id="@+id/openDrawer"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginEnd="20dp"
+                android:background="@drawable/circle_red"
+                android:onClick="onClickOpenDrawer"
+                android:src="@drawable/icon_category"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <com.google.android.material.navigation.NavigationView
+            android:id="@+id/chatNavView"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="end"
+            android:fitsSystemWindows="false"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            tools:visibility="gone">
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <View
+                    android:id="@+id/inviteContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:onClick="onClickInviteUser"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/inviteIcon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="20dp"
+                    android:src="@drawable/chat_invite_icon"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="33dp"
+                    android:text="친구초대"
+                    android:textColor="#333333"
+                    android:textSize="14dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/inviteIcon"
+                    app:layout_constraintStart_toEndOf="@+id/inviteIcon"
+                    app:layout_constraintTop_toTopOf="@+id/inviteIcon" />
+
+                <View
+                    android:id="@+id/drawerTitleLine"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="20dp"
+                    android:background="#D6D4D4"
+                    app:layout_constraintTop_toBottomOf="@+id/inviteIcon" />
+
+                <TextView
+                    android:id="@+id/drawerSubTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="15dp"
+                    android:text="Communicate"
+                    android:textColor="#676767"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/drawerTitleLine" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/drawerUserListRv"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="25dp"
+                    android:orientation="vertical"
+                    app:items="@{viewModel.inviteUserList}"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/drawerSubTitle"
+                    tools:listitem="@layout/chat_drawer_user_item" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </com.google.android.material.navigation.NavigationView>
+    </androidx.drawerlayout.widget.DrawerLayout>
+
 </layout>

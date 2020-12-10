@@ -20,6 +20,7 @@ import com.mywidget.ui.chatroom.recyclerview.ChatRoomRecyclerView
 import com.mywidget.data.room.Memo
 import com.mywidget.data.room.User
 import com.mywidget.ui.chat.ChatViewModel
+import com.mywidget.ui.chat.recyclerview.UserListRecyclerView
 import com.mywidget.ui.main.MainFragmentViewModel
 import com.mywidget.ui.widgetlist.WidgetListViewModel
 import util.Util
@@ -119,5 +120,11 @@ fun roomAdapter(recyclerView: RecyclerView?, data: MutableLiveData<List<RoomData
 @BindingAdapter("items")
 fun chatAdapter(recyclerView: RecyclerView?, data: MutableLiveData<List<ChatDataModel>>) {
     val adapter: ChatAdapter = recyclerView?.adapter as ChatAdapter
+    adapter.notifyDataSetChanged()
+}
+
+@BindingAdapter("items")
+fun chatUserListAdapter(recyclerView: RecyclerView?, data: MutableLiveData<ArrayList<String>>) {
+    val adapter: UserListRecyclerView = recyclerView?.adapter as UserListRecyclerView
     adapter.notifyDataSetChanged()
 }
