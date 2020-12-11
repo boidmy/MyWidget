@@ -1,17 +1,12 @@
 package com.mywidget.ui.main
 
-import android.Manifest
 import android.app.Dialog
 import android.content.Intent
-import android.content.pm.PackageManager
-import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import androidx.activity.viewModels
-import androidx.appcompat.app.AlertDialog
-import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.lifecycle.ViewModelProvider
@@ -20,11 +15,7 @@ import com.google.android.material.navigation.NavigationView
 import com.google.android.material.tabs.TabLayout
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.iid.FirebaseInstanceId
 import com.google.firebase.ktx.Firebase
-import com.google.firebase.messaging.Constants.MessagePayloadKeys.SENDER_ID
-import com.google.firebase.messaging.ktx.messaging
-import com.google.firebase.messaging.ktx.remoteMessage
 import com.mywidget.*
 import com.mywidget.common.BackPressAppFinish
 import com.mywidget.databinding.DrawerlayoutMainBinding
@@ -64,29 +55,20 @@ class MainActivity : BaseActivity<DrawerlayoutMainBinding>()
         loginCheck()
         memoDialogBind()
         loveDayBind()
-        messageT()
         floating_btn.setOnClickListener(onClickFloating)
         fcmtest()
     }
 
     fun fcmtest() {
 
-        var test = sendTest()
+        var test = SendPush()
         var token: String
-        test.haha2(null, "dd", "qqq")
-        FirebaseInstanceId.getInstance().instanceId.addOnSuccessListener {itemcontainer ->
+        //test.haha2(null, "dd", "qqq")
+        //test.haha("dOMvcWBYSSG0Cln5XLFzVS:APA91bFNmieAx0Ld8Scn04WAl86yzJbqm29S3v2Uk-n2DW3YBVDFacXpFeDMMX7kqFiGQK4B5GxQ3wWP0h9jQe6qhnzw4DxefZHRgmin9Z66uo8IRidQXADWn6sKqRlGmOGqLeSah13w")
+        /*FirebaseInstanceId.getInstance().instanceId.addOnSuccessListener {itemcontainer ->
             token = itemcontainer.token
             //test.haha2()
-        }
-    }
-
-    fun messageT() {
-        val fm = Firebase.messaging
-        fm.send(remoteMessage("c8oDWDydRBifDHHzyjGB84:APA91bH_kMvzOZOEwHWxNZme5yU35UrC2HFH3sIYsMoD8qNJJyZbWCsHnvAqssoDsmL4CG0RzQoyknZORTqq8e1uzlTNM_KbtYo6gwkZlOcwOZglAWtagFDDtx86asIYK4UtZyGyGBxE@fcm.googleapis.com") {
-            setMessageId("c8oDWDydRBifDHHzyjGB84:APA91bH_kMvzOZOEwHWxNZme5yU35UrC2HFH3sIYsMoD8qNJJyZbWCsHnvAqssoDsmL4CG0RzQoyknZORTqq8e1uzlTNM_KbtYo6gwkZlOcwOZglAWtagFDDtx86asIYK4UtZyGyGBxE")
-            addData("my_message", "Hello World")
-            addData("my_action", "SAY_HELLO")
-        })
+        }*/
     }
 
     private fun loginCheck() {

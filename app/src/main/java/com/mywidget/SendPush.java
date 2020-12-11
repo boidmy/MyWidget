@@ -13,11 +13,11 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.HashMap;
 
-public class sendTest {
+public class SendPush {
 
     private CompositeDisposable subscrib;
 
-    public void haha2(UserData data, String memo, String myNickname) {
+    public void send(String token, String memo, String myNickname) {
 
         OkHttpClient okHttpClient = new OkHttpClient();
 
@@ -28,17 +28,21 @@ public class sendTest {
             JSONObject root = new JSONObject();
             JSONObject notification = new JSONObject();
 
-            notification.put("title", myNickname+" 의 메세지♡");
+            notification.put("title", myNickname+" 메세지");
             notification.put("body", memo);
+
+            JSONObject message = new JSONObject();
+
+            //message.put("message", message);
             root.put("notification", notification);
-            root.put("token", "e8p4cID-QcalriYzTdjeZK:APA91bFSgIcTH0LZrbN5HPn643Gm1UArCCDIGfx6Puw9Wn-AFBTadZwKnc1Y6iP3zs25-Irujs8OXYo9cW8pnKA8s3A1kFDGhsK0db753jiYNU_ZAJw_nQfsf6DAkLwtQ7k7NZbTnxQk");
+            root.put("to", token);
             root.put("content_available", true);
             root.put("priority", "high");
 
             RequestBody body = RequestBody.create(json, String.valueOf(root));
             Request request = new Request.Builder()
                     .addHeader("Content-Type", "application/json")
-                    .addHeader("Authorization", "key=e8p4cID-QcalriYzTdjeZK:APA91bFSgIcTH0LZrbN5HPn643Gm1UArCCDIGfx6Puw9Wn-AFBTadZwKnc1Y6iP3zs25-Irujs8OXYo9cW8pnKA8s3A1kFDGhsK0db753jiYNU_ZAJw_nQfsf6DAkLwtQ7k7NZbTnxQk")
+                    .addHeader("Authorization", "key=AAAAc7jMs94:APA91bEaUUpvn4eGas12VITCoc4zU0dLM3RuXVoulz3Qphx3fHDU_tzxcmgUDmWTI6R7WsPLBTZaTCFVvdmrSTvBEF9iuB_WtTtqf3lFTgX0UpdFo-8i2FxcRQ2QYSRU3ns-uBjONTg_")
                     .url("https://fcm.googleapis.com/fcm/send")
                     .post(body)
                     .build();
@@ -51,7 +55,7 @@ public class sendTest {
 
                 @Override
                 public void onResponse(Call call, Response response) throws IOException {
-                    Log.d("haha", response.body().string());
+                    Log.d("messageResponse", response.body().string());
                 }
             });
 
@@ -78,12 +82,10 @@ public class sendTest {
                 has.put("Authorization", "key=AAAAc7jMs94:APA91bEaUUpvn4eGas12VITCoc4zU0dLM3RuXVoulz3Qphx3fHDU_tzxcmgUDmWTI6R7WsPLBTZaTCFVvdmrSTvBEF9iuB_WtTtqf3lFTgX0UpdFo-8i2FxcRQ2QYSRU3ns-uBjONTg_");
 
                 subscrib.add(ApiConnection.Companion.Instance().getRetrofitService()
-                        .fcmTest("fcm.googleapis.com/fcm/send", has, root)
+                        .fcmTest("https://fcm.googleapis.com/fcm/send", has, root)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(
-                                items -> Log.d("haha", String.valueOf(items))
-                        ));
+                        .subscribe());
 
                 /*URL Url = new URL("https://fcm.googleapis.com/fcm/send");
                 HttpURLConnection conn = (HttpURLConnection) Url.openConnection();

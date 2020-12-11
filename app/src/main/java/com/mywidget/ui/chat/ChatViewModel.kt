@@ -25,7 +25,7 @@ class ChatViewModel @Inject constructor(private val repository: ChatRepository) 
     }
 
     fun userId(userEmail: String) {
-        myId = Util.replacePointToComma(userEmail)
+        myId = repository.userId(userEmail)
     }
 
     fun inviteUser(email: String) {
