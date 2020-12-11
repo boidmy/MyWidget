@@ -1,6 +1,7 @@
 package com.mywidget.ui.main
 
 import androidx.lifecycle.MutableLiveData
+import com.google.firebase.database.DatabaseReference
 import com.google.gson.Gson
 import com.google.gson.JsonObject
 import com.google.gson.reflect.TypeToken
@@ -17,6 +18,7 @@ import io.reactivex.schedulers.Schedulers
 import org.json.JSONArray
 import org.json.JSONObject
 import util.CalendarUtil.howMuchloveDay
+import util.Util
 import java.util.ArrayList
 import javax.inject.Inject
 
@@ -24,9 +26,11 @@ import javax.inject.Inject
 class MainRepository @Inject constructor(
     private val memoDb: MemoDB, private val loveDayDb: LoveDayDB) {
 
+    @Inject lateinit var database: DatabaseReference
     private var unSubscripbe: CompositeDisposable = CompositeDisposable()
     private var leftMessage: MutableLiveData<List<LmemoData>> = MutableLiveData()
     private var rightMessage: MutableLiveData<List<LmemoData>> = MutableLiveData()
+    private val userRef: DatabaseReference by lazy { database.child("User") }
 
     fun messageLeft(name: String) : MutableLiveData<List<LmemoData>> {
         unSubscripbe.add(
@@ -99,6 +103,10 @@ class MainRepository @Inject constructor(
 
     fun insertMemo(memo: String, data: String) {
         memoDb.memoDao().insert(Memo(null, memo, data))
+    }
+
+    fun logout(email: String) {
+        userRef.child(Util.replacePointToComma(email)).child("token").setValue(null)
     }
 
     fun rxClear() {

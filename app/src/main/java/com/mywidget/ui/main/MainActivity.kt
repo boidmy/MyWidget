@@ -10,7 +10,6 @@ import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.lifecycle.ViewModelProvider
-import com.firebase.ui.auth.IdpResponse
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.tabs.TabLayout
 import com.google.firebase.auth.FirebaseAuth
@@ -23,7 +22,7 @@ import com.mywidget.databinding.MainLovedayDialogBinding
 import com.mywidget.databinding.MemoDialogBinding
 import com.mywidget.ui.base.BaseActivity
 import com.mywidget.ui.login.LoginActivity
-import com.mywidget.ui.loveday.LoveDayPopupActivity
+import com.mywidget.ui.loveday.FloatingPopupActivity
 import com.mywidget.ui.main.fragment.MainTabPagerAdapter
 import com.mywidget.ui.widgetlist.WidgetListActivity
 import kotlinx.android.synthetic.main.activity_main.*
@@ -56,25 +55,12 @@ class MainActivity : BaseActivity<DrawerlayoutMainBinding>()
         memoDialogBind()
         loveDayBind()
         floating_btn.setOnClickListener(onClickFloating)
-        fcmtest()
-    }
-
-    fun fcmtest() {
-
-        var test = SendPush()
-        var token: String
-        //test.haha2(null, "dd", "qqq")
-        //test.haha("dOMvcWBYSSG0Cln5XLFzVS:APA91bFNmieAx0Ld8Scn04WAl86yzJbqm29S3v2Uk-n2DW3YBVDFacXpFeDMMX7kqFiGQK4B5GxQ3wWP0h9jQe6qhnzw4DxefZHRgmin9Z66uo8IRidQXADWn6sKqRlGmOGqLeSah13w")
-        /*FirebaseInstanceId.getInstance().instanceId.addOnSuccessListener {itemcontainer ->
-            token = itemcontainer.token
-            //test.haha2()
-        }*/
     }
 
     private fun loginCheck() {
         val email = loginEmail()
         if(email.isNotEmpty()) {
-            viewModel.userEmail.value = email
+            viewModel.login(email)
             binding.navView.menu.getItem(1).title = "로그아웃"
         }
     }
@@ -104,12 +90,10 @@ class MainActivity : BaseActivity<DrawerlayoutMainBinding>()
                 }
             }
             4000 -> {
-                val response = IdpResponse.fromResultIntent(data)
-                // Successfully signed in
                 val user = FirebaseAuth.getInstance().currentUser
                 user?.email?.let {
                     this.toast(it+"님 환영합니다!")
-                    viewModel.userEmail.value = user.email?:""
+                    viewModel.login(it)
                     loginTxt("로그아웃")
                 }
             }
@@ -139,6 +123,7 @@ class MainActivity : BaseActivity<DrawerlayoutMainBinding>()
                     val intent = Intent(this, LoginActivity::class.java)
                     startActivityForResult(intent, 4000)
                 } else {
+                    viewModel.logout(loginEmail())
                     Firebase.auth.signOut()
                     viewModel.userEmail.value = ""
                     loginTxt("로그인")
@@ -150,7 +135,7 @@ class MainActivity : BaseActivity<DrawerlayoutMainBinding>()
     }
 
     private fun onClickLoveDay() {
-        val intent = Intent(this, LoveDayPopupActivity::class.java)
+        val intent = Intent(this, FloatingPopupActivity::class.java)
         startActivityForResult(intent, 3000)
     }
 
