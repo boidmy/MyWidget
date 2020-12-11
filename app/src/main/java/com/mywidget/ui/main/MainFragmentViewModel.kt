@@ -66,39 +66,16 @@ class MainFragmentViewModel @Inject constructor(
         message.value = rightMessage.value
     }
 
+    fun logout(email: String) {
+        repository.logout(email)
+    }
+
+    fun login(email: String) {
+        userEmail.value = email
+    }
+
     override fun onCleared() {
         repository.rxClear()
         super.onCleared()
     }
-
-    /*
-    * private var database: DatabaseReference = FirebaseDatabase.getInstance().reference.child("Lmemo")
-
-    fun message() {
-        database.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(data: DataSnapshot) {
-                var arrayRight = arrayListOf<Ldata>()
-                var arrayLeft = arrayListOf<Ldata>()
-
-                for (ds in data.child("콩이").children) {
-                    val product = ds.getValue(Ldata::class.java)
-                    product?.let {
-                        arrayRight.add(it)
-                    }
-                }
-
-                for (ds in data.child("뿡이").children) {
-                    val product = ds.getValue(Ldata::class.java)
-                    product?.let {
-                        arrayLeft.add(it)
-                    }
-                }
-
-                leftMessage.value = arrayLeft
-                rightMessage.value = arrayRight
-            }
-            override fun onCancelled(p0: DatabaseError) {
-            }
-        })
-    }*/
 }
