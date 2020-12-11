@@ -1,5 +1,7 @@
 package com.mywidget.ui.chat
 
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.database.*
@@ -9,34 +11,33 @@ import com.mywidget.data.model.RoomDataModel
 import com.mywidget.di.custom.ActivityScope
 import util.Util.replaceCommaToPoint
 import util.Util.replacePointToComma
+import java.util.*
 import javax.inject.Inject
+import javax.inject.Named
+import kotlin.collections.ArrayList
 
 @ActivityScope
 class ChatRepository @Inject constructor() {
 
-    @Inject
-    lateinit var database: DatabaseReference
+    @Inject lateinit var database: DatabaseReference
     private val roomRef: DatabaseReference by lazy {
-        database.child("Room")
-            .child(roomDataModel.master).child(roomDataModel.roomKey)
-    }
+        database.child("Room").child(roomDataModel.master).child(roomDataModel.roomKey) }
     private val userRef: DatabaseReference by lazy { database.child("User") }
     private val message: DatabaseReference by lazy { roomRef.child("message") }
     private val inviteUserExistence: MutableLiveData<Boolean> = MutableLiveData()
     private val inviteDialogVisibility: MutableLiveData<Boolean> = MutableLiveData()
     private val inviteUserList: MutableLiveData<ArrayList<String>> = MutableLiveData()
     var myId: String? = null
-
     var data: MutableLiveData<List<ChatDataModel>> = MutableLiveData()
     val list: ArrayList<ChatDataModel> = arrayListOf()
     var lastMessageKey: String? = null
     var loadMoreChk = false
-    var firstComeIn = true //방을 들어오면 푸쉬를 보내면 안되기 때문에 존재하는 플래그
     private lateinit var roomDataModel: RoomDataModel
+    private var isListening = true
 
     fun userId(userEmail: String): String {
         myId = replacePointToComma(userEmail)
-        return myId ?:""
+        return myId ?: ""
     }
 
     fun getListChat(roomDataModel: RoomDataModel): MutableLiveData<List<ChatDataModel>> {
@@ -47,7 +48,82 @@ class ChatRepository @Inject constructor() {
 
     fun insertChat(sendUserEmail: String, text: String) {
         val userEmail = replacePointToComma(sendUserEmail)
-        message.push().setValue(ChatDataModel(text, userEmail))
+        val ref = message.push()
+        ref.setValue(ChatDataModel(text, userEmail)).addOnCompleteListener {
+            Handler(Looper.getMainLooper()).postDelayed({
+                insertPush(ref.key ?: "", text, userEmail)
+            }, 1000)
+        }
+    }
+
+    private val itemSelectListener = object : ChildEventListener {
+        override fun onCancelled(error: DatabaseError) {
+            Log.d("", "")
+        }
+
+        override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {
+            Log.d("", "")
+        }
+
+        override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
+            Log.d("", "")
+        }
+
+        override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
+            if (!isListening) return
+            val i = snapshot.children.iterator()
+            var id = ""
+            var message = ""
+            while (i.hasNext()) {
+                id = i.next().value as String
+                message = i.next().value as String
+            }
+            list.add(0, ChatDataModel(message, id))
+            data.value = list
+            if (!loadMoreChk) {
+                lastMessageKey = snapshot.key
+                loadMoreChk = true
+            }
+            //메시지를 보고있는 사람은 자기의 데이터에 key값이 여기서 들어감
+            roomRef.child("invite").child(myId ?: "").setValue(snapshot.key)
+        }
+
+        override fun onChildRemoved(snapshot: DataSnapshot) {
+            Log.d("", "")
+        }
+    }
+
+    fun chatLoadMore(startPosition: Int) {
+        loadMoreChk = false
+        val loadMoreSelectKey = lastMessageKey
+        message.orderByKey().endAt(lastMessageKey).limitToLast(20)
+            .addChildEventListener(object : ChildEventListener {
+                override fun onCancelled(error: DatabaseError) {}
+
+                override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {}
+
+                override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {}
+
+                override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
+                    val i = snapshot.children.iterator()
+                    var id = ""
+                    var message = ""
+                    while (i.hasNext()) {
+                        id = i.next().value as String
+                        message = i.next().value as String
+                    }
+                    if (loadMoreSelectKey != snapshot.key) {
+                        list.add(startPosition, ChatDataModel(message, id))
+                        data.value = list
+                    }
+                    if (!loadMoreChk) {
+                        lastMessageKey = snapshot.key
+                        loadMoreChk = true
+                    }
+                }
+
+                override fun onChildRemoved(snapshot: DataSnapshot) {}
+            })
     }
 
     fun inviteUserList(): MutableLiveData<ArrayList<String>> {
@@ -61,7 +137,6 @@ class ChatRepository @Inject constructor() {
                 }
                 inviteUserList.value = list
             }
-
         })
         return inviteUserList
     }
@@ -105,64 +180,24 @@ class ChatRepository @Inject constructor() {
         inviteDialogVisibility.value = flag
     }
 
-    private val itemSelectListener = object : ChildEventListener {
-        override fun onCancelled(error: DatabaseError) {
-            Log.d("", "")
-        }
-
-        override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {
-            Log.d("", "")
-        }
-
-        override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
-            Log.d("", "")
-        }
-
-        override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
-            val i = snapshot.children.iterator()
-            var id = ""
-            var message = ""
-            while (i.hasNext()) {
-                id = i.next().value as String
-                message = i.next().value as String
-            }
-            list.add(0, ChatDataModel(message, id))
-            data.value = list
-            if (!loadMoreChk) {
-                lastMessageKey = snapshot.key
-                loadMoreChk = true
-            }
-            //내가 메세지를 보고있다면..? 개개인이 값 셋팅이 되어야 구분해서 푸쉬를 보내줄수있다
-            if(!firstComeIn) {
-                roomRef.child("invite").child(myId ?:"").setValue(snapshot.key)
-                if(id == myId) { //내가 썼으니 모든 invite user에게 푸쉬를 보낼것
-                    insertPush(snapshot.key ?:"", message, id)
-                }
-            }
-        }
-
-        override fun onChildRemoved(snapshot: DataSnapshot) {
-            Log.d("", "")
-        }
-    }
-
-    fun insertPush(key: String, message: String, sendId: String) {
+    private fun insertPush(key: String, message: String, sendId: String) {
         roomRef.child("invite").addListenerForSingleValueEvent(
             object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     for (snap: DataSnapshot in snapshot.children) {
-                        if(snap.value != key) {
+                        if (snap.value != key) {
                             //유저의 토큰값을 검색해서 푸쉬를 날려줘야함
-                            getUserToken(snap.key ?:"", message, sendId)
+                            getUserTokenAndPush(snap.key ?: "", message, sendId)
                         }
                     }
                 }
+
                 override fun onCancelled(error: DatabaseError) {}
             }
         )
     }
 
-    fun getUserToken(email: String, message: String, sendId: String) {
+    fun getUserTokenAndPush(email: String, message: String, sendId: String) {
         userRef.child(email).child("token").addListenerForSingleValueEvent(
             object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
@@ -170,47 +205,13 @@ class ChatRepository @Inject constructor() {
                         SendPush().send(it.toString(), message, sendId)
                     }
                 }
-                override fun onCancelled(error: DatabaseError) {}
 
+                override fun onCancelled(error: DatabaseError) {}
             }
         )
     }
 
-    fun chatLoadMore(startPosition: Int) {
-        loadMoreChk = false
-        val loadMoreSelectKey = lastMessageKey
-        message.orderByKey().endAt(lastMessageKey).limitToLast(20)
-            .addChildEventListener(object : ChildEventListener {
-                override fun onCancelled(error: DatabaseError) {
-                }
-
-                override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {
-                }
-
-                override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
-                }
-
-                override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
-                    val i = snapshot.children.iterator()
-                    var id = ""
-                    var message = ""
-                    while (i.hasNext()) {
-                        id = i.next().value as String
-                        message = i.next().value as String
-                    }
-                    if (loadMoreSelectKey != snapshot.key) {
-                        list.add(startPosition, ChatDataModel(message, id))
-                        data.value = list
-                    }
-                    if (!loadMoreChk) {
-                        lastMessageKey = snapshot.key
-                        loadMoreChk = true
-                    }
-                }
-
-                override fun onChildRemoved(snapshot: DataSnapshot) {
-                }
-
-            })
+    fun onCleared() {
+        isListening = false
     }
 }

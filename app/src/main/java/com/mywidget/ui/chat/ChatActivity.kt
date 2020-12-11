@@ -65,6 +65,14 @@ class ChatActivity : BaseActivity<ActivityChattingBinding>() {
         })
     }
 
+    override fun onBackPressed() {
+        if(binding.chatDrawLayout.isDrawerOpen(GravityCompat.END)) {
+            binding.chatDrawLayout.closeDrawer(GravityCompat.END)
+            return
+        }
+        finish()
+    }
+
     fun onClickSendMessage(v: View) {
         viewModel.insertChat(loginEmail(), chatEdit.text.toString())
         binding.chatEdit.text.clear()

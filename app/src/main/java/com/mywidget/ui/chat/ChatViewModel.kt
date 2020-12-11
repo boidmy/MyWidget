@@ -4,10 +4,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.mywidget.data.model.ChatDataModel
 import com.mywidget.data.model.RoomDataModel
-import com.mywidget.ui.chat.ChatRepository
-import util.Util
+import com.mywidget.di.custom.ActivityScope
 import javax.inject.Inject
 
+@ActivityScope
 class ChatViewModel @Inject constructor(private val repository: ChatRepository) : ViewModel() {
 
     var data: MutableLiveData<List<ChatDataModel>> = MutableLiveData()
@@ -54,5 +54,10 @@ class ChatViewModel @Inject constructor(private val repository: ChatRepository) 
 
     fun inviteDialogShow() {
         repository.inviteDialogShow(true)
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        repository.onCleared()
     }
 }
