@@ -26,6 +26,9 @@ class MainTabMemoAdapter : RecyclerView.Adapter<MainTabMemoViewHolder>() {
     }
 
     override fun getItemCount(): Int {
+        if(mFragmentViewModel?.memoData?.value?.size?:0 > 0)
+            mFragmentViewModel?.guidTextVisibility(false)
+        else  mFragmentViewModel?.guidTextVisibility(true)
         return mFragmentViewModel?.memoData?.value?.size?: 0
     }
 

@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mywidget.R
@@ -36,6 +38,10 @@ class FragmentMemo : BaseFragment<MainFragmentRvBinding>() {
         binding.fragmentRv.adapter = mAdapter
         binding.data = viewModel.memoData
         mAdapter.setViewModel(viewModel)
+
+        viewModel.guidTextVisibility.observe(requireActivity(), Observer {
+            binding.guidTxt.isVisible = it
+        })
 
         selectCall()
     }

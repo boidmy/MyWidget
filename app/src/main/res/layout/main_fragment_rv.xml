@@ -14,17 +14,31 @@
             type="MutableLiveData&lt;List&lt;com.mywidget.data.room.Memo&gt;&gt;" />
     </data>
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+        <TextView
+            android:id="@+id/guidTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="메모를 등록해 주세요"
+            android:textColor="#000000"
+            android:textSize="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/fragment_rv"
+            android:id="@+id/fragmentRv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:items="@{data}"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:itemCount="2"
             tools:listitem="@layout/main_fragment_rv_item" />
 
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

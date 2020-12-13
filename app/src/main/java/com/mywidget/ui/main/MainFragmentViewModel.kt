@@ -20,6 +20,7 @@ class MainFragmentViewModel @Inject constructor(
 
     var memoDialogVisible: MutableLiveData<Boolean> = MutableLiveData()
     var loveDayDialogVisible: MutableLiveData<Boolean> = MutableLiveData()
+    val guidTextVisibility: MutableLiveData<Boolean> = MutableLiveData()
 
     fun insertMemo(memo: String, data: String) {
         Thread(Runnable {
@@ -72,6 +73,10 @@ class MainFragmentViewModel @Inject constructor(
 
     fun login(email: String) {
         userEmail.value = email
+    }
+
+    fun guidTextVisibility(flag: Boolean) {
+        guidTextVisibility.value = flag
     }
 
     override fun onCleared() {
