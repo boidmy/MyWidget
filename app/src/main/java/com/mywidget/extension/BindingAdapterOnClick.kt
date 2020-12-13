@@ -92,7 +92,7 @@ fun createRoom(imageView: ImageView, viewModel: ChatRoomViewModel, editText: Edi
         } else {
             viewModel.myId?.let {
                 viewModel.createRoom(it, editText.text.toString())
-                viewModel.isDialogVisibility.value = false
+                viewModel.dialogVisibility(false)
             }
         }
     }

@@ -21,7 +21,7 @@
             android:id="@+id/chatInviteContainer"
             android:layout_width="300dp"
             android:layout_height="230dp"
-            android:background="#2D8379"
+            android:background="@drawable/edge_round_2d56583"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -62,6 +62,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
+            android:backgroundTint="#FFFFFF"
             android:textColor="#000000"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -78,6 +79,6 @@
             app:editText="@{chatUserEmailEdit}"
             app:inviteUserAdd="@{viewModel}"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/chatUserEmailEdit"/>
+            app:layout_constraintTop_toBottomOf="@+id/chatUserEmailEdit" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

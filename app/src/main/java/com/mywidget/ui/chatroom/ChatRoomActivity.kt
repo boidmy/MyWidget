@@ -1,6 +1,8 @@
 package com.mywidget.ui.chatroom
 
 import android.app.Dialog
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -48,10 +50,11 @@ class ChatRoomActivity : BaseActivity<ActivityWatingRoomBinding>() {
         dialogBinding.viewModel = viewModel
         dialogBinding.id = loginEmail()
         createRoomDialog.setContentView(dialogBinding.root)
+        createRoomDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
     }
 
     private val onClickCreateRoom = View.OnClickListener {
-        viewModel.isDialogVisibility.value = true
+        viewModel.dialogVisibility(true)
         viewModel.isDialogVisibility.observe(this, Observer {
             if(it) createRoomDialog.show()
             else createRoomDialog.dismiss()

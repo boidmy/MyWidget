@@ -37,16 +37,6 @@
             app:layout_constraintTop_toBottomOf="@+id/createRoom"
             tools:itemCount="10"
             tools:listitem="@layout/wating_room_item" />
-
-        <ImageView
-            android:id="@+id/lovedayBg"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:alpha="0.2"
-            android:background="@drawable/loveday_bg"
-            android:scaleType="fitCenter"
-            android:visibility="visible"
-            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

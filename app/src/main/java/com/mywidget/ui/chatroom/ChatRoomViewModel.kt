@@ -23,4 +23,8 @@ class ChatRoomViewModel @Inject constructor(
     fun deleteRoom(master: String, roomKey: String) {
         repository.deleteRoom(master, roomKey, myId?:"")
     }
+
+    fun dialogVisibility(flag: Boolean) {
+        isDialogVisibility.value = flag
+    }
 }

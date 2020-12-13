@@ -1,6 +1,8 @@
 package com.mywidget.ui.chat
 
 import android.app.Dialog
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.MenuItem
@@ -81,6 +83,7 @@ class ChatActivity : BaseActivity<ActivityChattingBinding>() {
     private fun inviteDialog() {
         inviteDialog = Dialog(this)
         inviteDialog?.setContentView(inviteUserAddBinding.root)
+        inviteDialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         inviteUserAddBinding.viewModel = viewModel
         inviteUserAddBinding.activity = this
         viewModel.inviteUserExistence()
