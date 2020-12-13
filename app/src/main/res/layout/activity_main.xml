@@ -21,7 +21,6 @@
 
         <include
             android:id="@+id/titleContainer"
-            bind:loginEmail="@{viewModel.userEmail}"
             layout="@layout/layout_title"/>
 
         <com.google.android.material.tabs.TabLayout

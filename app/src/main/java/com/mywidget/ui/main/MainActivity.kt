@@ -9,6 +9,7 @@ import android.view.View
 import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
+import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.tabs.TabLayout
@@ -20,6 +21,7 @@ import com.mywidget.common.BackPressAppFinish
 import com.mywidget.databinding.DrawerlayoutMainBinding
 import com.mywidget.databinding.MainLovedayDialogBinding
 import com.mywidget.databinding.MemoDialogBinding
+import com.mywidget.databinding.NavHeaderMainBinding
 import com.mywidget.ui.base.BaseActivity
 import com.mywidget.ui.login.LoginActivity
 import com.mywidget.ui.loveday.FloatingPopupActivity
@@ -49,9 +51,9 @@ class MainActivity : BaseActivity<DrawerlayoutMainBinding>()
         super.onCreate(savedInstanceState)
         binding.viewModel = viewModel
 
+        loginCheck()
         leftMenu()
         tabInit()
-        loginCheck()
         memoDialogBind()
         loveDayBind()
         floating_btn.setOnClickListener(onClickFloating)
@@ -104,6 +106,11 @@ class MainActivity : BaseActivity<DrawerlayoutMainBinding>()
         binding.mainContainer.titleContainer.leftMenu.setOnClickListener {
             binding.drawerLayout.openDrawer(GravityCompat.START)
         }
+        val drawerHeaderBinding: NavHeaderMainBinding = DataBindingUtil.inflate(layoutInflater
+            , R.layout.nav_header_main, binding.navView, false)
+        drawerHeaderBinding.lifecycleOwner = this
+        drawerHeaderBinding.viewModel = viewModel
+        binding.navView.addHeaderView(drawerHeaderBinding.root)
         binding.navView.setNavigationItemSelectedListener(this)
     }
 

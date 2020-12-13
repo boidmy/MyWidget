@@ -20,7 +20,6 @@
         <include
             android:id="@+id/titleContainer"
             layout="@layout/layout_title"
-            bind:loginEmail="@{viewModel.userEmail}"
             app:layout_constraintTop_toTopOf="parent"/>
 
         <androidx.recyclerview.widget.RecyclerView
