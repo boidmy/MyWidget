@@ -31,17 +31,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     }
 
-    /**
-     * 메세지를 받았을 경우 그 메세지에 대하여 구현하는 부분입니다.
-     * **/
-    /*@Override
-    public void onMessageReceived(RemoteMessage remoteMessage) {
-
-        if (remoteMessage != null && remoteMessage.getData().size() > 0) {
-            //sendNotification(remoteMessage);
-        }
-    }*/
-
     private static final String TAG = "MyFirebaseMsgService";
 
     @Override
@@ -51,22 +40,11 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
         if (remoteMessage.getData().size() > 0) {
             Log.d(TAG, "Message data payload: " + remoteMessage.getData());
-
-            if (true) {
-
-            } else {
-
-                handleNow();
-            }
         }
         if (remoteMessage.getNotification() != null) {
             Log.d(TAG, "Message Notification Body: " + remoteMessage.getNotification().getBody());
             sendNotification(remoteMessage);
         }
-    }
-
-    private void handleNow() {
-        Log.d(TAG, "Short lived task is done.");
     }
 
     private void sendNotification(RemoteMessage message) {
@@ -97,8 +75,4 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         }
         notificationManager.notify(0, notificationBuilder.build());
     }
-
-
-
-
 }

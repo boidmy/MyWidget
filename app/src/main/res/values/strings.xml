@@ -7,6 +7,7 @@
     <string name="menu_gallery">미구현</string>
     <string name="menu_slideshow">로그인</string>
     <string name="invite_user">친구초대</string>
+    <string name="friend_add">친구추가</string>
     <string name="menu_tools">Tools</string>
     <string name="menu_share">Share</string>
     <string name="menu_send">Send</string>
