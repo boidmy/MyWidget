@@ -31,7 +31,7 @@ class ChatActivity : BaseActivity<ActivityChattingBinding>() {
     private val viewModel by viewModels<ChatViewModel> { factory }
     private val inviteUserAddBinding by lazy {
         ChatInviteUserAddBinding.inflate(LayoutInflater.from(this)) }
-    private var inviteDialog: Dialog? = null
+    private val inviteDialog by lazy { Dialog(this, R.style.CustomDialogTheme) }
 
     override val layout: Int
         get() = R.layout.activity_chatting
@@ -81,17 +81,16 @@ class ChatActivity : BaseActivity<ActivityChattingBinding>() {
     }
 
     private fun inviteDialog() {
-        inviteDialog = Dialog(this)
-        inviteDialog?.setContentView(inviteUserAddBinding.root)
+        inviteDialog.setContentView(inviteUserAddBinding.root)
         inviteUserAddBinding.viewModel = viewModel
         inviteUserAddBinding.activity = this
         viewModel.inviteUserExistence()
         viewModel.inviteDialogVisibility()
         viewModel.inviteDialogVisibility.observe(this, Observer {
-            if(it) inviteDialog?.show()
+            if(it) inviteDialog.show()
             else {
                 inviteUserAddBinding.chatUserEmailEdit.text = null
-                inviteDialog?.dismiss()
+                inviteDialog.dismiss()
             }
         })
         viewModel.inviteUserExistence.observe(this, Observer {

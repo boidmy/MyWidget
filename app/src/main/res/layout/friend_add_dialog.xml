@@ -1,58 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:orientation="vertical"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:background="@drawable/outline_white"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp"
-        android:paddingBottom="20dp">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <EditText
-            android:id="@+id/name_txt"
-            android:layout_width="wrap_content"
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <View
+            android:id="@+id/friendAddContainer"
+            android:layout_width="300dp"
+            android:layout_height="230dp"
+            android:background="@drawable/edge_round_2d56583"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/friendAddAddIcon"
+            android:layout_width="40dp"
             android:layout_height="40dp"
-            android:minWidth="150dp"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginStart="20dp"
             android:layout_marginTop="20dp"
-            android:background="@drawable/outline_pink"
-            android:textColor="#000000"
-            android:textColorHint="#9B9B9B"
-            android:layout_marginBottom="5dp"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:gravity="center"
-            android:hint="상대의 메일입력"/>
+            android:src="@drawable/icon_friend_add"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
-            android:id="@+id/nickname_txt"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:minWidth="150dp"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/name_txt"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/outline_pink"
-            android:textColor="#000000"
-            android:textColorHint="#9B9B9B"
-            android:layout_marginBottom="5dp"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:gravity="center"
-            android:hint="별명입력!"/>
-
-    <Button android:id="@+id/confirm_btn"
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="입력"
-            android:layout_marginBottom="20dp"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/nickname_txt"/>
-</androidx.constraintlayout.widget.ConstraintLayout>
+            android:layout_marginStart="20dp"
+            android:text="친구 추가"
+            android:textColor="#ffffff"
+            app:layout_constraintBottom_toBottomOf="@+id/friendAddAddIcon"
+            app:layout_constraintStart_toEndOf="@+id/friendAddAddIcon"
+            app:layout_constraintTop_toTopOf="@+id/friendAddAddIcon" />
+
+        <TextView
+            android:id="@+id/friendAddEmailTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:text="추가할 이메일을 입력하세요"
+            android:textColor="#ffffff"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/friendAddAddIcon" />
+
+        <EditText
+            android:id="@+id/friendAddEmailEdit"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:backgroundTint="#FFFFFF"
+            android:textColor="#000000"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/friendAddEmailTxt" />
+
+        <ImageView
+            android:id="@+id/confirmBtn"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="20dp"
+            android:src="@drawable/confirm_btn"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/friendAddEmailEdit" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

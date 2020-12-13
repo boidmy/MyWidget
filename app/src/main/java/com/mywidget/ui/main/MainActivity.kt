@@ -22,6 +22,7 @@ import com.mywidget.databinding.MainLovedayDialogBinding
 import com.mywidget.databinding.MemoDialogBinding
 import com.mywidget.databinding.NavHeaderMainBinding
 import com.mywidget.ui.base.BaseActivity
+import com.mywidget.ui.friend.FriendActivity
 import com.mywidget.ui.login.LoginActivity
 import com.mywidget.ui.loveday.FloatingPopupActivity
 import com.mywidget.ui.main.fragment.MainTabPagerAdapter
@@ -140,6 +141,10 @@ class MainActivity : BaseActivity<DrawerlayoutMainBinding>()
                     viewModel.userEmail.value = ""
                     loginTxt("로그인")
                 }
+            }
+            R.id.friendAdd -> {
+                val intent = Intent(this, FriendActivity::class.java)
+                startActivity(intent)
             }
         }
         binding.drawerLayout.closeDrawer(GravityCompat.START)
