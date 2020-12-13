@@ -1,16 +1,11 @@
 package com.mywidget.extension
 
 import android.app.DatePickerDialog
-import android.appwidget.AppWidgetManager
-import android.content.Intent
-import android.view.View
 import android.widget.*
-import androidx.appcompat.app.AlertDialog
 import androidx.databinding.BindingAdapter
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
 import util.CalendarUtil
-import com.mywidget.MyAppWidget
 import com.mywidget.ui.main.recyclerview.MainTabMemoAdapter
 import com.mywidget.ui.widgetlist.recyclerview.WidgetListRecyclerView
 import com.mywidget.data.model.ChatDataModel
@@ -19,11 +14,10 @@ import com.mywidget.ui.chat.recyclerview.ChatAdapter
 import com.mywidget.ui.chatroom.recyclerview.ChatRoomRecyclerView
 import com.mywidget.data.room.Memo
 import com.mywidget.data.room.User
-import com.mywidget.ui.chat.ChatViewModel
 import com.mywidget.ui.chat.recyclerview.UserListRecyclerView
 import com.mywidget.ui.main.MainFragmentViewModel
 import com.mywidget.ui.widgetlist.WidgetListViewModel
-import util.Util
+import util.Util.toast
 import java.util.*
 
 @BindingAdapter("text")
@@ -67,25 +61,42 @@ fun termProcessing(textView: TextView?, data: String?) {
 }
 
 @BindingAdapter("NowDate")
-fun setNowDate(view: View, textView: TextView) {
-    view.setOnClickListener {
+fun setNowDate(calendarTxtArea: EditText, today: String) {
+    calendarTxtArea.setText(today)
+    calendarTxtArea.setOnClickListener {
         val c = Calendar.getInstance()
-        val dpd = DatePickerDialog(view.context, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
-            textView.text = year.toString() + "-" + (monthOfYear+1).toString() + "-" + dayOfMonth.toString()
-            textView.tag = year.toString()+String.format("%02d", monthOfYear+1)+dayOfMonth.toString()
+        val dpd = DatePickerDialog(calendarTxtArea.context, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+            calendarTxtArea.setText(year.toString() + "-" + (monthOfYear+1).toString() + "-" + dayOfMonth.toString())
+            calendarTxtArea.tag = year.toString()+String.format("%02d", monthOfYear+1)+dayOfMonth.toString()
         }, CalendarUtil.getYear(c), CalendarUtil.getMonth(c), CalendarUtil.getNowdate(c))
         dpd.show()
     }
 }
 
 @BindingAdapter("loveDayConfirm", "textTag")
-fun setLoveDay(button: Button, viewModel: MainFragmentViewModel, textView: TextView) {
-    button.setOnClickListener {
+fun setLoveDay(imageView: ImageView, viewModel: MainFragmentViewModel, textView: TextView) {
+    imageView.setOnClickListener {
         textView.tag?.let {
             viewModel.addLoveDay(it.toString())
-            viewModel.loveDayDialogVisible.value = false
+            viewModel.loveDayDialogVisible(false)
         } ?: run {
-            Toast.makeText(button.context, "날짜를 선택해주세요!", Toast.LENGTH_SHORT).show()
+            imageView.context.toast("날짜를 선택해주세요!")
+        }
+    }
+}
+
+@BindingAdapter("memoTxt", "dateTxt", "viewModel")
+fun memoOnclick(imageView: ImageView, memo: EditText, date: TextView, viewModel: MainFragmentViewModel) {
+    imageView.setOnClickListener {
+        if (memo.text.toString().isEmpty()) {
+            imageView.context.toast("디데이명을 입력해주세요!")
+        } else {
+            date.tag?.let {
+                viewModel.insertMemo(memo.text.toString(), it.toString())
+                viewModel.memoDialogVisibility(false)
+            } ?: run {
+                imageView.context.toast("날짜를 선택해주세요!")
+            }
         }
     }
 }

@@ -8,7 +8,6 @@ import com.mywidget.MainApplication
 import com.mywidget.R
 import com.mywidget.ui.chatroom.ChatRoomActivity
 import com.mywidget.lmemo.view.LMemoActivity
-import kotlinx.android.synthetic.main.loveday_popup.*
 import util.Util.toast
 
 class FloatingPopupActivity : Activity() {
@@ -17,15 +16,16 @@ class FloatingPopupActivity : Activity() {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.loveday_popup)
-
-        conditionContainer.setOnClickListener(clickListener)
-        loveDayContainer.setOnClickListener(clickListener)
-        chatContainer.setOnClickListener(clickListener)
-        smart_talk_floating_popup_dim_layout.setOnClickListener(clickListener)
     }
 
-    private val clickListener = View.OnClickListener { v ->
+    fun onClickFloatingBtn(v: View) {
         when (v.id){
+            R.id.memoContainer -> {
+                val intent = Intent()
+                intent.putExtra("result", "memo")
+                setResult(RESULT_OK, intent)
+                finish()
+            }
             R.id.conditionContainer -> {
                 val intent = Intent(this, LMemoActivity::class.java)
                 startActivity(intent)
@@ -33,7 +33,7 @@ class FloatingPopupActivity : Activity() {
             }
             R.id.loveDayContainer -> {
                 val intent = Intent()
-                intent.putExtra("result", "dday")
+                intent.putExtra("result", "dDay")
                 setResult(RESULT_OK, intent)
                 finish()
             }
@@ -41,7 +41,7 @@ class FloatingPopupActivity : Activity() {
                 if(loginEmail().isEmpty()) {
                     this.toast("로그인 후 이용해 주세요")
                     finish()
-                    return@OnClickListener
+                    return
                 }
                 val intent = Intent(this, ChatRoomActivity::class.java)
                 startActivity(intent)
@@ -51,7 +51,7 @@ class FloatingPopupActivity : Activity() {
         }
     }
 
-    fun loginEmail(): String {
+    private fun loginEmail(): String {
         return MainApplication.INSTANSE.loginEmail()
     }
 }

@@ -83,7 +83,6 @@ class ChatActivity : BaseActivity<ActivityChattingBinding>() {
     private fun inviteDialog() {
         inviteDialog = Dialog(this)
         inviteDialog?.setContentView(inviteUserAddBinding.root)
-        inviteDialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         inviteUserAddBinding.viewModel = viewModel
         inviteUserAddBinding.activity = this
         viewModel.inviteUserExistence()
@@ -113,5 +112,6 @@ class ChatActivity : BaseActivity<ActivityChattingBinding>() {
     fun onClickInviteUser(v: View) {
         viewModel.inviteDialogShow()
         binding.chatDrawLayout.closeDrawer(GravityCompat.END)
+        inviteUserAddBinding.chatUserEmailEdit.text = null
     }
 }

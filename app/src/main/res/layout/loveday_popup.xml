@@ -5,17 +5,51 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#70000000"
+    android:onClick="onClickFloatingBtn"
     android:orientation="vertical">
 
     <View
+        android:id="@+id/memoContainer"
+        style="@style/floatingMenuSize"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/edge_round_floating_memo"
+        android:onClick="onClickFloatingBtn"
+        app:layout_constraintBottom_toTopOf="@+id/conditionContainer"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <View
+        android:id="@+id/memoIcon"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="20dp"
+        android:background="@drawable/icon_calendar"
+        app:layout_constraintBottom_toBottomOf="@+id/memoContainer"
+        app:layout_constraintStart_toStartOf="@+id/memoContainer"
+        app:layout_constraintTop_toTopOf="@+id/memoContainer" />
+
+    <TextView
+        android:id="@+id/memoTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="메모"
+        android:textColor="#2D5B83"
+        android:textSize="25dp"
+        app:layout_constraintBottom_toBottomOf="@+id/memoContainer"
+        app:layout_constraintEnd_toEndOf="@+id/memoContainer"
+        app:layout_constraintStart_toEndOf="@+id/memoIcon"
+        app:layout_constraintTop_toTopOf="@+id/memoContainer" />
+
+    <View
         android:id="@+id/conditionContainer"
-        android:layout_width="170dp"
-        android:layout_height="60dp"
+        style="@style/floatingMenuSize"
+        android:layout_marginEnd="20dp"
         android:layout_marginBottom="20dp"
         android:background="@drawable/edge_round_floating_pen"
-        android:layout_marginEnd="20dp"
+        android:onClick="onClickFloatingBtn"
         app:layout_constraintBottom_toTopOf="@+id/loveDayContainer"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <View
         android:id="@+id/conditionIcon"
@@ -42,13 +76,13 @@
 
     <View
         android:id="@+id/loveDayContainer"
-        android:layout_width="170dp"
-        android:layout_height="60dp"
+        style="@style/floatingMenuSize"
+        android:layout_marginEnd="20dp"
         android:layout_marginBottom="20dp"
         android:background="@drawable/edge_round_floating_loveday"
-        android:layout_marginEnd="20dp"
+        android:onClick="onClickFloatingBtn"
         app:layout_constraintBottom_toTopOf="@+id/chatContainer"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <View
         android:id="@+id/loveDayIcon"
@@ -75,11 +109,11 @@
 
     <View
         android:id="@+id/chatContainer"
-        android:layout_width="170dp"
-        android:layout_height="60dp"
+        style="@style/floatingMenuSize"
+        android:layout_marginEnd="20dp"
         android:layout_marginBottom="30dp"
         android:background="@drawable/edge_round_floating_chat"
-        android:layout_marginEnd="20dp"
+        android:onClick="onClickFloatingBtn"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 

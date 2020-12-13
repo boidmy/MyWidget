@@ -12,89 +12,104 @@
         <variable
             name="viewModel"
             type="com.mywidget.ui.main.MainFragmentViewModel" />
-
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/memo_dialog"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/outline_white"
-        android:orientation="vertical"
-        android:paddingLeft="20dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginBottom="8dp"
-            android:text="제목"
-            android:textColor="@color/text_pink"
-            app:layout_constraintBottom_toTopOf="@+id/cal_btn"
-            app:layout_constraintRight_toLeftOf="@+id/memo_txt"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <EditText
-            android:id="@+id/memo_txt"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="5dp"
-            android:background="@drawable/outline_pink"
-            android:minWidth="140dp"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:textColor="#000000"
-            android:textColorHint="#9B9B9B"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+        android:layout_height="wrap_content">
 
         <View
-            android:id="@+id/cal_btn"
+            android:id="@+id/memoContainer"
+            android:layout_width="300dp"
+            android:layout_height="250dp"
+            android:background="@drawable/edge_round_2d56583"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/memoIcon"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:layout_marginTop="5dp"
-            android:background="@drawable/img_calendar"
-            app:NowDate="@{dateTxt}"
-            app:layout_constraintEnd_toStartOf="@+id/date_txt"
-            app:layout_constraintHorizontal_chainStyle="packed"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:src="@drawable/chat_add_room"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/memo_txt" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/date_txt"
-            android:layout_width="120dp"
-            android:layout_height="30dp"
-            android:layout_marginLeft="5dp"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/edge_round_blue"
-            android:gravity="center"
-            android:text="@{date}"
-            android:textColor="#ffffff"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/cal_btn"
-            app:layout_constraintTop_toBottomOf="@+id/memo_txt"
-            tools:text="2019-09-24" />
-
-        <Button
-            android:id="@+id/confirm_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="20dp"
-            android:background="@drawable/edge_round_blue"
-            android:text="입력"
-            android:textColor="@color/white"
-            app:dateTxt="@{dateTxt}"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintHorizontal_bias="0.4"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/date_txt"
-            app:layout_constraintVertical_bias="0.0"
-            app:memoTxt="@{memoTxt}"
+            android:layout_marginStart="20dp"
+            android:text="디데이 등록"
+            android:textColor="#ffffff"
+            app:layout_constraintBottom_toBottomOf="@+id/memoIcon"
+            app:layout_constraintStart_toEndOf="@+id/memoIcon"
+            app:layout_constraintTop_toTopOf="@+id/memoIcon" />
+
+        <TextView
+            android:id="@+id/dDayTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:text="디데이명"
+            android:textColor="#ffffff"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/memoIcon" />
+
+        <EditText
+            android:id="@+id/memoEdit"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:backgroundTint="#FFFFFF"
+            android:textColor="#000000"
+            app:layout_constraintBottom_toBottomOf="@+id/dDayTxt"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/dDayTxt"
+            app:layout_constraintTop_toTopOf="@+id/dDayTxt" />
+
+        <TextView
+            android:id="@+id/calendarTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:text="날짜"
+            android:textColor="#ffffff"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/memoEdit" />
+
+        <EditText
+            android:id="@+id/calendarTxtArea"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="20dp"
+            android:backgroundTint="#FFFFFF"
+            android:clickable="false"
+            android:cursorVisible="false"
+            android:focusable="false"
+            android:textColor="#000000"
+            app:NowDate="@{date}"
+            app:layout_constraintBottom_toBottomOf="@+id/calendarTxt"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/calendarTxt"
+            app:layout_constraintTop_toTopOf="@+id/calendarTxt" />
+
+        <ImageView
+            android:id="@+id/confirmBtn"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginEnd="20dp"
+            android:src="@drawable/confirm_btn"
+            app:dateTxt="@{calendarTxtArea}"
+            app:layout_constraintBottom_toBottomOf="@+id/memoContainer"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/calendarTxtArea"
+            app:memoTxt="@{memoEdit}"
             app:viewModel="@{viewModel}" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 

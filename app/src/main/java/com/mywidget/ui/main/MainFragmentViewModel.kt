@@ -18,7 +18,7 @@ class MainFragmentViewModel @Inject constructor(
     var rightString: MutableLiveData<LmemoData> = MutableLiveData()
     var userEmail: MutableLiveData<String> = MutableLiveData()
 
-    var memoDialogVisible: MutableLiveData<Boolean> = MutableLiveData()
+    var memoDialogVisibility: MutableLiveData<Boolean> = MutableLiveData()
     var loveDayDialogVisible: MutableLiveData<Boolean> = MutableLiveData()
     val guidTextVisibility: MutableLiveData<Boolean> = MutableLiveData()
 
@@ -77,6 +77,14 @@ class MainFragmentViewModel @Inject constructor(
 
     fun guidTextVisibility(flag: Boolean) {
         guidTextVisibility.value = flag
+    }
+
+    fun memoDialogVisibility(flag: Boolean) {
+        memoDialogVisibility.value = flag
+    }
+
+    fun loveDayDialogVisible(flag: Boolean) {
+        loveDayDialogVisible.value = flag
     }
 
     override fun onCleared() {

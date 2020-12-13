@@ -36,7 +36,18 @@
         <item name="android:textColorHint">@color/textInputLayout</item>
     </style>
 
+    <style name="CustomDialogTheme" parent="android:Theme.Dialog">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowFullscreen">false</item>
+    </style>
+
     <style name="widgetButtonSize">
         <item name="android:layout_width">60dp</item>
+    </style>
+
+    <style name="floatingMenuSize">
+        <item name="android:layout_width">170dp</item>
+        <item name="android:layout_height">55dp</item>
     </style>
 </resources>

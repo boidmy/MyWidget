@@ -23,7 +23,7 @@ class ChatRoomActivity : BaseActivity<ActivityWatingRoomBinding>() {
     private val viewModel by viewModels<ChatRoomViewModel> { factory }
     private val dialogBinding
             by lazy { ChatCreateRoomBinding.inflate(LayoutInflater.from(this)) }
-    private val createRoomDialog by lazy { Dialog(this) }
+    private val createRoomDialog by lazy { Dialog(this, R.style.CustomDialogTheme) }
 
     override val layout: Int
         get() = R.layout.activity_wating_room
@@ -42,7 +42,6 @@ class ChatRoomActivity : BaseActivity<ActivityWatingRoomBinding>() {
             viewModel.myId = this
         }
 
-        createRoom.setOnClickListener(onClickCreateRoom)
         createRoomDialog()
     }
 
@@ -50,14 +49,14 @@ class ChatRoomActivity : BaseActivity<ActivityWatingRoomBinding>() {
         dialogBinding.viewModel = viewModel
         dialogBinding.id = loginEmail()
         createRoomDialog.setContentView(dialogBinding.root)
-        createRoomDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-    }
-
-    private val onClickCreateRoom = View.OnClickListener {
-        viewModel.dialogVisibility(true)
         viewModel.isDialogVisibility.observe(this, Observer {
             if(it) createRoomDialog.show()
             else createRoomDialog.dismiss()
         })
+    }
+
+    fun openCreateRoomDialog(v: View) {
+        viewModel.dialogVisibility(true)
+        dialogBinding.chatUserEmailEdit.text = null
     }
 }

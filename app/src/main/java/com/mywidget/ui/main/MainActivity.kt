@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import androidx.activity.viewModels
-import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
@@ -27,8 +26,8 @@ import com.mywidget.ui.login.LoginActivity
 import com.mywidget.ui.loveday.FloatingPopupActivity
 import com.mywidget.ui.main.fragment.MainTabPagerAdapter
 import com.mywidget.ui.widgetlist.WidgetListActivity
-import kotlinx.android.synthetic.main.activity_main.*
 import util.CalendarUtil
+import util.CalendarUtil.getToday
 import util.Util
 import util.Util.toast
 import java.util.*
@@ -38,11 +37,18 @@ import javax.inject.Inject
 class MainActivity : BaseActivity<DrawerlayoutMainBinding>()
     , NavigationView.OnNavigationItemSelectedListener {
 
-    private var tabPosition: Int? = 0
     @Inject lateinit var mTabPagerAdapter: MainTabPagerAdapter
     @Inject lateinit var backPressAppFinish: BackPressAppFinish
     @Inject lateinit var factory: ViewModelProvider.Factory
     private val viewModel by viewModels<MainFragmentViewModel> { factory }
+    private val loveDayDialogBinding by lazy {
+        MainLovedayDialogBinding.inflate(LayoutInflater.from(this))
+    }
+    private val lovedayDialog by lazy { Dialog(this, R.style.CustomDialogTheme) }
+    private val memoDialogBinding by lazy {
+        MemoDialogBinding.inflate(LayoutInflater.from(this))
+    }
+    private val memoDialog by lazy { Dialog(this, R.style.CustomDialogTheme) }
 
     override val layout: Int
         get() = R.layout.drawerlayout_main
@@ -56,7 +62,6 @@ class MainActivity : BaseActivity<DrawerlayoutMainBinding>()
         tabInit()
         memoDialogBind()
         loveDayBind()
-        floating_btn.setOnClickListener(onClickFloating)
     }
 
     private fun loginCheck() {
@@ -72,7 +77,6 @@ class MainActivity : BaseActivity<DrawerlayoutMainBinding>()
         binding.mainContainer.vpTab.adapter = mTabPagerAdapter
         binding.mainContainer.vpTab.addOnPageChangeListener(TabLayout
             .TabLayoutOnPageChangeListener(binding.mainContainer.mainTab))
-        binding.mainContainer.mainTab.addOnTabSelectedListener(onTabSelectedListener)
     }
 
     override fun onBackPressed() {
@@ -87,8 +91,10 @@ class MainActivity : BaseActivity<DrawerlayoutMainBinding>()
         super.onActivityResult(requestCode, resultCode, data)
         when (requestCode) {
             3000 -> {
-                if("dday" == data?.getStringExtra("result")){
-                    loveDday()
+                if("memo" == data?.getStringExtra("result")) {
+                    openMemoDialog()
+                } else if("dDay" == data?.getStringExtra("result")) {
+                    openLoveDayDialog()
                 }
             }
             4000 -> {
@@ -119,7 +125,6 @@ class MainActivity : BaseActivity<DrawerlayoutMainBinding>()
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        // Handle navigation view item clicks here.
         when (item.itemId) {
             R.id.widget_phone_add -> {
                 val intent = Intent(this, WidgetListActivity::class.java)
@@ -141,81 +146,44 @@ class MainActivity : BaseActivity<DrawerlayoutMainBinding>()
         return true
     }
 
-    private fun onClickLoveDay() {
-        val intent = Intent(this, FloatingPopupActivity::class.java)
-        startActivityForResult(intent, 3000)
-    }
-
-    private val loveDayDialogBinding by lazy { MainLovedayDialogBinding.inflate(LayoutInflater.from(this)) }
-    private var lovedayDialog: Dialog? = null
     private fun loveDayBind() {
-        lovedayDialog = Dialog(this)
-        lovedayDialog?.setContentView(loveDayDialogBinding.root)
+        lovedayDialog.setContentView(loveDayDialogBinding.root)
         loveDayDialogBinding.viewModel = viewModel
-    }
-
-    private fun loveDday() {
-        viewModel.loveDayDialogVisible.value = true
         viewModel.loveDayDialogVisible.observe(this, androidx.lifecycle.Observer {
-            if(it) lovedayDialog?.show()
-            else lovedayDialog?.dismiss()
+            if(it) lovedayDialog.show()
+            else lovedayDialog.dismiss()
         })
     }
 
-    private val memoDialogBinding by lazy { MemoDialogBinding.inflate(LayoutInflater.from(this)) }
-    private var memoDialog: Dialog? = null
-    private fun memoDialogBind() {
-        memoDialog = Dialog(this)
-        memoDialog?.setContentView(memoDialogBinding.root)
-        memoDialogBinding.viewModel = viewModel
+    private fun openLoveDayDialog() {
+        viewModel.loveDayDialogVisible(true)
+        loveDayDialogBinding.apply {
+            date = getToday()
+        }
     }
 
-    private fun onClickMemo() {
-        viewModel.memoDialogVisible.observe(this, androidx.lifecycle.Observer {
-            if(it) {
-                memoDialog?.show()
-            } else {
-                memoDialog?.dismiss()
+    private fun memoDialogBind() {
+        memoDialog.setContentView(memoDialogBinding.root)
+        memoDialogBinding.viewModel = viewModel
+        viewModel.memoDialogVisibility.observe(this, androidx.lifecycle.Observer {
+            if(it) { memoDialog.show() }
+            else {
+                memoDialog.dismiss()
                 Util.downKeyboard(this)
             }
         })
-        viewModel.memoDialogVisible.value = true
+    }
 
+    private fun openMemoDialog() {
+        viewModel.memoDialogVisibility(true)
         memoDialogBinding.apply {
-            memoTxt.requestFocus()
-            Util.upKeyboard(this@MainActivity)
-            val c = Calendar.getInstance()
-            CalendarUtil.apply {
-                date = "${getYear(c)}-${getMonth(c)+1}-${getNowdate(c)}"
-            }
+            memoEdit.text = null
+            date = getToday()
         }
     }
 
-    private val onTabSelectedListener = object : TabLayout.OnTabSelectedListener {
-        override fun onTabSelected(tab: TabLayout.Tab?) {
-            when (tab?.position) {
-                0 -> {
-                    tabPosition = tab.position
-                    floating_btn.background = ContextCompat.getDrawable(applicationContext,
-                        R.drawable.circle_blue
-                    )
-                }
-                else -> {
-                    tabPosition = tab?.position
-                    floating_btn.background = ContextCompat.getDrawable(applicationContext,
-                        R.drawable.circle_red
-                    )
-                }
-            }
-        }
-        override fun onTabReselected(tab: TabLayout.Tab?) {}
-        override fun onTabUnselected(tab: TabLayout.Tab?) {}
-    }
-
-    private val onClickFloating = View.OnClickListener {
-        when(tabPosition) {
-            0 -> onClickMemo()
-            else -> onClickLoveDay()
-        }
+    fun onClickFloating(v: View) {
+        val intent = Intent(this, FloatingPopupActivity::class.java)
+        startActivityForResult(intent, 3000)
     }
 }

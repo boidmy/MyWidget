@@ -116,6 +116,10 @@ object CalendarUtil {
         } ?: run {
             return "0"
         }
+    }
 
+    fun getToday(): String {
+        val cal = Calendar.getInstance()
+        return "${getYear(cal)}-${getMonth(cal)+1}-${getNowdate(cal)}"
     }
 }
