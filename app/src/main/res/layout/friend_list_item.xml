@@ -3,39 +3,59 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+
+        <variable
+            name="data"
+            type="com.mywidget.data.model.FriendModel" />
+    </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="70dp"
         android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
         android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp"
         android:background="@drawable/edge_round_white">
 
         <TextView
-            android:id="@+id/userName"
-            android:layout_width="70dp"
+            android:id="@+id/userEmail"
+            android:layout_width="0dp"
             android:layout_height="20dp"
-            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:text="@{data.email}"
             android:textColor="#000000"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/userExplanation"
+            app:layout_constraintEnd_toStartOf="@+id/deleteBtn"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="윤상용" />
 
         <TextView
-            android:id="@+id/userPhone"
-            android:layout_width="wrap_content"
+            android:id="@+id/userExplanation"
+            android:layout_width="0dp"
             android:layout_height="20dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:text="@{data.explanation}"
             android:textColor="#000000"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toRightOf="@+id/userName"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="01045001428" />
+            app:layout_constraintEnd_toStartOf="@+id/deleteBtn"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/userEmail"
+            tools:text="친구입니다친구입니다친구입니다친구입니다람쥐안녕하세요" />
 
         <Button
             android:id="@+id/deleteBtn"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:layout_marginRight="10dp"
+            android:layout_marginEnd="10dp"
             android:background="@drawable/memo_remove"
             android:textColor="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"

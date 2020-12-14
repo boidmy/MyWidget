@@ -9,16 +9,19 @@ import util.CalendarUtil
 import com.mywidget.ui.main.recyclerview.MainTabMemoAdapter
 import com.mywidget.ui.widgetlist.recyclerview.WidgetListRecyclerView
 import com.mywidget.data.model.ChatDataModel
+import com.mywidget.data.model.FriendModel
 import com.mywidget.data.model.RoomDataModel
 import com.mywidget.ui.chat.recyclerview.ChatAdapter
 import com.mywidget.ui.chatroom.recyclerview.ChatRoomRecyclerView
 import com.mywidget.data.room.Memo
 import com.mywidget.data.room.User
 import com.mywidget.ui.chat.recyclerview.UserListRecyclerView
+import com.mywidget.ui.friend.recyclerview.FriendRecyclerView
 import com.mywidget.ui.main.MainFragmentViewModel
 import com.mywidget.ui.widgetlist.WidgetListViewModel
 import util.Util.toast
 import java.util.*
+import kotlin.collections.ArrayList
 
 @BindingAdapter("text")
 fun text(textView: TextView?, data: String?) {
@@ -111,7 +114,6 @@ fun setUserConfirm(button: Button, name: EditText, phone: EditText, viewModel: W
 
 @BindingAdapter("items")
 fun adapter(recyclerView: RecyclerView?, data: MutableLiveData<List<User>>) {
-
     val adapter: WidgetListRecyclerView = recyclerView?.adapter as WidgetListRecyclerView
     adapter.notifyDataSetChanged()
 }
@@ -137,5 +139,11 @@ fun chatAdapter(recyclerView: RecyclerView?, data: MutableLiveData<List<ChatData
 @BindingAdapter("items")
 fun chatUserListAdapter(recyclerView: RecyclerView?, data: MutableLiveData<ArrayList<String>>) {
     val adapter: UserListRecyclerView = recyclerView?.adapter as UserListRecyclerView
+    adapter.notifyDataSetChanged()
+}
+
+@BindingAdapter("items")
+fun friendListAdapter(recyclerView: RecyclerView?, data: MutableLiveData<ArrayList<FriendModel>>) {
+    val adapter: FriendRecyclerView = recyclerView?.adapter as FriendRecyclerView
     adapter.notifyDataSetChanged()
 }

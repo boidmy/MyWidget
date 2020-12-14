@@ -5,12 +5,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import androidx.activity.viewModels
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.mywidget.R
 import com.mywidget.databinding.ActivityFriendBinding
 import com.mywidget.databinding.FriendAddDialogBinding
 import com.mywidget.ui.base.BaseActivity
 import com.mywidget.ui.friend.recyclerview.FriendRecyclerView
+import kotlinx.android.synthetic.main.friend_add_dialog.*
+import util.Util.toast
 import javax.inject.Inject
 
 class FriendActivity : BaseActivity<ActivityFriendBinding>() {
@@ -27,7 +30,6 @@ class FriendActivity : BaseActivity<ActivityFriendBinding>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         bindView()
         friendAddDialog()
     }
@@ -35,13 +37,33 @@ class FriendActivity : BaseActivity<ActivityFriendBinding>() {
     fun bindView() {
         binding.viewModel = viewModel
         binding.friendRv.adapter = FriendRecyclerView(viewModel)
+        with(loginEmail()) {
+            viewModel.myId = this
+        }
+        viewModel.selectFriendList()
     }
 
-    fun friendAddDialog() {
+    private fun friendAddDialog() {
+        friendAddDialogBinding.viewModel = viewModel
         friendDialog.setContentView(friendAddDialogBinding.root)
+        userExistenceChk()
+        viewModel.friendAddDialogVisibility.observe(this, Observer {
+            if(it) {
+                friendDialog.show()
+                friendDialog.friendAddExplanationEdit.text = null
+                friendDialog.friendAddEmailTxt.text = null
+            } else friendDialog.dismiss()
+        })
     }
 
-    fun onclickFriendAdd(v: View) {
-
+    private fun userExistenceChk() {
+        viewModel.setUserExistenceChk()
+        viewModel.userExistenceChk.observe(this, Observer {
+            if (it) {
+                viewModel.friendAddDialogVisibility(false)
+            } else {
+                this.toast("이메일을 다시 확인해 주세요")
+            }
+        })
     }
 }
