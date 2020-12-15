@@ -11,11 +11,15 @@ class LoginViewModel @Inject constructor(
     var signUpComplete: MutableLiveData<Boolean> = MutableLiveData()
     var data: MutableLiveData<String> = MutableLiveData()
 
-    fun singUpFirebase(email: String, uid: String) {
-        signUpComplete = repository.singUpFirebase(email, uid)
+    fun singUpFirebase(email: String, uid: String, nickname: String) {
+        repository.singUpFirebase(email, uid, nickname)
     }
 
     fun loginSetToken(email: String) {
         repository.signUpToken(email)
+    }
+
+    fun setSignUpComplete() {
+        signUpComplete = repository.setSignUpComplete()
     }
 }

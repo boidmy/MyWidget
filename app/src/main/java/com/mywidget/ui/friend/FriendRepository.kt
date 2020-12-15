@@ -15,8 +15,12 @@ class FriendRepository @Inject constructor() {
     @Inject
     lateinit var database: DatabaseReference
     private val userRef: DatabaseReference by lazy { database.child("User") }
+    private val friendRef: DatabaseReference by lazy {
+        userRef.child(replacePointToComma(myId)).child("friend")
+    }
     var userExistenceChk: MutableLiveData<Boolean> = MutableLiveData()
     var friendList: MutableLiveData<ArrayList<FriendModel>> = MutableLiveData()
+    var myId: String = ""
 
     fun setUserExistenceChk(): MutableLiveData<Boolean> {
         return userExistenceChk
@@ -29,7 +33,8 @@ class FriendRepository @Inject constructor() {
                     if (snapshot.value != null) {
                         val userEmail: String = snapshot.child("email").value.toString()
                         userRef.child(replacePointToComma(myId)).child("friend")
-                            .child(replacePointToComma(userEmail)).setValue(explanation)
+                            .child("friendList").child(replacePointToComma(userEmail))
+                            .setValue(explanation)
                         userExistenceChk.value = true
                     } else {
                         userExistenceChk.value = false
@@ -39,15 +44,23 @@ class FriendRepository @Inject constructor() {
             })
     }
 
-    fun selectFriendList(myId: String): MutableLiveData<ArrayList<FriendModel>> {
-        userRef.child(replacePointToComma(myId)).child("friend")
-            .addValueEventListener(object : ValueEventListener {
+    fun selectFriendList(): MutableLiveData<ArrayList<FriendModel>> {
+        friendRef.addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
+                    val favorites = snapshot.child("favorites").value
+
                     val array = arrayListOf<FriendModel>()
                     for (snap: DataSnapshot in snapshot.children) {
-                        val email = snap.key.toString()
-                        val explanation = snap.value.toString()
-                        array.add(FriendModel(replaceCommaToPoint(email), explanation))
+                        if(snap.key == "friendList") {
+                            for (snapFriend: DataSnapshot in snap.children){
+                                val email = snapFriend.key.toString()
+                                val explanation = snapFriend.value.toString()
+                                var favoritesChk: Boolean
+                                favoritesChk = email == favorites
+                                array.add(FriendModel(replaceCommaToPoint(email), explanation
+                                    , false, favoritesChk))
+                            }
+                        }
                     }
                     friendList.value = array
                 }
@@ -56,8 +69,16 @@ class FriendRepository @Inject constructor() {
         return friendList
     }
 
-    fun deleteFriend(myId: String, email: String) {
-        userRef.child(replacePointToComma(myId))
-            .child("friend").child(replacePointToComma(email)).setValue(null)
+    fun deleteFriend(email: String) {
+        friendRef.child("friendList").child(replacePointToComma(email)).setValue(null)
+    }
+
+    fun setFavorites(email: String) {
+        friendRef.child("favorites").setValue(replacePointToComma(email))
+    }
+
+    fun myId(email: String): String {
+        myId = email
+        return myId
     }
 }

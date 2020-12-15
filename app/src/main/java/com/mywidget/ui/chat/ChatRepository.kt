@@ -24,8 +24,6 @@ class ChatRepository @Inject constructor() {
         database.child("Room").child(roomDataModel.master).child(roomDataModel.roomKey) }
     private val userRef: DatabaseReference by lazy { database.child("User") }
     private val message: DatabaseReference by lazy { roomRef.child("message") }
-    private val inviteUserExistence: MutableLiveData<Boolean> = MutableLiveData()
-    private val inviteDialogVisibility: MutableLiveData<Boolean> = MutableLiveData()
     private val inviteUserList: MutableLiveData<ArrayList<String>> = MutableLiveData()
     var myId: String? = null
     var data: MutableLiveData<List<ChatDataModel>> = MutableLiveData()
@@ -139,45 +137,6 @@ class ChatRepository @Inject constructor() {
             }
         })
         return inviteUserList
-    }
-
-    fun userExistenceChk(email: String) {
-        userRef.child(replacePointToComma(email))
-            .addListenerForSingleValueEvent(object : ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    if (snapshot.value != null) {
-                        val userEmail: String = snapshot.child("email").value.toString()
-                        val userToken: String = snapshot.child("token").value.toString()
-
-                        roomRef.child("invite")
-                            .child(replacePointToComma(userEmail)).setValue(userToken)
-                        inviteUserExistence.value = true
-                    } else {
-                        inviteUserExistence.value = false
-                    }
-                }
-
-                override fun onCancelled(error: DatabaseError) {}
-            })
-    }
-
-    fun inviteUserExistence(): MutableLiveData<Boolean> {
-        return inviteUserExistence
-    }
-
-    fun inviteDialogVisibility(): MutableLiveData<Boolean> {
-        return inviteDialogVisibility
-    }
-
-    fun inviteUser(email: String) {
-        val mEmail = replacePointToComma(email)
-        userRef.child(mEmail).child("RoomList").child(roomDataModel.roomKey)
-            .setValue(roomDataModel)
-        inviteDialogShow(false)
-    }
-
-    fun inviteDialogShow(flag: Boolean) {
-        inviteDialogVisibility.value = flag
     }
 
     private fun insertPush(key: String, message: String, sendId: String) {

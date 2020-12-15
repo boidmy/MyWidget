@@ -38,7 +38,7 @@ class FriendActivity : BaseActivity<ActivityFriendBinding>() {
         binding.viewModel = viewModel
         binding.friendRv.adapter = FriendRecyclerView(viewModel)
         with(loginEmail()) {
-            viewModel.myId = this
+            viewModel.myId(this)
         }
         viewModel.selectFriendList()
     }
@@ -51,7 +51,7 @@ class FriendActivity : BaseActivity<ActivityFriendBinding>() {
             if(it) {
                 friendDialog.show()
                 friendDialog.friendAddExplanationEdit.text = null
-                friendDialog.friendAddEmailTxt.text = null
+                friendDialog.friendAddEmailEdit.text = null
             } else friendDialog.dismiss()
         })
     }

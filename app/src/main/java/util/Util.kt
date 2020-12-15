@@ -1,6 +1,7 @@
 package util
 
 import android.content.Context
+import android.content.res.Resources
 import android.util.TypedValue
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
@@ -17,9 +18,6 @@ object Util {
         imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0)
     }
 
-    fun Context.toast(message: CharSequence) =
-        Toast.makeText(this, message, Toast.LENGTH_LONG).show()
-
     fun replacePointToComma(email: String): String {
         return email.replace(".", ",").trim()
     }
@@ -28,11 +26,9 @@ object Util {
         return email.replace(",", ".").trim()
     }
 
-    fun dpToPx(context: Context, dp: Int): Int {
-        return TypedValue.applyDimension(
-            TypedValue.COMPLEX_UNIT_DIP,
-            dp.toFloat(),
-            context.resources.displayMetrics
-        ).toInt()
-    }
+    fun Context.toast(message: CharSequence) =
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show()
+
+    val Int.dpToPx: Int
+        get() = (this / Resources.getSystem().displayMetrics.density).toInt()
 }

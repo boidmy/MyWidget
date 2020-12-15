@@ -10,6 +10,7 @@ import com.mywidget.R
 import com.mywidget.databinding.ActivitySignupBinding
 import com.mywidget.ui.base.BaseActivity
 import com.mywidget.ui.login.LoginViewModel
+import kotlinx.android.synthetic.main.activity_signup.*
 import java.lang.Exception
 import javax.inject.Inject
 
@@ -25,6 +26,15 @@ class SignUpActivity : BaseActivity<ActivitySignupBinding>() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding.activity = this
+
+        bindView()
+    }
+
+    fun bindView() {
+        viewModel.setSignUpComplete()
+        viewModel.signUpComplete.observe(this, Observer {
+            if(it) finish()
+        })
     }
 
     fun singUpFirebase(email: String, password: String) {
@@ -33,7 +43,7 @@ class SignUpActivity : BaseActivity<ActivitySignupBinding>() {
             if (task.isSuccessful) {
                 val user = firebaseAuth.currentUser
                 user?.email?.let { userVal ->
-                    viewModel.singUpFirebase(userVal, user.uid)
+                    viewModel.singUpFirebase(userVal, user.uid, nicknameEdit.text.toString())
                 }
             } else {
                 task.exception?.let {
@@ -41,9 +51,6 @@ class SignUpActivity : BaseActivity<ActivitySignupBinding>() {
                 }
             }
         }
-        viewModel.signUpComplete.observe(this, Observer {
-            if(it) finish()
-        })
     }
 
     private fun emailException(exception: Exception) {

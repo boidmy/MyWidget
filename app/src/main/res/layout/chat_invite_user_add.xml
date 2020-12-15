@@ -6,11 +6,11 @@
 
         <variable
             name="activity"
-            type="com.mywidget.ui.chat.ChatActivity" />
+            type="com.mywidget.ui.chatinvite.ChatInviteActivity" />
 
         <variable
             name="viewModel"
-            type="com.mywidget.ui.chat.ChatViewModel" />
+            type="com.mywidget.ui.chatinvite.ChatInviteViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

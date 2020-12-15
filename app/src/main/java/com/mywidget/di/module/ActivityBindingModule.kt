@@ -5,6 +5,8 @@ import com.mywidget.ui.chat.ChatModule
 import com.mywidget.ui.chatroom.ChatRoomActivity
 import com.mywidget.ui.chatroom.ChatRoomViewModelModule
 import com.mywidget.di.custom.ActivityScope
+import com.mywidget.ui.chatinvite.ChatInviteActivity
+import com.mywidget.ui.chatinvite.ChatInviteModule
 import com.mywidget.ui.friend.FriendActivity
 import com.mywidget.ui.friend.FriendModule
 import com.mywidget.ui.login.LoginActivity
@@ -59,4 +61,8 @@ abstract class ActivityBindingModule {
     @ActivityScope
     @ContributesAndroidInjector(modules = [FriendModule::class])
     abstract fun friendActivity(): FriendActivity
+
+    @ActivityScope
+    @ContributesAndroidInjector(modules = [ChatInviteModule::class])
+    abstract fun inviteActivity(): ChatInviteActivity
 }

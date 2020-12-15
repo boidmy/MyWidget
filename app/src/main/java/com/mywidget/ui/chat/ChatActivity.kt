@@ -1,15 +1,10 @@
 package com.mywidget.ui.chat
 
-import android.app.Dialog
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
+import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.MenuItem
 import android.view.View
 import androidx.activity.viewModels
 import androidx.core.view.GravityCompat
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.database.DatabaseReference
@@ -17,41 +12,37 @@ import com.mywidget.R
 import com.mywidget.data.model.RoomDataModel
 import com.mywidget.ui.chat.recyclerview.ChatAdapter
 import com.mywidget.databinding.ActivityChattingBinding
-import com.mywidget.databinding.ChatInviteUserAddBinding
 import com.mywidget.ui.base.BaseActivity
 import com.mywidget.ui.chat.recyclerview.UserListRecyclerView
+import com.mywidget.ui.chatinvite.ChatInviteActivity
 import kotlinx.android.synthetic.main.activity_chatting.*
 import util.ItemDecoration
-import util.Util.toast
 import javax.inject.Inject
 
 class ChatActivity : BaseActivity<ActivityChattingBinding>() {
     @Inject lateinit var database: DatabaseReference
     @Inject lateinit var factory: ViewModelProvider.Factory
     private val viewModel by viewModels<ChatViewModel> { factory }
-    private val inviteUserAddBinding by lazy {
-        ChatInviteUserAddBinding.inflate(LayoutInflater.from(this)) }
-    private val inviteDialog by lazy { Dialog(this, R.style.CustomDialogTheme) }
+    lateinit var roomDataModel: RoomDataModel
 
     override val layout: Int
         get() = R.layout.activity_chatting
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding.viewModel = viewModel
         bind()
-        inviteDialog()
     }
 
     private fun bind() {
+        binding.viewModel = viewModel
         val adapter = ChatAdapter(viewModel)
         adapter.setHasStableIds(true)
         binding.chatRv.adapter = adapter
         binding.chatRv.addItemDecoration(ItemDecoration(this, 10))
         binding.drawerUserListRv.adapter = UserListRecyclerView(viewModel)
 
-        val roomDataModel = intent.getSerializableExtra("data") as RoomDataModel
-        viewModel.userId(loginEmail())
+        roomDataModel = intent.getSerializableExtra("data") as RoomDataModel
+        viewModel.myId(loginEmail())
         viewModel.getListChat(roomDataModel)
         viewModel.inviteUserList()
 
@@ -80,37 +71,17 @@ class ChatActivity : BaseActivity<ActivityChattingBinding>() {
         binding.chatEdit.text.clear()
     }
 
-    private fun inviteDialog() {
-        inviteDialog.setContentView(inviteUserAddBinding.root)
-        inviteUserAddBinding.viewModel = viewModel
-        inviteUserAddBinding.activity = this
-        viewModel.inviteUserExistence()
-        viewModel.inviteDialogVisibility()
-        viewModel.inviteDialogVisibility.observe(this, Observer {
-            if(it) inviteDialog.show()
-            else {
-                inviteUserAddBinding.chatUserEmailEdit.text = null
-                inviteDialog.dismiss()
-            }
-        })
-        viewModel.inviteUserExistence.observe(this, Observer {
-            val userEmail = inviteUserAddBinding.chatUserEmailEdit.text.toString()
-            if(it) {
-                viewModel.inviteUser(userEmail)
-                this.toast(userEmail+"님을 초대했습니다")
-            } else {
-                this.toast("이메일을 다시 확인해주세요")
-            }
-        })
-    }
-
     fun onClickOpenDrawer(v: View) {
         binding.chatDrawLayout.openDrawer(GravityCompat.END)
     }
 
     fun onClickInviteUser(v: View) {
-        viewModel.inviteDialogShow()
+        val intent = Intent(this, ChatInviteActivity::class.java)
+        intent.putExtra("data", roomDataModel)
+        startActivity(intent)
+
+        /*viewModel.inviteDialogShow()
         binding.chatDrawLayout.closeDrawer(GravityCompat.END)
-        inviteUserAddBinding.chatUserEmailEdit.text = null
+        inviteUserAddBinding.chatUserEmailEdit.text = null*/
     }
 }

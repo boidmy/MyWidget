@@ -102,7 +102,7 @@
             android:paddingEnd="20dp"
             android:textColorHint="#96ffffff"
             android:theme="@style/EditScreenTextInputLayoutStyle"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/nicknameContainer"
             app:layout_constraintTop_toBottomOf="@+id/inputPasswordContainer">
 
             <EditText
@@ -118,6 +118,29 @@
                 android:textSize="16sp" />
         </com.google.android.material.textfield.TextInputLayout>
 
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/nicknameContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:textColorHint="#96ffffff"
+            android:theme="@style/EditScreenTextInputLayoutStyle"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ConfirmPasswordContainer">
+
+            <EditText
+                android:id="@+id/nicknameEdit"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:drawableEnd="@drawable/ic_lock_white_24dp"
+                android:drawablePadding="16dp"
+                android:hint="NickName"
+                android:maxLines="1"
+                android:textColor="@android:color/white"
+                android:textSize="16sp" />
+        </com.google.android.material.textfield.TextInputLayout>
+
         <TextView
             android:id="@+id/missPassword"
             android:layout_width="wrap_content"
@@ -127,7 +150,7 @@
             android:textColor="#FF0000"
             android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ConfirmPasswordContainer"
+            app:layout_constraintTop_toBottomOf="@+id/nicknameContainer"
             tools:visibility="visible" />
 
         <Button
@@ -151,6 +174,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ConfirmPasswordContainer" />
+            app:layout_constraintTop_toBottomOf="@+id/nicknameContainer" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

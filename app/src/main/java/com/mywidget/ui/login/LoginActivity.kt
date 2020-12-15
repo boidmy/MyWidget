@@ -85,7 +85,8 @@ class LoginActivity: BaseActivity<ActivityLoginBinding>() {
         if (firstLoginChk) {
             if (task.isSuccessful) {
                 getUser()?.let { userVal ->
-                    viewModel.singUpFirebase(userVal.email?:"", userVal.uid)
+                    viewModel.singUpFirebase(userVal.email?:""
+                        , userVal.uid, userVal.displayName?:"")
                     finish()
                 }
             }

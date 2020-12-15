@@ -31,9 +31,9 @@ class FriendViewHolder(val binding: FriendListItemBinding) :
     fun bindView(data: FriendModel?, viewModel: FriendViewModel) {
         data?.let {
             binding.data = data
-            binding.deleteBtn.setOnClickListener {
-                viewModel.deleteFriend(data.email)
-            }
+            binding.viewModel = viewModel
+
+            binding.favoritesBtn.isSelected = data.favorites
         }
 
     }

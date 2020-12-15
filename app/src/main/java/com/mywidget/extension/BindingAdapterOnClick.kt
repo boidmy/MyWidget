@@ -3,11 +3,15 @@ package com.mywidget.extension
 import android.text.TextUtils
 import android.view.View
 import android.widget.*
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.BindingAdapter
 import androidx.lifecycle.Observer
 import com.google.android.gms.common.SignInButton
+import com.mywidget.data.model.FriendModel
 import com.mywidget.ui.chat.ChatActivity
 import com.mywidget.ui.chat.ChatViewModel
+import com.mywidget.ui.chatinvite.ChatInviteActivity
+import com.mywidget.ui.chatinvite.ChatInviteViewModel
 import com.mywidget.ui.chatroom.ChatRoomViewModel
 import com.mywidget.ui.login.LoginActivity
 import com.mywidget.ui.login.signup.SignUpActivity
@@ -72,8 +76,8 @@ fun loginGoogle(button: SignInButton, activity: LoginActivity) {
 }
 
 @BindingAdapter("inviteUserAdd", "editText", "activity")
-fun inviteUserAdd(imageView: ImageView, viewModel: ChatViewModel
-                  , editText: EditText, activity: ChatActivity) {
+fun inviteUserAdd(imageView: ImageView, viewModel: ChatInviteViewModel
+                  , editText: EditText, activity: ChatInviteActivity) {
     imageView.setOnClickListener {
         val userEmail = editText.text.toString()
         if(userEmail.isEmpty()) {
@@ -94,6 +98,18 @@ fun createRoom(imageView: ImageView, viewModel: ChatRoomViewModel, editText: Edi
                 viewModel.createRoom(it, editText.text.toString())
                 viewModel.dialogVisibility(false)
             }
+        }
+    }
+}
+
+@BindingAdapter("isSelected", "viewModel")
+fun onClickSelected(view: View, position: Int, viewModel: ChatInviteViewModel) {
+    view.setOnClickListener {
+        val array = viewModel.friendList.value
+        val selector = array?.get(position)?.selector ?: true
+        array?.get(position)?.selector = !selector
+        array?.let {
+            viewModel.setFriendList(it)
         }
     }
 }

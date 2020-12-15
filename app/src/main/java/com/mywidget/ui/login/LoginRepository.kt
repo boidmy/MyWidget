@@ -14,12 +14,12 @@ class LoginRepository @Inject constructor() {
     var signUpComplete: MutableLiveData<Boolean> = MutableLiveData()
     var data: MutableLiveData<String> = MutableLiveData()
 
-    fun singUpFirebase(email: String, uid: String): MutableLiveData<Boolean> {
+    fun singUpFirebase(email: String, uid: String, nickname: String) {
         val mEmail = replacePointToComma(email)
-        val value = UserData(email, "", uid, "")
+        val value = UserData(email, "", uid, nickname)
         userRef.child(mEmail).setValue(value)
         signUpToken(email)
-        return signUpComplete
+        signUpComplete.value = true
     }
 
     fun signUpToken(email: String) {
@@ -31,5 +31,9 @@ class LoginRepository @Inject constructor() {
             val token: String = task.result.toString()
             userRef.child(mEmail).child("token").setValue(token)
         }
+    }
+
+    fun setSignUpComplete(): MutableLiveData<Boolean> {
+        return signUpComplete
     }
 }

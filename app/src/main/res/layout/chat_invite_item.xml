@@ -6,12 +6,12 @@
     <data>
 
         <variable
-            name="viewModel"
-            type="com.mywidget.ui.friend.FriendViewModel" />
+            name="position"
+            type="Integer" />
 
         <variable
-            name="data"
-            type="com.mywidget.data.model.FriendModel" />
+            name="viewModel"
+            type="com.mywidget.ui.chatinvite.ChatInviteViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -21,7 +21,9 @@
         android:layout_marginTop="10dp"
         android:layout_marginRight="10dp"
         android:layout_marginBottom="10dp"
-        android:background="@drawable/edge_round_white">
+        android:background="@drawable/edge_round_white"
+        app:isSelected="@{position}"
+        app:viewModel="@{viewModel}">
 
         <TextView
             android:id="@+id/userEmail"
@@ -31,10 +33,10 @@
             android:layout_marginEnd="10dp"
             android:ellipsize="end"
             android:singleLine="true"
-            android:text="@{data.email}"
+            android:text="@{viewModel.friendList.get(position).email}"
             android:textColor="#000000"
             app:layout_constraintBottom_toTopOf="@+id/userExplanation"
-            app:layout_constraintEnd_toStartOf="@+id/favoritesBtn"
+            app:layout_constraintEnd_toStartOf="@+id/deleteBtn"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="윤상용" />
@@ -47,33 +49,20 @@
             android:layout_marginEnd="10dp"
             android:ellipsize="end"
             android:singleLine="true"
-            android:text="@{data.explanation}"
+            android:text="@{viewModel.friendList.get(position).explanation}"
             android:textColor="#000000"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/favoritesBtn"
+            app:layout_constraintEnd_toStartOf="@+id/checkBtn"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/userEmail"
             tools:text="친구입니다친구입니다친구입니다친구입니다람쥐안녕하세요" />
 
         <Button
-            android:id="@+id/favoritesBtn"
+            android:id="@+id/checkBtn"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_marginEnd="10dp"
-            android:background="@drawable/selector_star_checked"
-            android:onClick="@{() -> viewModel.setFavorites(data.email)}"
-            android:textColor="@color/white"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintRight_toLeftOf="@+id/deleteBtn"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <Button
-            android:id="@+id/deleteBtn"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_marginEnd="10dp"
-            android:background="@drawable/memo_remove"
-            android:onClick="@{() -> viewModel.deleteFriend(data.email)}"
+            android:background="@drawable/selector_circle_checked"
             android:textColor="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintRight_toRightOf="parent"

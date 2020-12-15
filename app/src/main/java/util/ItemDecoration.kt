@@ -5,6 +5,7 @@ import android.graphics.Rect
 import android.util.TypedValue
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
+import util.Util.dpToPx
 
 
 class ItemDecoration(
@@ -18,6 +19,6 @@ class ItemDecoration(
         parent: RecyclerView,
         state: RecyclerView.State
     ) {
-        outRect.bottom = Util.dpToPx(context, size)
+        outRect.bottom = size.dpToPx
     }
 }

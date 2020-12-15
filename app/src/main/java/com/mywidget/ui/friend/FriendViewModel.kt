@@ -12,6 +12,10 @@ class FriendViewModel @Inject constructor(private val repository: FriendReposito
     var myId: String = ""
     var friendList: MutableLiveData<ArrayList<FriendModel>> = MutableLiveData()
 
+    fun myId(email: String) {
+        myId = repository.myId(email)
+    }
+
     fun setUserExistenceChk() {
         userExistenceChk = repository.setUserExistenceChk()
     }
@@ -25,10 +29,14 @@ class FriendViewModel @Inject constructor(private val repository: FriendReposito
     }
 
     fun selectFriendList() {
-        friendList = repository.selectFriendList(myId)
+        friendList = repository.selectFriendList()
     }
 
     fun deleteFriend(email: String) {
-        repository.deleteFriend(myId, email)
+        repository.deleteFriend(email)
+    }
+
+    fun setFavorites(email: String) {
+        repository.setFavorites(email)
     }
 }

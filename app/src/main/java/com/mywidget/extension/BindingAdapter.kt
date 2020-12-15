@@ -16,6 +16,7 @@ import com.mywidget.ui.chatroom.recyclerview.ChatRoomRecyclerView
 import com.mywidget.data.room.Memo
 import com.mywidget.data.room.User
 import com.mywidget.ui.chat.recyclerview.UserListRecyclerView
+import com.mywidget.ui.chatinvite.recyclerview.ChatInviteRecyclerView
 import com.mywidget.ui.friend.recyclerview.FriendRecyclerView
 import com.mywidget.ui.main.MainFragmentViewModel
 import com.mywidget.ui.widgetlist.WidgetListViewModel
@@ -145,5 +146,11 @@ fun chatUserListAdapter(recyclerView: RecyclerView?, data: MutableLiveData<Array
 @BindingAdapter("items")
 fun friendListAdapter(recyclerView: RecyclerView?, data: MutableLiveData<ArrayList<FriendModel>>) {
     val adapter: FriendRecyclerView = recyclerView?.adapter as FriendRecyclerView
+    adapter.notifyDataSetChanged()
+}
+
+@BindingAdapter("chatInviteRvAdapter")
+fun inviteAdapter(recyclerView: RecyclerView?, data: MutableLiveData<ArrayList<FriendModel>>) {
+    val adapter: ChatInviteRecyclerView = recyclerView?.adapter as ChatInviteRecyclerView
     adapter.notifyDataSetChanged()
 }
