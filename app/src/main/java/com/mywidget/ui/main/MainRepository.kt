@@ -6,7 +6,7 @@ import com.google.gson.Gson
 import com.google.gson.JsonObject
 import com.google.gson.reflect.TypeToken
 import com.mywidget.data.apiConnect.ApiConnection
-import com.mywidget.data.model.LmemoData
+import com.mywidget.data.model.FavoritesData
 import com.mywidget.data.room.LoveDay
 import com.mywidget.data.room.LoveDayDB
 import com.mywidget.data.room.Memo
@@ -19,6 +19,7 @@ import org.json.JSONArray
 import org.json.JSONObject
 import util.CalendarUtil.howMuchloveDay
 import util.Util
+import util.Util.replacePointToComma
 import java.util.ArrayList
 import javax.inject.Inject
 
@@ -27,48 +28,69 @@ class MainRepository @Inject constructor(
     private val memoDb: MemoDB, private val loveDayDb: LoveDayDB) {
 
     @Inject lateinit var database: DatabaseReference
-    private var unSubscripbe: CompositeDisposable = CompositeDisposable()
-    private var leftMessage: MutableLiveData<List<LmemoData>> = MutableLiveData()
-    private var rightMessage: MutableLiveData<List<LmemoData>> = MutableLiveData()
     private val userRef: DatabaseReference by lazy { database.child("User") }
     private val friendRef: DatabaseReference by lazy {
-        userRef.child(Util.replacePointToComma(myId.value ?:"")).child("friend") }
+        userRef.child(replacePointToComma(myId.value ?:"")).child("friend") }
     var myId: MutableLiveData<String> = MutableLiveData()
-    private val favorites: DatabaseReference by lazy {
-        database.child("favorites").child(Util.replacePointToComma(myId.value ?:"")) }
+    private val favoritesRef: DatabaseReference by lazy {
+        database.child("favorites") }
     private val favoritesExistence: MutableLiveData<Boolean> = MutableLiveData()
+    var favoritesExistenceMyFriend: MutableLiveData<String> = MutableLiveData()
+    private val favoritesMessageMe: MutableLiveData<FavoritesData> = MutableLiveData()
+    private val favoritesMessageFriend: MutableLiveData<FavoritesData> = MutableLiveData()
 
-    fun favoritesMessageMe(name: String) : MutableLiveData<List<LmemoData>> {
-        unSubscripbe.add(
-            ApiConnection.Instance().retrofitService
-                .lmemoData(name)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe (
-                    { item ->
-                        leftMessage.value = getGsonMessage(item)
-                    }, {
-                })
-        )
-        return leftMessage
+    fun favoritesExistenceMyFriend() : MutableLiveData<String> {
+        friendRef.child("favorites")
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    if(snapshot.value != null) {
+                        favoritesExistenceMyFriend.value = snapshot.value.toString()
+                    }
+                }
+                override fun onCancelled(error: DatabaseError) {}
+        })
+        return favoritesExistenceMyFriend
     }
 
-    fun favoritesMessageFriend(name: String) : MutableLiveData<List<LmemoData>> {
-        unSubscripbe.add(
-            ApiConnection.Instance().retrofitService
-                .lmemoData(name)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe (
-                    { item ->
-                        rightMessage.value = getGsonMessage(item)
-                    }, {
-                })
-        )
-        return rightMessage
+    fun favoritesMessageMe(email: String) {
+        favoritesRef.child(replacePointToComma(myId.value ?:""))
+            .child(replacePointToComma(email)).limitToLast(1)
+            .addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    for (snap: DataSnapshot in snapshot.children) {
+                        favoritesMessageMe.value =
+                            FavoritesData("", snap.value.toString(), "")
+                    }
+                }
+                override fun onCancelled(error: DatabaseError) {}
+        })
     }
 
-    private fun getGsonMessage(jsonObject: JsonObject) : List<LmemoData> {
+
+    fun favoritesMessageFriend(email: String) {
+        favoritesRef.child(replacePointToComma(email))
+            .child(replacePointToComma(myId.value ?:"")).limitToLast(1)
+            .addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    for (snap: DataSnapshot in snapshot.children) {
+                        favoritesMessageFriend.value =
+                            FavoritesData("", snap.value.toString(), "")
+                    }
+                }
+                override fun onCancelled(error: DatabaseError) {}
+
+            })
+    }
+
+    fun favoritesResetMe(): MutableLiveData<FavoritesData> {
+        return favoritesMessageMe
+    }
+
+    fun favoritesResetFriend(): MutableLiveData<FavoritesData> {
+        return favoritesMessageFriend
+    }
+
+    private fun getGsonMessage(jsonObject: JsonObject) : List<FavoritesData> {
         val obj = JSONObject(Gson().toJson(jsonObject))
         val x = obj.keys()
         val array = JSONArray()
@@ -78,7 +100,7 @@ class MainRepository @Inject constructor(
             array.put(obj.get(key))
         }
 
-        return Gson().fromJson(array.toString(), object: TypeToken<ArrayList<LmemoData>>(){}.type)
+        return Gson().fromJson(array.toString(), object: TypeToken<ArrayList<FavoritesData>>(){}.type)
     }
 
     private fun lovedayFormatt(data: List<LoveDay>?): String {
@@ -118,7 +140,8 @@ class MainRepository @Inject constructor(
                 if (snapshot.value == null) {
                     favoritesExistence.value = false
                 } else {
-                    favorites.child(snapshot.value.toString()).push().setValue(text)
+                    favoritesRef.child(replacePointToComma(myId.value ?:""))
+                        .child(snapshot.value.toString()).push().setValue(text)
                     favoritesExistence.value = true
                 }
             }
@@ -127,7 +150,7 @@ class MainRepository @Inject constructor(
     }
 
     fun logout(email: String) {
-        userRef.child(Util.replacePointToComma(email)).child("token").setValue(null)
+        userRef.child(replacePointToComma(email)).child("token").setValue(null)
     }
 
     fun myId(email: String) {

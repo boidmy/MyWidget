@@ -1,12 +1,14 @@
 package com.mywidget.ui.main.fragment
 
 import android.os.Bundle
+import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupWindow
 import android.widget.RelativeLayout
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.mywidget.R
 import com.mywidget.databinding.MainFragmentFragment2Binding
@@ -30,43 +32,25 @@ class FragmentLoveDay : BaseFragment<MainFragmentFragment2Binding>() {
                               savedInstanceState: Bundle?): View? {
         super.onCreateView(inflater, parent, savedInstanceState)
         bindView()
-        messagePop()
         return binding.root
     }
 
     private fun bindView() {
         binding.viewModel = viewModel
+        favoritesResetData()
         viewModel.apply {
-            favoritesMessageMe("뿡이")
-            favoritesMessageFriend("콩이")
-            leftMessage.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
-                leftString.value = it[it.size-1]
-            })
-            rightMessage.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
-                rightString.value = it[it.size-1]
+            favoritesExistenceMyFriend.observe(viewLifecycleOwner, Observer {
+                favoritesMessageMe(it)
             })
             Thread(Runnable {
                 selectLoveDay()
             }).start()
         }
-
     }
 
-    private fun messagePop() {
-        viewModel.message.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
-            val view: View = layoutInflater.inflate(R.layout.memo_list_dialog, null)
-            val popupWindow = PopupWindow(
-                view,
-                RelativeLayout.LayoutParams.WRAP_CONTENT,
-                RelativeLayout.LayoutParams.WRAP_CONTENT
-            )
-            popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0)
-            for (ds in it) {
-                val listItem: View = layoutInflater.inflate(R.layout.memo_list_dialog_item, null)
-                listItem.memo.text = ds.memo
-                listItem.date.text = ds.date
-                view.memo_list_container.addView(listItem)
-            }
-        })
+    private fun favoritesResetData() {
+        viewModel.favoritesResetMe()
+        viewModel.favoritesResetFriend()
+        viewModel.favoritesExistenceMyFriend()
     }
 }

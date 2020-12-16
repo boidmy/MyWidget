@@ -2,7 +2,7 @@ package com.mywidget.ui.main
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.mywidget.data.model.LmemoData
+import com.mywidget.data.model.FavoritesData
 import com.mywidget.data.room.*
 import javax.inject.Inject
 
@@ -11,11 +11,8 @@ class MainFragmentViewModel @Inject constructor(
 ) : ViewModel() {
     var memoData: MutableLiveData<List<Memo>> = MutableLiveData()
     var loveday: MutableLiveData<String> = MutableLiveData()
-    var leftMessage: MutableLiveData<List<LmemoData>> = MutableLiveData()
-    var rightMessage: MutableLiveData<List<LmemoData>> = MutableLiveData()
-    var message: MutableLiveData<List<LmemoData>> = MutableLiveData()
-    var leftString: MutableLiveData<LmemoData> = MutableLiveData()
-    var rightString: MutableLiveData<LmemoData> = MutableLiveData()
+    var favoritesMessageMe: MutableLiveData<FavoritesData> = MutableLiveData()
+    var favoritesMessageFriend: MutableLiveData<FavoritesData> = MutableLiveData()
     var myId: MutableLiveData<String> = MutableLiveData()
 
     var memoDialogVisibility: MutableLiveData<Boolean> = MutableLiveData()
@@ -23,6 +20,7 @@ class MainFragmentViewModel @Inject constructor(
     var favoritesDialogVisibility: MutableLiveData<Boolean> = MutableLiveData()
     val guidTextVisibility: MutableLiveData<Boolean> = MutableLiveData()
     var favoritesExistence: MutableLiveData<Boolean> = MutableLiveData()
+    var favoritesExistenceMyFriend: MutableLiveData<String> = MutableLiveData()
 
     fun insertMemo(memo: String, data: String) {
         Thread(Runnable {
@@ -53,20 +51,21 @@ class MainFragmentViewModel @Inject constructor(
         loveday.postValue(repository.selectLoveDay())
     }
 
-    fun favoritesMessageMe(name: String){
-        leftMessage = repository.favoritesMessageMe(name)
+    fun favoritesResetMe() {
+        favoritesMessageMe = repository.favoritesResetMe()
     }
 
-    fun favoritesMessageFriend(name: String) {
-        rightMessage = repository.favoritesMessageFriend(name)
+    fun favoritesResetFriend() {
+        favoritesMessageFriend = repository.favoritesResetFriend()
     }
 
-    fun leftClick() {
-        message.value = leftMessage.value
+    fun favoritesMessageMe(email: String){
+        repository.favoritesMessageMe(email)
+        repository.favoritesMessageFriend(email)
     }
 
-    fun rightClick() {
-        message.value = rightMessage.value
+    fun favoritesExistenceMyFriend() {
+        favoritesExistenceMyFriend = repository.favoritesExistenceMyFriend()
     }
 
     fun logout(email: String) {
