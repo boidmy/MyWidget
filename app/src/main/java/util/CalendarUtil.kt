@@ -122,4 +122,13 @@ object CalendarUtil {
         val cal = Calendar.getInstance()
         return "${getYear(cal)}-${getMonth(cal)+1}-${getNowdate(cal)}"
     }
+
+    fun getDate(): String {
+        val dateFormat = SimpleDateFormat("yy.MM.dd HH:mm", Locale.KOREA)
+        val calendar = Calendar.getInstance()
+        val date = calendar.time
+        dateFormat.timeZone = TimeZone.getTimeZone("Asia/Seoul")
+
+        return dateFormat.format(date)
+    }
 }

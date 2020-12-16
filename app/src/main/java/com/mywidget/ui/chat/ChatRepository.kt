@@ -9,6 +9,7 @@ import com.mywidget.SendPush
 import com.mywidget.data.model.ChatDataModel
 import com.mywidget.data.model.RoomDataModel
 import com.mywidget.di.custom.ActivityScope
+import util.CalendarUtil
 import util.Util.replaceCommaToPoint
 import util.Util.replacePointToComma
 import java.util.*
@@ -47,7 +48,7 @@ class ChatRepository @Inject constructor() {
     fun insertChat(sendUserEmail: String, text: String) {
         val userEmail = replacePointToComma(sendUserEmail)
         val ref = message.push()
-        ref.setValue(ChatDataModel(text, userEmail)).addOnCompleteListener {
+        ref.setValue(ChatDataModel(text, userEmail, CalendarUtil.getDate())).addOnCompleteListener {
             Handler(Looper.getMainLooper()).postDelayed({
                 insertPush(ref.key ?: "", text, userEmail)
             }, 1000)
@@ -72,11 +73,13 @@ class ChatRepository @Inject constructor() {
             val i = snapshot.children.iterator()
             var id = ""
             var message = ""
+            var date = ""
             while (i.hasNext()) {
                 id = i.next().value as String
                 message = i.next().value as String
+                date = i.next().value as String
             }
-            list.add(0, ChatDataModel(message, id))
+            list.add(0, ChatDataModel(message, id, date))
             data.value = list
             if (!loadMoreChk) {
                 lastMessageKey = snapshot.key
@@ -106,12 +109,14 @@ class ChatRepository @Inject constructor() {
                     val i = snapshot.children.iterator()
                     var id = ""
                     var message = ""
+                    var date = ""
                     while (i.hasNext()) {
                         id = i.next().value as String
                         message = i.next().value as String
+                        date = i.next().value as String
                     }
                     if (loadMoreSelectKey != snapshot.key) {
-                        list.add(startPosition, ChatDataModel(message, id))
+                        list.add(startPosition, ChatDataModel(message, id, date))
                         data.value = list
                     }
                     if (!loadMoreChk) {
