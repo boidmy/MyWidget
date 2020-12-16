@@ -1,7 +1,7 @@
 package com.mywidget.ui.main
 
 import androidx.lifecycle.MutableLiveData
-import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.*
 import com.google.gson.Gson
 import com.google.gson.JsonObject
 import com.google.gson.reflect.TypeToken
@@ -31,8 +31,14 @@ class MainRepository @Inject constructor(
     private var leftMessage: MutableLiveData<List<LmemoData>> = MutableLiveData()
     private var rightMessage: MutableLiveData<List<LmemoData>> = MutableLiveData()
     private val userRef: DatabaseReference by lazy { database.child("User") }
+    private val friendRef: DatabaseReference by lazy {
+        userRef.child(Util.replacePointToComma(myId.value ?:"")).child("friend") }
+    var myId: MutableLiveData<String> = MutableLiveData()
+    private val favorites: DatabaseReference by lazy {
+        database.child("favorites").child(Util.replacePointToComma(myId.value ?:"")) }
+    private val favoritesExistence: MutableLiveData<Boolean> = MutableLiveData()
 
-    fun messageLeft(name: String) : MutableLiveData<List<LmemoData>> {
+    fun favoritesMessageMe(name: String) : MutableLiveData<List<LmemoData>> {
         unSubscripbe.add(
             ApiConnection.Instance().retrofitService
                 .lmemoData(name)
@@ -47,7 +53,7 @@ class MainRepository @Inject constructor(
         return leftMessage
     }
 
-    fun messageRight(name: String) : MutableLiveData<List<LmemoData>> {
+    fun favoritesMessageFriend(name: String) : MutableLiveData<List<LmemoData>> {
         unSubscripbe.add(
             ApiConnection.Instance().retrofitService
                 .lmemoData(name)
@@ -105,8 +111,35 @@ class MainRepository @Inject constructor(
         memoDb.memoDao().insert(Memo(null, memo, data))
     }
 
+    fun favoritesMessage(text: String) {
+        friendRef.child("favorites")
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if (snapshot.value == null) {
+                    favoritesExistence.value = false
+                } else {
+                    favorites.child(snapshot.value.toString()).push().setValue(text)
+                    favoritesExistence.value = true
+                }
+            }
+            override fun onCancelled(error: DatabaseError) {}
+        })
+    }
+
     fun logout(email: String) {
         userRef.child(Util.replacePointToComma(email)).child("token").setValue(null)
+    }
+
+    fun myId(email: String) {
+        myId.value = email
+    }
+
+    fun myIdReset(): MutableLiveData<String>{
+        return myId
+    }
+
+    fun favoritesExistence(): MutableLiveData<Boolean> {
+        return favoritesExistence
     }
 
     fun rxClear() {

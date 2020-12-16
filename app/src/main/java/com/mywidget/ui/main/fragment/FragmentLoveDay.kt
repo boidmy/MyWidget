@@ -37,8 +37,8 @@ class FragmentLoveDay : BaseFragment<MainFragmentFragment2Binding>() {
     private fun bindView() {
         binding.viewModel = viewModel
         viewModel.apply {
-            messageLeft("뿡이")
-            messageRight("콩이")
+            favoritesMessageMe("뿡이")
+            favoritesMessageFriend("콩이")
             leftMessage.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
                 leftString.value = it[it.size-1]
             })

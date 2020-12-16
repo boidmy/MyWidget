@@ -5,10 +5,6 @@
     <data>
 
         <variable
-            name="date"
-            type="String" />
-
-        <variable
             name="viewModel"
             type="com.mywidget.ui.main.MainFragmentViewModel" />
     </data>
@@ -19,7 +15,7 @@
         android:orientation="vertical">
 
         <View
-            android:id="@+id/loveDayContainer"
+            android:id="@+id/conditionContainer"
             android:layout_width="300dp"
             android:layout_height="240dp"
             android:background="@drawable/edge_round_2d56583"
@@ -27,12 +23,12 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
-            android:id="@+id/loveIcon"
+            android:id="@+id/conditionIcon"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_marginStart="20dp"
             android:layout_marginTop="20dp"
-            android:src="@drawable/chat_add_room"
+            android:src="@drawable/icon_condition_title"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -40,48 +36,47 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
-            android:text="기념일"
+            android:text="오늘의 할말!"
             android:textColor="#ffffff"
-            app:layout_constraintBottom_toBottomOf="@+id/loveIcon"
-            app:layout_constraintStart_toEndOf="@+id/loveIcon"
-            app:layout_constraintTop_toTopOf="@+id/loveIcon" />
+            app:layout_constraintBottom_toBottomOf="@+id/conditionIcon"
+            app:layout_constraintStart_toEndOf="@+id/conditionIcon"
+            app:layout_constraintTop_toTopOf="@+id/conditionIcon" />
 
         <TextView
-            android:id="@+id/calendarTxt"
+            android:id="@+id/conditionTxt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginTop="20dp"
-            android:text="날짜를 선택해 주세요"
+            android:text="메세지를 입력해 주세요"
             android:textColor="#ffffff"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/loveIcon" />
-
-        <ImageView
-            android:id="@+id/calendarBtn"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="10dp"
-            android:src="@drawable/icon_calendar_selet"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/calendarTxt" />
+            app:layout_constraintTop_toBottomOf="@+id/conditionIcon" />
 
         <EditText
-            android:id="@+id/calendarTxtArea"
+            android:id="@+id/conditionTxtArea"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="20dp"
             android:backgroundTint="#FFFFFF"
-            android:clickable="false"
-            android:cursorVisible="false"
-            android:focusable="false"
             android:textColor="#000000"
-            app:NowDate="@{date}"
-            app:layout_constraintBottom_toBottomOf="@+id/calendarBtn"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/calendarBtn" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/conditionTxt" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="10dp"
+            android:text="서로 즐겨찾기 된 친구와 메세지가 공유돼요!"
+            android:textColor="#ffffff"
+            android:textSize="10dp"
+            app:layout_constraintEnd_toStartOf="@+id/confirmBtn"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/conditionTxtArea" />
 
         <ImageView
             android:id="@+id/confirmBtn"
@@ -90,10 +85,10 @@
             android:layout_marginTop="20dp"
             android:layout_marginEnd="20dp"
             android:src="@drawable/confirm_btn"
+            app:favoritesMessage="@{conditionTxtArea}"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/calendarBtn"
-            app:loveDayConfirm="@{viewModel}"
-            app:textTag="@{calendarTxtArea}" />
+            app:layout_constraintTop_toBottomOf="@+id/conditionTxtArea"
+            app:viewModel="@{viewModel}" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

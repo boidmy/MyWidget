@@ -9,6 +9,7 @@ import android.view.View
 import androidx.activity.viewModels
 import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.tabs.TabLayout
@@ -17,21 +18,16 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.mywidget.*
 import com.mywidget.common.BackPressAppFinish
-import com.mywidget.databinding.DrawerlayoutMainBinding
-import com.mywidget.databinding.MainLovedayDialogBinding
-import com.mywidget.databinding.MemoDialogBinding
-import com.mywidget.databinding.NavHeaderMainBinding
+import com.mywidget.databinding.*
 import com.mywidget.ui.base.BaseActivity
 import com.mywidget.ui.friend.FriendActivity
 import com.mywidget.ui.login.LoginActivity
 import com.mywidget.ui.loveday.FloatingPopupActivity
 import com.mywidget.ui.main.fragment.MainTabPagerAdapter
 import com.mywidget.ui.widgetlist.WidgetListActivity
-import util.CalendarUtil
 import util.CalendarUtil.getToday
 import util.Util
 import util.Util.toast
-import java.util.*
 import javax.inject.Inject
 
 
@@ -50,6 +46,10 @@ class MainActivity : BaseActivity<DrawerlayoutMainBinding>()
         MemoDialogBinding.inflate(LayoutInflater.from(this))
     }
     private val memoDialog by lazy { Dialog(this, R.style.CustomDialogTheme) }
+    private val favoritesDialogBinding by lazy {
+        MainFavoritesDialogBinding.inflate(LayoutInflater.from(this))
+    }
+    private val favoritesDialog by lazy { Dialog(this, R.style.CustomDialogTheme) }
 
     override val layout: Int
         get() = R.layout.drawerlayout_main
@@ -62,13 +62,15 @@ class MainActivity : BaseActivity<DrawerlayoutMainBinding>()
         leftMenu()
         tabInit()
         memoDialogBind()
-        loveDayBind()
+        loveDayDialogBind()
+        favoritesDialogBind()
     }
 
     private fun loginCheck() {
         val email = loginEmail()
         if(email.isNotEmpty()) {
-            viewModel.login(email)
+            viewModel.myIdReset()
+            viewModel.myId(email)
             binding.navView.menu.getItem(1).title = "로그아웃"
         }
     }
@@ -92,17 +94,17 @@ class MainActivity : BaseActivity<DrawerlayoutMainBinding>()
         super.onActivityResult(requestCode, resultCode, data)
         when (requestCode) {
             3000 -> {
-                if("memo" == data?.getStringExtra("result")) {
-                    openMemoDialog()
-                } else if("dDay" == data?.getStringExtra("result")) {
-                    openLoveDayDialog()
+                when {
+                    "memo" == data?.getStringExtra("result") -> openMemoDialog()
+                    "dDay" == data?.getStringExtra("result") -> openLoveDayDialog()
+                    "condition" == data?.getStringExtra("result") -> openFavoritesDialog()
                 }
             }
             4000 -> {
                 val user = FirebaseAuth.getInstance().currentUser
                 user?.email?.let {
                     this.toast(it+"님 환영합니다!")
-                    viewModel.login(it)
+                    viewModel.myId(it)
                     loginTxt("로그아웃")
                 }
             }
@@ -138,7 +140,7 @@ class MainActivity : BaseActivity<DrawerlayoutMainBinding>()
                 } else {
                     viewModel.logout(loginEmail())
                     Firebase.auth.signOut()
-                    viewModel.userEmail.value = ""
+                    viewModel.myId("")
                     loginTxt("로그인")
                 }
             }
@@ -151,17 +153,17 @@ class MainActivity : BaseActivity<DrawerlayoutMainBinding>()
         return true
     }
 
-    private fun loveDayBind() {
+    private fun loveDayDialogBind() {
         lovedayDialog.setContentView(loveDayDialogBinding.root)
         loveDayDialogBinding.viewModel = viewModel
-        viewModel.loveDayDialogVisible.observe(this, androidx.lifecycle.Observer {
+        viewModel.loveDayDialogVisibility.observe(this, androidx.lifecycle.Observer {
             if(it) lovedayDialog.show()
             else lovedayDialog.dismiss()
         })
     }
 
     private fun openLoveDayDialog() {
-        viewModel.loveDayDialogVisible(true)
+        viewModel.loveDayDialogVisibility(true)
         loveDayDialogBinding.apply {
             date = getToday()
         }
@@ -183,8 +185,31 @@ class MainActivity : BaseActivity<DrawerlayoutMainBinding>()
         viewModel.memoDialogVisibility(true)
         memoDialogBinding.apply {
             memoEdit.text = null
+            memoEdit.isFocusable = true
             date = getToday()
         }
+    }
+
+    private fun favoritesDialogBind() {
+        favoritesDialog.setContentView(favoritesDialogBinding.root)
+        favoritesDialogBinding.viewModel = viewModel
+        viewModel.favoritesExistence()
+        viewModel.favoritesDialogVisibility.observe(this, Observer {
+            if(it) favoritesDialog.show()
+        })
+        viewModel.favoritesExistence.observe(this, Observer {
+            if(!it) this.toast("즐겨찾기 한 친구가 없어요!")
+            else favoritesDialog.dismiss()
+        })
+    }
+
+    private fun openFavoritesDialog() {
+        viewModel.favoritesDialogVisibility(true)
+        favoritesDialogBinding.apply {
+            conditionTxtArea.text = null
+            conditionTxtArea.isFocusable = true
+        }
+
     }
 
     fun onClickFloating(v: View) {

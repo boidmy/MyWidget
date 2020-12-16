@@ -24,31 +24,27 @@ class FloatingPopupActivity : Activity() {
                 val intent = Intent()
                 intent.putExtra("result", "memo")
                 setResult(RESULT_OK, intent)
-                finish()
             }
             R.id.conditionContainer -> {
-                val intent = Intent(this, LMemoActivity::class.java)
-                startActivity(intent)
-                finish()
+                val intent = Intent()
+                intent.putExtra("result", "condition")
+                setResult(RESULT_OK, intent)
             }
             R.id.loveDayContainer -> {
                 val intent = Intent()
                 intent.putExtra("result", "dDay")
                 setResult(RESULT_OK, intent)
-                finish()
             }
             R.id.chatContainer -> {
                 if(loginEmail().isEmpty()) {
                     this.toast("로그인 후 이용해 주세요")
-                    finish()
                     return
                 }
                 val intent = Intent(this, ChatRoomActivity::class.java)
                 startActivity(intent)
-                finish()
             }
-            R.id.smart_talk_floating_popup_dim_layout -> finish()
         }
+        finish()
     }
 
     private fun loginEmail(): String {

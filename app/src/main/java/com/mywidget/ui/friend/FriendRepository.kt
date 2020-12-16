@@ -16,8 +16,9 @@ class FriendRepository @Inject constructor() {
     lateinit var database: DatabaseReference
     private val userRef: DatabaseReference by lazy { database.child("User") }
     private val friendRef: DatabaseReference by lazy {
-        userRef.child(replacePointToComma(myId)).child("friend")
-    }
+        userRef.child(replacePointToComma(myId)).child("friend") }
+    private val favorites: DatabaseReference by lazy {
+        database.child("favorites").child(replacePointToComma(myId)) }
     var userExistenceChk: MutableLiveData<Boolean> = MutableLiveData()
     var friendList: MutableLiveData<ArrayList<FriendModel>> = MutableLiveData()
     var myId: String = ""
@@ -73,8 +74,10 @@ class FriendRepository @Inject constructor() {
         friendRef.child("friendList").child(replacePointToComma(email)).setValue(null)
     }
 
-    fun setFavorites(email: String) {
-        friendRef.child("favorites").setValue(replacePointToComma(email))
+    fun setFavorites(email: String, onOffChk: Boolean) {
+        var value: String? = null
+        if (onOffChk) value = replacePointToComma(email)
+        friendRef.child("favorites").setValue(value)
     }
 
     fun myId(email: String): String {

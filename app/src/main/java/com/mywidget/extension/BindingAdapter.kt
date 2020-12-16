@@ -82,7 +82,7 @@ fun setLoveDay(imageView: ImageView, viewModel: MainFragmentViewModel, textView:
     imageView.setOnClickListener {
         textView.tag?.let {
             viewModel.addLoveDay(it.toString())
-            viewModel.loveDayDialogVisible(false)
+            viewModel.loveDayDialogVisibility(false)
         } ?: run {
             imageView.context.toast("날짜를 선택해주세요!")
         }
@@ -102,6 +102,13 @@ fun memoOnclick(imageView: ImageView, memo: EditText, date: TextView, viewModel:
                 imageView.context.toast("날짜를 선택해주세요!")
             }
         }
+    }
+}
+
+@BindingAdapter("favoritesMessage", "viewModel")
+fun favoritesMemo(imageView: ImageView, editText: EditText, viewModel: MainFragmentViewModel) {
+    imageView.setOnClickListener {
+        viewModel.favoritesMessage(editText.text.toString())
     }
 }
 

@@ -36,7 +36,7 @@ class FriendViewModel @Inject constructor(private val repository: FriendReposito
         repository.deleteFriend(email)
     }
 
-    fun setFavorites(email: String) {
-        repository.setFavorites(email)
+    fun setFavorites(email: String, onOffChk: Boolean) {
+        repository.setFavorites(email, onOffChk)
     }
 }

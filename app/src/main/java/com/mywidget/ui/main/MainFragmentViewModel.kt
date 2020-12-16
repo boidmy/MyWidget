@@ -16,11 +16,13 @@ class MainFragmentViewModel @Inject constructor(
     var message: MutableLiveData<List<LmemoData>> = MutableLiveData()
     var leftString: MutableLiveData<LmemoData> = MutableLiveData()
     var rightString: MutableLiveData<LmemoData> = MutableLiveData()
-    var userEmail: MutableLiveData<String> = MutableLiveData()
+    var myId: MutableLiveData<String> = MutableLiveData()
 
     var memoDialogVisibility: MutableLiveData<Boolean> = MutableLiveData()
-    var loveDayDialogVisible: MutableLiveData<Boolean> = MutableLiveData()
+    var loveDayDialogVisibility: MutableLiveData<Boolean> = MutableLiveData()
+    var favoritesDialogVisibility: MutableLiveData<Boolean> = MutableLiveData()
     val guidTextVisibility: MutableLiveData<Boolean> = MutableLiveData()
+    var favoritesExistence: MutableLiveData<Boolean> = MutableLiveData()
 
     fun insertMemo(memo: String, data: String) {
         Thread(Runnable {
@@ -51,12 +53,12 @@ class MainFragmentViewModel @Inject constructor(
         loveday.postValue(repository.selectLoveDay())
     }
 
-    fun messageLeft(name: String){
-        leftMessage = repository.messageLeft(name)
+    fun favoritesMessageMe(name: String){
+        leftMessage = repository.favoritesMessageMe(name)
     }
 
-    fun messageRight(name: String) {
-        rightMessage = repository.messageRight(name)
+    fun favoritesMessageFriend(name: String) {
+        rightMessage = repository.favoritesMessageFriend(name)
     }
 
     fun leftClick() {
@@ -71,8 +73,12 @@ class MainFragmentViewModel @Inject constructor(
         repository.logout(email)
     }
 
-    fun login(email: String) {
-        userEmail.value = email
+    fun myIdReset() {
+        myId = repository.myIdReset()
+    }
+
+    fun myId(email: String) {
+        repository.myId(email)
     }
 
     fun guidTextVisibility(flag: Boolean) {
@@ -83,8 +89,20 @@ class MainFragmentViewModel @Inject constructor(
         memoDialogVisibility.value = flag
     }
 
-    fun loveDayDialogVisible(flag: Boolean) {
-        loveDayDialogVisible.value = flag
+    fun loveDayDialogVisibility(flag: Boolean) {
+        loveDayDialogVisibility.value = flag
+    }
+
+    fun favoritesDialogVisibility(flag: Boolean) {
+        favoritesDialogVisibility.value = flag
+    }
+
+    fun favoritesMessage(text: String) {
+        repository.favoritesMessage(text)
+    }
+
+    fun favoritesExistence() {
+        favoritesExistence = repository.favoritesExistence()
     }
 
     override fun onCleared() {

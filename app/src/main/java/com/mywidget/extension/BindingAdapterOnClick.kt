@@ -13,6 +13,7 @@ import com.mywidget.ui.chat.ChatViewModel
 import com.mywidget.ui.chatinvite.ChatInviteActivity
 import com.mywidget.ui.chatinvite.ChatInviteViewModel
 import com.mywidget.ui.chatroom.ChatRoomViewModel
+import com.mywidget.ui.friend.FriendViewModel
 import com.mywidget.ui.login.LoginActivity
 import com.mywidget.ui.login.signup.SignUpActivity
 import util.Util
@@ -111,5 +112,12 @@ fun onClickSelected(view: View, position: Int, viewModel: ChatInviteViewModel) {
         array?.let {
             viewModel.setFriendList(it)
         }
+    }
+}
+
+@BindingAdapter("favoritesAdd", "viewModel")
+fun setFavoritesAdd(button: Button, email: String, viewModel: FriendViewModel) {
+    button.setOnClickListener {
+        viewModel.setFavorites(email, !button.isSelected)
     }
 }
