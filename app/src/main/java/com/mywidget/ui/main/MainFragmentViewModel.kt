@@ -103,9 +103,4 @@ class MainFragmentViewModel @Inject constructor(
     fun favoritesExistence() {
         favoritesExistence = repository.favoritesExistence()
     }
-
-    override fun onCleared() {
-        repository.rxClear()
-        super.onCleared()
-    }
 }

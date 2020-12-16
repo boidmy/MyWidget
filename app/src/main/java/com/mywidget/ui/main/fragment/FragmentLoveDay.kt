@@ -32,6 +32,7 @@ class FragmentLoveDay : BaseFragment<MainFragmentFragment2Binding>() {
                               savedInstanceState: Bundle?): View? {
         super.onCreateView(inflater, parent, savedInstanceState)
         bindView()
+        favoritesReloadObserver()
         return binding.root
     }
 
@@ -52,5 +53,11 @@ class FragmentLoveDay : BaseFragment<MainFragmentFragment2Binding>() {
         viewModel.favoritesResetMe()
         viewModel.favoritesResetFriend()
         viewModel.favoritesExistenceMyFriend()
+    }
+
+    private fun favoritesReloadObserver() {
+        viewModel.myId.observe(viewLifecycleOwner, Observer {
+            viewModel.favoritesExistenceMyFriend()
+        })
     }
 }

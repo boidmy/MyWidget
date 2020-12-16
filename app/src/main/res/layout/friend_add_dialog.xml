@@ -73,7 +73,7 @@
             android:backgroundTint="#FFFFFF"
             android:textColor="#000000"
             android:lines="2"
-            android:hint="친구를 기억할 수 있는 메모를 남겨보세요~"
+            android:hint="친구의 별명을 정해주세요~"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/friendAddEmailEdit" />

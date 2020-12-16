@@ -40,7 +40,7 @@ class MainRepository @Inject constructor(
     private val favoritesMessageFriend: MutableLiveData<FavoritesData> = MutableLiveData()
 
     fun favoritesExistenceMyFriend() : MutableLiveData<String> {
-        friendRef.child("favorites")
+        userRef.child(replacePointToComma(myId.value ?:"")).child("friend").child("favorites")
             .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     if(snapshot.value != null) {
@@ -66,7 +66,6 @@ class MainRepository @Inject constructor(
         })
     }
 
-
     fun favoritesMessageFriend(email: String) {
         favoritesRef.child(replacePointToComma(email))
             .child(replacePointToComma(myId.value ?:"")).limitToLast(1)
@@ -88,19 +87,6 @@ class MainRepository @Inject constructor(
 
     fun favoritesResetFriend(): MutableLiveData<FavoritesData> {
         return favoritesMessageFriend
-    }
-
-    private fun getGsonMessage(jsonObject: JsonObject) : List<FavoritesData> {
-        val obj = JSONObject(Gson().toJson(jsonObject))
-        val x = obj.keys()
-        val array = JSONArray()
-
-        while (x.hasNext()) {
-            val key = x.next() as String
-            array.put(obj.get(key))
-        }
-
-        return Gson().fromJson(array.toString(), object: TypeToken<ArrayList<FavoritesData>>(){}.type)
     }
 
     private fun lovedayFormatt(data: List<LoveDay>?): String {
@@ -134,7 +120,8 @@ class MainRepository @Inject constructor(
     }
 
     fun favoritesMessage(text: String) {
-        friendRef.child("favorites")
+        userRef.child(replacePointToComma(myId.value ?:""))
+            .child("friend").child("favorites")
             .addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (snapshot.value == null) {
@@ -163,9 +150,5 @@ class MainRepository @Inject constructor(
 
     fun favoritesExistence(): MutableLiveData<Boolean> {
         return favoritesExistence
-    }
-
-    fun rxClear() {
-        unSubscripbe.dispose()
     }
 }
