@@ -59,9 +59,14 @@ class MainFragmentViewModel @Inject constructor(
         favoritesMessageFriend = repository.favoritesResetFriend()
     }
 
-    fun favoritesMessageMe(email: String){
-        repository.favoritesMessageMe(email)
-        repository.favoritesMessageFriend(email)
+    fun favoritesMessageMe(friendEmail: String){
+        if(friendEmail.isEmpty()) {
+            repository.favoritesNoneMessageMe()
+            repository.favoritesNoneMessageFriend()
+        } else {
+            repository.favoritesMessageMe(friendEmail)
+            repository.favoritesMessageFriend(friendEmail)
+        }
     }
 
     fun favoritesExistenceMyFriend() {

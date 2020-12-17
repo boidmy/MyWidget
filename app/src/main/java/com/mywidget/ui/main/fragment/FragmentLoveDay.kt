@@ -32,32 +32,31 @@ class FragmentLoveDay : BaseFragment<MainFragmentFragment2Binding>() {
                               savedInstanceState: Bundle?): View? {
         super.onCreateView(inflater, parent, savedInstanceState)
         bindView()
-        favoritesReloadObserver()
+        favoritesObserver()
         return binding.root
     }
 
     private fun bindView() {
         binding.viewModel = viewModel
         favoritesResetData()
-        viewModel.apply {
-            favoritesExistenceMyFriend.observe(viewLifecycleOwner, Observer {
-                favoritesMessageMe(it)
-            })
-            Thread(Runnable {
-                selectLoveDay()
-            }).start()
-        }
+
+        Thread {
+            viewModel.selectLoveDay()
+        }.start()
     }
 
     private fun favoritesResetData() {
+        viewModel.favoritesExistenceMyFriend()
         viewModel.favoritesResetMe()
         viewModel.favoritesResetFriend()
-        viewModel.favoritesExistenceMyFriend()
     }
 
-    private fun favoritesReloadObserver() {
+    private fun favoritesObserver() {
         viewModel.myId.observe(viewLifecycleOwner, Observer {
             viewModel.favoritesExistenceMyFriend()
+        })
+        viewModel.favoritesExistenceMyFriend.observe(viewLifecycleOwner, Observer {
+            viewModel.favoritesMessageMe(it)
         })
     }
 }
