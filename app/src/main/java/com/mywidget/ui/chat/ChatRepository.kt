@@ -5,16 +5,14 @@ import android.os.Looper
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.database.*
-import com.mywidget.SendPush
+import com.mywidget.fcm.SendPush
 import com.mywidget.data.model.ChatDataModel
 import com.mywidget.data.model.RoomDataModel
 import com.mywidget.di.custom.ActivityScope
 import util.CalendarUtil
 import util.Util.replaceCommaToPoint
 import util.Util.replacePointToComma
-import java.util.*
 import javax.inject.Inject
-import javax.inject.Named
 import kotlin.collections.ArrayList
 
 @ActivityScope
@@ -166,7 +164,8 @@ class ChatRepository @Inject constructor() {
             object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     snapshot.value?.let {
-                        SendPush().send(it.toString(), message, sendId)
+                        SendPush()
+                            .send(it.toString(), message, sendId)
                     }
                 }
 

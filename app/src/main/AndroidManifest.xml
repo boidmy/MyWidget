@@ -43,11 +43,6 @@
             android:windowSoftInputMode="adjustPan" />
 
         <activity
-            android:name=".lmemo.view.LMemoActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan"/>
-
-        <activity
             android:name=".ui.chatroom.ChatRoomActivity"
             android:screenOrientation="portrait"/>
 

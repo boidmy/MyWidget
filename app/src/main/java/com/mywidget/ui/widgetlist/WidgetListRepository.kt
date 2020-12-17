@@ -15,17 +15,17 @@ class WidgetListRepository @Inject constructor(
     var widgetJsonArrayData: MutableLiveData<JSONArray> = MutableLiveData()
 
     fun insertUser(user: String, phone: String) {
-        Thread(Runnable {
+        Thread {
             userDb.userDao().insert(User(null, user, phone))
             selectUser()
-        }).start()
+        }.start()
     }
 
     fun deleteUser(user: String) {
-        Thread(Runnable {
+        Thread {
             userDb.userDao().delete(user)
             selectUser()
-        }).start()
+        }.start()
     }
 
     fun selectUser() {

@@ -38,7 +38,7 @@ class ChatActivity : BaseActivity<ActivityChattingBinding>() {
         val adapter = ChatAdapter(viewModel)
         adapter.setHasStableIds(true)
         binding.chatRv.adapter = adapter
-        binding.chatRv.addItemDecoration(ItemDecoration(this, 10))
+        binding.chatRv.addItemDecoration(ItemDecoration(10))
         binding.drawerUserListRv.adapter = UserListRecyclerView(viewModel)
 
         roomDataModel = intent.getSerializableExtra("data") as RoomDataModel

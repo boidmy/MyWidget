@@ -7,7 +7,6 @@ import android.view.View
 import com.mywidget.MainApplication
 import com.mywidget.R
 import com.mywidget.ui.chatroom.ChatRoomActivity
-import com.mywidget.lmemo.view.LMemoActivity
 import util.Util.toast
 
 class FloatingPopupActivity : Activity() {

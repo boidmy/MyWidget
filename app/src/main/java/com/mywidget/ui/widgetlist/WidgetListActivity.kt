@@ -66,9 +66,9 @@ class WidgetListActivity : BaseActivity<ActivityUserBinding>() {
     private fun selectUser() {
         viewModel.setWidgetData()
         viewModel.setWidgetDataJsonArray()
-        Thread(Runnable {
+        Thread {
             viewModel.selectUser()
-        }).start()
+        }.start()
     }
 
     private fun setWidgetAddDialog() {
@@ -99,13 +99,13 @@ class WidgetListActivity : BaseActivity<ActivityUserBinding>() {
 
     private fun permissionChk() {
         //CALL_DIAL 로 바꾼 상태라 권한이 필요 없어짐 추후 사용할수 있다
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        /*if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (checkSelfPermission(Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED) {
 
             } else {
                 ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CALL_PHONE), 1)
             }
-        }
+        }*/
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {

@@ -23,17 +23,17 @@ class MainFragmentViewModel @Inject constructor(
     var favoritesExistenceMyFriend: MutableLiveData<String> = MutableLiveData()
 
     fun insertMemo(memo: String, data: String) {
-        Thread(Runnable {
+        Thread {
             repository.insertMemo(memo, data)
             selectMemo()
-        }).start()
+        }.start()
     }
 
     fun deletMemo(memo: String) {
-        Thread(Runnable {
+        Thread {
             repository.deleteMemo(memo)
             selectMemo()
-        }).start()
+        }.start()
     }
 
     fun selectMemo() {
@@ -41,10 +41,10 @@ class MainFragmentViewModel @Inject constructor(
     }
 
     fun addLoveDay(data: String) {
-        Thread(Runnable {
+        Thread {
             repository.addLoveDay(data)
             selectLoveDay()
-        }).start()
+        }.start()
     }
 
     fun selectLoveDay() {

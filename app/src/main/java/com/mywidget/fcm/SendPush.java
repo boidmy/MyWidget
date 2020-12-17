@@ -1,9 +1,8 @@
-package com.mywidget;
+package com.mywidget.fcm;
 
 import android.util.Log;
 
 import com.mywidget.data.apiConnect.ApiConnection;
-import com.mywidget.data.model.UserData;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;

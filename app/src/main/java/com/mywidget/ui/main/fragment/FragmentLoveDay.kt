@@ -29,7 +29,7 @@ class FragmentLoveDay : BaseFragment<MainFragmentFragment2Binding>() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, parent: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+                              savedInstanceState: Bundle?): View {
         super.onCreateView(inflater, parent, savedInstanceState)
         bindView()
         favoritesObserver()

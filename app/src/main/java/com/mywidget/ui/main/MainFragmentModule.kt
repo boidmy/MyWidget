@@ -1,4 +1,4 @@
-package com.mywidget.di.module
+package com.mywidget.ui.main
 
 import com.mywidget.ui.main.fragment.FragmentLoveDay
 import com.mywidget.ui.main.fragment.FragmentMemo

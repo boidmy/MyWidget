@@ -47,8 +47,8 @@ class FragmentMemo : BaseFragment<MainFragmentRvBinding>() {
     }
 
     private fun selectCall() {
-        Thread(Runnable {
+        Thread {
             viewModel.selectMemo()
-        }).start()
+        }.start()
     }
 }

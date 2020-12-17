@@ -15,6 +15,7 @@ import com.mywidget.ui.main.MainActivity
 import com.mywidget.ui.main.MainActivityModule
 import com.mywidget.ui.login.signup.SignUpActivity
 import com.mywidget.ui.login.LoginViewModelModule
+import com.mywidget.ui.main.MainFragmentModule
 import com.mywidget.ui.main.MainViewModelModule
 import com.mywidget.ui.widgetlist.WidgetListViewModelModule
 import com.mywidget.ui.widgetlist.WidgetListActivity
