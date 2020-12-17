@@ -68,8 +68,8 @@ class MainActivity : BaseActivity<DrawerlayoutMainBinding>()
 
     private fun loginCheck() {
         val email = loginEmail()
+        viewModel.myIdReset()
         if(email.isNotEmpty()) {
-            viewModel.myIdReset()
             viewModel.myId(email)
             binding.navView.menu.getItem(1).title = "로그아웃"
         }
@@ -101,10 +101,9 @@ class MainActivity : BaseActivity<DrawerlayoutMainBinding>()
                 }
             }
             4000 -> {
-                val user = FirebaseAuth.getInstance().currentUser
-                user?.email?.let {
-                    this.toast(it+"님 환영합니다!")
-                    viewModel.myId(it)
+                with(loginEmail()) {
+                    this@MainActivity.toast(this+"님 환영합니다!")
+                    viewModel.myId(this)
                     loginTxt("로그아웃")
                 }
             }
@@ -140,7 +139,6 @@ class MainActivity : BaseActivity<DrawerlayoutMainBinding>()
                 } else {
                     viewModel.logout(loginEmail())
                     Firebase.auth.signOut()
-                    viewModel.myId("")
                     loginTxt("로그인")
                 }
             }

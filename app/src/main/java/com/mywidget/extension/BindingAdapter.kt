@@ -43,8 +43,8 @@ fun dateProcessing(textView: TextView?, data: String?) {
     text(textView, value)
 }
 
-@BindingAdapter("termProcessing")
-fun termProcessing(textView: TextView?, data: String?) {
+@BindingAdapter("daysPast")
+fun daysPast(textView: TextView?, data: String?) {
     val cal = CalendarUtil.calendar(data)
     var value = ""
     cal?.let {
@@ -69,7 +69,7 @@ fun setNowDate(calendarTxtArea: EditText, today: String) {
     calendarTxtArea.setText(today)
     calendarTxtArea.setOnClickListener {
         val c = Calendar.getInstance()
-        val dpd = DatePickerDialog(calendarTxtArea.context, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+        val dpd = DatePickerDialog(calendarTxtArea.context, { view, year, monthOfYear, dayOfMonth ->
             calendarTxtArea.setText(year.toString() + "-" + (monthOfYear+1).toString() + "-" + dayOfMonth.toString())
             calendarTxtArea.tag = year.toString()+String.format("%02d", monthOfYear+1)+dayOfMonth.toString()
         }, CalendarUtil.getYear(c), CalendarUtil.getMonth(c), CalendarUtil.getNowdate(c))

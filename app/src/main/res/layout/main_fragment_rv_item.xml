@@ -58,7 +58,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintRight_toLeftOf="@+id/memoRemove"
             app:layout_constraintTop_toTopOf="parent"
-            app:termProcessing="@{viewModel.date}"
+            app:daysPast="@{viewModel.date}"
             tools:text="D - 132" />
 
         <ImageView

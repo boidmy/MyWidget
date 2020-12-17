@@ -75,6 +75,7 @@ class MainFragmentViewModel @Inject constructor(
 
     fun logout(email: String) {
         repository.logout(email)
+        myId("")
     }
 
     fun myIdReset() {
