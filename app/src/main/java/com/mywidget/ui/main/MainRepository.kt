@@ -6,7 +6,9 @@ import com.google.gson.Gson
 import com.google.gson.JsonObject
 import com.google.gson.reflect.TypeToken
 import com.mywidget.data.apiConnect.ApiConnection
+import com.mywidget.data.model.ChatDataModel
 import com.mywidget.data.model.FavoritesData
+import com.mywidget.data.model.UserData
 import com.mywidget.data.room.LoveDay
 import com.mywidget.data.room.LoveDayDB
 import com.mywidget.data.room.Memo
@@ -17,6 +19,7 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import org.json.JSONArray
 import org.json.JSONObject
+import util.CalendarUtil
 import util.CalendarUtil.howMuchloveDay
 import util.Util
 import util.Util.replacePointToComma
@@ -33,55 +36,9 @@ class MainRepository @Inject constructor(
     private val favoritesRef: DatabaseReference by lazy {
         database.child("favorites") }
     private val favoritesExistence: MutableLiveData<Boolean> = MutableLiveData()
-    var favoritesExistenceMyFriend: MutableLiveData<String> = MutableLiveData()
+    var favoritesExistenceMyFriend: MutableLiveData<UserData> = MutableLiveData()
     private val favoritesMessageMe: MutableLiveData<FavoritesData> = MutableLiveData()
     private val favoritesMessageFriend: MutableLiveData<FavoritesData> = MutableLiveData()
-
-    fun favoritesExistenceMyFriend() : MutableLiveData<String> {
-        userRef.child(replacePointToComma(myId.value ?:"")).child("friend").child("favorites")
-            .addValueEventListener(object : ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    if(snapshot.value != null) {
-                        favoritesExistenceMyFriend.value = snapshot.value.toString()
-                    } else {
-                        favoritesExistenceMyFriend.value = ""
-                    }
-                }
-                override fun onCancelled(error: DatabaseError) {}
-        })
-        return favoritesExistenceMyFriend
-    }
-
-    fun favoritesMessageMe(friendEmail: String) {
-        favoritesRef.child(replacePointToComma(myId.value ?:""))
-            .child(replacePointToComma(friendEmail)).limitToLast(1)
-            .addValueEventListener(object : ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    if (snapshot.value == null) favoritesNoneMessageMe()
-                    for (snap: DataSnapshot in snapshot.children) {
-                        favoritesMessageMe.value =
-                            FavoritesData("", snap.value.toString(), "")
-                    }
-                }
-                override fun onCancelled(error: DatabaseError) {}
-        })
-    }
-
-    fun favoritesMessageFriend(friendEmail: String) {
-        favoritesRef.child(replacePointToComma(friendEmail))
-            .child(replacePointToComma(myId.value ?:"")).limitToLast(1)
-            .addValueEventListener(object : ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    if (snapshot.value == null) favoritesNoneMessageFriend()
-                    for (snap: DataSnapshot in snapshot.children) {
-                        favoritesMessageFriend.value =
-                            FavoritesData("", snap.value.toString(), "")
-                    }
-                }
-                override fun onCancelled(error: DatabaseError) {}
-
-            })
-    }
 
     fun favoritesNoneMessageMe() {
         favoritesMessageMe.value = null
@@ -129,23 +86,6 @@ class MainRepository @Inject constructor(
         memoDb.memoDao().insert(Memo(null, memo, data))
     }
 
-    fun favoritesMessage(text: String) {
-        userRef.child(replacePointToComma(myId.value ?:""))
-            .child("friend").child("favorites")
-            .addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                if (snapshot.value == null) {
-                    favoritesExistence.value = false
-                } else {
-                    favoritesRef.child(replacePointToComma(myId.value ?:""))
-                        .child(snapshot.value.toString()).push().setValue(text)
-                    favoritesExistence.value = true
-                }
-            }
-            override fun onCancelled(error: DatabaseError) {}
-        })
-    }
-
     fun logout(email: String) {
         userRef.child(replacePointToComma(email)).child("token").setValue(null)
     }
@@ -156,6 +96,75 @@ class MainRepository @Inject constructor(
 
     fun myIdReset(): MutableLiveData<String>{
         return myId
+    }
+
+    fun favoritesExistenceMyFriend() : MutableLiveData<UserData> {
+        userRef.child(replacePointToComma(myId.value ?:"")).child("friend")
+            .addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    if (snapshot.child("favorites").value.toString().isNotEmpty()) {
+                        val friendEmail: String = snapshot.child("favorites").value.toString()
+                        val friendNickName = snapshot.child("friendList").child(
+                            replacePointToComma(friendEmail)).value.toString()
+                        favoritesExistenceMyFriend.value = UserData(
+                            friendEmail,"","",friendNickName)
+                    } else {
+                        favoritesExistenceMyFriend.value = null
+                    }
+                }
+                override fun onCancelled(error: DatabaseError) {}
+        })
+        return favoritesExistenceMyFriend
+    }
+
+    fun favoritesMessageMe(friendEmail: String) {
+        favoritesRef.child(replacePointToComma(myId.value ?:""))
+            .child(replacePointToComma(friendEmail)).limitToLast(1)
+            .addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    if (snapshot.value == null) favoritesNoneMessageMe()
+                    for (snap: DataSnapshot in snapshot.children) {
+                        val value = snap.getValue(FavoritesData::class.java)
+                        favoritesMessageMe.value = value
+                    }
+                }
+                override fun onCancelled(error: DatabaseError) {}
+        })
+    }
+
+    fun favoritesMessageFriend(friendEmail: String) {
+        favoritesRef.child(replacePointToComma(friendEmail))
+            .child(replacePointToComma(myId.value ?:"")).limitToLast(1)
+            .addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    if (snapshot.value == null) favoritesNoneMessageFriend()
+                    for (snap: DataSnapshot in snapshot.children) {
+                        favoritesMessageFriend.value =
+                            FavoritesData("", snap.value.toString(), "")
+                    }
+                }
+                override fun onCancelled(error: DatabaseError) {}
+
+            })
+    }
+
+    fun favoritesInsertMessage(message: String) {
+        userRef.child(replacePointToComma(myId.value ?:""))
+            .child("friend").child("favorites")
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if (snapshot.value == null) {
+                    favoritesExistence.value = false
+                } else {
+                    favoritesRef.child(replacePointToComma(myId.value ?:""))
+                        .child(snapshot.value.toString()).push().setValue(
+                            FavoritesData(CalendarUtil.getDate(), message, "")
+                        )
+                    favoritesExistence.value = true
+                }
+            }
+            override fun onCancelled(error: DatabaseError) {}
+        })
     }
 
     fun favoritesExistence(): MutableLiveData<Boolean> {

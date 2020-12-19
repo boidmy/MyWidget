@@ -56,7 +56,7 @@ class FragmentLoveDay : BaseFragment<MainFragmentFragment2Binding>() {
             viewModel.favoritesExistenceMyFriend()
         })
         viewModel.favoritesExistenceMyFriend.observe(viewLifecycleOwner, Observer {
-            viewModel.favoritesMessageMe(it)
+            viewModel.favoritesSelectMessage(it.email)
         })
     }
 }

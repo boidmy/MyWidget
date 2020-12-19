@@ -61,11 +61,10 @@ class MainTabMemoViewHolder(val binding: MainFragmentRvItemBinding)
                     .setTitle("삭제할거에염?")
                     .setPositiveButton("삭제") { _, _ ->
                         viewModel?.memo?.let {
-                            mFragmentViewModel?.deletMemo(it)
+                            mFragmentViewModel?.deleteMemo(it)
                         }
                     }.setNegativeButton("취소") { _, _ ->
                     }.show()
-
             }
         }
     }

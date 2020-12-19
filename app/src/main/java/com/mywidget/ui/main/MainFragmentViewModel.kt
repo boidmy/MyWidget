@@ -3,6 +3,7 @@ package com.mywidget.ui.main
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.mywidget.data.model.FavoritesData
+import com.mywidget.data.model.UserData
 import com.mywidget.data.room.*
 import javax.inject.Inject
 
@@ -20,7 +21,7 @@ class MainFragmentViewModel @Inject constructor(
     var favoritesDialogVisibility: MutableLiveData<Boolean> = MutableLiveData()
     val guidTextVisibility: MutableLiveData<Boolean> = MutableLiveData()
     var favoritesExistence: MutableLiveData<Boolean> = MutableLiveData()
-    var favoritesExistenceMyFriend: MutableLiveData<String> = MutableLiveData()
+    var favoritesExistenceMyFriend: MutableLiveData<UserData> = MutableLiveData()
 
     fun insertMemo(memo: String, data: String) {
         Thread {
@@ -29,7 +30,7 @@ class MainFragmentViewModel @Inject constructor(
         }.start()
     }
 
-    fun deletMemo(memo: String) {
+    fun deleteMemo(memo: String) {
         Thread {
             repository.deleteMemo(memo)
             selectMemo()
@@ -59,7 +60,7 @@ class MainFragmentViewModel @Inject constructor(
         favoritesMessageFriend = repository.favoritesResetFriend()
     }
 
-    fun favoritesMessageMe(friendEmail: String){
+    fun favoritesSelectMessage(friendEmail: String){
         if(friendEmail.isEmpty()) {
             repository.favoritesNoneMessageMe()
             repository.favoritesNoneMessageFriend()
@@ -102,8 +103,8 @@ class MainFragmentViewModel @Inject constructor(
         favoritesDialogVisibility.value = flag
     }
 
-    fun favoritesMessage(text: String) {
-        repository.favoritesMessage(text)
+    fun favoritesInsertMessage(text: String) {
+        repository.favoritesInsertMessage(text)
     }
 
     fun favoritesExistence() {
