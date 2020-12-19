@@ -102,6 +102,7 @@ class MainActivity : BaseActivity<DrawerlayoutMainBinding>()
             }
             4000 -> {
                 with(loginEmail()) {
+                    if(this.isEmpty()) return
                     this@MainActivity.toast(this+"님 환영합니다!")
                     viewModel.myId(this)
                     loginTxt("로그아웃")

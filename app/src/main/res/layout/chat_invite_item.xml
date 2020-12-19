@@ -36,7 +36,7 @@
             android:text="@{viewModel.friendList.get(position).email}"
             android:textColor="#000000"
             app:layout_constraintBottom_toTopOf="@+id/userExplanation"
-            app:layout_constraintEnd_toStartOf="@+id/deleteBtn"
+            app:layout_constraintEnd_toStartOf="@+id/checkBtn"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="윤상용" />

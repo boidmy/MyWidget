@@ -35,7 +35,8 @@
             android:onClick="@{() -> viewModel.inviteDialogShow()}"
             android:src="@drawable/icon_friend_add"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:visibility="gone"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/inviteRv"

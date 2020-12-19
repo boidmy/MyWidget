@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -21,7 +20,7 @@ class FragmentMemo : BaseFragment<MainFragmentRvBinding>() {
     val viewModel: MainFragmentViewModel by lazy {
         ViewModelProvider(requireActivity(), factory).get(MainFragmentViewModel::class.java)}
     override fun getLayout(): Int {
-        return R.layout.main_fragment_rv
+        return R.layout.main_fragment_d_day
     }
 
     override fun onCreateView(inflater: LayoutInflater, parent: ViewGroup?,

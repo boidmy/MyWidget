@@ -23,7 +23,7 @@
             android:id="@+id/guidTxt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="메모를 등록해 주세요"
+            android:text="디데이를 등록해 주세요"
             android:textColor="#000000"
             android:textSize="20dp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -38,7 +38,7 @@
             app:items="@{data}"
             app:layout_constraintTop_toTopOf="parent"
             tools:itemCount="2"
-            tools:listitem="@layout/main_fragment_rv_item" />
+            tools:listitem="@layout/main_fragment_d_day_item" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

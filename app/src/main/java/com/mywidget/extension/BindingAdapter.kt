@@ -56,9 +56,10 @@ fun daysPast(textView: TextView?, data: String?) {
 
     textView?.let {
         if(value.toInt() >= 0) {
+            it.textSize = 21f
             text(it, "D - $value")
         } else {
-                it.textSize = 15f
+            it.textSize = 15f
             text(it, "지난 일정입니다")
         }
     }
@@ -108,7 +109,7 @@ fun memoOnclick(imageView: ImageView, memo: EditText, date: TextView, viewModel:
 @BindingAdapter("favoritesMessage", "viewModel")
 fun favoritesMemo(imageView: ImageView, editText: EditText, viewModel: MainFragmentViewModel) {
     imageView.setOnClickListener {
-        viewModel.favoritesMessage(editText.text.toString())
+        viewModel.favoritesInsertMessage(editText.text.toString())
     }
 }
 
