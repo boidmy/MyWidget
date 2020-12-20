@@ -31,7 +31,7 @@
             android:fitsSystemWindows="true"
             tools:headerLayout="@layout/nav_header_main"
             app:menu="@menu/activity_main_drawer"
-            tools:visibility="visible"/>
+            tools:visibility="gone"/>
 
     </androidx.drawerlayout.widget.DrawerLayout>
 

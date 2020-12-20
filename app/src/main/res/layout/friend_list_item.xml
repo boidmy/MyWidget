@@ -16,23 +16,31 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="70dp"
+        android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="5dp"
         android:layout_marginRight="10dp"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="5dp"
         android:background="@drawable/edge_round_white">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:alpha="0.5"
+            android:background="@drawable/edge_round_white"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/userEmail"
+            style="@style/list_item_text_style"
             android:layout_width="0dp"
             android:layout_height="20dp"
-            android:layout_marginStart="10dp"
+            android:layout_marginStart="20dp"
             android:layout_marginEnd="10dp"
             android:ellipsize="end"
             android:singleLine="true"
             android:text="@{data.email}"
-            android:textColor="#000000"
+            android:textSize="16dp"
             app:layout_constraintBottom_toTopOf="@+id/userExplanation"
             app:layout_constraintEnd_toStartOf="@+id/favoritesBtn"
             app:layout_constraintStart_toStartOf="parent"
@@ -41,14 +49,15 @@
 
         <TextView
             android:id="@+id/userExplanation"
+            style="@style/list_item_text_style"
             android:layout_width="0dp"
             android:layout_height="20dp"
-            android:layout_marginStart="10dp"
+            android:layout_marginStart="20dp"
             android:layout_marginEnd="10dp"
             android:ellipsize="end"
             android:singleLine="true"
             android:text="@{data.explanation}"
-            android:textColor="#000000"
+            android:textSize="16dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/favoritesBtn"
             app:layout_constraintStart_toStartOf="parent"
@@ -61,20 +70,21 @@
             android:layout_height="30dp"
             android:layout_marginEnd="10dp"
             android:background="@drawable/selector_star_checked"
-            app:favoritesAdd="@{data.email}"
-            app:viewModel="@{viewModel}"
             android:textColor="@color/white"
+            app:favoritesAdd="@{data.email}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintRight_toLeftOf="@+id/deleteBtn"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:viewModel="@{viewModel}" />
 
-        <Button
+        <ImageView
             android:id="@+id/deleteBtn"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
             android:layout_marginEnd="10dp"
-            android:background="@drawable/memo_remove"
+            android:alpha="0.5"
             android:onClick="@{() -> viewModel.deleteFriend(data.email)}"
+            android:src="@drawable/icon_delete"
             android:textColor="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintRight_toRightOf="parent"

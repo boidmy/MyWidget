@@ -7,12 +7,12 @@ import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.mywidget.R
-import com.mywidget.databinding.MainFragmentFragment2Binding
+import com.mywidget.databinding.MainFragmentLovedayBinding
 import com.mywidget.ui.base.BaseFragment
 import com.mywidget.ui.main.MainFragmentViewModel
 import javax.inject.Inject
 
-class FragmentLoveDay : BaseFragment<MainFragmentFragment2Binding>() {
+class FragmentLoveDay : BaseFragment<MainFragmentLovedayBinding>() {
 
     @Inject lateinit var factory: ViewModelProvider.Factory
     val viewModel: MainFragmentViewModel by lazy {

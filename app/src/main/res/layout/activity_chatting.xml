@@ -19,8 +19,11 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="#CCACED">
+            android:layout_height="match_parent">
+
+            <include
+                layout="@layout/activity_background"
+                app:layout_constraintTop_toTopOf="parent"/>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/chatRv"
@@ -53,7 +56,7 @@
                 app:layout_constraintEnd_toStartOf="@+id/sendBtn"
                 app:layout_constraintStart_toStartOf="parent" />
 
-            <TextView
+            <View
                 android:id="@+id/sendBtn"
                 android:layout_width="90dp"
                 android:layout_height="50dp"
@@ -61,12 +64,18 @@
                 android:background="@drawable/edge_round_smal_corner"
                 android:gravity="center"
                 android:onClick="onClickSendMessage"
-                android:text="보내기"
-                android:textColor="#000000"
-                android:textSize="20dp"
                 app:layout_constraintBottom_toBottomOf="@+id/editContainer"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/editContainer" />
+
+            <View
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                app:layout_constraintBottom_toBottomOf="@+id/editContainer"
+                app:layout_constraintStart_toStartOf="@+id/sendBtn"
+                app:layout_constraintEnd_toEndOf="@+id/sendBtn"
+                app:layout_constraintTop_toTopOf="@+id/editContainer"
+                android:background="@drawable/icon_send"/>
 
             <ImageView
                 android:id="@+id/openDrawer"

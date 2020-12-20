@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import util.CalendarUtil
 import com.mywidget.data.room.Memo
-import com.mywidget.databinding.MainFragmentRvItemBinding
+import com.mywidget.databinding.MainFragmentDDayItemBinding
 import com.mywidget.ui.main.MainFragmentViewModel
 
 
@@ -20,7 +20,7 @@ class MainTabMemoAdapter : RecyclerView.Adapter<MainTabMemoViewHolder>() {
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainTabMemoViewHolder {
-        val bind = MainFragmentRvItemBinding
+        val bind = MainFragmentDDayItemBinding
             .inflate(LayoutInflater.from(parent.context), parent, false)
         return MainTabMemoViewHolder(bind)
     }
@@ -37,7 +37,7 @@ class MainTabMemoAdapter : RecyclerView.Adapter<MainTabMemoViewHolder>() {
     }
 }
 
-class MainTabMemoViewHolder(val binding: MainFragmentRvItemBinding)
+class MainTabMemoViewHolder(val binding: MainFragmentDDayItemBinding)
     : RecyclerView.ViewHolder(binding.root) {
 
     fun bindView(mData: Memo?, mFragmentViewModel: MainFragmentViewModel?) {

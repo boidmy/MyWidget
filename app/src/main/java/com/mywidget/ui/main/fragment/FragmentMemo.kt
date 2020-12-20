@@ -4,17 +4,18 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mywidget.R
+import com.mywidget.databinding.MainFragmentDDayBinding
 import com.mywidget.ui.main.recyclerview.MainTabMemoAdapter
-import com.mywidget.databinding.MainFragmentRvBinding
 import com.mywidget.ui.base.BaseFragment
 import com.mywidget.ui.main.MainFragmentViewModel
 import javax.inject.Inject
 
-class FragmentMemo : BaseFragment<MainFragmentRvBinding>() {
+class FragmentMemo : BaseFragment<MainFragmentDDayBinding>() {
     @Inject lateinit var mAdapter: MainTabMemoAdapter
     @Inject lateinit var factory: ViewModelProvider.Factory
     val viewModel: MainFragmentViewModel by lazy {

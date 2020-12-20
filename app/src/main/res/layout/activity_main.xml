@@ -17,8 +17,11 @@
         android:id="@+id/mainContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/myAppThemaColor"
         tools:context=".ui.main.MainActivity">
+
+        <include
+            layout="@layout/activity_background"
+            app:layout_constraintTop_toTopOf="parent"/>
 
         <include
             android:id="@+id/titleContainer"
@@ -31,6 +34,7 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@id/titleContainer"
             app:tabIndicatorColor="#ffffff"
+            android:background="@android:color/transparent"
             app:tabSelectedTextColor="#ffffff"
             app:tabTextColor="#ffffff" />
 
@@ -39,7 +43,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginTop="10dp"
-            android:background="#F7F7F7"
+            android:background="@android:color/transparent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/main_tab">
@@ -48,18 +52,18 @@
 
         <TextView
             android:id="@+id/floating_btn"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_marginTop="15dp"
-            android:layout_marginRight="30dp"
+            android:layout_marginEnd="30dp"
             android:layout_marginBottom="60dp"
             android:background="@drawable/circle_red"
             android:gravity="center"
             android:onClick="onClickFloating"
-            android:paddingBottom="4dp"
             android:text="+"
             android:textColor="@color/white"
-            android:textSize="35dp"
+            android:paddingBottom="6dp"
+            android:textSize="30dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintRight_toRightOf="parent" />
 

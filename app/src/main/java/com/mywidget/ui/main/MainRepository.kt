@@ -56,7 +56,7 @@ class MainRepository @Inject constructor(
         return favoritesMessageFriend
     }
 
-    private fun lovedayFormatt(data: List<LoveDay>?): String {
+    private fun loveDayFormat(data: List<LoveDay>?): String {
         data?.let {
             return if(it.isNotEmpty()) {
                 howMuchloveDay(it[data.size-1].date)
@@ -71,7 +71,7 @@ class MainRepository @Inject constructor(
     }
 
     fun selectLoveDay() : String {
-        return lovedayFormatt(loveDayDb.loveDayDao().getData())
+        return loveDayFormat(loveDayDb.loveDayDao().getData())
     }
 
     fun deleteMemo(memo: String) {
