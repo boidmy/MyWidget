@@ -20,14 +20,14 @@
         android:layout_marginLeft="10dp"
         android:layout_marginTop="5dp"
         android:layout_marginRight="10dp"
-        android:layout_marginBottom="5dp"
-        android:orientation="horizontal">
+        android:layout_marginBottom="5dp">
 
         <View
             android:layout_width="match_parent"
             android:layout_height="70dp"
             android:alpha="0.5"
             android:background="@drawable/edge_round_white"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
@@ -62,8 +62,8 @@
             android:layout_width="25dp"
             android:layout_height="25dp"
             android:layout_marginRight="10dp"
-            android:src="@drawable/icon_delete"
             android:alpha="0.5"
+            android:src="@drawable/icon_delete"
             android:textColor="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintRight_toRightOf="parent"

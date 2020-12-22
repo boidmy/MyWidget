@@ -107,9 +107,9 @@ class MainRepository @Inject constructor(
                         val friendNickName = snapshot.child("friendList").child(
                             replacePointToComma(friendEmail)).value.toString()
                         favoritesExistenceMyFriend.value = UserData(
-                            friendEmail,"","",friendNickName)
+                            friendEmail,"","", friendNickName)
                     } else {
-                        favoritesExistenceMyFriend.value = null
+                        favoritesExistenceMyFriend.value = UserData()
                     }
                 }
                 override fun onCancelled(error: DatabaseError) {}

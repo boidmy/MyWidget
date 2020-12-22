@@ -47,6 +47,7 @@ class FragmentLoveDay : BaseFragment<MainFragmentLovedayBinding>() {
 
     private fun favoritesObserver() {
         viewModel.myId.observe(viewLifecycleOwner, Observer {
+
             viewModel.favoritesExistenceMyFriend()
         })
         viewModel.favoritesExistenceMyFriend.observe(viewLifecycleOwner, Observer {

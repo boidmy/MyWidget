@@ -5,6 +5,8 @@
 
     <data>
 
+        <import type="android.view.View" />
+        <import type="android.text.TextUtils"/>
         <variable
             name="viewModel"
             type="com.mywidget.ui.main.MainFragmentViewModel" />
@@ -17,15 +19,16 @@
         tools:background="#FFC9C9">
 
         <LinearLayout
-            android:id="@+id/left_container"
+            android:id="@+id/favoritesMeContainer"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
             android:gravity="center"
             android:orientation="vertical"
+            android:visibility="@{viewModel.myId == null || viewModel.myId.empty ? View.GONE : View.VISIBLE}"
             app:layout_constraintHorizontal_weight="0.5"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toLeftOf="@+id/right_container"
+            app:layout_constraintRight_toLeftOf="@+id/favoritesFriendContainer"
             app:layout_constraintTop_toTopOf="parent">
 
             <TextView
@@ -34,15 +37,19 @@
                 android:layout_height="wrap_content"
                 android:alpha="0.6"
                 android:text="나"
-                android:textColor="#240440" />
+                android:textColor="#240440"
+                android:textSize="14dp" />
 
             <TextView
                 android:id="@+id/favoritesMe"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:lines="3"
                 android:text="@{viewModel.favoritesMessageMe.memo}"
                 android:textColor="#240440"
+                android:textSize="15dp"
                 tools:text="기분이 좋아욤" />
 
             <TextView
@@ -53,19 +60,21 @@
                 android:alpha="0.6"
                 android:text="@{viewModel.favoritesMessageMe.date}"
                 android:textColor="#240440"
+                android:textSize="14dp"
                 tools:text="2020.10.10" />
 
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/right_container"
+            android:id="@+id/favoritesFriendContainer"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
             android:gravity="center"
             android:orientation="vertical"
+            android:visibility="@{viewModel.myId == null || viewModel.myId.empty ? View.GONE : View.VISIBLE}"
             app:layout_constraintHorizontal_weight="0.5"
-            app:layout_constraintLeft_toRightOf="@+id/left_container"
+            app:layout_constraintLeft_toRightOf="@+id/favoritesMeContainer"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
@@ -74,8 +83,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:alpha="0.6"
-                android:text="@{viewModel.favoritesExistenceMyFriend.nickName}"
+                android:text='@{viewModel.favoritesExistenceMyFriend.nickName}'
                 android:textColor="#240440"
+                android:textSize="14dp"
                 tools:text="친구" />
 
             <TextView
@@ -83,8 +93,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:lines="3"
                 android:text="@{viewModel.favoritesMessageFriend.memo}"
                 android:textColor="#240440"
+                android:textSize="15dp"
                 tools:text="기분이 좋아욤" />
 
             <TextView
@@ -95,6 +108,7 @@
                 android:alpha="0.6"
                 android:text="@{viewModel.favoritesMessageFriend.date}"
                 android:textColor="#240440"
+                android:textSize="14dp"
                 tools:text="2020.10.12" />
         </LinearLayout>
 

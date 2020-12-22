@@ -13,6 +13,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <include
+            layout="@layout/activity_background"
+            app:layout_constraintTop_toTopOf="parent"/>
+
         <TextView
             android:id="@+id/inviteTxt"
             android:layout_width="wrap_content"
