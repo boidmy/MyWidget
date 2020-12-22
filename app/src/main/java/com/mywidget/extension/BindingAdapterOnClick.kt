@@ -69,7 +69,7 @@ fun loginUser(button: Button, email: EditText, password: EditText, activity: Log
 }
 
 @BindingAdapter("activity")
-fun loginGoogle(button: SignInButton, activity: LoginActivity) {
+fun loginGoogle(button: View, activity: LoginActivity) {
     button.setOnClickListener {
         val signInIntent= activity.mGoogleSignInClient.signInIntent
         activity.startActivityForResult(signInIntent, activity.RC_SIGN_IN)

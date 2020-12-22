@@ -2,30 +2,28 @@
 <layout xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
         <variable
             name="activity"
             type="com.mywidget.ui.login.LoginActivity" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scaleType="centerCrop"
-            android:src="@drawable/good_night_img" />
+        <include
+            layout="@layout/activity_background"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/textView"
+            android:id="@+id/loginAppName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="30dp"
-            android:text="Date Widget"
+            android:text="@string/app_name"
             android:textColor="#ffffff"
             android:textSize="32sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -36,11 +34,14 @@
             android:id="@+id/inputIdContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
             android:paddingStart="20dp"
             android:paddingEnd="20dp"
             android:textColorHint="#96ffffff"
             android:theme="@style/EditScreenTextInputLayoutStyle"
-            app:layout_constraintBottom_toTopOf="@+id/inputPasswordContainer">
+            app:layout_constraintBottom_toTopOf="@+id/inputPasswordContainer"
+            app:layout_constraintTop_toBottomOf="@+id/loginAppName"
+            app:layout_constraintVertical_chainStyle="packed">
 
             <EditText
                 android:id="@+id/inputId"
@@ -60,12 +61,12 @@
             android:id="@+id/inputPasswordContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
             android:paddingStart="20dp"
             android:paddingEnd="20dp"
             android:textColorHint="#96ffffff"
             android:theme="@style/EditScreenTextInputLayoutStyle"
-            app:layout_constraintBottom_toTopOf="@+id/signUpBtn">
+            app:layout_constraintBottom_toTopOf="@+id/logInBtn"
+            app:layout_constraintTop_toBottomOf="@+id/inputIdContainer">
 
             <EditText
                 android:id="@+id/inputPassword"
@@ -81,51 +82,69 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <Button
-            android:id="@+id/signUpBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="20dp"
-            android:background="@drawable/buttonshapewhitebg"
-            android:onClick="signUpBtn"
-            android:text="Sign up"
+            android:id="@+id/logInBtn"
+            android:layout_width="200dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/btn_round_white"
+            android:text="Login"
             android:textAllCaps="false"
-            android:textColor="#96ffffff"
-            android:textSize="16dp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/signInGoogle"
-            app:layout_constraintEnd_toStartOf="@+id/signInBtn"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <Button
-            android:id="@+id/signInBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginBottom="20dp"
-            android:background="@drawable/buttonshapewhitebg"
-            android:text="Sign in"
-            android:textAllCaps="false"
-            android:textColor="#96ffffff"
-            android:textSize="16dp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/signInGoogle"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/signUpBtn"
+            android:textColor="#606060"
+            android:textSize="20dp"
             app:activity="@{activity}"
             app:email="@{inputId}"
+            app:layout_constraintBottom_toTopOf="@+id/loginGoogle"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/inputPasswordContainer"
             app:password="@{inputPassword}" />
 
-        <com.google.android.gms.common.SignInButton
-            android:id="@+id/signInGoogle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
+        <View
+            android:id="@+id/loginGoogle"
+            android:layout_width="130dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="40dp"
             app:activity="@{activity}"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/signUpBtn"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/logInBtn" />
+
+        <ImageView
+            android:id="@+id/iconGoogle"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginStart="10dp"
+            android:src="@drawable/icon_google"
+            app:layout_constraintBottom_toBottomOf="@+id/loginGoogle"
+            app:layout_constraintStart_toStartOf="@+id/loginGoogle"
+            app:layout_constraintTop_toTopOf="@+id/loginGoogle" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="구글 로그인"
+            android:textColor="#FFFFFF"
+            android:textSize="14dp"
+            app:layout_constraintBottom_toBottomOf="@+id/loginGoogle"
+            app:layout_constraintEnd_toEndOf="@+id/loginGoogle"
+            app:layout_constraintStart_toEndOf="@+id/iconGoogle"
+            app:layout_constraintTop_toTopOf="@+id/loginGoogle" />
+
+        <TextView
+            android:id="@+id/signUpBtn"
+            android:layout_width="130dp"
+            android:layout_height="50dp"
+            android:onClick="signUpBtn"
+            android:gravity="center"
+            android:text="회원가입"
+            android:textAllCaps="false"
+            android:textColor="#ffffff"
+            android:textSize="14dp"
+            app:layout_constraintBottom_toBottomOf="@+id/loginGoogle"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toEndOf="@+id/loginGoogle"
+            app:layout_constraintTop_toTopOf="@+id/loginGoogle" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

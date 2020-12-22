@@ -13,10 +13,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/good_night_img" />
+        <include
+            layout="@layout/activity_background"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/textView"
@@ -155,15 +154,14 @@
 
         <Button
             android:id="@+id/signUpBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
+            android:layout_width="200dp"
+            android:layout_height="50dp"
             android:layout_marginBottom="20dp"
-            android:background="@drawable/buttonshapewhitebg"
+            android:background="@drawable/btn_round_gradation"
             android:text="Sign up"
             android:textAllCaps="false"
             android:textColor="#96ffffff"
-            android:textSize="16dp"
+            android:textSize="20dp"
             android:textStyle="bold"
             app:email="@{inputId}"
             app:password="@{inputPassword}"

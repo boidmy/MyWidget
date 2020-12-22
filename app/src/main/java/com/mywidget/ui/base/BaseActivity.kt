@@ -5,6 +5,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import com.mywidget.MainApplication
 import dagger.android.support.DaggerAppCompatActivity
+import util.Util.toast
 
 abstract class BaseActivity<D : ViewDataBinding> : DaggerAppCompatActivity() {
 
@@ -20,5 +21,12 @@ abstract class BaseActivity<D : ViewDataBinding> : DaggerAppCompatActivity() {
 
     fun loginEmail(): String {
         return MainApplication.INSTANSE.loginEmail()
+    }
+
+    fun loginChkToast(): Boolean {
+        return if(loginEmail().isEmpty()) {
+            this.toast("로그인 후 이용해 주세요")
+            false
+        } else true
     }
 }

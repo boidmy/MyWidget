@@ -134,7 +134,7 @@ class MainActivity : BaseActivity<DrawerlayoutMainBinding>()
                 startActivity(intent)
             }
             R.id.login -> {
-                if(binding.navView.menu.getItem(1).title.toString() == "로그인") {
+                if (binding.navView.menu.getItem(1).title.toString() == "로그인") {
                     val intent = Intent(this, LoginActivity::class.java)
                     startActivityForResult(intent, 4000)
                 } else {
@@ -144,8 +144,10 @@ class MainActivity : BaseActivity<DrawerlayoutMainBinding>()
                 }
             }
             R.id.friendAdd -> {
-                val intent = Intent(this, FriendActivity::class.java)
-                startActivity(intent)
+                if (loginChkToast()) {
+                    val intent = Intent(this, FriendActivity::class.java)
+                    startActivity(intent)
+                }
             }
         }
         binding.drawerLayout.closeDrawer(GravityCompat.START)
@@ -208,7 +210,6 @@ class MainActivity : BaseActivity<DrawerlayoutMainBinding>()
             conditionTxtArea.text = null
             conditionTxtArea.isFocusable = true
         }
-
     }
 
     fun onClickFloating(v: View) {
