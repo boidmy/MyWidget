@@ -107,4 +107,13 @@ class LoginActivity: BaseActivity<ActivityLoginBinding>() {
     private fun getUser() : FirebaseUser? {
         return firebaseAuth.currentUser
     }
+
+    fun forgotPassword() {
+        firebaseAuth.sendPasswordResetEmail("flatron1428@naver.com")
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    Log.d("LoginActivity", "Email sent.")
+                }
+            }
+    }
 }

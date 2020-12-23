@@ -87,7 +87,7 @@
             android:layout_height="50dp"
             android:layout_marginTop="20dp"
             android:background="@drawable/btn_round_white"
-            android:text="Login"
+            android:text="로그인"
             android:textAllCaps="false"
             android:textColor="#606060"
             android:textSize="20dp"
@@ -105,10 +105,10 @@
             android:layout_height="50dp"
             android:layout_marginTop="40dp"
             app:activity="@{activity}"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/signUpBtn"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/logInBtn" />
+            app:layout_constraintTop_toBottomOf="@+id/logInBtn"
+            app:layout_constraintBottom_toTopOf="@+id/forgotPassword"/>
 
         <ImageView
             android:id="@+id/iconGoogle"
@@ -135,8 +135,8 @@
             android:id="@+id/signUpBtn"
             android:layout_width="130dp"
             android:layout_height="50dp"
-            android:onClick="signUpBtn"
             android:gravity="center"
+            android:onClick="signUpBtn"
             android:text="회원가입"
             android:textAllCaps="false"
             android:textColor="#ffffff"
@@ -145,6 +145,33 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/loginGoogle"
             app:layout_constraintTop_toTopOf="@+id/loginGoogle" />
+
+        <TextView
+            android:id="@+id/forgotPassword"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:onClick="@{() -> activity.forgotPassword()}"
+            android:text="비밀번호"
+            android:textColor="#FF0000"
+            android:textSize="14dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/forgotText"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/loginGoogle" />
+
+        <TextView
+            android:id="@+id/forgotText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="를 잊으셨나요?"
+            android:textColor="#ffffff"
+            android:textSize="14dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/forgotPassword"
+            app:layout_constraintTop_toTopOf="@+id/forgotPassword"
+            app:layout_constraintBottom_toBottomOf="@+id/forgotPassword"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
