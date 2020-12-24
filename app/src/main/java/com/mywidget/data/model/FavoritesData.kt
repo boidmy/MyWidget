@@ -4,6 +4,4 @@ data class FavoritesData (
     var date: String = "",
     var memo: String = "",
     var name: String = ""
-) {
-
-}
+)

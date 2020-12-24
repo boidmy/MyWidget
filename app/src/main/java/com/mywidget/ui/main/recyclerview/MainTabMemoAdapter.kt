@@ -58,7 +58,7 @@ class MainTabMemoViewHolder(val binding: MainFragmentDDayItemBinding)
             val alert = AlertDialog.Builder(root.context)
             memoRemove.setOnClickListener {
                 alert
-                    .setTitle("삭제할거에염?")
+                    .setTitle("삭제하실건가요?")
                     .setPositiveButton("삭제") { _, _ ->
                         viewModel?.memo?.let {
                             mFragmentViewModel?.deleteMemo(it)

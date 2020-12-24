@@ -12,7 +12,7 @@ class ChatRightViewHolder(val binding: ChatRightBinding)
 
         val timeAr = data.time.split(" ")
         if(timeAr.size > 1) {
-            binding.chatTime.text = timeAr[0] + "\n" + timeAr[1]
+            binding.chatTime.text = timeAr[0] + "\n" + timeAr[1] + timeAr[2]
         }
     }
 }

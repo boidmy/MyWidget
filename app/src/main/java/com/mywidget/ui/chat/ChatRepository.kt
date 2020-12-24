@@ -12,6 +12,7 @@ import com.mywidget.di.custom.ActivityScope
 import util.CalendarUtil
 import util.Util.replaceCommaToPoint
 import util.Util.replacePointToComma
+import java.text.SimpleDateFormat
 import javax.inject.Inject
 import kotlin.collections.ArrayList
 
@@ -49,7 +50,7 @@ class ChatRepository @Inject constructor() {
         ref.setValue(ChatDataModel(text, userEmail, CalendarUtil.getDate())).addOnCompleteListener {
             Handler(Looper.getMainLooper()).postDelayed({
                 insertPush(ref.key ?: "", text, userEmail)
-            }, 1000)
+            }, 2000)
         }
     }
 
@@ -77,7 +78,7 @@ class ChatRepository @Inject constructor() {
                 message = i.next().value as String
                 date = i.next().value as String
             }
-            list.add(0, ChatDataModel(message, id, date))
+            list.add(0, ChatDataModel(message, id, dateFormat(date)))
             data.value = list
             if (!loadMoreChk) {
                 lastMessageKey = snapshot.key
@@ -90,6 +91,13 @@ class ChatRepository @Inject constructor() {
         override fun onChildRemoved(snapshot: DataSnapshot) {
             Log.d("", "")
         }
+    }
+
+    fun dateFormat(data: String): String {
+        val format = SimpleDateFormat("yyyy.MM.dd HH:mm")
+        val date = format.parse(data)
+        val outputFormat = SimpleDateFormat("yy.MM.dd a hh:mm ")
+        return outputFormat.format(date)
     }
 
     fun chatLoadMore(startPosition: Int) {

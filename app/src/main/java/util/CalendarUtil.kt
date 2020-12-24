@@ -124,7 +124,7 @@ object CalendarUtil {
     }
 
     fun getDate(): String {
-        val dateFormat = SimpleDateFormat("yy.MM.dd HH:mm", Locale.KOREA)
+        val dateFormat = SimpleDateFormat("yyyy.MM.dd HH:mm", Locale.KOREA)
         val calendar = Calendar.getInstance()
         val date = calendar.time
         dateFormat.timeZone = TimeZone.getTimeZone("Asia/Seoul")

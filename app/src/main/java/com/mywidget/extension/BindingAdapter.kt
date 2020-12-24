@@ -35,9 +35,9 @@ fun dateProcessing(textView: TextView?, data: String?) {
     var value = ""
     cal?.let {
         val dayOfWeek: Int = it.get(Calendar.DAY_OF_WEEK)
-        value = CalendarUtil.getYear(it).toString()+"-"+String.format("%02d"
-            , CalendarUtil.getMonth(it)+1)+"-"+
-                CalendarUtil.getNowdate(it).toString() +
+        value = CalendarUtil.getYear(it).toString()+"-"+
+                String.format("%02d", CalendarUtil.getMonth(it)+1)+"-"+
+                String.format("%02d", CalendarUtil.getNowdate(it)) +
                 " (" + CalendarUtil.week(dayOfWeek) + ")"
     }
     text(textView, value)
