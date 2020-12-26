@@ -37,7 +37,7 @@ class MyViewHolder(val binding: WidgetUserRvItemBinding)
                 alert
                     .setTitle("삭제하실건가요?")
                     .setPositiveButton("삭제") { _, _ ->
-                        viewModel?.deleteUser(userName.text.toString())
+                        viewModel?.deleteUser(userPhone.text.toString())
                     }
                     .setNegativeButton("취소") { _, _ ->
                     }.show()

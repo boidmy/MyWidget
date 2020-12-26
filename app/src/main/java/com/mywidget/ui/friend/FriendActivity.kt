@@ -20,9 +20,8 @@ class FriendActivity : BaseActivity<ActivityFriendBinding>() {
 
     @Inject lateinit var factory: ViewModelProvider.Factory
     private val viewModel by viewModels<FriendViewModel> { factory }
-    private val friendAddDialogBinding by lazy {
-        FriendAddDialogBinding.inflate(LayoutInflater.from(this))
-    }
+    private val friendAddDialogBinding
+            by lazy { FriendAddDialogBinding.inflate(LayoutInflater.from(this)) }
     private val friendDialog by lazy { Dialog(this, R.style.CustomDialogTheme) }
 
     override val layout: Int

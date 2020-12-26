@@ -4,9 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="id"
             type="String" />
+
         <variable
             name="viewModel"
             type="com.mywidget.ui.chatroom.ChatRoomViewModel" />
@@ -18,16 +20,17 @@
 
         <include
             layout="@layout/activity_background"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
+        <View
             android:id="@+id/createRoom"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:layout_marginStart="20dp"
-            android:src="@drawable/chat_add_room"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/icon_bubble_background2"
             android:onClick="openCreateRoomDialog"
-            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.recyclerview.widget.RecyclerView

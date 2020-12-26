@@ -2,6 +2,7 @@ package com.mywidget.extension
 
 import android.app.DatePickerDialog
 import android.widget.*
+import androidx.core.view.isVisible
 import androidx.databinding.BindingAdapter
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
@@ -127,10 +128,15 @@ fun adapter(recyclerView: RecyclerView?, data: MutableLiveData<List<User>>) {
     adapter.notifyDataSetChanged()
 }
 
-@BindingAdapter("items")
-fun memoAdapter(recyclerView: RecyclerView?, data: MutableLiveData<List<Memo>>?) {
-    val adapter: MainTabMemoAdapter = recyclerView?.adapter as MainTabMemoAdapter
-    adapter.notifyDataSetChanged()
+@BindingAdapter("items", "dDayGuid")
+fun memoAdapter(recyclerView: RecyclerView?, data: MutableLiveData<List<Memo>>, guidText: TextView) {
+    if(data.value?.size == 0) {
+        guidText.isVisible = true
+    } else {
+        guidText.isVisible = false
+        val adapter: MainTabMemoAdapter = recyclerView?.adapter as MainTabMemoAdapter
+        adapter.notifyDataSetChanged()
+    }
 }
 
 @BindingAdapter("items")

@@ -16,7 +16,7 @@
         <View
             android:id="@+id/friendAddContainer"
             android:layout_width="300dp"
-            android:layout_height="300dp"
+            android:layout_height="320dp"
             android:background="@drawable/edge_round_2d56583"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -79,6 +79,7 @@
             app:layout_constraintTop_toBottomOf="@+id/friendAddEmailEdit" />
 
         <TextView
+            android:id="@+id/friendEx"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="15dp"
@@ -99,7 +100,7 @@
             android:onClick="@{() -> viewModel.userExistenceChk(friendAddEmailEdit.getText().toString(), friendAddExplanationEdit.getText().toString())}"
             android:background="@drawable/confirm_btn"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/friendAddExplanationEdit"
+            app:layout_constraintTop_toBottomOf="@+id/friendEx"
             app:layout_constraintBottom_toBottomOf="parent"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

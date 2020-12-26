@@ -34,14 +34,9 @@ class FragmentMemo : BaseFragment<MainFragmentDDayBinding>() {
 
     private fun bindView() {
         mAdapter = MainTabMemoAdapter()
-        binding.fragmentRv.layoutManager = LinearLayoutManager(binding.root.context)
         binding.fragmentRv.adapter = mAdapter
         binding.data = viewModel.memoData
         mAdapter.setViewModel(viewModel)
-
-        viewModel.guidTextVisibility.observe(requireActivity(), Observer {
-            binding.guidTxt.isVisible = it
-        })
 
         selectCall()
     }
