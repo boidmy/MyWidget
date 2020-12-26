@@ -31,7 +31,7 @@
                 android:id="@+id/button1"
                 style="@style/widgetButtonSize"
                 android:layout_height="60dp"
-                android:background="@drawable/widget_phone_icon" />
+                android:background="@drawable/icon_widget_call" />
 
             <TextView
                 android:id="@+id/phoneNumber1"
@@ -62,7 +62,7 @@
                 android:id="@+id/button2"
                 style="@style/widgetButtonSize"
                 android:layout_height="60dp"
-                android:background="@drawable/widget_phone_icon" />
+                android:background="@drawable/icon_widget_call" />
 
             <TextView
                 android:id="@+id/phoneNumber2"
@@ -92,7 +92,7 @@
                 android:id="@+id/button3"
                 style="@style/widgetButtonSize"
                 android:layout_height="60dp"
-                android:background="@drawable/widget_phone_icon" />
+                android:background="@drawable/icon_widget_call" />
 
             <TextView
                 android:id="@+id/phoneNumber3"
@@ -122,7 +122,7 @@
                 android:id="@+id/button4"
                 style="@style/widgetButtonSize"
                 android:layout_height="60dp"
-                android:background="@drawable/widget_phone_icon" />
+                android:background="@drawable/icon_widget_call" />
 
             <TextView
                 android:id="@+id/phoneNumber4"
@@ -152,7 +152,7 @@
                 android:id="@+id/button5"
                 style="@style/widgetButtonSize"
                 android:layout_height="60dp"
-                android:background="@drawable/widget_phone_icon" />
+                android:background="@drawable/icon_widget_call" />
 
             <TextView
                 android:id="@+id/phoneNumber5"

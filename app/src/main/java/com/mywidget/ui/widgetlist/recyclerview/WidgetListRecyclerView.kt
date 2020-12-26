@@ -35,7 +35,7 @@ class MyViewHolder(val binding: WidgetUserRvItemBinding)
             val alert = AlertDialog.Builder(root.context)
             deleteBtn.setOnClickListener {
                 alert
-                    .setTitle("삭제할거에염?")
+                    .setTitle("삭제하실건가요?")
                     .setPositiveButton("삭제") { _, _ ->
                         viewModel?.deleteUser(userName.text.toString())
                     }

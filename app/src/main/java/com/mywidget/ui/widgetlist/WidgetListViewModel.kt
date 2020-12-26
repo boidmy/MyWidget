@@ -17,6 +17,7 @@ class WidgetListViewModel @Inject constructor(
 
     fun insertUser(user: String, phone: String) {
         repository.insertUser(user, phone)
+        setDialogVisibility(false)
     }
 
     fun deleteUser(user: String) {
@@ -29,6 +30,10 @@ class WidgetListViewModel @Inject constructor(
 
     fun setWidgetDataJsonArray() {
         widgetJsonArrayData = repository.setWidgetDataJsonArray()
+    }
+
+    fun setDialogVisibility(flag: Boolean) {
+        dialogVisible.value = flag
     }
 
     fun selectUser() {

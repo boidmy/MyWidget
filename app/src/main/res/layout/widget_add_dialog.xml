@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.mywidget.ui.widgetlist.WidgetListViewModel" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <View
+            android:id="@+id/widgetAddContainer"
+            android:layout_width="300dp"
+            android:layout_height="340dp"
+            android:background="@drawable/edge_round_2d56583"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/widgetIcon"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:src="@drawable/menu_widget_icon"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:text="위젯 등록"
+            android:textColor="#ffffff"
+            app:layout_constraintBottom_toBottomOf="@+id/widgetIcon"
+            app:layout_constraintStart_toEndOf="@+id/widgetIcon"
+            app:layout_constraintTop_toTopOf="@+id/widgetIcon" />
+
+        <TextView
+            android:id="@+id/widgetAddEx"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:text="친구의 이름을 입력해주세요"
+            android:textColor="#ffffff"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/widgetIcon" />
+
+        <EditText
+            android:id="@+id/widgetAddNameEdit"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:backgroundTint="#FFFFFF"
+            android:textColor="#000000"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/widgetAddEx" />
+
+        <TextView
+            android:id="@+id/widgetPhoneEx"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="10dp"
+            android:text="친구의 번호를 입력해주세요"
+            android:textColor="#ffffff"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/widgetAddNameEdit" />
+
+        <EditText
+            android:id="@+id/widgetAddPhoneEdit"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:backgroundTint="#FFFFFF"
+            android:textColor="#000000"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/widgetPhoneEx" />
+
+        <TextView
+            android:id="@+id/widgetEx"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="10dp"
+            android:text="입력된 친구의 번호로 위젯을 등록하여 편하게 전화를 걸 수 있습니다"
+            android:textColor="#ffffff"
+            android:textSize="10dp"
+            app:layout_constraintEnd_toStartOf="@+id/confirmBtn"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/widgetAddPhoneEdit" />
+
+        <TextView
+            android:id="@+id/widgetWarning"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="5dp"
+            android:text="위젯은 최대 5개까지만 표현됩니다."
+            android:textColor="#FF0000"
+            android:textSize="10dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/widgetEx" />
+
+        <View
+            android:id="@+id/confirmBtn"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginEnd="20dp"
+            android:background="@drawable/confirm_btn"
+            android:onClick="@{() -> viewModel.insertUser(widgetAddNameEdit.getText().toString(), widgetAddPhoneEdit.getText().toString())}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/widgetWarning" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
