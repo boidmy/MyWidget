@@ -32,10 +32,23 @@ class ChatRepository @Inject constructor() {
     var loadMoreChk = false
     private lateinit var roomDataModel: RoomDataModel
     private var isListening = true
+    var myNickName: String = ""
 
     fun userId(userEmail: String): String {
         myId = replacePointToComma(userEmail)
         return myId ?: ""
+    }
+
+    fun getMyNickName(email: String): String {
+        userRef.child(replacePointToComma(email)).child("nickName")
+            .addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    myNickName = snapshot.value.toString()
+                }
+                override fun onCancelled(error: DatabaseError) {}
+
+            })
+        return myNickName
     }
 
     fun getListChat(roomDataModel: RoomDataModel): MutableLiveData<List<ChatDataModel>> {
@@ -47,7 +60,8 @@ class ChatRepository @Inject constructor() {
     fun insertChat(sendUserEmail: String, text: String) {
         val userEmail = replacePointToComma(sendUserEmail)
         val ref = message.push()
-        ref.setValue(ChatDataModel(text, userEmail, CalendarUtil.getDate())).addOnCompleteListener {
+        ref.setValue(ChatDataModel(text, userEmail, CalendarUtil.getDate(), myNickName))
+            .addOnCompleteListener {
             Handler(Looper.getMainLooper()).postDelayed({
                 insertPush(ref.key ?: "", text, userEmail)
             }, 2000)
@@ -70,15 +84,14 @@ class ChatRepository @Inject constructor() {
         override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
             if (!isListening) return
             val i = snapshot.children.iterator()
-            var id = ""
-            var message = ""
-            var date = ""
+            val chatData = ChatDataModel()
             while (i.hasNext()) {
-                id = i.next().value as String
-                message = i.next().value as String
-                date = i.next().value as String
+                chatData.id = i.next().value as String
+                chatData.message = i.next().value as String
+                chatData.nickName = i.next().value as String
+                chatData.time = dateFormat(i.next().value as String)
             }
-            list.add(0, ChatDataModel(message, id, dateFormat(date)))
+            list.add(0, chatData)
             data.value = list
             if (!loadMoreChk) {
                 lastMessageKey = snapshot.key
@@ -113,16 +126,15 @@ class ChatRepository @Inject constructor() {
 
                 override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
                     val i = snapshot.children.iterator()
-                    var id = ""
-                    var message = ""
-                    var date = ""
+                    val chatData = ChatDataModel()
                     while (i.hasNext()) {
-                        id = i.next().value as String
-                        message = i.next().value as String
-                        date = i.next().value as String
+                        chatData.id = i.next().value as String
+                        chatData.message = i.next().value as String
+                        chatData.nickName = i.next().value as String
+                        chatData.time = dateFormat(i.next().value as String)
                     }
                     if (loadMoreSelectKey != snapshot.key) {
-                        list.add(startPosition, ChatDataModel(message, id, date))
+                        list.add(startPosition, chatData)
                         data.value = list
                     }
                     if (!loadMoreChk) {

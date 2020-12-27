@@ -1,6 +1,7 @@
 package com.mywidget.extension
 
 import android.app.DatePickerDialog
+import android.text.TextUtils
 import android.view.View
 import android.widget.*
 import androidx.core.view.isVisible
@@ -113,6 +114,12 @@ fun favoritesMemo(imageView: ImageView, editText: EditText, viewModel: MainFragm
     imageView.setOnClickListener {
         viewModel.favoritesInsertMessage(editText.text.toString())
     }
+}
+
+@BindingAdapter("chatText")
+fun chatText(textView: TextView, data: ChatDataModel) {
+    if (TextUtils.isEmpty(data.nickName)) text(textView, data.id)
+    else text(textView, data.nickName)
 }
 
 @BindingAdapter("userConfirm", "userPhone", "userviewModel")

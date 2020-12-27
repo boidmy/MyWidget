@@ -19,7 +19,6 @@ class MainApplication : DaggerApplication() {
     }
 
     companion object {
-
         lateinit var INSTANSE: MainApplication
     }
 

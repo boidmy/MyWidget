@@ -44,6 +44,8 @@ class ChatActivity : BaseActivity<ActivityChattingBinding>() {
         roomDataModel = intent.getSerializableExtra("data") as RoomDataModel
         viewModel.myId(loginEmail())
         viewModel.getListChat(roomDataModel)
+        viewModel.getMyNickName()
+
         viewModel.inviteUserList()
 
         binding.chatRv.addOnScrollListener(object : RecyclerView.OnScrollListener() {

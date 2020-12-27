@@ -34,7 +34,7 @@
             android:layout_marginStart="18dp"
             android:gravity="start"
             android:lines="1"
-            android:text="@{data.id}"
+            app:chatText="@{data}"
             android:textColor="#000000"
             android:textSize="15dp"
             app:layout_constraintStart_toStartOf="parent"
