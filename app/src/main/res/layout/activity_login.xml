@@ -176,5 +176,15 @@
             app:layout_constraintTop_toTopOf="@+id/forgotPassword"
             app:layout_constraintBottom_toBottomOf="@+id/forgotPassword"/>
 
+        <ImageView
+            android:id="@+id/progressImg"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/icon_progress2"
+            android:visibility="gone"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

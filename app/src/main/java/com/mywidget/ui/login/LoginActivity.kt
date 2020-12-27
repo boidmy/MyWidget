@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.view.animation.AnimationUtils
 import androidx.activity.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -37,6 +38,7 @@ class LoginActivity: BaseActivity<ActivityLoginBinding>() {
     private val forgotPasswordDialog by lazy { Dialog(this, R.style.CustomDialogTheme) }
 
     val RC_SIGN_IN = 101
+    val PASSWORD_SIGN_IN = 102
 
     override val layout: Int
         get() = R.layout.activity_login
@@ -46,6 +48,7 @@ class LoginActivity: BaseActivity<ActivityLoginBinding>() {
 
         bindView()
         forgotPasswordDialog()
+
     }
 
     private fun bindView() {
@@ -64,12 +67,15 @@ class LoginActivity: BaseActivity<ActivityLoginBinding>() {
             } catch (e: ApiException) {
                 Log.w("Google", "Google sign in failed", e)
             }
+        } else if (requestCode == PASSWORD_SIGN_IN) {
+            val result: Boolean = data?.extras?.getBoolean("result")?: false
+            if(result) finish()
         }
     }
 
     fun signUpBtn(view: View) {
         val intent = Intent(this, SignUpActivity::class.java)
-        startActivity(intent)
+        startActivityForResult(intent, PASSWORD_SIGN_IN)
     }
 
     fun signInPassword(email: String, password: String) {
@@ -134,6 +140,12 @@ class LoginActivity: BaseActivity<ActivityLoginBinding>() {
             if (it) forgotPasswordDialog.show()
             else forgotPasswordDialog.dismiss()
         })
+    }
+
+    private fun progress() {
+        //추후 테스트후 사용 여부 결정
+        val animation = AnimationUtils.loadAnimation(this, R.anim.rotate_progress)
+        binding.progressImg.animation = animation
     }
 
 }

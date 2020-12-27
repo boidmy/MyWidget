@@ -1,5 +1,6 @@
 package com.mywidget.ui.login.signup
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.lifecycle.Observer
@@ -19,6 +20,7 @@ class SignUpActivity : BaseActivity<ActivitySignupBinding>() {
     @Inject lateinit var factory: ViewModelProvider.Factory
     @Inject lateinit var firebaseAuth: FirebaseAuth
     private val viewModel by viewModels<LoginViewModel> { factory }
+    val PASSWORD_SIGN_IN = 102
 
     override val layout: Int
         get() = R.layout.activity_signup
@@ -33,7 +35,12 @@ class SignUpActivity : BaseActivity<ActivitySignupBinding>() {
     fun bindView() {
         viewModel.setSignUpComplete()
         viewModel.signUpComplete.observe(this, Observer {
-            if(it) finish()
+            if(it) {
+                val intent = Intent()
+                intent.putExtra("result", true)
+                setResult(PASSWORD_SIGN_IN, intent)
+                finish()
+            }
         })
     }
 
