@@ -1,31 +1,40 @@
 package com.mywidget.extension
 
 import android.app.DatePickerDialog
+import android.graphics.Color
+import android.graphics.drawable.GradientDrawable
+import android.text.Editable
 import android.text.TextUtils
+import android.text.TextWatcher
+import android.util.Log
 import android.view.View
-import android.widget.*
-import androidx.core.view.isVisible
+import android.widget.Button
+import android.widget.EditText
+import android.widget.ImageView
+import android.widget.TextView
+import androidx.core.content.res.ResourcesCompat
 import androidx.databinding.BindingAdapter
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
-import util.CalendarUtil
-import com.mywidget.ui.main.recyclerview.MainTabMemoAdapter
-import com.mywidget.ui.widgetlist.recyclerview.WidgetListRecyclerView
+import com.mywidget.R
 import com.mywidget.data.model.ChatDataModel
 import com.mywidget.data.model.FriendModel
 import com.mywidget.data.model.RoomDataModel
-import com.mywidget.ui.chat.recyclerview.ChatAdapter
-import com.mywidget.ui.chatroom.recyclerview.ChatRoomRecyclerView
 import com.mywidget.data.room.Memo
 import com.mywidget.data.room.User
+import com.mywidget.ui.chat.recyclerview.ChatAdapter
 import com.mywidget.ui.chat.recyclerview.UserListRecyclerView
 import com.mywidget.ui.chatinvite.recyclerview.ChatInviteRecyclerView
+import com.mywidget.ui.chatroom.recyclerview.ChatRoomRecyclerView
 import com.mywidget.ui.friend.recyclerview.FriendRecyclerView
 import com.mywidget.ui.main.MainFragmentViewModel
+import com.mywidget.ui.main.recyclerview.MainTabMemoAdapter
 import com.mywidget.ui.widgetlist.WidgetListViewModel
+import com.mywidget.ui.widgetlist.recyclerview.WidgetListRecyclerView
+import util.CalendarUtil
 import util.Util.toast
 import java.util.*
-import kotlin.collections.ArrayList
+
 
 @BindingAdapter("text")
 fun text(textView: TextView?, data: String?) {
@@ -70,7 +79,7 @@ fun daysPast(textView: TextView?, data: String?) {
 
 @BindingAdapter("NowDate")
 fun setNowDate(calendarTxtArea: EditText, today: String) {
-    calendarTxtArea.setText(today)
+    //calendarTxtArea.setText(today)
     calendarTxtArea.setOnClickListener {
         val c = Calendar.getInstance()
         val dpd = DatePickerDialog(calendarTxtArea.context, { view, year, monthOfYear, dayOfMonth ->
@@ -129,6 +138,28 @@ fun setUserConfirm(button: Button, name: EditText, phone: EditText, viewModel: W
         viewModel.dialogVisible.value = false
     }
 }
+
+@BindingAdapter("chatEditListener")
+fun chatEditListener(editText: EditText, view: Button) {
+    val drawable = ResourcesCompat
+        .getDrawable(editText.resources, R.drawable.edge_round_smal_corner, null) as GradientDrawable
+    editText.addTextChangedListener(object : TextWatcher {
+        override fun afterTextChanged(p0: Editable?) {}
+        override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+        override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            if (p0?.length?:0 > 0 ) {
+                drawable.setColor(Color.parseColor("#45D4FA"))
+                view.background = drawable
+                view.isEnabled = true
+            } else {
+                drawable.setColor(Color.parseColor("#C6C6C6"))
+                view.background = drawable
+                view.isEnabled = false
+            }
+        }
+    })
+}
+
 
 @BindingAdapter("items")
 fun adapter(recyclerView: RecyclerView?, data: MutableLiveData<List<User>>) {

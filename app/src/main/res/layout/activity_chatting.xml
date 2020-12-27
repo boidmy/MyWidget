@@ -23,7 +23,7 @@
 
             <include
                 layout="@layout/activity_background"
-                app:layout_constraintTop_toTopOf="parent"/>
+                app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/chatRv"
@@ -52,30 +52,25 @@
                 android:background="#ffffff"
                 android:gravity="top"
                 android:hint="메시지를 입력하세요~"
+                app:chatEditListener="@{sendBtn}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/sendBtn"
                 app:layout_constraintStart_toStartOf="parent" />
 
-            <View
+            <Button
                 android:id="@+id/sendBtn"
                 android:layout_width="90dp"
                 android:layout_height="50dp"
                 android:layout_marginEnd="15dp"
                 android:background="@drawable/edge_round_smal_corner"
-                android:gravity="center"
                 android:onClick="onClickSendMessage"
+                android:enabled="false"
+                android:text="전송"
+                android:textSize="18dp"
+                android:textColor="#000000"
                 app:layout_constraintBottom_toBottomOf="@+id/editContainer"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/editContainer" />
-
-            <View
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                app:layout_constraintBottom_toBottomOf="@+id/editContainer"
-                app:layout_constraintStart_toStartOf="@+id/sendBtn"
-                app:layout_constraintEnd_toEndOf="@+id/sendBtn"
-                app:layout_constraintTop_toTopOf="@+id/editContainer"
-                android:background="@drawable/icon_send"/>
 
             <ImageView
                 android:id="@+id/openDrawer"
@@ -92,10 +87,10 @@
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:background="@drawable/icon_category"
-                app:layout_constraintTop_toTopOf="@+id/openDrawer"
                 app:layout_constraintBottom_toBottomOf="@+id/openDrawer"
+                app:layout_constraintEnd_toEndOf="@+id/openDrawer"
                 app:layout_constraintStart_toStartOf="@+id/openDrawer"
-                app:layout_constraintEnd_toEndOf="@+id/openDrawer"/>
+                app:layout_constraintTop_toTopOf="@+id/openDrawer" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <com.google.android.material.navigation.NavigationView

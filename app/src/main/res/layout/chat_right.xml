@@ -46,7 +46,7 @@
             android:id="@+id/chatTxt"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:background="@drawable/chat_text_area_right"
+            android:background="@drawable/chat_text_right"
             android:paddingStart="25dp"
             android:paddingTop="10dp"
             android:paddingEnd="25dp"
