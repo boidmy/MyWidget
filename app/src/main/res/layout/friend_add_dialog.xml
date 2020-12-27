@@ -85,7 +85,7 @@
             android:layout_marginStart="15dp"
             android:layout_marginTop="5dp"
             android:layout_marginEnd="10dp"
-            android:text="입력된 친구의 별명은 채팅방과 즐겨찾기 된 친구와의 대화에 사용됩니다"
+            android:text="입력된 친구의 별명은 즐겨찾기 된 친구와의 대화에 사용됩니다"
             android:textColor="#ffffff"
             android:textSize="10dp"
             app:layout_constraintEnd_toStartOf="@+id/confirmBtn"

@@ -102,8 +102,9 @@ class MainRepository @Inject constructor(
         userRef.child(replacePointToComma(myId.value ?:"")).child("friend")
             .addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
-                    if (snapshot.child("favorites").value.toString().isNotEmpty()) {
-                        val friendEmail: String = snapshot.child("favorites").value.toString()
+                    val childFavorites = snapshot.child("favorites").value
+                    if (childFavorites != null) {
+                        val friendEmail: String = childFavorites.toString()
                         val friendNickName = snapshot.child("friendList").child(
                             replacePointToComma(friendEmail)).value.toString()
                         favoritesExistenceMyFriend.value = UserData(
@@ -139,8 +140,8 @@ class MainRepository @Inject constructor(
                 override fun onDataChange(snapshot: DataSnapshot) {
                     if (snapshot.value == null) favoritesNoneMessageFriend()
                     for (snap: DataSnapshot in snapshot.children) {
-                        favoritesMessageFriend.value =
-                            FavoritesData("", snap.value.toString(), "")
+                        val value = snap.getValue(FavoritesData::class.java)
+                        favoritesMessageFriend.value = value
                     }
                 }
                 override fun onCancelled(error: DatabaseError) {}

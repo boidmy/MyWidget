@@ -72,7 +72,7 @@
             android:layout_marginTop="30dp"
             android:gravity="center"
             android:orientation="vertical"
-            android:visibility="@{viewModel.myId == null || viewModel.myId.empty ? View.GONE : View.VISIBLE}"
+            android:visibility="@{viewModel.favoritesExistenceMyFriend == null ? View.GONE : View.VISIBLE}"
             app:layout_constraintHorizontal_weight="0.5"
             app:layout_constraintLeft_toRightOf="@+id/favoritesMeContainer"
             app:layout_constraintRight_toRightOf="parent"
