@@ -1,17 +1,17 @@
 package com.mywidget.ui.login.signup
 
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseAuthException
 import com.mywidget.R
 import com.mywidget.databinding.ActivitySignupBinding
 import com.mywidget.ui.base.BaseActivity
 import com.mywidget.ui.login.LoginViewModel
 import kotlinx.android.synthetic.main.activity_signup.*
-import java.lang.Exception
+import util.Util
 import javax.inject.Inject
 
 class SignUpActivity : BaseActivity<ActivitySignupBinding>() {
@@ -47,17 +47,9 @@ class SignUpActivity : BaseActivity<ActivitySignupBinding>() {
                 }
             } else {
                 task.exception?.let {
-                    emailException(it)
+                    Util.firebaseAuthException((task.exception as FirebaseAuthException).errorCode, this)
                 }
             }
         }
-    }
-
-    private fun emailException(exception: Exception) {
-        makeToast(exception.message?:"잠시후 다시 시도해 주세요")
-    }
-
-    private fun makeToast(output: String) {
-        Toast.makeText(this, output, Toast.LENGTH_LONG).show()
     }
 }

@@ -79,8 +79,8 @@
 
             <ImageView
                 android:id="@+id/openDrawer"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:layout_marginTop="30dp"
                 android:layout_marginEnd="20dp"
                 android:background="@drawable/circle_chat_blue"
@@ -89,8 +89,8 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <View
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:background="@drawable/icon_category"
                 app:layout_constraintTop_toTopOf="@+id/openDrawer"
                 app:layout_constraintBottom_toBottomOf="@+id/openDrawer"

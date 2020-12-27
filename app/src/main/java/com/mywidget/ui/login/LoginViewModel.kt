@@ -10,6 +10,7 @@ class LoginViewModel @Inject constructor(
 
     var signUpComplete: MutableLiveData<Boolean> = MutableLiveData()
     var data: MutableLiveData<String> = MutableLiveData()
+    var forgotPasswordDialogVisibility: MutableLiveData<Boolean> = MutableLiveData()
 
     fun singUpFirebase(email: String, uid: String, nickname: String) {
         repository.singUpFirebase(email, uid, nickname)
@@ -21,5 +22,9 @@ class LoginViewModel @Inject constructor(
 
     fun setSignUpComplete() {
         signUpComplete = repository.setSignUpComplete()
+    }
+
+    fun forgotPasswordDialogVisibility(flag: Boolean) {
+        forgotPasswordDialogVisibility.value = flag
     }
 }

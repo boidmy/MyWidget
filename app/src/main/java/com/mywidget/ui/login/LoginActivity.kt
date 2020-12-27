@@ -1,24 +1,26 @@
 package com.mywidget.ui.login
 
+import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
 import androidx.activity.viewModels
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
-import com.google.firebase.auth.AuthResult
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.auth.*
 import com.mywidget.R
 import com.mywidget.databinding.ActivityLoginBinding
+import com.mywidget.databinding.ForgotPasswordDialogBinding
 import com.mywidget.ui.base.BaseActivity
 import com.mywidget.ui.login.signup.SignUpActivity
+import util.Util
 import util.Util.toast
 import javax.inject.Inject
 
@@ -30,6 +32,9 @@ class LoginActivity: BaseActivity<ActivityLoginBinding>() {
     @Inject lateinit var firebaseAuth: FirebaseAuth
     private val viewModel by viewModels<LoginViewModel> { factory }
     private val errorMsg = "잠시 후 다시 시도해 주세요"
+    private val forgotPasswordDialogBinding by lazy {
+        ForgotPasswordDialogBinding.inflate(LayoutInflater.from(this)) }
+    private val forgotPasswordDialog by lazy { Dialog(this, R.style.CustomDialogTheme) }
 
     val RC_SIGN_IN = 101
 
@@ -40,10 +45,12 @@ class LoginActivity: BaseActivity<ActivityLoginBinding>() {
         super.onCreate(savedInstanceState)
 
         bindView()
+        forgotPasswordDialog()
     }
 
     private fun bindView() {
         binding.activity = this
+        binding.viewModel = viewModel
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -108,12 +115,25 @@ class LoginActivity: BaseActivity<ActivityLoginBinding>() {
         return firebaseAuth.currentUser
     }
 
-    fun forgotPassword() {
-        firebaseAuth.sendPasswordResetEmail("flatron1428@naver.com")
+    fun forgotPassword(email: String) {
+        firebaseAuth.sendPasswordResetEmail(email)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    Log.d("LoginActivity", "Email sent.")
+                    this.toast("비밀번호 초기화 메일을 전송했습니다. 메일을 확인해 주세요")
+                    viewModel.forgotPasswordDialogVisibility(false)
+                } else {
+                    Util.firebaseAuthException((task.exception as FirebaseAuthException).errorCode, this)
                 }
             }
     }
+
+    private fun forgotPasswordDialog() {
+        forgotPasswordDialog.setContentView(forgotPasswordDialogBinding.root)
+        forgotPasswordDialogBinding.activity = this
+        viewModel.forgotPasswordDialogVisibility.observe(this, Observer {
+            if (it) forgotPasswordDialog.show()
+            else forgotPasswordDialog.dismiss()
+        })
+    }
+
 }
