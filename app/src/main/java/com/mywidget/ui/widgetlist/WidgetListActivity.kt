@@ -14,6 +14,8 @@ import com.mywidget.MyAppWidget
 import com.mywidget.R
 import com.mywidget.ui.widgetlist.recyclerview.WidgetListRecyclerView
 import com.mywidget.databinding.ActivityWidgetBinding
+import com.mywidget.databinding.DeleteConfirmDialogFriendBinding
+import com.mywidget.databinding.DeleteConfirmDialogWidgetBinding
 import com.mywidget.databinding.WidgetAddDialogBinding
 import com.mywidget.ui.base.BaseActivity
 import kotlinx.android.synthetic.main.widget_add_dialog.*
@@ -30,6 +32,9 @@ class WidgetListActivity : BaseActivity<ActivityWidgetBinding>() {
             by lazy { WidgetAddDialogBinding.inflate(LayoutInflater.from(this)) }
 
     val viewModel by viewModels<WidgetListViewModel> { factory }
+    private val deleteDialogBinding by lazy {
+        DeleteConfirmDialogWidgetBinding.inflate(LayoutInflater.from(this)) }
+    private val deleteDialog by lazy { Dialog(this, R.style.CustomDialogTheme) }
 
     override val layout: Int
         get() = R.layout.activity_widget
@@ -43,6 +48,7 @@ class WidgetListActivity : BaseActivity<ActivityWidgetBinding>() {
         selectUser()
         setWidgetAddDialog()
         bindWidgetUpdate()
+        deleteDialog()
     }
 
     private fun bindWidgetUpdate() {
@@ -84,6 +90,19 @@ class WidgetListActivity : BaseActivity<ActivityWidgetBinding>() {
         editor.remove("data")
         editor.putString("data", jsonArray.toString())
         editor.apply()
+    }
+
+    private fun deleteDialog() {
+        deleteDialog.setContentView(deleteDialogBinding.root)
+        deleteDialogBinding.viewModel = viewModel
+        viewModel.deleteDialogVisibility.observe(this, Observer {
+            if (it) deleteDialog.show()
+            else deleteDialog.dismiss()
+        })
+        viewModel.deleteWidget.observe(this, Observer {
+            deleteDialogBinding.item = it
+            viewModel.deleteDialogVisibility(true)
+        })
     }
 
     private fun permissionChk() {

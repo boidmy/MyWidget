@@ -21,9 +21,9 @@ class WidgetListRepository @Inject constructor(
         }.start()
     }
 
-    fun deleteUser(user: String) {
+    fun deleteUser(seq: Int) {
         Thread {
-            userDb.userDao().delete(user)
+            userDb.userDao().delete(seq)
             selectUser()
         }.start()
     }

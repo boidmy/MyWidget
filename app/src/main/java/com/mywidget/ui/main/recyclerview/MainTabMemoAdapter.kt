@@ -1,21 +1,23 @@
 package com.mywidget.ui.main.recyclerview
 
+import android.R
 import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import util.CalendarUtil
 import com.mywidget.data.room.Memo
 import com.mywidget.databinding.MainFragmentDDayItemBinding
 import com.mywidget.ui.main.MainFragmentViewModel
+import util.CalendarUtil
 
 
 class MainTabMemoAdapter : RecyclerView.Adapter<MainTabMemoViewHolder>() {
 
-    private var mFragmentViewModel: MainFragmentViewModel? = null
+    lateinit var mFragmentViewModel: MainFragmentViewModel
 
-    fun setViewModel(fragmentViewModel: MainFragmentViewModel?) {
+    fun setViewModel(fragmentViewModel: MainFragmentViewModel) {
         mFragmentViewModel = fragmentViewModel
     }
 
@@ -26,18 +28,18 @@ class MainTabMemoAdapter : RecyclerView.Adapter<MainTabMemoViewHolder>() {
     }
 
     override fun getItemCount(): Int {
-        return mFragmentViewModel?.memoData?.value?.size?: 0
+        return mFragmentViewModel.memoData.value?.size?: 0
     }
 
     override fun onBindViewHolder(holder: MainTabMemoViewHolder, position: Int) {
-        holder.bindView(mFragmentViewModel?.memoData?.value?.get(position), mFragmentViewModel)
+        holder.bindView(mFragmentViewModel.memoData.value?.get(position), mFragmentViewModel)
     }
 }
 
 class MainTabMemoViewHolder(val binding: MainFragmentDDayItemBinding)
     : RecyclerView.ViewHolder(binding.root) {
 
-    fun bindView(mData: Memo?, mFragmentViewModel: MainFragmentViewModel?) {
+    fun bindView(mData: Memo?, mFragmentViewModel: MainFragmentViewModel) {
         binding.apply {
             viewModel = mData
             executePendingBindings()
@@ -52,16 +54,18 @@ class MainTabMemoViewHolder(val binding: MainFragmentDDayItemBinding)
                     dpd.show()
                 }
             }
+
             val alert = AlertDialog.Builder(root.context)
             memoRemove.setOnClickListener {
-                alert
+                mFragmentViewModel.deleteDDayDialog.value = mData?.sequence
+                /*alert
                     .setTitle("삭제하실건가요?")
                     .setPositiveButton("삭제") { _, _ ->
-                        viewModel?.memo?.let {
+                        mData?.sequence?.let {
                             mFragmentViewModel?.deleteMemo(it)
                         }
                     }.setNegativeButton("취소") { _, _ ->
-                    }.show()
+                    }.show()*/
             }
         }
     }

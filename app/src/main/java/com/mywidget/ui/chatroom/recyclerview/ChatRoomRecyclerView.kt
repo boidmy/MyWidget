@@ -39,15 +39,9 @@ class ChatRoomViewHolder(val binding: WatingRoomItemBinding) :
             intent.putExtra("data", data)
             binding.root.context.startActivity(intent)
         }
-        val alert = AlertDialog.Builder(binding.root.context)
         binding.roomRemove.setOnClickListener {
-            alert
-                .setTitle("방에서 나오시겠습니까?")
-                .setPositiveButton("나가기") { _, _ ->
-                    viewModel.deleteRoom(data.master, data.roomKey)
-                }
-                .setNegativeButton("취소") { _, _ ->
-                }.show()
+            viewModel.deleteRoom.value = data
+
         }
     }
 }

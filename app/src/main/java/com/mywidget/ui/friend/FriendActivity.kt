@@ -9,6 +9,8 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.mywidget.R
 import com.mywidget.databinding.ActivityFriendBinding
+import com.mywidget.databinding.DeleteConfirmDialogChatRoomBinding
+import com.mywidget.databinding.DeleteConfirmDialogFriendBinding
 import com.mywidget.databinding.FriendAddDialogBinding
 import com.mywidget.ui.base.BaseActivity
 import com.mywidget.ui.friend.recyclerview.FriendRecyclerView
@@ -23,6 +25,9 @@ class FriendActivity : BaseActivity<ActivityFriendBinding>() {
     private val friendAddDialogBinding
             by lazy { FriendAddDialogBinding.inflate(LayoutInflater.from(this)) }
     private val friendDialog by lazy { Dialog(this, R.style.CustomDialogTheme) }
+    private val deleteDialogBinding by lazy {
+        DeleteConfirmDialogFriendBinding.inflate(LayoutInflater.from(this)) }
+    private val deleteDialog by lazy { Dialog(this, R.style.CustomDialogTheme) }
 
     override val layout: Int
         get() = R.layout.activity_friend
@@ -31,6 +36,7 @@ class FriendActivity : BaseActivity<ActivityFriendBinding>() {
         super.onCreate(savedInstanceState)
         bindView()
         friendAddDialog()
+        deleteDialog()
     }
 
     fun bindView() {
@@ -63,6 +69,19 @@ class FriendActivity : BaseActivity<ActivityFriendBinding>() {
             } else {
                 this.toast("이메일을 다시 확인해 주세요")
             }
+        })
+    }
+
+    private fun deleteDialog() {
+        deleteDialog.setContentView(deleteDialogBinding.root)
+        deleteDialogBinding.viewModel = viewModel
+        viewModel.deleteDialogVisibility.observe(this, Observer {
+            if (it) deleteDialog.show()
+            else deleteDialog.dismiss()
+        })
+        viewModel.deleteFriend.observe(this, Observer {
+            deleteDialogBinding.email = it
+            viewModel.deleteDialogVisibility(true)
         })
     }
 }

@@ -15,13 +15,17 @@ class WidgetListViewModel @Inject constructor(
     var userEmail: MutableLiveData<String> = MutableLiveData()
     var widgetJsonArrayData: MutableLiveData<JSONArray> = MutableLiveData()
 
+    var deleteWidget: MutableLiveData<User> = MutableLiveData()
+    var deleteDialogVisibility: MutableLiveData<Boolean> = MutableLiveData()
+
     fun insertUser(user: String, phone: String) {
         repository.insertUser(user, phone)
         setDialogVisibility(false)
     }
 
-    fun deleteUser(user: String) {
-        repository.deleteUser(user)
+    fun deleteUser(seq: Int) {
+        repository.deleteUser(seq)
+        deleteDialogVisibility(false)
     }
 
     fun setWidgetData() {
@@ -38,5 +42,13 @@ class WidgetListViewModel @Inject constructor(
 
     fun selectUser() {
         repository.selectUser()
+    }
+
+    fun setDeleteWidget(data: User) {
+        deleteWidget.value = data
+    }
+
+    fun deleteDialogVisibility(flag: Boolean) {
+        deleteDialogVisibility.value = flag
     }
 }

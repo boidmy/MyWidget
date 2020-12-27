@@ -19,9 +19,11 @@ class MainFragmentViewModel @Inject constructor(
     var memoDialogVisibility: MutableLiveData<Boolean> = MutableLiveData()
     var loveDayDialogVisibility: MutableLiveData<Boolean> = MutableLiveData()
     var favoritesDialogVisibility: MutableLiveData<Boolean> = MutableLiveData()
-    val guidTextVisibility: MutableLiveData<Boolean> = MutableLiveData()
     var favoritesExistence: MutableLiveData<Boolean> = MutableLiveData()
     var favoritesExistenceMyFriend: MutableLiveData<UserData> = MutableLiveData()
+
+    var deleteDDayDialog: MutableLiveData<Int> = MutableLiveData()
+    var deleteDDayDialogVisibility: MutableLiveData<Boolean> = MutableLiveData()
 
     fun insertMemo(memo: String, data: String) {
         Thread {
@@ -30,11 +32,16 @@ class MainFragmentViewModel @Inject constructor(
         }.start()
     }
 
-    fun deleteMemo(memo: String) {
+    fun deleteMemo(seq: Int) {
         Thread {
-            repository.deleteMemo(memo)
+            repository.deleteMemo(seq)
             selectMemo()
         }.start()
+        deleteDDayDialogVisibility(false)
+    }
+
+    fun deleteDDayDialogVisibility(flag: Boolean) {
+        deleteDDayDialogVisibility.value = flag
     }
 
     fun selectMemo() {
@@ -85,10 +92,6 @@ class MainFragmentViewModel @Inject constructor(
 
     fun myId(email: String) {
         repository.myId(email)
-    }
-
-    fun guidTextVisibility(flag: Boolean) {
-        guidTextVisibility.value = flag
     }
 
     fun memoDialogVisibility(flag: Boolean) {

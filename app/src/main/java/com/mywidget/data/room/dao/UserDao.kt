@@ -11,6 +11,6 @@ abstract class UserDao : BaseDao<User>{
     @Query("SELECT * FROM user")
     abstract fun getUser(): List<User>
 
-    @Query("DELETE from user where name = :name")
-    abstract fun delete(name: String)
+    @Query("DELETE from user where sequence = :seq")
+    abstract fun delete(seq: Int)
 }

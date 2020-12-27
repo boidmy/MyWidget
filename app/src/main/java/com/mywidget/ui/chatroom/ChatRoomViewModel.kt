@@ -12,6 +12,9 @@ class ChatRoomViewModel @Inject constructor(
     var myId: String? = null
     var isDialogVisibility: MutableLiveData<Boolean> = MutableLiveData()
 
+    var deleteRoom: MutableLiveData<RoomDataModel> = MutableLiveData()
+    var deleteDialogVisibility: MutableLiveData<Boolean> = MutableLiveData()
+
     fun selectRoomList(id: String) {
         roomList = repository.selectRoomList(id)
     }
@@ -20,11 +23,16 @@ class ChatRoomViewModel @Inject constructor(
         repository.createRoom(id, subject)
     }
 
-    fun deleteRoom(master: String, roomKey: String) {
-        repository.deleteRoom(master, roomKey, myId?:"")
+    fun deleteRoom(data: RoomDataModel) {
+        repository.deleteRoom(data.master, data.roomKey, myId?:"")
+        deleteDialogVisibility(false)
     }
 
     fun dialogVisibility(flag: Boolean) {
         isDialogVisibility.value = flag
+    }
+
+    fun deleteDialogVisibility(flag: Boolean) {
+        deleteDialogVisibility.value = flag
     }
 }
