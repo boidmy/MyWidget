@@ -108,11 +108,11 @@ fun memoOnclick(imageView: ImageView, memo: EditText, date: TextView, viewModel:
         if (memo.text.toString().isEmpty()) {
             imageView.context.toast("디데이명을 입력해주세요!")
         } else {
-            date.tag?.let {
-                viewModel.insertMemo(memo.text.toString(), it.toString())
-                viewModel.memoDialogVisibility(false)
-            } ?: run {
+            if (date.text.isEmpty()) {
                 imageView.context.toast("날짜를 선택해주세요!")
+            } else {
+                viewModel.insertMemo(memo.text.toString(), date.tag.toString())
+                viewModel.memoDialogVisibility(false)
             }
         }
     }

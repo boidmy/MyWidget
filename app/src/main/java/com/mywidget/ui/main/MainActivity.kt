@@ -187,6 +187,7 @@ class MainActivity : BaseActivity<DrawerlayoutMainBinding>()
         memoDialogBinding.apply {
             memoEdit.text = null
             memoEdit.isFocusable = true
+            calendarTxtArea.text = null
             date = getToday()
         }
     }
