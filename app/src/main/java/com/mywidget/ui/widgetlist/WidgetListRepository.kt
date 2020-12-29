@@ -8,8 +8,7 @@ import org.json.JSONArray
 import org.json.JSONObject
 import javax.inject.Inject
 
-class WidgetListRepository @Inject constructor(
-    private val userDb: UserDB) {
+class WidgetListRepository @Inject constructor(private val userDb: UserDB) {
 
     var data: MutableLiveData<List<User>> = MutableLiveData()
     var widgetJsonArrayData: MutableLiveData<JSONArray> = MutableLiveData()

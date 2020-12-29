@@ -17,6 +17,8 @@ import com.mywidget.ui.login.signup.SignUpActivity
 import com.mywidget.ui.login.LoginViewModelModule
 import com.mywidget.ui.main.MainFragmentModule
 import com.mywidget.ui.main.MainViewModelModule
+import com.mywidget.ui.mypage.MyPageActivity
+import com.mywidget.ui.mypage.MyPageViewModelModule
 import com.mywidget.ui.widgetlist.WidgetListViewModelModule
 import com.mywidget.ui.widgetlist.WidgetListActivity
 import com.mywidget.ui.widgetlist.WidgetListModule
@@ -66,4 +68,8 @@ abstract class ActivityBindingModule {
     @ActivityScope
     @ContributesAndroidInjector(modules = [ChatInviteModule::class])
     abstract fun inviteActivity(): ChatInviteActivity
+
+    @ActivityScope
+    @ContributesAndroidInjector(modules = [MyPageViewModelModule::class])
+    abstract fun myPageActivity(): MyPageActivity
 }

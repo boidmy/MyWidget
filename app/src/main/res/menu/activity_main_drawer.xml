@@ -16,6 +16,11 @@
             android:id="@+id/friendAdd"
             android:icon="@drawable/icon_friend_add"
             android:title="@string/friend_add" />
+
+        <item
+            android:id="@+id/myPage"
+            android:icon="@drawable/icon_friend_add"
+            android:title="@string/myPage" />
     </group>
 
     <!--<item android:title="Communicate">

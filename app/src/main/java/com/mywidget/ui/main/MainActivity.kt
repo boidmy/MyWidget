@@ -24,6 +24,7 @@ import com.mywidget.ui.friend.FriendActivity
 import com.mywidget.ui.login.LoginActivity
 import com.mywidget.ui.loveday.FloatingPopupActivity
 import com.mywidget.ui.main.fragment.MainTabPagerAdapter
+import com.mywidget.ui.mypage.MyPageActivity
 import com.mywidget.ui.widgetlist.WidgetListActivity
 import util.CalendarUtil.getToday
 import util.Util
@@ -146,6 +147,12 @@ class MainActivity : BaseActivity<DrawerlayoutMainBinding>()
             R.id.friendAdd -> {
                 if (loginChkToast()) {
                     val intent = Intent(this, FriendActivity::class.java)
+                    startActivity(intent)
+                }
+            }
+            R.id.myPage -> {
+                if (loginChkToast()) {
+                    val intent = Intent(this, MyPageActivity::class.java)
                     startActivity(intent)
                 }
             }
