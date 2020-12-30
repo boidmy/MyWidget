@@ -6,6 +6,9 @@
     <data>
 
         <variable
+            name="viewModel"
+            type="com.mywidget.ui.chat.ChatViewModel" />
+        <variable
             name="data"
             type="com.mywidget.data.model.ChatDataModel" />
     </data>
@@ -36,7 +39,8 @@
             android:lines="1"
             android:textColor="#000000"
             android:textSize="15dp"
-            app:chatText="@{data}"
+            app:chatNickName="@{data}"
+            app:chatViewModel="@{viewModel}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintWidth_percent="0.5"

@@ -17,11 +17,11 @@ class ChatAdapter(val viewModel: ChatViewModel) :
         return if (viewType == RIGHTCHAT) {
             val bind = ChatRightBinding
                 .inflate(LayoutInflater.from(parent.context), parent, false)
-            ChatRightViewHolder(bind)
+            ChatRightViewHolder(bind, viewModel)
         } else {
             val bind = ChatLeftBinding
                 .inflate(LayoutInflater.from(parent.context), parent, false)
-            ChatLeftViewHolder(bind)
+            ChatLeftViewHolder(bind, viewModel)
         }
     }
 

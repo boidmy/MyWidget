@@ -11,8 +11,6 @@ class ChatInviteViewModel @Inject constructor(
 
     var myId: String = ""
     var friendList: MutableLiveData<ArrayList<FriendModel>> = MutableLiveData()
-    var inviteUserExistence: MutableLiveData<Boolean> = MutableLiveData()
-    var inviteDialogVisibility: MutableLiveData<Boolean> = MutableLiveData()
 
     fun setChatRoomInformation(roomDataModel: RoomDataModel) {
         repository.setChatRoomInformation(roomDataModel)
@@ -26,15 +24,7 @@ class ChatInviteViewModel @Inject constructor(
         myId = userEmail
     }
 
-    fun inviteUserExistence() {
-        inviteUserExistence = repository.inviteUserExistence()
-    }
-
-    fun inviteDialogVisibility() {
-        inviteDialogVisibility = repository.inviteDialogVisibility()
-    }
-
-    fun inviteUser(email: String) {
+    private fun inviteUser(email: String) {
         repository.inviteUser(email)
     }
 
@@ -46,15 +36,6 @@ class ChatInviteViewModel @Inject constructor(
                 }
             }
         }
-
-    }
-
-    fun inviteDialogShow() {
-        repository.inviteDialogShow(true)
-    }
-
-    fun userExistenceChk(email: String) {
-        repository.userExistenceChk(email)
     }
 
     fun setFriendList(data: ArrayList<FriendModel>) {

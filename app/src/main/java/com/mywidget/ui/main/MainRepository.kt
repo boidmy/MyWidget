@@ -8,6 +8,7 @@ import com.google.gson.reflect.TypeToken
 import com.mywidget.data.apiConnect.ApiConnection
 import com.mywidget.data.model.ChatDataModel
 import com.mywidget.data.model.FavoritesData
+import com.mywidget.data.model.FriendModel
 import com.mywidget.data.model.UserData
 import com.mywidget.data.room.LoveDay
 import com.mywidget.data.room.LoveDayDB
@@ -104,11 +105,11 @@ class MainRepository @Inject constructor(
                 override fun onDataChange(snapshot: DataSnapshot) {
                     val childFavorites = snapshot.child("favorites").value
                     if (childFavorites != null) {
-                        val friendEmail: String = childFavorites.toString()
-                        val friendNickName = snapshot.child("friendList").child(
-                            replacePointToComma(friendEmail)).value.toString()
-                        favoritesExistenceMyFriend.value = UserData(
-                            friendEmail,"","", friendNickName)
+                        val favoriteFriendEmail: String = childFavorites.toString()
+                        val friendModel = snapshot.child("friendList")
+                            .child(replacePointToComma(favoriteFriendEmail)).getValue(FriendModel::class.java)
+                        favoritesExistenceMyFriend.value =
+                            UserData(favoriteFriendEmail,"","", friendModel?.nickName?:"친구")
                     } else {
                         favoritesExistenceMyFriend.value = UserData()
                     }

@@ -15,8 +15,15 @@ class FriendViewModel @Inject constructor(private val repository: FriendReposito
     var deleteFriend: MutableLiveData<String> = MutableLiveData()
     var deleteDialogVisibility: MutableLiveData<Boolean> = MutableLiveData()
 
+    var friendUpdateDialogVisibility: MutableLiveData<Boolean> = MutableLiveData()
+    var friendUpdateModel: MutableLiveData<FriendModel> = MutableLiveData()
+
     fun myId(email: String) {
         myId = repository.myId(email)
+    }
+
+    fun setFriendUpdateDialogVisibility() {
+        friendUpdateDialogVisibility = repository.setFriendUpdateDialogVisibility()
     }
 
     fun setUserExistenceChk() {
@@ -50,5 +57,13 @@ class FriendViewModel @Inject constructor(private val repository: FriendReposito
 
     fun deleteDialogVisibility(flag: Boolean) {
         deleteDialogVisibility.value = flag
+    }
+
+    fun friendUpdateSelect(email: String) {
+        friendUpdateModel = repository.friendUpdateSelect(email)
+    }
+
+    fun friendUpdate(email: String, nickName: String) {
+        repository.friendUpdate(email, nickName)
     }
 }

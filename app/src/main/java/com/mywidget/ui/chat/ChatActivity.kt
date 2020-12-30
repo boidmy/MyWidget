@@ -24,6 +24,7 @@ class ChatActivity : BaseActivity<ActivityChattingBinding>() {
     @Inject lateinit var factory: ViewModelProvider.Factory
     private val viewModel by viewModels<ChatViewModel> { factory }
     lateinit var roomDataModel: RoomDataModel
+    lateinit var friendHashMap: HashMap<String, String>
 
     override val layout: Int
         get() = R.layout.activity_chatting
@@ -42,11 +43,14 @@ class ChatActivity : BaseActivity<ActivityChattingBinding>() {
         binding.drawerUserListRv.adapter = UserListRecyclerView(viewModel)
 
         roomDataModel = intent.getSerializableExtra("data") as RoomDataModel
-        viewModel.myId(loginEmail())
-        viewModel.getListChat(roomDataModel)
-        viewModel.getMyNickName()
+        friendHashMap = intent.getSerializableExtra("friendMap") as HashMap<String, String>
 
+        viewModel.setFriendHashMap(friendHashMap)
+        viewModel.setRoomData(roomDataModel)
+        viewModel.myId(loginEmail())
+        viewModel.setInviteDatabaseMap()
         viewModel.inviteUserList()
+        viewModel.getListChat()
 
         binding.chatRv.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
@@ -81,9 +85,5 @@ class ChatActivity : BaseActivity<ActivityChattingBinding>() {
         val intent = Intent(this, ChatInviteActivity::class.java)
         intent.putExtra("data", roomDataModel)
         startActivity(intent)
-
-        /*viewModel.inviteDialogShow()
-        binding.chatDrawLayout.closeDrawer(GravityCompat.END)
-        inviteUserAddBinding.chatUserEmailEdit.text = null*/
     }
 }

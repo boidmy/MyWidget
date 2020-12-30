@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import com.google.firebase.database.*
 import com.mywidget.fcm.SendPush
 import com.mywidget.data.model.ChatDataModel
+import com.mywidget.data.model.ChatInviteModel
 import com.mywidget.data.model.RoomDataModel
 import com.mywidget.di.custom.ActivityScope
 import util.CalendarUtil
@@ -24,7 +25,7 @@ class ChatRepository @Inject constructor() {
         database.child("Room").child(roomDataModel.master).child(roomDataModel.roomKey) }
     private val userRef: DatabaseReference by lazy { database.child("User") }
     private val message: DatabaseReference by lazy { roomRef.child("message") }
-    private val inviteUserList: MutableLiveData<ArrayList<String>> = MutableLiveData()
+    private val inviteUserList: MutableLiveData<ArrayList<ChatInviteModel>> = MutableLiveData()
     var myId: String? = null
     var data: MutableLiveData<List<ChatDataModel>> = MutableLiveData()
     val list: ArrayList<ChatDataModel> = arrayListOf()
@@ -32,27 +33,22 @@ class ChatRepository @Inject constructor() {
     var loadMoreChk = false
     private lateinit var roomDataModel: RoomDataModel
     private var isListening = true
-    var myNickName: String = ""
+    var inviteDatabaseMap = HashMap<String, String>()
+
+    fun setRoomData(roomDataModel: RoomDataModel) {
+        this.roomDataModel = roomDataModel
+    }
+
+    fun setInviteDatabaseMap(): HashMap<String, String> {
+        return inviteDatabaseMap
+    }
 
     fun userId(userEmail: String): String {
         myId = replacePointToComma(userEmail)
         return myId ?: ""
     }
 
-    fun getMyNickName(email: String): String {
-        userRef.child(replacePointToComma(email)).child("nickName")
-            .addValueEventListener(object : ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    myNickName = snapshot.value.toString()
-                }
-                override fun onCancelled(error: DatabaseError) {}
-
-            })
-        return myNickName
-    }
-
-    fun getListChat(roomDataModel: RoomDataModel): MutableLiveData<List<ChatDataModel>> {
-        this.roomDataModel = roomDataModel
+    fun getListChat(): MutableLiveData<List<ChatDataModel>> {
         message.limitToLast(20).addChildEventListener(itemSelectListener)
         return data
     }
@@ -60,7 +56,7 @@ class ChatRepository @Inject constructor() {
     fun insertChat(sendUserEmail: String, text: String) {
         val userEmail = replacePointToComma(sendUserEmail)
         val ref = message.push()
-        ref.setValue(ChatDataModel(text, userEmail, CalendarUtil.getDate(), myNickName))
+        ref.setValue(ChatDataModel(text, userEmail, CalendarUtil.getDate()))
             .addOnCompleteListener {
             Handler(Looper.getMainLooper()).postDelayed({
                 insertPush(ref.key ?: "", text, userEmail)
@@ -69,18 +65,6 @@ class ChatRepository @Inject constructor() {
     }
 
     private val itemSelectListener = object : ChildEventListener {
-        override fun onCancelled(error: DatabaseError) {
-            Log.d("", "")
-        }
-
-        override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {
-            Log.d("", "")
-        }
-
-        override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
-            Log.d("", "")
-        }
-
         override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
             if (!isListening) return
             val i = snapshot.children.iterator()
@@ -91,6 +75,7 @@ class ChatRepository @Inject constructor() {
                 chatData.nickName = i.next().value as String
                 chatData.time = dateFormat(i.next().value as String)
             }
+
             list.add(0, chatData)
             data.value = list
             if (!loadMoreChk) {
@@ -98,12 +83,12 @@ class ChatRepository @Inject constructor() {
                 loadMoreChk = true
             }
             //메시지를 보고있는 사람은 자기의 데이터에 key값이 여기서 들어감
-            roomRef.child("invite").child(myId ?: "").setValue(snapshot.key)
+            //roomRef.child("invite").child(myId ?: "").setValue(snapshot.key)
         }
-
-        override fun onChildRemoved(snapshot: DataSnapshot) {
-            Log.d("", "")
-        }
+        override fun onCancelled(error: DatabaseError) {}
+        override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {}
+        override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {}
+        override fun onChildRemoved(snapshot: DataSnapshot) {}
     }
 
     fun dateFormat(data: String): String {
@@ -118,12 +103,6 @@ class ChatRepository @Inject constructor() {
         val loadMoreSelectKey = lastMessageKey
         message.orderByKey().endAt(lastMessageKey).limitToLast(20)
             .addChildEventListener(object : ChildEventListener {
-                override fun onCancelled(error: DatabaseError) {}
-
-                override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {}
-
-                override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {}
-
                 override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
                     val i = snapshot.children.iterator()
                     val chatData = ChatDataModel()
@@ -142,22 +121,30 @@ class ChatRepository @Inject constructor() {
                         loadMoreChk = true
                     }
                 }
-
+                override fun onCancelled(error: DatabaseError) {}
+                override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {}
+                override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {}
                 override fun onChildRemoved(snapshot: DataSnapshot) {}
             })
     }
 
-    fun inviteUserList(): MutableLiveData<ArrayList<String>> {
+    fun inviteUserList(): MutableLiveData<ArrayList<ChatInviteModel>> {
         roomRef.child("invite").addValueEventListener(object : ValueEventListener {
-            override fun onCancelled(error: DatabaseError) {}
-
             override fun onDataChange(snapshot: DataSnapshot) {
-                val list: ArrayList<String> = arrayListOf()
+                val list: ArrayList<ChatInviteModel> = arrayListOf()
                 for (snap: DataSnapshot in snapshot.children) {
-                    list.add(replaceCommaToPoint(snap.key.toString()))
+                    val user = snap.getValue(ChatInviteModel::class.java)
+                    user?.let {
+                        it.email = replaceCommaToPoint(snap.key.toString())
+                        if (it.inviteFlag) {
+                            list.add(user)
+                        }
+                        inviteDatabaseMap.put(snap.key.toString(), user.nickName)
+                    }
                 }
                 inviteUserList.value = list
             }
+            override fun onCancelled(error: DatabaseError) {}
         })
         return inviteUserList
     }
@@ -173,7 +160,6 @@ class ChatRepository @Inject constructor() {
                         }
                     }
                 }
-
                 override fun onCancelled(error: DatabaseError) {}
             }
         )
@@ -188,7 +174,6 @@ class ChatRepository @Inject constructor() {
                             .send(it.toString(), message, sendId)
                     }
                 }
-
                 override fun onCancelled(error: DatabaseError) {}
             }
         )

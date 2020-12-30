@@ -8,10 +8,7 @@ import androidx.activity.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.mywidget.R
-import com.mywidget.databinding.ActivityFriendBinding
-import com.mywidget.databinding.DeleteConfirmDialogChatRoomBinding
-import com.mywidget.databinding.DeleteConfirmDialogFriendBinding
-import com.mywidget.databinding.FriendAddDialogBinding
+import com.mywidget.databinding.*
 import com.mywidget.ui.base.BaseActivity
 import com.mywidget.ui.friend.recyclerview.FriendRecyclerView
 import kotlinx.android.synthetic.main.friend_add_dialog.*
@@ -28,6 +25,10 @@ class FriendActivity : BaseActivity<ActivityFriendBinding>() {
     private val deleteDialogBinding by lazy {
         DeleteConfirmDialogFriendBinding.inflate(LayoutInflater.from(this)) }
     private val deleteDialog by lazy { Dialog(this, R.style.CustomDialogTheme) }
+    private val friendUpdateDialog by lazy { Dialog(this, R.style.CustomDialogTheme) }
+    private val friendUpdateDialogBinding by lazy {
+        FriendUpdateDialogBinding.inflate(LayoutInflater.from(this))
+    }
 
     override val layout: Int
         get() = R.layout.activity_friend
@@ -37,6 +38,7 @@ class FriendActivity : BaseActivity<ActivityFriendBinding>() {
         bindView()
         friendAddDialog()
         deleteDialog()
+        friendUpdateDialog()
     }
 
     fun bindView() {
@@ -46,6 +48,16 @@ class FriendActivity : BaseActivity<ActivityFriendBinding>() {
             viewModel.myId(this)
         }
         viewModel.selectFriendList()
+    }
+
+    private fun friendUpdateDialog() {
+        friendUpdateDialogBinding.viewModel = viewModel
+        viewModel.setFriendUpdateDialogVisibility()
+        friendUpdateDialog.setContentView(friendUpdateDialogBinding.root)
+        viewModel.friendUpdateDialogVisibility.observe(this, Observer {
+            if (it) friendUpdateDialog.show()
+            else friendUpdateDialog.dismiss()
+        })
     }
 
     private fun friendAddDialog() {

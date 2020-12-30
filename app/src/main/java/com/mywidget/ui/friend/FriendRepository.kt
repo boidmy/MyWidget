@@ -12,8 +12,7 @@ import util.Util.replacePointToComma
 import javax.inject.Inject
 
 class FriendRepository @Inject constructor() {
-    @Inject
-    lateinit var database: DatabaseReference
+    @Inject lateinit var database: DatabaseReference
     private val userRef: DatabaseReference by lazy { database.child("User") }
     private val friendRef: DatabaseReference by lazy {
         userRef.child(replacePointToComma(myId)).child("friend") }
@@ -22,6 +21,8 @@ class FriendRepository @Inject constructor() {
     var userExistenceChk: MutableLiveData<Boolean> = MutableLiveData()
     var friendList: MutableLiveData<ArrayList<FriendModel>> = MutableLiveData()
     var myId: String = ""
+    var friendUpdateModel: MutableLiveData<FriendModel> = MutableLiveData()
+    var friendUpdateDialogVisibility: MutableLiveData<Boolean> = MutableLiveData()
 
     fun setUserExistenceChk(): MutableLiveData<Boolean> {
         return userExistenceChk
@@ -35,7 +36,7 @@ class FriendRepository @Inject constructor() {
                         val userEmail: String = snapshot.child("email").value.toString()
                         userRef.child(replacePointToComma(myId)).child("friend")
                             .child("friendList").child(replacePointToComma(userEmail))
-                            .setValue(explanation)
+                            .setValue(FriendModel(replacePointToComma(userEmail), explanation))
                         userExistenceChk.value = true
                     } else {
                         userExistenceChk.value = false
@@ -51,16 +52,11 @@ class FriendRepository @Inject constructor() {
                     val favorites = snapshot.child("favorites").value
 
                     val array = arrayListOf<FriendModel>()
-                    for (snap: DataSnapshot in snapshot.children) {
-                        if(snap.key == "friendList") {
-                            for (snapFriend: DataSnapshot in snap.children){
-                                val email = snapFriend.key.toString()
-                                val explanation = snapFriend.value.toString()
-                                var favoritesChk: Boolean
-                                favoritesChk = email == favorites
-                                array.add(FriendModel(replaceCommaToPoint(email), explanation
-                                    , false, favoritesChk))
-                            }
+                    for (snap: DataSnapshot in snapshot.child("friendList").children) {
+                        val friendModel = snap.getValue(FriendModel::class.java)
+                        friendModel?.let {
+                            friendModel.favorites = friendModel.email == favorites
+                            array.add(friendModel)
                         }
                     }
                     friendList.value = array
@@ -78,6 +74,32 @@ class FriendRepository @Inject constructor() {
         var value: String? = null
         if (onOffChk) value = replacePointToComma(email)
         friendRef.child("favorites").setValue(value)
+    }
+
+    fun friendUpdateSelect(email: String): MutableLiveData<FriendModel> {
+        userRef.child(replacePointToComma(myId)).child("friend")
+            .child("friendList").child(replacePointToComma(email))
+            .addListenerForSingleValueEvent(object : ValueEventListener{
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val friendModel = snapshot.getValue(FriendModel::class.java)
+                    friendUpdateModel.value = friendModel
+                    friendUpdateDialogVisibility.value = true
+                }
+                override fun onCancelled(error: DatabaseError) {}
+
+            })
+        return friendUpdateModel
+    }
+
+    fun setFriendUpdateDialogVisibility(): MutableLiveData<Boolean> {
+        return friendUpdateDialogVisibility
+    }
+
+    fun friendUpdate(email: String, nickName: String) {
+        userRef.child(replacePointToComma(myId)).child("friend")
+            .child("friendList").child(replacePointToComma(email))
+            .child("nickName").setValue(nickName)
+        friendUpdateDialogVisibility.value = false
     }
 
     fun myId(email: String): String {

@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
         <variable
             name="viewModel"
             type="com.mywidget.ui.friend.FriendViewModel" />
@@ -16,7 +17,7 @@
         <View
             android:id="@+id/friendAddContainer"
             android:layout_width="300dp"
-            android:layout_height="320dp"
+            android:layout_height="300dp"
             android:background="@drawable/edge_round_2d56583"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -32,37 +33,30 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
+            android:id="@+id/friendTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
-            android:text="친구 추가"
+            android:text="친구 수정"
             android:textColor="#ffffff"
             app:layout_constraintBottom_toBottomOf="@+id/friendAddAddIcon"
             app:layout_constraintStart_toEndOf="@+id/friendAddAddIcon"
             app:layout_constraintTop_toTopOf="@+id/friendAddAddIcon" />
-
-        <TextView
-            android:id="@+id/friendAddEmailTxt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="20dp"
-            android:text="추가할 이메일을 입력하세요"
-            android:textColor="#ffffff"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/friendAddAddIcon" />
 
         <EditText
             android:id="@+id/friendAddEmailEdit"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
             android:layout_marginEnd="20dp"
             android:backgroundTint="#FFFFFF"
+            android:enabled="false"
+            android:text="@{viewModel.friendUpdateModel.email}"
             android:textColor="#000000"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/friendAddEmailTxt" />
+            app:layout_constraintTop_toBottomOf="@+id/friendTitle" />
 
         <EditText
             android:id="@+id/friendAddExplanationEdit"
@@ -71,9 +65,10 @@
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
             android:backgroundTint="#FFFFFF"
-            android:textColor="#000000"
-            android:lines="2"
             android:hint="친구의 별명을 정해주세요~"
+            android:lines="2"
+            android:text="@{viewModel.friendUpdateModel.nickName}"
+            android:textColor="#000000"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/friendAddEmailEdit" />
@@ -97,10 +92,10 @@
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_marginEnd="20dp"
-            android:onClick="@{() -> viewModel.userExistenceChk(friendAddEmailEdit.getText().toString(), friendAddExplanationEdit.getText().toString())}"
             android:background="@drawable/confirm_btn"
+            android:onClick="@{() -> viewModel.friendUpdate(viewModel.friendUpdateModel.email, friendAddExplanationEdit.getText().toString())}"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/friendEx"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintTop_toBottomOf="@+id/friendEx" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

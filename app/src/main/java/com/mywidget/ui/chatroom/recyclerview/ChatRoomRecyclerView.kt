@@ -37,6 +37,7 @@ class ChatRoomViewHolder(val binding: WatingRoomItemBinding) :
         binding.rvContainer.setOnClickListener {
             val intent = Intent(binding.root.context, ChatActivity::class.java)
             intent.putExtra("data", data)
+            intent.putExtra("friendMap", viewModel.friendHashMap)
             binding.root.context.startActivity(intent)
         }
         binding.roomRemove.setOnClickListener {

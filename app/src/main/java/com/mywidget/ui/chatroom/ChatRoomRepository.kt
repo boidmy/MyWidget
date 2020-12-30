@@ -1,12 +1,14 @@
 package com.mywidget.ui.chatroom
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
+import com.mywidget.data.model.ChatInviteModel
+import com.mywidget.data.model.FriendModel
 import com.mywidget.data.model.RoomDataModel
+import com.mywidget.data.model.UserData
 import util.Util.replacePointToComma
 import javax.inject.Inject
 
@@ -16,33 +18,48 @@ class ChatRoomRepository @Inject constructor() {
     private val userRef: DatabaseReference by lazy { database.child("User") }
     var roomList: MutableLiveData<List<RoomDataModel>> = MutableLiveData()
     private val ROOMLIST = "RoomList"
+    private val friendHashMap = hashMapOf<String, String>()
 
     fun selectRoomList(id: String): MutableLiveData<List<RoomDataModel>> {
         userRef.child(replacePointToComma(id))
             .child(ROOMLIST).addValueEventListener(object : ValueEventListener {
-            override fun onCancelled(error: DatabaseError) {
-            }
-
             override fun onDataChange(snapshot: DataSnapshot) {
                 val list: ArrayList<RoomDataModel> = arrayListOf()
                 for (snap: DataSnapshot in snapshot.children) {
-                    val roomModel = RoomDataModel(
-                        snap.child("roomName").value.toString(),
-                        snap.child("roomKey").value.toString(),
-                        snap.child("master").value.toString()
-                    )
-                    list.add(roomModel)
+                    val room = snap.getValue(RoomDataModel::class.java)
+                    room?.let {
+                        list.add(it)
+                    }
                 }
                 roomList.value = list
             }
+            override fun onCancelled(error: DatabaseError) {}
+
         })
         return roomList
+    }
+
+    fun selectFriendList(id: String): HashMap<String, String> {
+        userRef.child(replacePointToComma(id)).child("friend")
+            .child("friendList").addListenerForSingleValueEvent(object : ValueEventListener{
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    for (friend in snapshot.children) {
+                        val friendModel = friend.getValue(FriendModel::class.java)
+                        friendModel?.let {
+                            if (it.email.isNotEmpty()) {
+                                friendHashMap[it.email] = it.nickName
+                            }
+                        }
+                    }
+                }
+                override fun onCancelled(error: DatabaseError) {}
+            })
+        return friendHashMap
     }
 
     fun createRoom(id: String, subject: String) {
         id.let {
             val mEmail = replacePointToComma(id)
-
             val result: HashMap<String, String> = hashMapOf()
             result["roomName"] = subject
             val ref = roomRef.child(mEmail).push()
@@ -55,14 +72,13 @@ class ChatRoomRepository @Inject constructor() {
     }
 
     private fun roomMasterTokenSave(email: String, ref: DatabaseReference) {
-        userRef.child(replacePointToComma(email))
-            .addListenerForSingleValueEvent(object : ValueEventListener {
+        val mEmail = replacePointToComma(email)
+        userRef.child(mEmail).addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
-                    if (snapshot.value != null) {
-                        val userEmail: String = snapshot.child("email").value.toString()
-                        val userToken: String = snapshot.child("token").value.toString()
-                        ref.child("invite").child(replacePointToComma(userEmail))
-                            .setValue(userToken)
+                    val user = snapshot.getValue(UserData::class.java)
+                    user?.let {
+                        ref.child("invite").child(mEmail)
+                            .setValue(ChatInviteModel(it.nickName, true))
                     }
                 }
                 override fun onCancelled(error: DatabaseError) {}

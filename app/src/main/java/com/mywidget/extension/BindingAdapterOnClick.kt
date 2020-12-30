@@ -76,19 +76,6 @@ fun loginGoogle(button: View, activity: LoginActivity) {
     }
 }
 
-@BindingAdapter("inviteUserAdd", "editText", "activity")
-fun inviteUserAdd(imageView: ImageView, viewModel: ChatInviteViewModel
-                  , editText: EditText, activity: ChatInviteActivity) {
-    imageView.setOnClickListener {
-        val userEmail = editText.text.toString()
-        if(userEmail.isEmpty()) {
-            imageView.context.toast("이메일을 입력하세요")
-        } else {
-            viewModel.userExistenceChk(userEmail)
-        }
-    }
-}
-
 @BindingAdapter("chatRoomViewModel", "roomSubject")
 fun createRoom(imageView: ImageView, viewModel: ChatRoomViewModel, editText: EditText) {
     imageView.setOnClickListener {

@@ -41,6 +41,7 @@ class ChatRoomActivity : BaseActivity<ActivityChatRoomBinding>() {
         binding.watingRoomRv.adapter = ChatRoomRecyclerView(viewModel)
 
         with(loginEmail()) {
+            viewModel.selectFriendList(this)
             viewModel.selectRoomList(this)
             viewModel.myId = this
         }

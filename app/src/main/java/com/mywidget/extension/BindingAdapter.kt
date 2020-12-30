@@ -18,10 +18,12 @@ import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
 import com.mywidget.R
 import com.mywidget.data.model.ChatDataModel
+import com.mywidget.data.model.ChatInviteModel
 import com.mywidget.data.model.FriendModel
 import com.mywidget.data.model.RoomDataModel
 import com.mywidget.data.room.Memo
 import com.mywidget.data.room.User
+import com.mywidget.ui.chat.ChatViewModel
 import com.mywidget.ui.chat.recyclerview.ChatAdapter
 import com.mywidget.ui.chat.recyclerview.UserListRecyclerView
 import com.mywidget.ui.chatinvite.recyclerview.ChatInviteRecyclerView
@@ -125,10 +127,19 @@ fun favoritesMemo(imageView: ImageView, editText: EditText, viewModel: MainFragm
     }
 }
 
-@BindingAdapter("chatText")
-fun chatText(textView: TextView, data: ChatDataModel) {
-    if (TextUtils.isEmpty(data.nickName)) text(textView, data.id)
-    else text(textView, data.nickName)
+@BindingAdapter("chatNickName", "chatViewModel")
+fun chatText(textView: TextView, data: ChatDataModel, viewModel: ChatViewModel) {
+    val myInsertNickName = viewModel.friendHashMap[data.id] ?:"" //1순위 내가 등록한 친구 닉네임
+    val nickName = viewModel.inviteDatabaseMap[data.id] ?:"" //2순위 상대가 회원가입 할때 등록한 닉네임
+    if (myInsertNickName.isNotEmpty()) {
+        text(textView, myInsertNickName)
+    } else {
+        if (nickName.isNotEmpty()) {
+            text(textView, nickName)
+        } else {
+            text(textView, data.id)
+        }
+    }
 }
 
 @BindingAdapter("userConfirm", "userPhone", "userviewModel")
@@ -186,7 +197,7 @@ fun chatAdapter(recyclerView: RecyclerView?, data: MutableLiveData<List<ChatData
 }
 
 @BindingAdapter("items")
-fun chatUserListAdapter(recyclerView: RecyclerView?, data: MutableLiveData<ArrayList<String>>) {
+fun chatUserListAdapter(recyclerView: RecyclerView?, data: MutableLiveData<ArrayList<ChatInviteModel>>) {
     val adapter: UserListRecyclerView = recyclerView?.adapter as UserListRecyclerView
     adapter.notifyDataSetChanged()
 }

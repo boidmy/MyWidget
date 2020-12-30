@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
+        <variable
+            name="viewModel"
+            type="com.mywidget.ui.chat.ChatViewModel" />
         <variable
             name="data"
             type="com.mywidget.data.model.ChatDataModel" />
@@ -34,7 +36,8 @@
             android:layout_marginEnd="18dp"
             android:gravity="end"
             android:lines="1"
-            app:chatText="@{data}"
+            app:chatNickName="@{data}"
+            app:chatViewModel="@{viewModel}"
             android:textColor="#000000"
             android:textSize="15dp"
             app:layout_constraintEnd_toEndOf="parent"
