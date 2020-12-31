@@ -57,22 +57,27 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 
-        NotificationCompat.Builder notificationBuilder =
-                new NotificationCompat.Builder(this, channelId)
-                        .setSmallIcon(R.drawable.launcher_my_foreground)
-                        .setContentTitle(Objects.requireNonNull(message.getNotification()).getTitle())
-                        .setContentText(Objects.requireNonNull(message.getNotification()).getBody())
-                        .setAutoCancel(true)
-                        .setSound(defaultSoundUri)
-                        .setContentIntent(pendingIntent);
+        String[] roomInfo;
+        if (message.getNotification() != null && message.getNotification().getTag() != null) {
+            roomInfo = message.getNotification().getTag().split("&&");
 
-        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+            NotificationCompat.Builder notificationBuilder =
+                    new NotificationCompat.Builder(this, channelId)
+                            .setSmallIcon(R.drawable.launcher_my_foreground)
+                            .setContentTitle(Objects.requireNonNull(message.getNotification()).getTitle())
+                            .setContentText(Objects.requireNonNull(message.getNotification()).getBody())
+                            .setAutoCancel(true)
+                            .setSound(defaultSoundUri)
+                            .setContentIntent(pendingIntent);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            String channelName = getString(R.string.notification_channel_id);
-            NotificationChannel channel = new NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_HIGH);
-            notificationManager.createNotificationChannel(channel);
+            NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                String channelName = getString(R.string.notification_channel_id);
+                NotificationChannel channel = new NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_HIGH);
+                notificationManager.createNotificationChannel(channel);
+            }
+            notificationManager.notify(0, notificationBuilder.build());
         }
-        notificationManager.notify(0, notificationBuilder.build());
     }
 }

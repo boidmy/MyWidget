@@ -3,6 +3,8 @@ package com.mywidget.fcm;
 import android.util.Log;
 
 import com.mywidget.data.apiConnect.ApiConnection;
+import com.mywidget.data.model.RoomDataModel;
+
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
@@ -16,7 +18,7 @@ public class SendPush {
 
     private CompositeDisposable subscrib;
 
-    public void send(String token, String memo, String myNickname) {
+    public void send(String token, String memo, String myNickname, RoomDataModel roomData) {
 
         OkHttpClient okHttpClient = new OkHttpClient();
 
@@ -29,6 +31,8 @@ public class SendPush {
 
             notification.put("title", myNickname+" 메세지");
             notification.put("body", memo);
+            //notification.put("clickAction", roomData.getRoomKey());
+            notification.put("tag", roomData.getMaster() + "&&" + roomData.getRoomKey());
 
             JSONObject message = new JSONObject();
 
@@ -63,7 +67,7 @@ public class SendPush {
         }
     }
 
-    public void haha(final String token) {
+    public void test(final String token) {
         new Thread(() -> {
             try {
                 // FMC 메시지 생성 start

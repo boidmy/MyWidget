@@ -8,6 +8,7 @@ import com.google.firebase.database.*
 import com.mywidget.fcm.SendPush
 import com.mywidget.data.model.ChatDataModel
 import com.mywidget.data.model.ChatInviteModel
+import com.mywidget.data.model.FriendModel
 import com.mywidget.data.model.RoomDataModel
 import com.mywidget.di.custom.ActivityScope
 import util.CalendarUtil
@@ -166,12 +167,17 @@ class ChatRepository @Inject constructor() {
     }
 
     fun getUserTokenAndPush(email: String, message: String, sendId: String) {
-        userRef.child(email).child("token").addListenerForSingleValueEvent(
+        userRef.child(email).addListenerForSingleValueEvent(
             object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
-                    snapshot.value?.let {
-                        SendPush()
-                            .send(it.toString(), message, sendId)
+                    val token = snapshot.child("token").value
+                    val friendData = snapshot.child("friendList")
+                            .child(replacePointToComma(sendId)).getValue(FriendModel::class.java)
+                    val friendMyNickName = friendData?.nickName?: ""
+                    var sendMyNickName = sendId
+                    if (friendMyNickName.isNotEmpty()) sendMyNickName = friendMyNickName
+                    token?.let {
+                        SendPush().send(it.toString(), message, sendMyNickName, roomDataModel)
                     }
                 }
                 override fun onCancelled(error: DatabaseError) {}
