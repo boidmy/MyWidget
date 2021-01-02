@@ -7,8 +7,10 @@ import com.mywidget.ui.chatroom.ChatRoomViewModelModule
 import com.mywidget.di.custom.ActivityScope
 import com.mywidget.ui.chatinvite.ChatInviteActivity
 import com.mywidget.ui.chatinvite.ChatInviteModule
+import com.mywidget.ui.chatroom.ChatRoomModule
 import com.mywidget.ui.friend.FriendActivity
 import com.mywidget.ui.friend.FriendModule
+import com.mywidget.ui.friend.FriendViewModelModule
 import com.mywidget.ui.login.LoginActivity
 import com.mywidget.ui.login.LoginGoogleModule
 import com.mywidget.ui.main.MainActivity
@@ -29,22 +31,24 @@ import dagger.android.ContributesAndroidInjector
 abstract class ActivityBindingModule {
 
     @ActivityScope
-    @ContributesAndroidInjector(
-        modules = [
+    @ContributesAndroidInjector(modules = [
             MainActivityModule::class,
             MainFragmentModule::class,
-            MainViewModelModule::class]
-    )
+            MainViewModelModule::class
+    ])
     abstract fun mainActivity(): MainActivity
 
     @ActivityScope
     @ContributesAndroidInjector(modules = [
         WidgetListViewModelModule::class,
-        WidgetListModule::class ])
+        WidgetListModule::class
+    ])
     abstract fun widgetListActivity(): WidgetListActivity
 
     @ActivityScope
-    @ContributesAndroidInjector(modules = [ChatRoomViewModelModule::class])
+    @ContributesAndroidInjector(modules = [
+        ChatRoomViewModelModule::class,
+        ChatRoomModule::class])
     abstract fun chatRoomActivity(): ChatRoomActivity
 
     @ActivityScope
@@ -62,7 +66,9 @@ abstract class ActivityBindingModule {
     abstract fun signUpActivity(): SignUpActivity
 
     @ActivityScope
-    @ContributesAndroidInjector(modules = [FriendModule::class])
+    @ContributesAndroidInjector(modules = [
+        FriendViewModelModule::class,
+        FriendModule::class])
     abstract fun friendActivity(): FriendActivity
 
     @ActivityScope

@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.mywidget.R
@@ -15,8 +17,8 @@ import javax.inject.Inject
 class FragmentLoveDay : BaseFragment<MainFragmentLovedayBinding>() {
 
     @Inject lateinit var factory: ViewModelProvider.Factory
-    val viewModel: MainFragmentViewModel by lazy {
-        ViewModelProvider(requireActivity(), factory).get(MainFragmentViewModel::class.java)}
+
+    val viewModel by activityViewModels<MainFragmentViewModel> { factory }
 
     override fun getLayout(): Int {
         return R.layout.main_fragment_loveday

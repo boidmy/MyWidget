@@ -46,4 +46,8 @@ class ChatRoomViewModel @Inject constructor(
     fun enterRoom(roomData: RoomDataModel) {
         enterRoom.value = roomData
     }
+
+    fun setDeleteData(data: RoomDataModel) {
+        deleteRoom.value = data
+    }
 }

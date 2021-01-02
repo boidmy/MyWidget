@@ -22,12 +22,10 @@ class ChatRoomActivity : BaseActivity<ActivityChatRoomBinding>() {
 
     @Inject lateinit var factory: ViewModelProvider.Factory
     private val viewModel by viewModels<ChatRoomViewModel> { factory }
-    private val dialogBinding
-            by lazy { ChatCreateRoomBinding.inflate(LayoutInflater.from(this)) }
-    private val createRoomDialog by lazy { Dialog(this, R.style.CustomDialogTheme) }
-    private val deleteDialogBinding by lazy {
-        DeleteConfirmDialogChatRoomBinding.inflate(LayoutInflater.from(this)) }
-    private val deleteDialog by lazy { Dialog(this, R.style.CustomDialogTheme) }
+    @Inject lateinit var dialogBinding: ChatCreateRoomBinding
+    @Inject lateinit var createRoomDialog: Dialog
+    @Inject lateinit var deleteDialogBinding: DeleteConfirmDialogChatRoomBinding
+    @Inject lateinit var deleteDialog: Dialog
 
     override val layout: Int
         get() = R.layout.activity_chat_room

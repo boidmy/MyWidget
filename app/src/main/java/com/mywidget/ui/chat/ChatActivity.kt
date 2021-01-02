@@ -19,13 +19,11 @@ import com.mywidget.ui.chatinvite.ChatInviteActivity
 import kotlinx.android.synthetic.main.activity_chatting.*
 import util.ItemDecoration
 import javax.inject.Inject
-import javax.inject.Named
 
 
 class ChatActivity : BaseActivity<ActivityChattingBinding>() {
     @Inject lateinit var database: DatabaseReference
     @Inject lateinit var factory: ViewModelProvider.Factory
-    @Inject @Named("inChatPush") lateinit var mPreferences: SharedPreferences
     @Inject lateinit var preferencesEditor: SharedPreferences.Editor
     private val viewModel by viewModels<ChatViewModel> { factory }
     lateinit var roomDataModel: RoomDataModel

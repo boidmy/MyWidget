@@ -3,7 +3,6 @@ package com.mywidget.ui.main
 import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import androidx.activity.viewModels
@@ -38,19 +37,13 @@ class MainActivity : BaseActivity<DrawerlayoutMainBinding>()
     @Inject lateinit var mTabPagerAdapter: MainTabPagerAdapter
     @Inject lateinit var backPressAppFinish: BackPressAppFinish
     @Inject lateinit var factory: ViewModelProvider.Factory
+    @Inject lateinit var loveDayDialogBinding: MainLovedayDialogBinding
+    @Inject lateinit var loveDayDialog: Dialog
+    @Inject lateinit var memoDialogBinding: MemoDialogBinding
+    @Inject lateinit var memoDialog: Dialog
+    @Inject lateinit var favoritesDialogBinding: MainFavoritesDialogBinding
+    @Inject lateinit var favoritesDialog: Dialog
     private val viewModel by viewModels<MainFragmentViewModel> { factory }
-    private val loveDayDialogBinding by lazy {
-        MainLovedayDialogBinding.inflate(LayoutInflater.from(this))
-    }
-    private val lovedayDialog by lazy { Dialog(this, R.style.CustomDialogTheme) }
-    private val memoDialogBinding by lazy {
-        MemoDialogBinding.inflate(LayoutInflater.from(this))
-    }
-    private val memoDialog by lazy { Dialog(this, R.style.CustomDialogTheme) }
-    private val favoritesDialogBinding by lazy {
-        MainFavoritesDialogBinding.inflate(LayoutInflater.from(this))
-    }
-    private val favoritesDialog by lazy { Dialog(this, R.style.CustomDialogTheme) }
 
     override val layout: Int
         get() = R.layout.drawerlayout_main
@@ -174,11 +167,11 @@ class MainActivity : BaseActivity<DrawerlayoutMainBinding>()
     }
 
     private fun loveDayDialogBind() {
-        lovedayDialog.setContentView(loveDayDialogBinding.root)
+        loveDayDialog.setContentView(loveDayDialogBinding.root)
         loveDayDialogBinding.viewModel = viewModel
         viewModel.loveDayDialogVisibility.observe(this, androidx.lifecycle.Observer {
-            if(it) lovedayDialog.show()
-            else lovedayDialog.dismiss()
+            if(it) loveDayDialog.show()
+            else loveDayDialog.dismiss()
         })
     }
 

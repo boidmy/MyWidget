@@ -65,7 +65,7 @@
             app:layout_constraintTop_toBottomOf="@+id/userEmail"
             tools:text="친구입니다친구입니다친구입니다친구입니다람쥐안녕하세요" />
 
-        <Button
+        <View
             android:id="@+id/checkBtn"
             android:layout_width="30dp"
             android:layout_height="30dp"

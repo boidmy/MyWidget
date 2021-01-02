@@ -21,6 +21,7 @@ import io.reactivex.schedulers.Schedulers
 import org.json.JSONArray
 import org.json.JSONObject
 import util.CalendarUtil
+import util.CalendarUtil.dateFormat
 import util.CalendarUtil.howMuchloveDay
 import util.Util
 import util.Util.replacePointToComma
@@ -127,7 +128,11 @@ class MainRepository @Inject constructor(
                     if (snapshot.value == null) favoritesNoneMessageMe()
                     for (snap: DataSnapshot in snapshot.children) {
                         val value = snap.getValue(FavoritesData::class.java)
-                        favoritesMessageMe.value = value
+                        value?.let {
+                            value.date = dateFormat(value.date)
+                            favoritesMessageMe.value = value
+                        }
+
                     }
                 }
                 override fun onCancelled(error: DatabaseError) {}
@@ -142,7 +147,10 @@ class MainRepository @Inject constructor(
                     if (snapshot.value == null) favoritesNoneMessageFriend()
                     for (snap: DataSnapshot in snapshot.children) {
                         val value = snap.getValue(FavoritesData::class.java)
-                        favoritesMessageFriend.value = value
+                        value?.let {
+                            value.date = dateFormat(value.date)
+                            favoritesMessageFriend.value = value
+                        }
                     }
                 }
                 override fun onCancelled(error: DatabaseError) {}

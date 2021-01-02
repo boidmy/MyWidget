@@ -19,16 +19,12 @@ class FriendActivity : BaseActivity<ActivityFriendBinding>() {
 
     @Inject lateinit var factory: ViewModelProvider.Factory
     private val viewModel by viewModels<FriendViewModel> { factory }
-    private val friendAddDialogBinding
-            by lazy { FriendAddDialogBinding.inflate(LayoutInflater.from(this)) }
-    private val friendDialog by lazy { Dialog(this, R.style.CustomDialogTheme) }
-    private val deleteDialogBinding by lazy {
-        DeleteConfirmDialogFriendBinding.inflate(LayoutInflater.from(this)) }
-    private val deleteDialog by lazy { Dialog(this, R.style.CustomDialogTheme) }
-    private val friendUpdateDialog by lazy { Dialog(this, R.style.CustomDialogTheme) }
-    private val friendUpdateDialogBinding by lazy {
-        FriendUpdateDialogBinding.inflate(LayoutInflater.from(this))
-    }
+    @Inject lateinit var friendDialog: Dialog
+    @Inject lateinit var friendAddDialogBinding: FriendAddDialogBinding
+    @Inject lateinit var deleteDialog: Dialog
+    @Inject lateinit var deleteDialogBinding: DeleteConfirmDialogFriendBinding
+    @Inject lateinit var friendUpdateDialog: Dialog
+    @Inject lateinit var friendUpdateDialogBinding: FriendUpdateDialogBinding
 
     override val layout: Int
         get() = R.layout.activity_friend

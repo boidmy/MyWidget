@@ -12,6 +12,7 @@ import com.mywidget.data.model.FriendModel
 import com.mywidget.data.model.RoomDataModel
 import com.mywidget.di.custom.ActivityScope
 import util.CalendarUtil
+import util.CalendarUtil.dateFormat
 import util.Util.replaceCommaToPoint
 import util.Util.replacePointToComma
 import java.text.SimpleDateFormat
@@ -90,13 +91,6 @@ class ChatRepository @Inject constructor() {
         override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {}
         override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {}
         override fun onChildRemoved(snapshot: DataSnapshot) {}
-    }
-
-    fun dateFormat(data: String): String {
-        val format = SimpleDateFormat("yyyy.MM.dd HH:mm")
-        val date = format.parse(data)
-        val outputFormat = SimpleDateFormat("yy.MM.dd a hh:mm ")
-        return outputFormat.format(date)
     }
 
     fun chatLoadMore(startPosition: Int) {

@@ -4,9 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="viewModel"
             type="com.mywidget.ui.chat.ChatViewModel" />
+
         <variable
             name="data"
             type="com.mywidget.data.model.ChatDataModel" />
@@ -36,10 +38,11 @@
             android:layout_marginEnd="18dp"
             android:gravity="end"
             android:lines="1"
-            app:chatNickName="@{data}"
-            app:chatViewModel="@{viewModel}"
             android:textColor="#000000"
             android:textSize="15dp"
+            android:visibility="gone"
+            app:chatNickName="@{data}"
+            app:chatViewModel="@{viewModel}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintWidth_percent="0.5"
@@ -49,6 +52,7 @@
             android:id="@+id/chatTxt"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:background="@drawable/chat_text_right"
             android:paddingStart="25dp"
             android:paddingTop="10dp"

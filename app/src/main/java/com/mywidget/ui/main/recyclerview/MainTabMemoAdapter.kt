@@ -1,10 +1,8 @@
 package com.mywidget.ui.main.recyclerview
 
-import android.R
 import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.mywidget.data.room.Memo

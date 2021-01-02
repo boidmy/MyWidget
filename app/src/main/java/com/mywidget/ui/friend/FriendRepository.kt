@@ -6,8 +6,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
 import com.mywidget.data.model.FriendModel
-import util.Util
-import util.Util.replaceCommaToPoint
+import com.mywidget.extension.friendListExtension
 import util.Util.replacePointToComma
 import javax.inject.Inject
 
@@ -47,21 +46,7 @@ class FriendRepository @Inject constructor() {
     }
 
     fun selectFriendList(): MutableLiveData<ArrayList<FriendModel>> {
-        friendRef.addValueEventListener(object : ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    val favorites = snapshot.child("favorites").value
-                    val array = arrayListOf<FriendModel>()
-                    for (snap: DataSnapshot in snapshot.child("friendList").children) {
-                        val friendModel = snap.getValue(FriendModel::class.java)
-                        friendModel?.let {
-                            friendModel.favorites = friendModel.email == favorites
-                            array.add(friendModel)
-                        }
-                    }
-                    friendList.value = array
-                }
-                override fun onCancelled(error: DatabaseError) {}
-            })
+        friendListExtension(friendRef, friendList)
         return friendList
     }
 

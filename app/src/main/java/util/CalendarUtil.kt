@@ -131,4 +131,11 @@ object CalendarUtil {
 
         return dateFormat.format(date)
     }
+
+    fun dateFormat(data: String): String {
+        val format = SimpleDateFormat("yyyy.MM.dd HH:mm", Locale.getDefault())
+        val date = format.parse(data)
+        val outputFormat = SimpleDateFormat("yy.MM.dd a hh:mm", Locale.getDefault())
+        return outputFormat.format(date)
+    }
 }

@@ -6,7 +6,9 @@
     <data>
 
         <import type="android.view.View" />
-        <import type="android.text.TextUtils"/>
+
+        <import type="android.text.TextUtils" />
+
         <variable
             name="viewModel"
             type="com.mywidget.ui.main.MainFragmentViewModel" />
@@ -47,10 +49,12 @@
                 android:layout_marginTop="10dp"
                 android:gravity="center"
                 android:lines="3"
+                android:paddingStart="5dp"
+                android:paddingEnd="5dp"
                 android:text="@{viewModel.favoritesMessageMe.memo}"
                 android:textColor="#240440"
                 android:textSize="15dp"
-                tools:text="기분이 좋아욤" />
+                tools:text="기분이 좋아욤기분이 좋아욤기분이 좋아욤" />
 
             <TextView
                 android:id="@+id/dateMe"
@@ -95,6 +99,8 @@
                 android:layout_marginTop="10dp"
                 android:gravity="center"
                 android:lines="3"
+                android:paddingStart="5dp"
+                android:paddingEnd="5dp"
                 android:text="@{viewModel.favoritesMessageFriend.memo}"
                 android:textColor="#240440"
                 android:textSize="15dp"

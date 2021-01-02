@@ -9,6 +9,7 @@ import com.mywidget.data.model.ChatInviteModel
 import com.mywidget.data.model.FriendModel
 import com.mywidget.data.model.RoomDataModel
 import com.mywidget.data.model.UserData
+import com.mywidget.extension.friendListExtension
 import util.Util
 import util.Util.replaceCommaToPoint
 import util.Util.replacePointToComma
@@ -28,20 +29,9 @@ class ChatInviteRepository @Inject constructor() {
     }
 
     fun selectFriendList(myId: String): MutableLiveData<ArrayList<FriendModel>> {
-        userRef.child(replacePointToComma(myId)).child("friend")
-            .child("friendList").addValueEventListener(object : ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    val array = arrayListOf<FriendModel>()
-                    for (snap: DataSnapshot in snapshot.children) {
-                        val friendModel = snap.getValue(FriendModel::class.java)
-                        friendModel?.let {
-                            array.add(friendModel)
-                        }
-                    }
-                    friendList.value = array
-                }
-                override fun onCancelled(error: DatabaseError) {}
-            })
+        friendListExtension(userRef.child(replacePointToComma(myId)).child("friend")
+            , friendList)
+
         return friendList
     }
 
