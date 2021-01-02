@@ -11,10 +11,12 @@ class ChatRoomViewModel @Inject constructor(
     var roomList: MutableLiveData<List<RoomDataModel>> = MutableLiveData()
     var myId: String? = null
     var isDialogVisibility: MutableLiveData<Boolean> = MutableLiveData()
-    var friendHashMap = hashMapOf<String, String>()
+    //var friendHashMap = hashMapOf<String, String>()
+    var friendHashMap: MutableLiveData<HashMap<String, String>> = MutableLiveData()
 
     var deleteRoom: MutableLiveData<RoomDataModel> = MutableLiveData()
     var deleteDialogVisibility: MutableLiveData<Boolean> = MutableLiveData()
+    val enterRoom: MutableLiveData<RoomDataModel> = MutableLiveData()
 
     fun selectRoomList(id: String) {
         roomList = repository.selectRoomList(id)
@@ -39,5 +41,9 @@ class ChatRoomViewModel @Inject constructor(
 
     fun deleteDialogVisibility(flag: Boolean) {
         deleteDialogVisibility.value = flag
+    }
+
+    fun enterRoom(roomData: RoomDataModel) {
+        enterRoom.value = roomData
     }
 }

@@ -5,6 +5,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
@@ -48,36 +49,44 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     }
 
     private void sendNotification(RemoteMessage message) {
+        if (message.getNotification() == null || message.getNotification().getTag() == null) {
+            return;
+        }
+
+        SharedPreferences shared = getSharedPreferences(getString(R.string.inChatPush), MODE_PRIVATE);
+        String sharedRoomKey = shared.getString("roomKey", "");
+        String[] chatRoomData = message.getNotification().getTag().split("&&"); //참여중인 방 정보
+
+        if (sharedRoomKey != null && sharedRoomKey.equals(chatRoomData[0])) {
+            //내가 현재 보고있는 방이다 push 를 받아선 안된다
+            return;
+        }
 
         Intent intent = new Intent(this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.putExtra(getString(R.string.runChat), chatRoomData);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT);
 
         String channelId = getString(R.string.notification_channel_id);
 
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 
-        String[] roomInfo;
-        if (message.getNotification() != null && message.getNotification().getTag() != null) {
-            roomInfo = message.getNotification().getTag().split("&&");
+        NotificationCompat.Builder notificationBuilder =
+                new NotificationCompat.Builder(this, channelId)
+                        .setSmallIcon(R.drawable.launcher_my_foreground)
+                        .setContentTitle(Objects.requireNonNull(message.getNotification()).getTitle())
+                        .setContentText(Objects.requireNonNull(message.getNotification()).getBody())
+                        .setAutoCancel(true)
+                        .setSound(defaultSoundUri)
+                        .setContentIntent(pendingIntent);
 
-            NotificationCompat.Builder notificationBuilder =
-                    new NotificationCompat.Builder(this, channelId)
-                            .setSmallIcon(R.drawable.launcher_my_foreground)
-                            .setContentTitle(Objects.requireNonNull(message.getNotification()).getTitle())
-                            .setContentText(Objects.requireNonNull(message.getNotification()).getBody())
-                            .setAutoCancel(true)
-                            .setSound(defaultSoundUri)
-                            .setContentIntent(pendingIntent);
+        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
-            NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                String channelName = getString(R.string.notification_channel_id);
-                NotificationChannel channel = new NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_HIGH);
-                notificationManager.createNotificationChannel(channel);
-            }
-            notificationManager.notify(0, notificationBuilder.build());
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            String channelName = getString(R.string.notification_channel_id);
+            NotificationChannel channel = new NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_HIGH);
+            notificationManager.createNotificationChannel(channel);
         }
+        notificationManager.notify(0, notificationBuilder.build());
     }
 }

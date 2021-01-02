@@ -1,7 +1,7 @@
 package com.mywidget.ui.chatroom
 
 import android.app.Dialog
-import android.graphics.Color
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,10 +9,12 @@ import androidx.activity.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.mywidget.R
+import com.mywidget.data.model.RoomDataModel
 import com.mywidget.databinding.ActivityChatRoomBinding
 import com.mywidget.databinding.ChatCreateRoomBinding
 import com.mywidget.databinding.DeleteConfirmDialogChatRoomBinding
 import com.mywidget.ui.base.BaseActivity
+import com.mywidget.ui.chat.ChatActivity
 import com.mywidget.ui.chatroom.recyclerview.ChatRoomRecyclerView
 import javax.inject.Inject
 
@@ -46,7 +48,31 @@ class ChatRoomActivity : BaseActivity<ActivityChatRoomBinding>() {
             viewModel.myId = this
         }
 
+        observer()
         createRoomDialog()
+        chatInPush()
+    }
+
+    private fun observer() {
+        viewModel.enterRoom.observe(this, Observer {
+            val intent = Intent(binding.root.context, ChatActivity::class.java)
+            intent.putExtra("data", it)
+            intent.putExtra("friendMap", viewModel.friendHashMap.value)
+            binding.root.context.startActivity(intent)
+        })
+    }
+
+    private fun chatInPush() {
+        val intent = intent
+        val extras = intent.extras
+        val chatArray = extras?.getStringArray(getString(R.string.runChat))
+        chatArray?.let {
+            //푸쉬 진입시 친구 목록을 불러온 후 채팅방 진입
+            viewModel.friendHashMap.observe(this, Observer {
+                val roomData = RoomDataModel("", chatArray[0], chatArray[1])
+                viewModel.enterRoom(roomData)
+            })
+        }
     }
 
     private fun createRoomDialog() {

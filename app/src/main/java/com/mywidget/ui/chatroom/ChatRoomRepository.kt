@@ -18,7 +18,8 @@ class ChatRoomRepository @Inject constructor() {
     private val userRef: DatabaseReference by lazy { database.child("User") }
     var roomList: MutableLiveData<List<RoomDataModel>> = MutableLiveData()
     private val ROOMLIST = "RoomList"
-    private val friendHashMap = hashMapOf<String, String>()
+    private val friendMap = hashMapOf<String, String>()
+    var friendHashMap: MutableLiveData<HashMap<String, String>> = MutableLiveData()
 
     fun selectRoomList(id: String): MutableLiveData<List<RoomDataModel>> {
         userRef.child(replacePointToComma(id))
@@ -39,7 +40,7 @@ class ChatRoomRepository @Inject constructor() {
         return roomList
     }
 
-    fun selectFriendList(id: String): HashMap<String, String> {
+    fun selectFriendList(id: String): MutableLiveData<HashMap<String, String>> {
         userRef.child(replacePointToComma(id)).child("friend")
             .child("friendList").addListenerForSingleValueEvent(object : ValueEventListener{
                 override fun onDataChange(snapshot: DataSnapshot) {
@@ -47,10 +48,11 @@ class ChatRoomRepository @Inject constructor() {
                         val friendModel = friend.getValue(FriendModel::class.java)
                         friendModel?.let {
                             if (it.email.isNotEmpty()) {
-                                friendHashMap[it.email] = it.nickName
+                                friendMap[it.email] = it.nickName
                             }
                         }
                     }
+                    friendHashMap.value = friendMap
                 }
                 override fun onCancelled(error: DatabaseError) {}
             })

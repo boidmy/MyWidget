@@ -33,16 +33,10 @@ class ChatRoomViewHolder(val binding: WatingRoomItemBinding) :
     RecyclerView.ViewHolder(binding.root) {
     fun bindView(data: RoomDataModel, viewModel: ChatRoomViewModel) {
         binding.data = data
+        binding.viewModel = viewModel
 
-        binding.rvContainer.setOnClickListener {
-            val intent = Intent(binding.root.context, ChatActivity::class.java)
-            intent.putExtra("data", data)
-            intent.putExtra("friendMap", viewModel.friendHashMap)
-            binding.root.context.startActivity(intent)
-        }
         binding.roomRemove.setOnClickListener {
             viewModel.deleteRoom.value = data
-
         }
     }
 }

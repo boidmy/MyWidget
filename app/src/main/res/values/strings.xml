@@ -13,4 +13,7 @@
     <string name="menu_send">Send</string>
     <string name="myPage">마이페이지</string>
     <string name="notification_channel_id">push test</string>
+    <string name="inChatPush">inChatPush</string>
+    <string name="roomKey">roomKey</string>
+    <string name="runChat">runChat</string>
 </resources>

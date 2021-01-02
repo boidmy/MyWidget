@@ -50,7 +50,6 @@ class FriendRepository @Inject constructor() {
         friendRef.addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     val favorites = snapshot.child("favorites").value
-
                     val array = arrayListOf<FriendModel>()
                     for (snap: DataSnapshot in snapshot.child("friendList").children) {
                         val friendModel = snap.getValue(FriendModel::class.java)

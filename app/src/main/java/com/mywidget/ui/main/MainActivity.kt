@@ -13,13 +13,13 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.tabs.TabLayout
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
-import com.mywidget.*
+import com.mywidget.R
 import com.mywidget.common.BackPressAppFinish
 import com.mywidget.databinding.*
 import com.mywidget.ui.base.BaseActivity
+import com.mywidget.ui.chatroom.ChatRoomActivity
 import com.mywidget.ui.friend.FriendActivity
 import com.mywidget.ui.login.LoginActivity
 import com.mywidget.ui.loveday.FloatingPopupActivity
@@ -65,6 +65,18 @@ class MainActivity : BaseActivity<DrawerlayoutMainBinding>()
         memoDialogBind()
         loveDayDialogBind()
         favoritesDialogBind()
+        chatInPush()
+    }
+
+    private fun chatInPush() {
+        val intent = intent
+        val extras = intent.extras
+        val chatArray = extras?.getStringArray(getString(R.string.runChat))
+        chatArray?.let {
+            val intent = Intent(this, ChatRoomActivity::class.java)
+            intent.putExtra(getString(R.string.runChat), chatArray)
+            startActivity(intent)
+        }
     }
 
     private fun loginCheck() {

@@ -32,7 +32,7 @@ public class SendPush {
             notification.put("title", myNickname+" 메세지");
             notification.put("body", memo);
             //notification.put("clickAction", roomData.getRoomKey());
-            notification.put("tag", roomData.getMaster() + "&&" + roomData.getRoomKey());
+            notification.put("tag", roomData.getRoomKey() + "&&" + roomData.getMaster());
 
             JSONObject message = new JSONObject();
 

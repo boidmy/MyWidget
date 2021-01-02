@@ -33,9 +33,10 @@ class ChatInviteRepository @Inject constructor() {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     val array = arrayListOf<FriendModel>()
                     for (snap: DataSnapshot in snapshot.children) {
-                        val email = snap.key.toString()
-                        val explanation = snap.value.toString()
-                        array.add(FriendModel(replaceCommaToPoint(email), explanation))
+                        val friendModel = snap.getValue(FriendModel::class.java)
+                        friendModel?.let {
+                            array.add(friendModel)
+                        }
                     }
                     friendList.value = array
                 }
