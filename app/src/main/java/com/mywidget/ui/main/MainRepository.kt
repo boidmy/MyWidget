@@ -15,6 +15,7 @@ import com.mywidget.data.room.LoveDayDB
 import com.mywidget.data.room.Memo
 import com.mywidget.data.room.MemoDB
 import com.mywidget.di.custom.ActivityScope
+import com.mywidget.extension.favoritesMessageExtension
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -121,41 +122,13 @@ class MainRepository @Inject constructor(
     }
 
     fun favoritesMessageMe(friendEmail: String) {
-        favoritesRef.child(replacePointToComma(myId.value ?:""))
-            .child(replacePointToComma(friendEmail)).limitToLast(1)
-            .addValueEventListener(object : ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    if (snapshot.value == null) favoritesNoneMessageMe()
-                    for (snap: DataSnapshot in snapshot.children) {
-                        val value = snap.getValue(FavoritesData::class.java)
-                        value?.let {
-                            value.date = dateFormat(value.date)
-                            favoritesMessageMe.value = value
-                        }
-
-                    }
-                }
-                override fun onCancelled(error: DatabaseError) {}
-        })
+        favoritesMessageExtension(favoritesRef.child(replacePointToComma(myId.value ?:""))
+            .child(replacePointToComma(friendEmail)), favoritesMessageMe)
     }
 
     fun favoritesMessageFriend(friendEmail: String) {
-        favoritesRef.child(replacePointToComma(friendEmail))
-            .child(replacePointToComma(myId.value ?:"")).limitToLast(1)
-            .addValueEventListener(object : ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    if (snapshot.value == null) favoritesNoneMessageFriend()
-                    for (snap: DataSnapshot in snapshot.children) {
-                        val value = snap.getValue(FavoritesData::class.java)
-                        value?.let {
-                            value.date = dateFormat(value.date)
-                            favoritesMessageFriend.value = value
-                        }
-                    }
-                }
-                override fun onCancelled(error: DatabaseError) {}
-
-            })
+        favoritesMessageExtension(favoritesRef.child(replacePointToComma(friendEmail))
+            .child(replacePointToComma(myId.value ?:"")), favoritesMessageFriend)
     }
 
     fun favoritesInsertMessage(message: String) {

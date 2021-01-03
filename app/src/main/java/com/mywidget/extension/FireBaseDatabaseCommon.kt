@@ -5,7 +5,9 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
+import com.mywidget.data.model.FavoritesData
 import com.mywidget.data.model.FriendModel
+import util.CalendarUtil
 
 fun friendListExtension(friendRef: DatabaseReference
                         , mutableData: MutableLiveData<ArrayList<FriendModel>>) {
@@ -24,4 +26,22 @@ fun friendListExtension(friendRef: DatabaseReference
         }
         override fun onCancelled(error: DatabaseError) {}
     })
+}
+
+fun favoritesMessageExtension(favoritesRef: DatabaseReference
+                              , mutableData: MutableLiveData<FavoritesData>) {
+    favoritesRef.limitToLast(1).addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if (snapshot.value == null) mutableData.value = null
+                for (snap: DataSnapshot in snapshot.children) {
+                    val value = snap.getValue(FavoritesData::class.java)
+                    value?.let {
+                        value.date = CalendarUtil.dateFormat(value.date)
+                        mutableData.value = value
+                    }
+
+                }
+            }
+            override fun onCancelled(error: DatabaseError) {}
+        })
 }
