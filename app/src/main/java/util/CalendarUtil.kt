@@ -6,10 +6,7 @@ import java.util.*
 object CalendarUtil {
 
     fun calendar(data: String?): Calendar? {
-        data?.let {
-
-        }
-        if(data != "null") {
+        if(data != "null" && data != null) {
             val cal: Calendar = Calendar.getInstance(Locale.KOREA)
             cal.time = SimpleDateFormat("yyyyMMdd").parse(data)
             return cal
@@ -137,5 +134,11 @@ object CalendarUtil {
         val date = format.parse(data)
         val outputFormat = SimpleDateFormat("yy.MM.dd a hh:mm", Locale.getDefault())
         return outputFormat.format(date)
+    }
+
+    fun memoDateFormat(cal: Calendar): String {
+        val dayOfWeek: Int = cal.get(Calendar.DAY_OF_WEEK)
+        return getYear(cal).toString()+"-"+ String.format("%02d", getMonth(cal)+1)+"-"+
+                String.format("%02d", getNowdate(cal)) + " (" + week(dayOfWeek) + ")"
     }
 }

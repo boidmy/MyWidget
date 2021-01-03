@@ -26,9 +26,9 @@ class MainFragmentViewModel @Inject constructor(
     var deleteDDayDialogVisibility: MutableLiveData<Boolean> = MutableLiveData()
     var dDayDetail: MutableLiveData<Memo> = MutableLiveData()
 
-    fun insertMemo(memo: String, data: String) {
+    fun insertMemo(memo: Memo) {
         Thread {
-            repository.insertMemo(memo, data)
+            repository.insertMemo(memo)
             selectMemo()
         }.start()
     }
@@ -39,6 +39,13 @@ class MainFragmentViewModel @Inject constructor(
             selectMemo()
         }.start()
         deleteDDayDialogVisibility(false)
+    }
+
+    fun updateMemo(data: Memo, updateMemo: String) {
+        Thread {
+            repository.updateMemo(data, updateMemo)
+            selectMemo()
+        }.start()
     }
 
     fun deleteDDayDialogVisibility(flag: Boolean) {

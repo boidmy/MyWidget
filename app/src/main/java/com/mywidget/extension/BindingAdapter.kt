@@ -34,9 +34,9 @@ import com.mywidget.ui.main.recyclerview.MainTabMemoAdapter
 import com.mywidget.ui.widgetlist.WidgetListViewModel
 import com.mywidget.ui.widgetlist.recyclerview.WidgetListRecyclerView
 import util.CalendarUtil
+import util.CalendarUtil.memoDateFormat
 import util.Util.toast
 import java.util.*
-
 
 @BindingAdapter("text")
 fun text(textView: TextView?, data: String?) {
@@ -45,16 +45,7 @@ fun text(textView: TextView?, data: String?) {
 
 @BindingAdapter("dateProcessing")
 fun dateProcessing(textView: TextView?, data: String?) {
-    val cal = CalendarUtil.calendar(data)
-    var value = ""
-    cal?.let {
-        val dayOfWeek: Int = it.get(Calendar.DAY_OF_WEEK)
-        value = CalendarUtil.getYear(it).toString()+"-"+
-                String.format("%02d", CalendarUtil.getMonth(it)+1)+"-"+
-                String.format("%02d", CalendarUtil.getNowdate(it)) +
-                " (" + CalendarUtil.week(dayOfWeek) + ")"
-    }
-    text(textView, value)
+    text(textView, data)
 }
 
 @BindingAdapter("daysPast")
@@ -113,7 +104,13 @@ fun memoOnclick(imageView: ImageView, memo: EditText, date: TextView, viewModel:
             if (date.text.isEmpty()) {
                 imageView.context.toast("날짜를 선택해주세요!")
             } else {
-                viewModel.insertMemo(memo.text.toString(), date.tag.toString())
+                val cal = CalendarUtil.calendar(date.tag.toString())
+                var value = ""
+                cal?.let {
+                    value = memoDateFormat(cal)
+                }
+                val memo = Memo(null, memo.text.toString(), value)
+                viewModel.insertMemo(memo)
                 viewModel.memoDialogVisibility(false)
             }
         }

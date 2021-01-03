@@ -81,12 +81,17 @@ class MainRepository @Inject constructor(
         memoDb.memoDao().delete(seq)
     }
 
+    fun updateMemo(data: Memo, updateMemo: String) {
+        data.memo = updateMemo
+        memoDb.memoDao().update(data)
+    }
+
     fun selectMemo() : List<Memo>? {
         return memoDb.memoDao().getUser()
     }
 
-    fun insertMemo(memo: String, data: String) {
-        memoDb.memoDao().insert(Memo(null, memo, data))
+    fun insertMemo(memo: Memo) {
+        memoDb.memoDao().insert(memo)
     }
 
     fun logout(email: String) {

@@ -17,6 +17,9 @@ import com.mywidget.databinding.MainFragmentDDayBinding
 import com.mywidget.ui.base.BaseFragment
 import com.mywidget.ui.main.MainFragmentViewModel
 import com.mywidget.ui.main.recyclerview.MainTabMemoAdapter
+import util.CalendarUtil
+import util.CalendarUtil.memoDateFormat
+import util.Util.dpToPx
 import javax.inject.Inject
 
 
@@ -59,27 +62,19 @@ class FragmentMemo : BaseFragment<MainFragmentDDayBinding>() {
         binding.data = viewModel.memoData
         binding.viewModel = viewModel
         mAdapter.setViewModel(viewModel)
-        binding.dDayDetailContainer.animate()
-            .translationY(-binding.dDayDetailContainer.height.toFloat())
-            .setDuration(300)
-            .setListener(object : AnimatorListenerAdapter() {
-                override fun onAnimationEnd(animation: Animator) {
-                    super.onAnimationEnd(animation)
-                    binding.dDayDetailContainer.isVisible = false
-                }
-            })
+
+        gone()
 
         viewModel.dDayDetail.observe(requireActivity(), Observer {
-            //binding.dDayDetailContainer.isVisible = binding.dDayDetailContainer.visibility != 0
-            if (binding.dDayDetailContainer.visibility == 0) {
+            binding.updateMemo = it
+            if (binding.dDayDetailContainer.visibility == View.VISIBLE) {
                 if (it.sequence == saveDDayClickSeq) {
                     gone()
-                } else {
-                    visible()
+                    return@Observer
                 }
-            } else {
-                visible()
             }
+            visible()
+            saveDDayClickSeq = it.sequence ?: Int.MAX_VALUE
         })
 
         selectCall()
@@ -99,7 +94,7 @@ class FragmentMemo : BaseFragment<MainFragmentDDayBinding>() {
 
     fun gone() {
         binding.dDayDetailContainer.animate()
-            .translationY(-binding.dDayDetailContainer.height.toFloat())
+            .translationY(-200.dpToPx.toFloat())
             .setDuration(300)
             .setListener(object : AnimatorListenerAdapter() {
                 override fun onAnimationEnd(animation: Animator) {

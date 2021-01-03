@@ -6,6 +6,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthInvalidUserException
+import kotlin.math.roundToLong
 
 object Util {
 
@@ -31,7 +32,7 @@ object Util {
         Toast.makeText(this, message, Toast.LENGTH_LONG).show()
 
     val Int.dpToPx: Int
-        get() = (this / Resources.getSystem().displayMetrics.density).toInt()
+        get() = (this * Resources.getSystem().displayMetrics.density).roundToLong().toInt()
 
     fun firebaseAuthException(exception: String, context: Context) {
         when (exception) {

@@ -12,6 +12,10 @@
         <import type="androidx.lifecycle.MutableLiveData" />
 
         <variable
+            name="updateMemo"
+            type="com.mywidget.data.room.Memo" />
+
+        <variable
             name="viewModel"
             type="com.mywidget.ui.main.MainFragmentViewModel" />
 
@@ -29,11 +33,15 @@
             android:id="@+id/dDayDetailContainer"
             android:layout_width="match_parent"
             android:layout_height="200dp"
-            android:background="#409CEC"
-            android:visibility="invisible"
-            tools:visibility="visible"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:alpha="0.5"
             android:animateLayoutChanges="true"
-            app:layout_constraintTop_toTopOf="parent">
+            android:background="@drawable/edge_round_white"
+            android:visibility="invisible"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:background="#0BC5FF"
+            tools:visibility="visible">
 
             <TextView
                 android:id="@+id/memoDate"
@@ -42,23 +50,38 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="20dp"
-                android:text="@{viewModel.dDayDetail.date}"
+                android:text="@{updateMemo.date}"
                 android:textSize="14dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/dDayDetailContainer"
                 tools:text="2019-01-01" />
 
-            <TextView
+            <EditText
                 android:id="@+id/memoTxt"
                 style="@style/list_item_text_style"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
-                android:text="@{viewModel.dDayDetail.memo}"
+                android:layout_marginEnd="10dp"
+                android:background="@android:color/transparent"
+                android:maxLines="4"
+                android:text="@{updateMemo.memo}"
                 app:layout_constraintBottom_toBottomOf="@+id/dDayDetailContainer"
+                app:layout_constraintEnd_toStartOf="@+id/confirmBtn"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/memoDate"
                 tools:text="언제언제까지" />
+
+            <ImageView
+                android:id="@+id/confirmBtn"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginBottom="20dp"
+                android:onClick="@{() -> viewModel.updateMemo(updateMemo, memoTxt.getText().toString())}"
+                android:src="@drawable/confirm_btn"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -85,7 +108,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:itemCount="2"
-            tools:listitem="@layout/main_fragment_d_day_item" />
+            tools:listitem="@layout/main_fragment_d_day_item"
+            tools:visibility="gone" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
