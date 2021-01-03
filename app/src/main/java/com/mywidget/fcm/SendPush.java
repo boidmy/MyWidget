@@ -33,11 +33,12 @@ public class SendPush {
             notification.put("body", memo);
             //notification.put("clickAction", roomData.getRoomKey());
             notification.put("tag", roomData.getRoomKey() + "&&" + roomData.getMaster());
+            //notification.put("click_action", roomData.getRoomKey() + "&&" + roomData.getMaster());
 
             JSONObject message = new JSONObject();
 
             //message.put("message", message);
-            root.put("notification", notification);
+            root.put("data", notification);
             root.put("to", token);
             root.put("content_available", true);
             root.put("priority", "high");
