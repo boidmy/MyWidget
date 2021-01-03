@@ -41,7 +41,7 @@ class MainTabMemoViewHolder(val binding: MainFragmentDDayItemBinding)
         binding.apply {
             viewModel = mData
             executePendingBindings()
-            rvContainer.setOnClickListener {
+            /*rvContainer.setOnClickListener {
                 val cal = CalendarUtil.calendar(viewModel?.date)
                 cal?.let {
                     val dpd = DatePickerDialog(root.context
@@ -51,19 +51,15 @@ class MainTabMemoViewHolder(val binding: MainFragmentDDayItemBinding)
                         , CalendarUtil.getNowdate(cal))
                     dpd.show()
                 }
+            }*/
+            rvContainer.setOnClickListener {
+                mData?.let {
+                    mFragmentViewModel.dDayDetail(it)
+                }
             }
 
-            val alert = AlertDialog.Builder(root.context)
             memoRemove.setOnClickListener {
                 mFragmentViewModel.deleteDDayDialog.value = mData?.sequence
-                /*alert
-                    .setTitle("삭제하실건가요?")
-                    .setPositiveButton("삭제") { _, _ ->
-                        mData?.sequence?.let {
-                            mFragmentViewModel?.deleteMemo(it)
-                        }
-                    }.setNegativeButton("취소") { _, _ ->
-                    }.show()*/
             }
         }
     }

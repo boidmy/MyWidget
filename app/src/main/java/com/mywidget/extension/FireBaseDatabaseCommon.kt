@@ -39,7 +39,6 @@ fun favoritesMessageExtension(favoritesRef: DatabaseReference
                         value.date = CalendarUtil.dateFormat(value.date)
                         mutableData.value = value
                     }
-
                 }
             }
             override fun onCancelled(error: DatabaseError) {}

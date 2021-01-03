@@ -24,6 +24,7 @@ class MainFragmentViewModel @Inject constructor(
 
     var deleteDDayDialog: MutableLiveData<Int> = MutableLiveData()
     var deleteDDayDialogVisibility: MutableLiveData<Boolean> = MutableLiveData()
+    var dDayDetail: MutableLiveData<Memo> = MutableLiveData()
 
     fun insertMemo(memo: String, data: String) {
         Thread {
@@ -112,5 +113,9 @@ class MainFragmentViewModel @Inject constructor(
 
     fun favoritesExistence() {
         favoritesExistence = repository.favoritesExistence()
+    }
+
+    fun dDayDetail(memoData: Memo) {
+        dDayDetail.value = memoData
     }
 }
