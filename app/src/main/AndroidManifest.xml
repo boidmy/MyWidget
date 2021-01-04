@@ -26,8 +26,9 @@
             android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
-                <action android:name="OPEN_MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
+                <action android:name="OPEN_MAIN"/>
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
 
@@ -78,6 +79,10 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT"/>
             </intent-filter>
         </service>
+
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/launcher_my" />
     </application>
 
     <meta-data

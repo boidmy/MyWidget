@@ -61,17 +61,6 @@ class MainActivity : BaseActivity<DrawerlayoutMainBinding>()
         chatInPush()
     }
 
-    private fun chatInPush() {
-        val intent = intent
-        val extras = intent.extras
-        val chatArray = extras?.getStringArray(getString(R.string.runChat))
-        chatArray?.let {
-            val intent = Intent(this, ChatRoomActivity::class.java)
-            intent.putExtra(getString(R.string.runChat), chatArray)
-            startActivity(intent)
-        }
-    }
-
     private fun loginCheck() {
         val email = loginEmail()
         viewModel.myIdReset()
@@ -79,6 +68,18 @@ class MainActivity : BaseActivity<DrawerlayoutMainBinding>()
             viewModel.myId(email)
             binding.navView.menu.getItem(1).title = "로그아웃"
         }
+    }
+
+    private fun leftMenu() {
+        binding.mainContainer.titleContainer.leftMenu.setOnClickListener {
+            binding.drawerLayout.openDrawer(GravityCompat.START)
+        }
+        val drawerHeaderBinding: NavHeaderMainBinding = DataBindingUtil.inflate(layoutInflater
+            , R.layout.nav_header_main, binding.navView, false)
+        drawerHeaderBinding.lifecycleOwner = this
+        drawerHeaderBinding.viewModel = viewModel
+        binding.navView.addHeaderView(drawerHeaderBinding.root)
+        binding.navView.setNavigationItemSelectedListener(this)
     }
 
     private fun tabInit() {
@@ -115,18 +116,6 @@ class MainActivity : BaseActivity<DrawerlayoutMainBinding>()
                 }
             }
         }
-    }
-
-    private fun leftMenu() {
-        binding.mainContainer.titleContainer.leftMenu.setOnClickListener {
-            binding.drawerLayout.openDrawer(GravityCompat.START)
-        }
-        val drawerHeaderBinding: NavHeaderMainBinding = DataBindingUtil.inflate(layoutInflater
-            , R.layout.nav_header_main, binding.navView, false)
-        drawerHeaderBinding.lifecycleOwner = this
-        drawerHeaderBinding.viewModel = viewModel
-        binding.navView.addHeaderView(drawerHeaderBinding.root)
-        binding.navView.setNavigationItemSelectedListener(this)
     }
 
     private fun loginTxt(text: String) {
@@ -228,5 +217,17 @@ class MainActivity : BaseActivity<DrawerlayoutMainBinding>()
     fun onClickFloating(v: View) {
         val intent = Intent(this, FloatingPopupActivity::class.java)
         startActivityForResult(intent, 3000)
+    }
+
+    private fun chatInPush() {
+        val intent = intent
+        val extras = intent.extras
+        val chatInformation = extras?.getString(getString(R.string.runChat))
+        chatInformation?.let {
+            val intent = Intent(this, ChatRoomActivity::class.java)
+            val chatRoomData: Array<String> = it.split("&&".toRegex()).toTypedArray()
+            intent.putExtra(getString(R.string.runChat), chatRoomData)
+            startActivity(intent)
+        }
     }
 }

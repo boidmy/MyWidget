@@ -34,7 +34,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     private static final String TAG = "MyFirebaseMsgService";
 
-    @Override
+    /*@Override
     public void handleIntent(Intent intent) {
         try {
             if (intent.getExtras() != null) {
@@ -53,7 +53,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         catch (Exception e) {
             super.handleIntent(intent);
         }
-    }
+    }*/
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
@@ -62,7 +62,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
         if (remoteMessage.getData().size() > 0) {
             Log.d(TAG, "Message data payload: " + remoteMessage.getData());
-            sendNotification(remoteMessage);
         }
         if (remoteMessage.getNotification() != null) {
             Log.d(TAG, "Message Notification Body: " + remoteMessage.getNotification().getBody());
@@ -71,44 +70,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     }
 
     private void sendNotification(RemoteMessage message) {
-        SharedPreferences shared = getSharedPreferences(getString(R.string.inChatPush), MODE_PRIVATE);
-        String sharedRoomKey = shared.getString("roomKey", "");
-        String[] chatRoomData = Objects.requireNonNull(message.getData().get("tag")).split("&&"); //참여중인 방 정보
-
-        if (sharedRoomKey != null && sharedRoomKey.equals(chatRoomData[0])) {
-            //내가 현재 보고있는 방이다 push 를 받아선 안된다
-            return;
-        }
-
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        intent.putExtra(getString(R.string.runChat), chatRoomData);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT);
-
-        String channelId = getString(R.string.notification_channel_id);
-
-        Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-
-        NotificationCompat.Builder notificationBuilder =
-                new NotificationCompat.Builder(this, channelId)
-                        .setSmallIcon(R.drawable.launcher_my)
-                        .setContentTitle(Objects.requireNonNull(message.getData()).get("title"))
-                        .setContentText(Objects.requireNonNull(message.getData()).get("body"))
-                        .setAutoCancel(true)
-                        .setSound(defaultSoundUri)
-                        .setContentIntent(pendingIntent);
-
-        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            String channelName = getString(R.string.notification_channel_id);
-            NotificationChannel channel = new NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_HIGH);
-            notificationManager.createNotificationChannel(channel);
-        }
-        notificationManager.notify(0, notificationBuilder.build());
-    }
-
-    private void sendNotification2(RemoteMessage message) {
         if (message.getNotification() == null || message.getNotification().getTag() == null) {
             return;
         }

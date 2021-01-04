@@ -60,19 +60,6 @@ class ChatRoomActivity : BaseActivity<ActivityChatRoomBinding>() {
         })
     }
 
-    private fun chatInPush() {
-        val intent = intent
-        val extras = intent.extras
-        val chatArray = extras?.getStringArray(getString(R.string.runChat))
-        chatArray?.let {
-            //푸쉬 진입시 친구 목록을 불러온 후 채팅방 진입
-            viewModel.friendHashMap.observe(this, Observer {
-                val roomData = RoomDataModel("", chatArray[0], chatArray[1])
-                viewModel.enterRoom(roomData)
-            })
-        }
-    }
-
     private fun createRoomDialog() {
         dialogBinding.viewModel = viewModel
         dialogBinding.id = loginEmail()
@@ -99,5 +86,18 @@ class ChatRoomActivity : BaseActivity<ActivityChatRoomBinding>() {
             deleteDialogBinding.data = it
             viewModel.deleteDialogVisibility(true)
         })
+    }
+
+    private fun chatInPush() {
+        val intent = intent
+        val extras = intent.extras
+        val chatArray = extras?.getStringArray(getString(R.string.runChat))
+        chatArray?.let {
+            //푸쉬 진입시 친구 목록을 불러온 후 채팅방 진입
+            viewModel.friendHashMap.observe(this, Observer {
+                val roomData = RoomDataModel("", chatArray[0], chatArray[1])
+                viewModel.enterRoom(roomData)
+            })
+        }
     }
 }
