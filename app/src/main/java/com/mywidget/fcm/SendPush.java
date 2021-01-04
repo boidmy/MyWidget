@@ -28,17 +28,22 @@ public class SendPush {
 
             JSONObject root = new JSONObject();
             JSONObject notification = new JSONObject();
+            JSONObject data = new JSONObject();
 
             notification.put("title", myNickname+" 메세지");
             notification.put("body", memo);
             //notification.put("clickAction", roomData.getRoomKey());
             notification.put("tag", roomData.getRoomKey() + "&&" + roomData.getMaster());
+            notification.put("click_action", "OPEN_MAIN");
             //notification.put("click_action", roomData.getRoomKey() + "&&" + roomData.getMaster());
+
+            data.put("extra",roomData.getRoomKey() + "&&" + roomData.getMaster());
 
             JSONObject message = new JSONObject();
 
             //message.put("message", message);
-            root.put("data", notification);
+            root.put("notification", notification);
+            root.put("data", data);
             root.put("to", token);
             root.put("content_available", true);
             root.put("priority", "high");
