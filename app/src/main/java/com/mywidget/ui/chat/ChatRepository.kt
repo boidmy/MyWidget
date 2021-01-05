@@ -149,7 +149,8 @@ class ChatRepository @Inject constructor() {
             object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     for (snap: DataSnapshot in snapshot.children) {
-                        if (snap.value != key) {
+                        val data = snap.getValue(ChatInviteModel::class.java)
+                        if (sendId != snap.key && data?.inviteFlag == true) {
                             //유저의 토큰값을 검색해서 푸쉬를 날려줘야함
                             getUserTokenAndPush(snap.key ?: "", message, sendId)
                         }

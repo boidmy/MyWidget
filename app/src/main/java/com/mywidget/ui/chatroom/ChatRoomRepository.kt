@@ -1,14 +1,12 @@
 package com.mywidget.ui.chatroom
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
-import com.mywidget.data.model.ChatInviteModel
-import com.mywidget.data.model.FriendModel
-import com.mywidget.data.model.RoomDataModel
-import com.mywidget.data.model.UserData
+import com.mywidget.data.model.*
 import util.Util.replacePointToComma
 import javax.inject.Inject
 
@@ -20,6 +18,7 @@ class ChatRoomRepository @Inject constructor() {
     private val ROOMLIST = "RoomList"
     private val friendMap = hashMapOf<String, String>()
     var friendHashMap: MutableLiveData<HashMap<String, String>> = MutableLiveData()
+    var roomLastMessage: MutableLiveData<List<ChatDataModel>> = MutableLiveData()
 
     fun selectRoomList(id: String): MutableLiveData<List<RoomDataModel>> {
         userRef.child(replacePointToComma(id))
@@ -38,6 +37,35 @@ class ChatRoomRepository @Inject constructor() {
 
         })
         return roomList
+    }
+
+    fun selectLastMessage(data: List<RoomDataModel>) {
+        val dataList = arrayListOf<ChatDataModel>()
+        for (i in data.indices) {
+            dataList.add(ChatDataModel())
+        }
+        for ((index, input) in data.withIndex()) {
+            roomRef.child(replacePointToComma(input.master)).child(input.roomKey)
+                .child("message").limitToLast(1)
+                .addValueEventListener(object : ValueEventListener {
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        for (snap in snapshot.children) {
+                            val key = snap.key
+                            key?.let {
+                                input.lastMessage = snapshot.child(it).child("message").value as String
+                            }
+                        }
+
+                        dataList[index] = ChatDataModel(input.lastMessage)
+                        roomLastMessage.value = dataList
+                    }
+                    override fun onCancelled(error: DatabaseError) {}
+                })
+        }
+    }
+
+    fun resetLastMessage(): MutableLiveData<List<ChatDataModel>>{
+        return roomLastMessage
     }
 
     fun selectFriendList(id: String): MutableLiveData<HashMap<String, String>> {

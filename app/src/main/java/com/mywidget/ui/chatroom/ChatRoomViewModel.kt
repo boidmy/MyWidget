@@ -2,6 +2,7 @@ package com.mywidget.ui.chatroom
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.mywidget.data.model.ChatDataModel
 import com.mywidget.data.model.RoomDataModel
 import javax.inject.Inject
 
@@ -17,6 +18,7 @@ class ChatRoomViewModel @Inject constructor(
     var deleteRoom: MutableLiveData<RoomDataModel> = MutableLiveData()
     var deleteDialogVisibility: MutableLiveData<Boolean> = MutableLiveData()
     val enterRoom: MutableLiveData<RoomDataModel> = MutableLiveData()
+    var roomLastMessage: MutableLiveData<List<ChatDataModel>> = MutableLiveData(arrayListOf())
 
     fun selectRoomList(id: String) {
         roomList = repository.selectRoomList(id)
@@ -24,6 +26,14 @@ class ChatRoomViewModel @Inject constructor(
 
     fun selectFriendList(id: String) {
         friendHashMap = repository.selectFriendList(id)
+    }
+
+    fun resetLastMessage() {
+        roomLastMessage = repository.resetLastMessage()
+    }
+
+    fun selectLastMessage(data: List<RoomDataModel>) {
+        repository.selectLastMessage(data)
     }
 
     fun createRoom(id: String, subject: String) {

@@ -21,11 +21,11 @@ import javax.inject.Inject
 class ChatRoomActivity : BaseActivity<ActivityChatRoomBinding>() {
 
     @Inject lateinit var factory: ViewModelProvider.Factory
-    private val viewModel by viewModels<ChatRoomViewModel> { factory }
     @Inject lateinit var dialogBinding: ChatCreateRoomBinding
     @Inject lateinit var createRoomDialog: Dialog
     @Inject lateinit var deleteDialogBinding: DeleteConfirmDialogChatRoomBinding
     @Inject lateinit var deleteDialog: Dialog
+    private val viewModel by viewModels<ChatRoomViewModel> { factory }
 
     override val layout: Int
         get() = R.layout.activity_chat_room
@@ -52,11 +52,20 @@ class ChatRoomActivity : BaseActivity<ActivityChatRoomBinding>() {
     }
 
     private fun observer() {
+        viewModel.resetLastMessage()
+        viewModel.roomLastMessage.observe(this, Observer {
+            binding.watingRoomRv.adapter?.notifyDataSetChanged()
+        })
+
         viewModel.enterRoom.observe(this, Observer {
-            val intent = Intent(binding.root.context, ChatActivity::class.java)
+            val intent = Intent(this, ChatActivity::class.java)
             intent.putExtra("data", it)
             intent.putExtra("friendMap", viewModel.friendHashMap.value)
-            binding.root.context.startActivity(intent)
+            this.startActivity(intent)
+        })
+
+        viewModel.roomList.observe(this, Observer {
+            viewModel.selectLastMessage(it)
         })
     }
 

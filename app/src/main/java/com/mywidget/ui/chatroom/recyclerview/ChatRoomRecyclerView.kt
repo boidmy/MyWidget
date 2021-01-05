@@ -20,14 +20,15 @@ class ChatRoomRecyclerView(val viewModel: ChatRoomViewModel) :
     }
 
     override fun onBindViewHolder(holder: ChatRoomViewHolder, position: Int) {
-        viewModel.roomList.value?.get(position)?.let { holder.bindView(it, viewModel) }
+        viewModel.roomList.value?.get(position)?.let { holder.bindView(it, viewModel, position) }
     }
 }
 
 class ChatRoomViewHolder(val binding: WatingRoomItemBinding) :
     RecyclerView.ViewHolder(binding.root) {
-    fun bindView(data: RoomDataModel, viewModel: ChatRoomViewModel) {
+    fun bindView(data: RoomDataModel, viewModel: ChatRoomViewModel, position: Int) {
         binding.data = data
         binding.viewModel = viewModel
+        binding.position = position
     }
 }

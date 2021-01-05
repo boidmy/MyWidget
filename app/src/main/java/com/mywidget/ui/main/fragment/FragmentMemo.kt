@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewPropertyAnimator
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
@@ -17,8 +18,6 @@ import com.mywidget.databinding.MainFragmentDDayBinding
 import com.mywidget.ui.base.BaseFragment
 import com.mywidget.ui.main.MainFragmentViewModel
 import com.mywidget.ui.main.recyclerview.MainTabMemoAdapter
-import util.CalendarUtil
-import util.CalendarUtil.memoDateFormat
 import util.Util.dpToPx
 import javax.inject.Inject
 
@@ -40,6 +39,7 @@ class FragmentMemo : BaseFragment<MainFragmentDDayBinding>() {
         super.onCreateView(inflater, parent, savedInstanceState)
         bindView()
         deleteDialog()
+        dDayDetail()
 
         return binding.root
     }
@@ -63,49 +63,7 @@ class FragmentMemo : BaseFragment<MainFragmentDDayBinding>() {
         binding.viewModel = viewModel
         mAdapter.setViewModel(viewModel)
 
-        gone()
-
-        viewModel.dDayDetail.observe(requireActivity(), Observer {
-            binding.updateMemo = it
-            if (binding.dDayDetailContainer.visibility == View.VISIBLE) {
-                if (it.sequence == saveDDayClickSeq) {
-                    gone()
-                    return@Observer
-                }
-            }
-            visible()
-            saveDDayClickSeq = it.sequence ?: Int.MAX_VALUE
-        })
-
         selectCall()
-    }
-
-    fun visible() {
-        binding.dDayDetailContainer.isVisible = true
-        binding.dDayDetailContainer.animate()
-            .translationY(0f)
-            .setDuration(300)
-            .setListener(null)
-        binding.fragmentRv.animate()
-            .translationY(binding.dDayDetailContainer.height.toFloat())
-            .setDuration(300)
-            .setListener(null)
-    }
-
-    fun gone() {
-        binding.dDayDetailContainer.animate()
-            .translationY(-200.dpToPx.toFloat())
-            .setDuration(300)
-            .setListener(object : AnimatorListenerAdapter() {
-                override fun onAnimationEnd(animation: Animator) {
-                    super.onAnimationEnd(animation)
-                    binding.dDayDetailContainer.isVisible = false
-                }
-            })
-        binding.fragmentRv.animate()
-            .translationY(0f)
-            .setDuration(300)
-            .setListener(null)
     }
 
     private fun selectCall() {
@@ -113,4 +71,45 @@ class FragmentMemo : BaseFragment<MainFragmentDDayBinding>() {
             viewModel.selectMemo()
         }.start()
     }
+
+    private fun dDayDetail() {
+        goneAnimation()
+        viewModel.dDayDetail.observe(requireActivity(), Observer {
+            binding.updateMemo = it
+            if (binding.dDayDetailContainer.visibility == View.VISIBLE) {
+                if (it.sequence == saveDDayClickSeq) {
+                    goneAnimation()
+                    return@Observer
+                }
+            }
+            visibleAnimation()
+            saveDDayClickSeq = it.sequence ?: Int.MAX_VALUE
+        })
+    }
+
+    private fun visibleAnimation() {
+        binding.dDayDetailContainer.isVisible = true
+        binding.dDayDetailContainer
+            .animate(0f)
+            .setListener(null)
+        binding.fragmentRv
+            .animate(binding.dDayDetailContainer.height.toFloat())
+            .setListener(null)
+    }
+
+    private fun goneAnimation() {
+        binding.dDayDetailContainer
+            .animate(-200.dpToPx.toFloat())
+            .setListener(object : AnimatorListenerAdapter() {
+                override fun onAnimationEnd(animation: Animator) {
+                    super.onAnimationEnd(animation)
+                    binding.dDayDetailContainer.isVisible = false
+                }
+            })
+        binding.fragmentRv
+            .animate(0f)
+            .setListener(null)
+    }
+
+    private fun View.animate(y: Float) = this.animate().translationY(y).setDuration(300)
 }

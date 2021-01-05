@@ -13,20 +13,19 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.view.isVisible
 import androidx.databinding.BindingAdapter
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
 import com.mywidget.R
-import com.mywidget.data.model.ChatDataModel
-import com.mywidget.data.model.ChatInviteModel
-import com.mywidget.data.model.FriendModel
-import com.mywidget.data.model.RoomDataModel
+import com.mywidget.data.model.*
 import com.mywidget.data.room.Memo
 import com.mywidget.data.room.User
 import com.mywidget.ui.chat.ChatViewModel
 import com.mywidget.ui.chat.recyclerview.ChatAdapter
 import com.mywidget.ui.chat.recyclerview.UserListRecyclerView
 import com.mywidget.ui.chatinvite.recyclerview.ChatInviteRecyclerView
+import com.mywidget.ui.chatroom.ChatRoomViewModel
 import com.mywidget.ui.chatroom.recyclerview.ChatRoomRecyclerView
 import com.mywidget.ui.friend.recyclerview.FriendRecyclerView
 import com.mywidget.ui.main.MainFragmentViewModel
@@ -168,6 +167,36 @@ fun chatEditListener(editText: EditText, view: Button) {
     })
 }
 
+@BindingAdapter("favoriteFriendVisibility")
+fun favoriteFriendVisibility(view: View, data: UserData?) {
+    data?.let {
+       if (it.email.isNotEmpty()) {
+           view.isVisible = true
+           return
+       }
+    }
+    view.isVisible = false
+}
+
+@BindingAdapter("favoriteFriendNick")
+fun favoriteFriendNick(textView: TextView, nickName: String?) {
+    nickName?.let {
+        if (it.isEmpty()) {
+            text(textView, "친구")
+        } else {
+            text(textView, it)
+        }
+    }
+}
+
+@BindingAdapter("roomLastMessage", "position")
+fun roomLastMessage(textView: TextView, data: List<ChatDataModel>?, position: Int) {
+    data?.let {
+        if (it.size > position) {
+            text(textView, it[position].message)
+        }
+    }
+}
 
 @BindingAdapter("items")
 fun adapter(recyclerView: RecyclerView?, data: MutableLiveData<List<User>>) {

@@ -39,19 +39,8 @@ class MainTabMemoViewHolder(val binding: MainFragmentDDayItemBinding)
 
     fun bindView(mData: Memo?, mFragmentViewModel: MainFragmentViewModel) {
         binding.apply {
-            viewModel = mData
+            data = mData
             executePendingBindings()
-            /*rvContainer.setOnClickListener {
-                val cal = CalendarUtil.calendar(viewModel?.date)
-                cal?.let {
-                    val dpd = DatePickerDialog(root.context
-                        , DatePickerDialog.OnDateSetListener { _, _, _, dayOfMonth ->
-                        }, CalendarUtil.getYear(cal)
-                        , CalendarUtil.getMonth(cal)
-                        , CalendarUtil.getNowdate(cal))
-                    dpd.show()
-                }
-            }*/
             rvContainer.setOnClickListener {
                 mData?.let {
                     mFragmentViewModel.dDayDetail(it)
