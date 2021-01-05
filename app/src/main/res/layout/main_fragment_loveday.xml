@@ -27,7 +27,7 @@
             android:layout_marginTop="30dp"
             android:gravity="center"
             android:orientation="vertical"
-            android:visibility="@{viewModel.myId == null || viewModel.myId.empty ? View.GONE : View.VISIBLE}"
+            app:favoriteFriendVisibility="@{viewModel.favoritesExistenceMyFriend}"
             app:layout_constraintHorizontal_weight="0.5"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toLeftOf="@+id/favoritesFriendContainer"
@@ -76,7 +76,7 @@
             android:layout_marginTop="30dp"
             android:gravity="center"
             android:orientation="vertical"
-            android:visibility="@{viewModel.favoritesExistenceMyFriend == null ? View.GONE : View.VISIBLE}"
+            app:favoriteFriendVisibility="@{viewModel.favoritesExistenceMyFriend}"
             app:layout_constraintHorizontal_weight="0.5"
             app:layout_constraintLeft_toRightOf="@+id/favoritesMeContainer"
             app:layout_constraintRight_toRightOf="parent"
@@ -87,9 +87,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:alpha="0.6"
-                android:text='@{viewModel.favoritesExistenceMyFriend.nickName}'
                 android:textColor="#240440"
                 android:textSize="14dp"
+                app:favoriteFriendNick='@{viewModel.favoritesExistenceMyFriend.nickName}'
                 tools:text="친구" />
 
             <TextView

@@ -17,6 +17,11 @@ class FloatingPopupActivity : Activity() {
         setContentView(R.layout.loveday_popup)
     }
 
+    override fun onPause() {
+        super.onPause()
+        overridePendingTransition(R.anim.anim_fade_in, R.anim.anim_fade_out)
+    }
+
     fun onClickFloatingBtn(v: View) {
         when (v.id){
             R.id.memoContainer -> {
@@ -41,6 +46,7 @@ class FloatingPopupActivity : Activity() {
                 }
                 val intent = Intent(this, ChatRoomActivity::class.java)
                 startActivity(intent)
+                overridePendingTransition(R.anim.anim_slide_in_right, 0)
             }
         }
         finish()

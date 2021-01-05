@@ -6,7 +6,7 @@
     <data>
 
         <variable
-            name="viewModel"
+            name="data"
             type="com.mywidget.data.room.Memo" />
     </data>
 
@@ -34,7 +34,7 @@
             android:layout_marginStart="20dp"
             android:layout_marginEnd="3dp"
             android:maxLines="2"
-            android:text="@{viewModel.memo}"
+            android:text="@{data.memo}"
             android:textSize="16dp"
             style="@style/list_item_text_style"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -51,7 +51,7 @@
             android:layout_marginStart="20dp"
             style="@style/list_item_text_style"
             android:textSize="14dp"
-            app:dateProcessing="@{viewModel.date}"
+            app:dateProcessing="@{data.date}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/memoTxt"
@@ -65,7 +65,7 @@
             android:layout_marginEnd="10dp"
             style="@style/list_item_text_style"
             android:textSize="21dp"
-            app:daysPast="@{viewModel.date}"
+            app:daysPast="@{data.date}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintRight_toLeftOf="@+id/memoRemove"
             app:layout_constraintTop_toTopOf="parent"
