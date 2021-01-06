@@ -36,7 +36,7 @@ fun favoritesMessageExtension(favoritesRef: DatabaseReference
                 for (snap: DataSnapshot in snapshot.children) {
                     val value = snap.getValue(FavoritesData::class.java)
                     value?.let {
-                        value.date = CalendarUtil.dateFormat(value.date)
+                        value.date = CalendarUtil.yearDateFormat(value.date)
                         mutableData.value = value
                     }
                 }

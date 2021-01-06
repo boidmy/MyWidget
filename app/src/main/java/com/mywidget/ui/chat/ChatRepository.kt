@@ -2,7 +2,6 @@ package com.mywidget.ui.chat
 
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.database.*
 import com.mywidget.fcm.SendPush
@@ -12,10 +11,9 @@ import com.mywidget.data.model.FriendModel
 import com.mywidget.data.model.RoomDataModel
 import com.mywidget.di.custom.ActivityScope
 import util.CalendarUtil
-import util.CalendarUtil.dateFormat
+import util.CalendarUtil.yearDateFormat
 import util.Util.replaceCommaToPoint
 import util.Util.replacePointToComma
-import java.text.SimpleDateFormat
 import javax.inject.Inject
 import kotlin.collections.ArrayList
 
@@ -75,7 +73,7 @@ class ChatRepository @Inject constructor() {
                 chatData.id = i.next().value as String
                 chatData.message = i.next().value as String
                 chatData.nickName = i.next().value as String
-                chatData.time = dateFormat(i.next().value as String)
+                chatData.time = yearDateFormat(i.next().value as String)
             }
 
             list.add(0, chatData)
@@ -105,7 +103,7 @@ class ChatRepository @Inject constructor() {
                         chatData.id = i.next().value as String
                         chatData.message = i.next().value as String
                         chatData.nickName = i.next().value as String
-                        chatData.time = dateFormat(i.next().value as String)
+                        chatData.time = yearDateFormat(i.next().value as String)
                     }
                     if (loadMoreSelectKey != snapshot.key) {
                         list.add(startPosition, chatData)

@@ -33,6 +33,7 @@ import com.mywidget.ui.main.recyclerview.MainTabMemoAdapter
 import com.mywidget.ui.widgetlist.WidgetListViewModel
 import com.mywidget.ui.widgetlist.recyclerview.WidgetListRecyclerView
 import util.CalendarUtil
+import util.CalendarUtil.hourDateFormat
 import util.CalendarUtil.memoDateFormat
 import util.Util.toast
 import java.util.*
@@ -189,11 +190,12 @@ fun favoriteFriendNick(textView: TextView, nickName: String?) {
     }
 }
 
-@BindingAdapter("roomLastMessage", "position")
-fun roomLastMessage(textView: TextView, data: List<ChatDataModel>?, position: Int) {
+@BindingAdapter("roomLastMessage", "position", "time")
+fun roomLastMessage(textView: TextView, data: List<ChatDataModel>?, position: Int, time: TextView) {
     data?.let {
         if (it.size > position) {
             text(textView, it[position].message)
+            text(time, hourDateFormat(it[position].time))
         }
     }
 }

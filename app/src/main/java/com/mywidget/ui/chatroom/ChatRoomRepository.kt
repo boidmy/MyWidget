@@ -49,15 +49,14 @@ class ChatRoomRepository @Inject constructor() {
                 .child("message").limitToLast(1)
                 .addValueEventListener(object : ValueEventListener {
                     override fun onDataChange(snapshot: DataSnapshot) {
+                        var chatData: ChatDataModel? = null
                         for (snap in snapshot.children) {
-                            val key = snap.key
-                            key?.let {
-                                input.lastMessage = snapshot.child(it).child("message").value as String
-                            }
+                            chatData = snap.getValue(ChatDataModel::class.java)
                         }
-
-                        dataList[index] = ChatDataModel(input.lastMessage)
-                        roomLastMessage.value = dataList
+                        chatData?.let {
+                            dataList[index] = it
+                            roomLastMessage.value = dataList
+                        }
                     }
                     override fun onCancelled(error: DatabaseError) {}
                 })

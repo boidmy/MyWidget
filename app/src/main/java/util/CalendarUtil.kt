@@ -129,11 +129,31 @@ object CalendarUtil {
         return dateFormat.format(date)
     }
 
-    fun dateFormat(data: String): String {
+    private fun defaultDataFormat(data: String): Date? {
         val format = SimpleDateFormat("yyyy.MM.dd HH:mm", Locale.getDefault())
-        val date = format.parse(data)
-        val outputFormat = SimpleDateFormat("yy.MM.dd a hh:mm", Locale.getDefault())
-        return outputFormat.format(date)
+        return format.parse(data)
+    }
+
+    fun yearDateFormat(data: String): String {
+        with(defaultDataFormat(data)) {
+            return if (this != null) {
+                val outputFormat = SimpleDateFormat("yy.MM.dd a hh:mm", Locale.getDefault())
+                outputFormat.format(this)
+            } else {
+                ""
+            }
+        }
+    }
+
+    fun hourDateFormat(data: String): String {
+        with(defaultDataFormat(data)) {
+            return if (this != null) {
+                val outputFormat = SimpleDateFormat("a hh:mm", Locale.getDefault())
+                outputFormat.format(this)
+            } else {
+                ""
+            }
+        }
     }
 
     fun memoDateFormat(cal: Calendar): String {

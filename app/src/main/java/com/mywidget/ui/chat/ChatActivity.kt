@@ -49,6 +49,7 @@ class ChatActivity : BaseActivity<ActivityChattingBinding>() {
         val adapter = ChatAdapter(viewModel)
         adapter.setHasStableIds(true)
         binding.chatRv.adapter = adapter
+        binding.chatRv.itemAnimator = null
         binding.chatRv.addItemDecoration(ItemDecoration(10))
         binding.drawerUserListRv.adapter = UserListRecyclerView(viewModel)
 

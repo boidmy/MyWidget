@@ -2,11 +2,6 @@ package com.mywidget.ui.main
 
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.database.*
-import com.google.gson.Gson
-import com.google.gson.JsonObject
-import com.google.gson.reflect.TypeToken
-import com.mywidget.data.apiConnect.ApiConnection
-import com.mywidget.data.model.ChatDataModel
 import com.mywidget.data.model.FavoritesData
 import com.mywidget.data.model.FriendModel
 import com.mywidget.data.model.UserData
@@ -16,17 +11,9 @@ import com.mywidget.data.room.Memo
 import com.mywidget.data.room.MemoDB
 import com.mywidget.di.custom.ActivityScope
 import com.mywidget.extension.favoritesMessageExtension
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.schedulers.Schedulers
-import org.json.JSONArray
-import org.json.JSONObject
 import util.CalendarUtil
-import util.CalendarUtil.dateFormat
 import util.CalendarUtil.howMuchloveDay
-import util.Util
 import util.Util.replacePointToComma
-import java.util.ArrayList
 import javax.inject.Inject
 
 @ActivityScope
