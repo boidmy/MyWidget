@@ -122,7 +122,7 @@ class MainFragmentViewModel @Inject constructor(
         favoritesExistence = repository.favoritesExistence()
     }
 
-    fun dDayDetail(memoData: Memo) {
+    fun dDayDetail(memoData: Memo?) {
         dDayDetail.value = memoData
     }
 }

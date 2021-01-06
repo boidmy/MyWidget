@@ -8,6 +8,9 @@
         <variable
             name="data"
             type="com.mywidget.data.room.Memo" />
+        <variable
+            name="viewModel"
+            type="com.mywidget.ui.main.MainFragmentViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -21,6 +24,7 @@
         android:orientation="horizontal">
 
         <View
+            android:id="@+id/memoContainer"
             android:layout_width="match_parent"
             android:layout_height="80dp"
             android:alpha="0.5"
@@ -37,11 +41,11 @@
             android:text="@{data.memo}"
             android:textSize="16dp"
             style="@style/list_item_text_style"
-            app:layout_constraintBottom_toBottomOf="parent"
+
             app:layout_constraintBottom_toTopOf="@+id/lastMessage"
             app:layout_constraintEnd_toStartOf="@+id/dateTxt"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/memoContainer"
             tools:text="언제까지언제까지" />
 
         <TextView
@@ -52,8 +56,8 @@
             style="@style/list_item_text_style"
             android:textSize="14dp"
             app:dateProcessing="@{data.date}"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintBottom_toBottomOf="@+id/memoContainer"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/memoTxt"
             tools:text="2019-01-01" />
 
@@ -66,9 +70,9 @@
             style="@style/list_item_text_style"
             android:textSize="21dp"
             app:daysPast="@{data.date}"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintRight_toLeftOf="@+id/memoRemove"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="@+id/memoContainer"
+            app:layout_constraintEnd_toStartOf="@+id/memoRemove"
+            app:layout_constraintTop_toTopOf="@+id/memoContainer"
             tools:text="D - 132" />
 
         <ImageView
@@ -78,8 +82,52 @@
             android:layout_marginEnd="10dp"
             android:src="@drawable/icon_delete"
             android:alpha="0.5"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintBottom_toBottomOf="@+id/memoContainer"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/dDayDetailContainer"
+            android:layout_width="match_parent"
+            android:layout_height="140dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginTop="10dp"
+            android:alpha="0.5"
+            android:animateLayoutChanges="true"
+            android:background="@drawable/edge_round_white"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@+id/memoContainer"
+            tools:background="#0BC5FF"
+            tools:visibility="visible">
+
+            <EditText
+                android:id="@+id/detailTxt"
+                style="@style/list_item_text_style"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="10dp"
+                android:background="@android:color/transparent"
+                android:maxLines="4"
+                android:text="@{data.memo}"
+                android:layout_marginTop="20dp"
+                app:layout_constraintEnd_toStartOf="@+id/confirmBtn"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="언제언제까지언제언제까지언제언제까지언제언제까지" />
+
+            <ImageView
+                android:id="@+id/confirmBtn"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginBottom="10dp"
+                android:onClick="@{() -> viewModel.updateMemo(data, detailTxt.getText().toString())}"
+                android:src="@drawable/confirm_btn"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
