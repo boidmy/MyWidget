@@ -12,7 +12,7 @@ import com.mywidget.data.room.MemoDB
 import com.mywidget.di.custom.ActivityScope
 import com.mywidget.extension.favoritesMessageExtension
 import util.CalendarUtil
-import util.CalendarUtil.howMuchloveDay
+import util.CalendarUtil.howMuchLoveDay
 import util.Util.replacePointToComma
 import javax.inject.Inject
 
@@ -49,7 +49,7 @@ class MainRepository @Inject constructor(
     private fun loveDayFormat(data: List<LoveDay>?): String {
         data?.let {
             return if(it.isNotEmpty()) {
-                howMuchloveDay(it[data.size-1].date)
+                howMuchLoveDay(it[data.size-1].date)
             } else "0"
         } ?: run {
             return "0"

@@ -16,7 +16,7 @@ import util.Util.dpToPx
 
 class MainTabMemoAdapter : RecyclerView.Adapter<MainTabMemoViewHolder>() {
 
-    lateinit var mFragmentViewModel: MainFragmentViewModel
+    private lateinit var mFragmentViewModel: MainFragmentViewModel
 
     fun setViewModel(fragmentViewModel: MainFragmentViewModel) {
         mFragmentViewModel = fragmentViewModel
@@ -24,12 +24,12 @@ class MainTabMemoAdapter : RecyclerView.Adapter<MainTabMemoViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainTabMemoViewHolder {
         val bind = MainFragmentDDayItemBinding
-            .inflate(LayoutInflater.from(parent.context), parent, false)
+                .inflate(LayoutInflater.from(parent.context), parent, false)
         return MainTabMemoViewHolder(bind)
     }
 
     override fun getItemCount(): Int {
-        return mFragmentViewModel.memoData.value?.size?: 0
+        return mFragmentViewModel.memoData.value?.size ?: 0
     }
 
     override fun onBindViewHolder(holder: MainTabMemoViewHolder, position: Int) {
@@ -44,24 +44,22 @@ class MainTabMemoViewHolder(val binding: MainFragmentDDayItemBinding)
 
     fun bindView(mData: Memo?, mFragmentViewModel: MainFragmentViewModel) {
         binding.apply {
+            if (mData == null) return
             data = mData
             viewModel = mFragmentViewModel
             executePendingBindings()
 
-            changeVisibility(mFragmentViewModel.dDayDetail.value == mData)
+            dDayDetailContainer.isVisible = mData.isSelected
 
             memoContainer.setOnClickListener {
-                mData?.let {
-                    if (mFragmentViewModel.dDayDetail.value == it) {
-                        mFragmentViewModel.dDayDetail(null)
-                    } else {
-                        mFragmentViewModel.dDayDetail(it)
-                    }
-                }
+                mData.isSelected = !mData.isSelected
+                changeVisibility(mData.isSelected)
+
+                //mFragmentViewModel.dDayDetail(mData)
             }
 
             memoRemove.setOnClickListener {
-                mFragmentViewModel.deleteDDayDialog.value = mData?.sequence
+                mFragmentViewModel.deleteDDayDialog.value = mData.sequence
             }
         }
     }
@@ -69,8 +67,8 @@ class MainTabMemoViewHolder(val binding: MainFragmentDDayItemBinding)
     private fun changeVisibility(isExpanded: Boolean) {
         val height = 140.dpToPx
         val va =
-            if (isExpanded) ValueAnimator.ofInt(20.dpToPx, height)
-            else ValueAnimator.ofInt(height, 0)
+                if (isExpanded) ValueAnimator.ofInt(30.dpToPx, height)
+                else ValueAnimator.ofInt(height, 0)
         va.duration = 600
         va.addUpdateListener { animation ->
             val value = animation.animatedValue as Int
