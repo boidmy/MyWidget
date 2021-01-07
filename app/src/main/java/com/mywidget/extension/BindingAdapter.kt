@@ -62,12 +62,16 @@ fun daysPast(textView: TextView?, data: String?) {
     }
 
     textView?.let {
-        if(value.toInt() >= 0) {
+        if(value.toInt() > 0) {
             it.textSize = 21f
             text(it, "D - $value")
         } else {
             it.textSize = 15f
-            text(it, "지난 일정입니다")
+            if (value.toInt() == 0) {
+                text(it, "오늘이에요!")
+            } else {
+                text(it, "지난 일정입니다")
+            }
         }
     }
 }

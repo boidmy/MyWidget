@@ -21,7 +21,7 @@
 
         <include
             layout="@layout/activity_background"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <include
             android:id="@+id/titleContainer"
@@ -31,10 +31,10 @@
             android:id="@+id/main_tab"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@id/titleContainer"
             app:tabIndicatorColor="#ffffff"
-            android:background="@android:color/transparent"
             app:tabSelectedTextColor="#ffffff"
             app:tabTextColor="#ffffff" />
 
@@ -46,20 +46,18 @@
             android:background="@android:color/transparent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/main_tab"/>
+            app:layout_constraintTop_toBottomOf="@+id/main_tab" />
 
         <ImageView
             android:id="@+id/floating_btn"
-            android:layout_width="100dp"
-            android:layout_height="50dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_marginTop="15dp"
+            android:layout_marginEnd="10dp"
             android:layout_marginBottom="30dp"
-            android:src="@drawable/icon_floating"
             android:gravity="center"
             android:onClick="onClickFloating"
-            android:textColor="@color/white"
-            android:paddingBottom="6dp"
-            android:textSize="30dp"
+            android:src="@drawable/icon_floating4"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintRight_toRightOf="parent" />
 

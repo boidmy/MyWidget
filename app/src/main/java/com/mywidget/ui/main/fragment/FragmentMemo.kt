@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.SimpleItemAnimator
 import com.mywidget.R
 import com.mywidget.databinding.DeleteConfirmDialogDDayBinding
 import com.mywidget.databinding.MainFragmentDDayBinding
@@ -38,13 +39,20 @@ class FragmentMemo : BaseFragment<MainFragmentDDayBinding>() {
     }
 
     private fun bindView() {
-        binding.fragmentRv.adapter = mAdapter
+        binding.fragmentRv.apply {
+            adapter = mAdapter
+            val animator = itemAnimator
+            if (animator is SimpleItemAnimator) {
+                animator.supportsChangeAnimations = false
+            }
+        }
+
         binding.data = viewModel.memoData
         binding.viewModel = viewModel
         mAdapter.setViewModel(viewModel)
 
         viewModel.dDayDetail.observe(requireActivity(), Observer {
-            (binding.fragmentRv.adapter as MainTabMemoAdapter).notifyDataSetChanged()
+            (binding.fragmentRv.adapter as MainTabMemoAdapter).detail(it)
         })
 
         selectCall()
