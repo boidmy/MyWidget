@@ -54,11 +54,11 @@ object CalendarUtil {
         return cal.get(Calendar.MONTH)
     }
 
-    fun getNowdate(cal: Calendar): Int {
+    fun getNowDate(cal: Calendar): Int {
         return cal.get(Calendar.DAY_OF_MONTH)
     }
 
-    fun week(dayOfWeek: Int) : String {
+    private fun week(dayOfWeek: Int) : String {
         return when (dayOfWeek) {
             1 -> "일"
             2 -> "월"
@@ -71,7 +71,7 @@ object CalendarUtil {
         }
     }
 
-    fun howMuchloveDay(value: String?): String {
+    fun howMuchLoveDay(value: String?): String {
         value?.let {
             val simpleData = SimpleDateFormat("yyyyMMdd").parse(it)
             val calender: Calendar = Calendar.getInstance()
@@ -117,7 +117,7 @@ object CalendarUtil {
 
     fun getToday(): String {
         val cal = Calendar.getInstance()
-        return "${getYear(cal)}-${getMonth(cal)+1}-${getNowdate(cal)}"
+        return "${getYear(cal)}-${getMonth(cal)+1}-${getNowDate(cal)}"
     }
 
     fun getDate(): String {
@@ -159,6 +159,6 @@ object CalendarUtil {
     fun memoDateFormat(cal: Calendar): String {
         val dayOfWeek: Int = cal.get(Calendar.DAY_OF_WEEK)
         return getYear(cal).toString()+"-"+ String.format("%02d", getMonth(cal)+1)+"-"+
-                String.format("%02d", getNowdate(cal)) + " (" + week(dayOfWeek) + ")"
+                String.format("%02d", getNowDate(cal)) + " (" + week(dayOfWeek) + ")"
     }
 }

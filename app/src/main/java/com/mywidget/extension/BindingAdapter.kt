@@ -4,9 +4,7 @@ import android.app.DatePickerDialog
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.text.Editable
-import android.text.TextUtils
 import android.text.TextWatcher
-import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
@@ -25,7 +23,6 @@ import com.mywidget.ui.chat.ChatViewModel
 import com.mywidget.ui.chat.recyclerview.ChatAdapter
 import com.mywidget.ui.chat.recyclerview.UserListRecyclerView
 import com.mywidget.ui.chatinvite.recyclerview.ChatInviteRecyclerView
-import com.mywidget.ui.chatroom.ChatRoomViewModel
 import com.mywidget.ui.chatroom.recyclerview.ChatRoomRecyclerView
 import com.mywidget.ui.friend.recyclerview.FriendRecyclerView
 import com.mywidget.ui.main.MainFragmentViewModel
@@ -45,7 +42,12 @@ fun text(textView: TextView?, data: String?) {
 
 @BindingAdapter("dateProcessing")
 fun dateProcessing(textView: TextView?, data: String?) {
-    text(textView, data)
+    val cal = CalendarUtil.calendar(data)
+    var value = ""
+    cal?.let {
+        value = memoDateFormat(cal)
+    }
+    text(textView, value)
 }
 
 @BindingAdapter("daysPast")
@@ -56,7 +58,7 @@ fun daysPast(textView: TextView?, data: String?) {
         value = CalendarUtil.dDay(
             CalendarUtil.getYear(cal)
             , CalendarUtil.getMonth(cal)+1
-            , CalendarUtil.getNowdate(cal)).toString()
+            , CalendarUtil.getNowDate(cal)).toString()
     }
 
     textView?.let {
@@ -78,7 +80,7 @@ fun setNowDate(calendarTxtArea: EditText, today: String) {
         val dpd = DatePickerDialog(calendarTxtArea.context, { view, year, monthOfYear, dayOfMonth ->
             calendarTxtArea.setText(year.toString() + "-" + (monthOfYear+1).toString() + "-" + dayOfMonth.toString())
             calendarTxtArea.tag = year.toString()+String.format("%02d", monthOfYear+1)+dayOfMonth.toString()
-        }, CalendarUtil.getYear(c), CalendarUtil.getMonth(c), CalendarUtil.getNowdate(c))
+        }, CalendarUtil.getYear(c), CalendarUtil.getMonth(c), CalendarUtil.getNowDate(c))
         dpd.show()
     }
 }
@@ -104,13 +106,8 @@ fun memoOnclick(imageView: ImageView, memo: EditText, date: TextView, viewModel:
             if (date.text.isEmpty()) {
                 imageView.context.toast("날짜를 선택해주세요!")
             } else {
-                val cal = CalendarUtil.calendar(date.tag.toString())
-                var value = ""
-                cal?.let {
-                    value = memoDateFormat(cal)
-                }
-                val memo = Memo(null, memo.text.toString(), value)
-                viewModel.insertMemo(memo)
+                val memoData = Memo(null, memo.text.toString(), date.tag.toString())
+                viewModel.insertMemo(memoData)
                 viewModel.memoDialogVisibility(false)
             }
         }
