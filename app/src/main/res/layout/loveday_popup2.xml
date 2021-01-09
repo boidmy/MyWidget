@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:onClick="onClickFloatingBtn"
+    tools:background="#605F5F">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/memoContainer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="onClickFloatingBtn"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        app:layout_constraintBottom_toTopOf="@+id/conditionContainer"
+        app:layout_constraintEnd_toEndOf="parent" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="5dp"
+            android:text="디데이"
+            android:textColor="#ffffff"
+            android:textSize="13dp"
+            app:layout_constraintBottom_toBottomOf="@+id/memoContainer"
+            app:layout_constraintEnd_toStartOf="@+id/memoBg"
+            app:layout_constraintTop_toTopOf="@+id/memoContainer" />
+
+        <View
+            android:id="@+id/memoBg"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/circle_chat"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+        <ImageView
+            android:id="@+id/memoIcon"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:src="@drawable/icon_calendar"
+            app:layout_constraintBottom_toBottomOf="@+id/memoBg"
+            app:layout_constraintEnd_toEndOf="@+id/memoBg"
+            app:layout_constraintStart_toStartOf="@+id/memoBg"
+            app:layout_constraintTop_toTopOf="@+id/memoBg" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/conditionContainer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="onClickFloatingBtn"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        app:layout_constraintBottom_toTopOf="@+id/loveDayContainer"
+        app:layout_constraintEnd_toEndOf="parent" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="5dp"
+            android:text="컨디션"
+            android:textColor="#ffffff"
+            android:textSize="13dp"
+            app:layout_constraintBottom_toBottomOf="@+id/conditionContainer"
+            app:layout_constraintEnd_toStartOf="@+id/conditionBg"
+            app:layout_constraintTop_toTopOf="@+id/conditionContainer" />
+
+        <View
+            android:id="@+id/conditionBg"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/circle_chat"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <ImageView
+            android:id="@+id/conditionIcon"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:src="@drawable/icon_pen"
+            app:layout_constraintBottom_toBottomOf="@+id/conditionBg"
+            app:layout_constraintEnd_toEndOf="@+id/conditionBg"
+            app:layout_constraintStart_toStartOf="@+id/conditionBg"
+            app:layout_constraintTop_toTopOf="@+id/conditionBg" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/loveDayContainer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="onClickFloatingBtn"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        app:layout_constraintBottom_toTopOf="@+id/chatContainer"
+        app:layout_constraintEnd_toEndOf="parent" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="5dp"
+            android:text="기념일"
+            android:textColor="#ffffff"
+            android:textSize="13dp"
+            app:layout_constraintBottom_toBottomOf="@+id/loveDayBg"
+            app:layout_constraintEnd_toStartOf="@+id/loveDayBg"
+            app:layout_constraintTop_toTopOf="@+id/loveDayBg" />
+
+        <View
+            android:id="@+id/loveDayBg"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/circle_chat"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+        <ImageView
+            android:id="@+id/loveDayIcon"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:src="@drawable/icon_heart"
+            app:layout_constraintBottom_toBottomOf="@+id/loveDayBg"
+            app:layout_constraintEnd_toEndOf="@+id/loveDayBg"
+            app:layout_constraintStart_toStartOf="@+id/loveDayBg"
+            app:layout_constraintTop_toTopOf="@+id/loveDayBg" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/chatContainer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="onClickFloatingBtn"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        app:layout_constraintBottom_toTopOf="@+id/floatingBtn"
+        app:layout_constraintEnd_toEndOf="parent" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="5dp"
+            android:text="    채팅"
+            android:textColor="#ffffff"
+            android:textSize="13dp"
+            app:layout_constraintBottom_toBottomOf="@+id/chatBg"
+            app:layout_constraintEnd_toStartOf="@+id/chatBg"
+            app:layout_constraintTop_toTopOf="@+id/chatBg" />
+
+        <View
+            android:id="@+id/chatBg"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/circle_chat"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/chatImg"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:src="@drawable/icon_chat"
+            app:layout_constraintBottom_toBottomOf="@+id/chatBg"
+            app:layout_constraintEnd_toEndOf="@+id/chatBg"
+            app:layout_constraintStart_toStartOf="@+id/chatBg"
+            app:layout_constraintTop_toTopOf="@+id/chatBg" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <ImageView
+        android:id="@+id/floatingBtn"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="30dp"
+        android:gravity="center"
+        android:visibility="visible"
+        android:src="@drawable/icon_floating"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
