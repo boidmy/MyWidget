@@ -72,7 +72,7 @@ class FragmentMemo : BaseFragment<MainFragmentDDayBinding>() {
             else deleteDialog.dismiss()
         })
         viewModel.deleteDDayDialog.observe(requireActivity(), Observer {
-            deleteDialogBinding.seq = it
+            deleteDialogBinding.data = it
             viewModel.deleteDDayDialogVisibility(true)
         })
     }

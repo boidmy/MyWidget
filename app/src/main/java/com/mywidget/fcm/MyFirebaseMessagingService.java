@@ -76,9 +76,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
         SharedPreferences shared = getSharedPreferences(getString(R.string.inChatPush), MODE_PRIVATE);
         String sharedRoomKey = shared.getString("roomKey", "");
-        String[] chatRoomData = message.getNotification().getTag().split("&&"); //참여중인 방 정보
+        String chatRoomData = message.getNotification().getTag(); //참여중인 방 정보
 
-        if (sharedRoomKey != null && sharedRoomKey.equals(chatRoomData[0])) {
+        if (sharedRoomKey != null && sharedRoomKey.equals(chatRoomData)) {
             //내가 현재 보고있는 방이다 push 를 받아선 안된다
             return;
         }

@@ -5,8 +5,8 @@
     <data>
 
         <variable
-            name="seq"
-            type="Integer" />
+            name="data"
+            type="com.mywidget.data.room.Memo" />
 
         <variable
             name="viewModel"
@@ -54,7 +54,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="40dp"
             android:layout_marginBottom="40dp"
-            android:onClick="@{() -> viewModel.deleteMemo(seq)}"
+            android:onClick="@{() -> viewModel.deleteMemo(data)}"
             android:text="삭제"
             android:textColor="#E15757"
             android:textSize="20dp"

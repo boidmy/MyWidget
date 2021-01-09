@@ -130,8 +130,12 @@ object CalendarUtil {
     }
 
     private fun defaultDataFormat(data: String): Date? {
-        val format = SimpleDateFormat("yyyy.MM.dd HH:mm", Locale.getDefault())
-        return format.parse(data)
+        return if (data.isNotEmpty()) {
+            val format = SimpleDateFormat("yyyy.MM.dd HH:mm", Locale.getDefault())
+            format.parse(data)
+        } else {
+            null
+        }
     }
 
     fun yearDateFormat(data: String): String {

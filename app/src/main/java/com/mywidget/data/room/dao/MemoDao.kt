@@ -10,7 +10,4 @@ import com.mywidget.data.room.Memo
 abstract class MemoDao : BaseDao<Memo>{
     @Query("SELECT * FROM memo")
     abstract fun getUser(): List<Memo>
-
-    @Query("DELETE from memo where sequence = :seq")
-    abstract fun delete(seq: Int)
 }

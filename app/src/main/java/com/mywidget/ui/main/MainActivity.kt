@@ -5,6 +5,8 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import androidx.activity.viewModels
 import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
@@ -29,6 +31,7 @@ import util.CalendarUtil.getToday
 import util.Util
 import util.Util.toast
 import javax.inject.Inject
+import javax.inject.Named
 
 
 class MainActivity : BaseActivity<DrawerlayoutMainBinding>()
@@ -43,6 +46,9 @@ class MainActivity : BaseActivity<DrawerlayoutMainBinding>()
     @Inject lateinit var memoDialog: Dialog
     @Inject lateinit var favoritesDialogBinding: MainFavoritesDialogBinding
     @Inject lateinit var favoritesDialog: Dialog
+    @Inject @Named("open") lateinit var floatingAnimationOpen: Animation
+    @Inject @Named("close") lateinit var floatingAnimationClose: Animation
+
     private val viewModel by viewModels<MainFragmentViewModel> { factory }
 
     override val layout: Int
@@ -101,10 +107,14 @@ class MainActivity : BaseActivity<DrawerlayoutMainBinding>()
         super.onActivityResult(requestCode, resultCode, data)
         when (requestCode) {
             3000 -> {
-                when {
-                    "memo" == data?.getStringExtra("result") -> openMemoDialog()
-                    "dDay" == data?.getStringExtra("result") -> openLoveDayDialog()
-                    "condition" == data?.getStringExtra("result") -> openFavoritesDialog()
+                when (data?.getStringExtra("result")) {
+                    "memo" -> openMemoDialog()
+                    "dDay" -> openLoveDayDialog()
+                    "condition" -> openFavoritesDialog()
+                    "chat" -> {
+                        val intent = Intent(this, ChatRoomActivity::class.java)
+                        startActivity(intent)
+                    }
                 }
             }
             4000 -> {

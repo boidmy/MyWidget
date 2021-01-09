@@ -49,7 +49,7 @@
             app:layout_constraintTop_toBottomOf="@+id/main_tab" />
 
         <ImageView
-            android:id="@+id/floating_btn"
+            android:id="@+id/floatingBtn"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_marginTop="15dp"
@@ -57,7 +57,7 @@
             android:layout_marginBottom="30dp"
             android:gravity="center"
             android:onClick="onClickFloating"
-            android:src="@drawable/icon_floating4"
+            android:src="@drawable/icon_floating"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintRight_toRightOf="parent" />
 

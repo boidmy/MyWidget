@@ -64,8 +64,8 @@ class MainRepository @Inject constructor(
         return loveDayFormat(loveDayDb.loveDayDao().getData())
     }
 
-    fun deleteMemo(seq: Int) {
-        memoDb.memoDao().delete(seq)
+    fun deleteMemo(data: Memo) {
+        memoDb.memoDao().delete(data)
     }
 
     fun updateMemo(data: Memo, updateMemo: String) {

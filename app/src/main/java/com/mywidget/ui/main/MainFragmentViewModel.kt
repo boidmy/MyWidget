@@ -22,7 +22,7 @@ class MainFragmentViewModel @Inject constructor(
     var favoritesExistence: MutableLiveData<Boolean> = MutableLiveData()
     var favoritesExistenceMyFriend: MutableLiveData<UserData> = MutableLiveData()
 
-    var deleteDDayDialog: MutableLiveData<Int> = MutableLiveData()
+    var deleteDDayDialog: MutableLiveData<Memo> = MutableLiveData()
     var deleteDDayDialogVisibility: MutableLiveData<Boolean> = MutableLiveData()
     var dDayDetail: MutableLiveData<Int> = MutableLiveData()
 
@@ -33,9 +33,9 @@ class MainFragmentViewModel @Inject constructor(
         }.start()
     }
 
-    fun deleteMemo(seq: Int) {
+    fun deleteMemo(data: Memo) {
         Thread {
-            repository.deleteMemo(seq)
+            repository.deleteMemo(data)
             selectMemo()
         }.start()
         deleteDDayDialogVisibility(false)
@@ -124,5 +124,9 @@ class MainFragmentViewModel @Inject constructor(
 
     fun dDayDetail(index: Int) {
         dDayDetail.value = index
+    }
+
+    fun deleteDDayDialog(data: Memo) {
+        deleteDDayDialog.value = data
     }
 }
