@@ -34,7 +34,7 @@ public class SendPush {
             notification.put("title", myNickname+" 메세지");
             notification.put("body", memo);
             notification.put("tag", roomData.getRoomKey() + "&&" + roomData.getMaster());
-            notification.put("click_action", "OPEN_MAIN");
+            notification.put("click_action", "OPEN_MAIN_MY_DDAY");
 
             data.put("runChat",roomData.getRoomKey() + "&&" + roomData.getMaster());
 
