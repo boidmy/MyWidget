@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import android.view.animation.Animation
-import android.view.animation.AnimationUtils
 import androidx.activity.viewModels
 import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
@@ -188,7 +187,6 @@ class MainActivity : BaseActivity<DrawerlayoutMainBinding>()
             if(it) { memoDialog.show() }
             else {
                 memoDialog.dismiss()
-                Util.downKeyboard(this)
             }
         })
     }

@@ -113,12 +113,13 @@
                 android:layout_marginEnd="10dp"
                 android:background="@android:color/transparent"
                 android:maxLines="4"
+                android:scrollbars="vertical"
                 android:text="@{data.memo}"
                 android:layout_marginTop="20dp"
                 app:layout_constraintEnd_toStartOf="@+id/confirmBtn"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:text="언제언제까지언제언제까지언제언제까지언제언제까지" />
+                tools:text="언제언제까" />
 
             <ImageView
                 android:id="@+id/confirmBtn"

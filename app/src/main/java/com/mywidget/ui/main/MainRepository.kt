@@ -15,16 +15,16 @@ import util.CalendarUtil
 import util.CalendarUtil.howMuchLoveDay
 import util.Util.replacePointToComma
 import javax.inject.Inject
+import javax.inject.Named
 
 @ActivityScope
 class MainRepository @Inject constructor(
     private val memoDb: MemoDB, private val loveDayDb: LoveDayDB) {
 
     @Inject lateinit var database: DatabaseReference
-    private val userRef: DatabaseReference by lazy { database.child("User") }
+    @Inject @Named("User") lateinit var userRef: DatabaseReference
+    @Inject @Named("favorites") lateinit var favoritesRef: DatabaseReference
     var myId: MutableLiveData<String> = MutableLiveData()
-    private val favoritesRef: DatabaseReference by lazy {
-        database.child("favorites") }
     private val favoritesExistence: MutableLiveData<Boolean> = MutableLiveData()
     var favoritesExistenceMyFriend: MutableLiveData<UserData> = MutableLiveData()
     private val favoritesMessageMe: MutableLiveData<FavoritesData> = MutableLiveData()

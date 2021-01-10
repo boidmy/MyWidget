@@ -15,15 +15,16 @@ import util.CalendarUtil.yearDateFormat
 import util.Util.replaceCommaToPoint
 import util.Util.replacePointToComma
 import javax.inject.Inject
+import javax.inject.Named
 import kotlin.collections.ArrayList
 
 @ActivityScope
 class ChatRepository @Inject constructor() {
 
     @Inject lateinit var database: DatabaseReference
+    @Inject @Named("User") lateinit var userRef: DatabaseReference
     private val roomRef: DatabaseReference by lazy {
         database.child("Room").child(roomDataModel.master).child(roomDataModel.roomKey) }
-    private val userRef: DatabaseReference by lazy { database.child("User") }
     private val message: DatabaseReference by lazy { roomRef.child("message") }
     private val inviteUserList: MutableLiveData<ArrayList<ChatInviteModel>> = MutableLiveData()
     var myId: String? = null

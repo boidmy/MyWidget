@@ -6,11 +6,12 @@ import com.google.firebase.messaging.FirebaseMessaging
 import com.mywidget.data.model.UserData
 import util.Util.replacePointToComma
 import javax.inject.Inject
+import javax.inject.Named
 
 class LoginRepository @Inject constructor() {
 
     @Inject lateinit var database: DatabaseReference
-    private val userRef: DatabaseReference by lazy { database.child("User") }
+    @Inject @Named("User") lateinit var userRef: DatabaseReference
     var signUpComplete: MutableLiveData<Boolean> = MutableLiveData()
     var data: MutableLiveData<String> = MutableLiveData()
 

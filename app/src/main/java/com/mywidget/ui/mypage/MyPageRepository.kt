@@ -1,6 +1,5 @@
 package com.mywidget.ui.mypage
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -15,9 +14,9 @@ import javax.inject.Named
 class MyPageRepository @Inject constructor() {
 
     @Inject lateinit var database: DatabaseReference
+    @Inject @Named("Room") lateinit var roomRef: DatabaseReference
     @Inject @Named("User")
     lateinit var userRef: DatabaseReference
-    private val roomRef: DatabaseReference by lazy { database.child("Room") }
     var myId: String = ""
     var nickName: MutableLiveData<String> = MutableLiveData()
     var updateConfirm: MutableLiveData<Boolean> = MutableLiveData()

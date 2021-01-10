@@ -9,14 +9,13 @@ import com.mywidget.data.model.FriendModel
 import com.mywidget.extension.friendListExtension
 import util.Util.replacePointToComma
 import javax.inject.Inject
+import javax.inject.Named
 
 class FriendRepository @Inject constructor() {
     @Inject lateinit var database: DatabaseReference
-    private val userRef: DatabaseReference by lazy { database.child("User") }
+    @Inject @Named("User") lateinit var userRef: DatabaseReference
     private val friendRef: DatabaseReference by lazy {
         userRef.child(replacePointToComma(myId)).child("friend") }
-    private val favorites: DatabaseReference by lazy {
-        database.child("favorites").child(replacePointToComma(myId)) }
     var userExistenceChk: MutableLiveData<Boolean> = MutableLiveData()
     var friendList: MutableLiveData<ArrayList<FriendModel>> = MutableLiveData()
     var myId: String = ""

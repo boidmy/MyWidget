@@ -6,16 +6,14 @@ import androidx.fragment.app.FragmentStatePagerAdapter
 import androidx.viewpager.widget.PagerAdapter
 
 class MainTabPagerAdapter(fm: FragmentManager) : FragmentStatePagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
-    private var mFragmentMemo: FragmentMemo? = null
-    private var mFragmentLoveDay: FragmentLoveDay? = null
+    private var mFragmentMemo = FragmentMemo()
+    private var mFragmentLoveDay = FragmentLoveDay()
 
     override fun getItem(position: Int): Fragment {
         return if(position == 0) {
-            mFragmentMemo = FragmentMemo()
-            mFragmentMemo as FragmentMemo
+            mFragmentMemo
         } else {
-            mFragmentLoveDay = FragmentLoveDay()
-            mFragmentLoveDay as FragmentLoveDay
+            mFragmentLoveDay
         }
     }
 
@@ -31,10 +29,10 @@ class MainTabPagerAdapter(fm: FragmentManager) : FragmentStatePagerAdapter(fm, B
     }
 
     override fun getItemPosition(`object`: Any): Int {
-        if (`object` as Fragment == mFragmentLoveDay) {
-            return PagerAdapter.POSITION_NONE
+        return if (`object` as Fragment == mFragmentLoveDay) {
+            PagerAdapter.POSITION_NONE
         } else {
-            return super.getItemPosition(`object`)
+            super.getItemPosition(`object`)
         }
     }
 

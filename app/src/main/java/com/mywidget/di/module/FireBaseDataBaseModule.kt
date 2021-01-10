@@ -23,6 +23,7 @@ class FireBaseDataBaseModule {
 
     @Provides
     @Named("Room")
+    @Singleton
     fun provideDatabase(firebaseDatabase: FirebaseDatabase): DatabaseReference {
         return firebaseDatabase.reference.child("Room")
     }
@@ -32,5 +33,12 @@ class FireBaseDataBaseModule {
     @Singleton
     fun provideUserDatabase(firebaseDatabase: FirebaseDatabase): DatabaseReference {
         return firebaseDatabase.reference.child("User")
+    }
+
+    @Provides
+    @Named("favorites")
+    @Singleton
+    fun provideFavoritesDatabase(firebaseDatabase: FirebaseDatabase): DatabaseReference {
+        return firebaseDatabase.reference.child("favorites")
     }
 }

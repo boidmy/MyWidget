@@ -14,11 +14,11 @@ import util.Util
 import util.Util.replaceCommaToPoint
 import util.Util.replacePointToComma
 import javax.inject.Inject
+import javax.inject.Named
 
 class ChatInviteRepository @Inject constructor() {
-    @Inject
-    lateinit var database: DatabaseReference
-    private val userRef: DatabaseReference by lazy { database.child("User") }
+    @Inject lateinit var database: DatabaseReference
+    @Inject @Named("User") lateinit var userRef: DatabaseReference
     private val roomRef: DatabaseReference by lazy {
         database.child("Room").child(roomDataModel.master).child(roomDataModel.roomKey) }
     var friendList: MutableLiveData<ArrayList<FriendModel>> = MutableLiveData()

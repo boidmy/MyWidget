@@ -118,12 +118,12 @@ class WidgetListActivity : BaseActivity<ActivityWidgetBinding>() {
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        when (requestCode) {
+        /*when (requestCode) {
             1 -> if(grantResults[0] == PackageManager.PERMISSION_GRANTED){
                 this.toast("동의하신 권한은 위젯 사용 시 사용됩니다.")
             } else {
                 finish()
             }
-        }
+        }*/
     }
 }

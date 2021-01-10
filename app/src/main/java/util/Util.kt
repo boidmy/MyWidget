@@ -2,6 +2,7 @@ package util
 
 import android.content.Context
 import android.content.res.Resources
+import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
@@ -10,14 +11,14 @@ import kotlin.math.roundToLong
 
 object Util {
 
-    fun upKeyboard(context: Context) {
+    fun upKeyboard(context: Context, view: View) {
         val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY)
+        imm.showSoftInput(view, InputMethodManager.HIDE_IMPLICIT_ONLY)
     }
 
-    fun downKeyboard(context: Context) {
+    fun downKeyboard(context: Context, view: View) {
         val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0)
+        imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
 
     fun replacePointToComma(email: String): String {

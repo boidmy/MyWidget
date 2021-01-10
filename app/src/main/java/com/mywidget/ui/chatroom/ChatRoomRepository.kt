@@ -1,6 +1,5 @@
 package com.mywidget.ui.chatroom
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -9,16 +8,17 @@ import com.google.firebase.database.ValueEventListener
 import com.mywidget.data.model.*
 import util.Util.replacePointToComma
 import javax.inject.Inject
+import javax.inject.Named
 
 class ChatRoomRepository @Inject constructor() {
     @Inject lateinit var database: DatabaseReference
-    private val roomRef: DatabaseReference by lazy { database.child("Room") }
-    private val userRef: DatabaseReference by lazy { database.child("User") }
-    var roomList: MutableLiveData<List<RoomDataModel>> = MutableLiveData()
+    @Inject @Named("Room") lateinit var roomRef: DatabaseReference
+    @Inject @Named("User") lateinit var userRef: DatabaseReference
     private val ROOMLIST = "RoomList"
     private val friendMap = hashMapOf<String, String>()
     var friendHashMap: MutableLiveData<HashMap<String, String>> = MutableLiveData()
     var roomLastMessage: MutableLiveData<List<ChatDataModel>> = MutableLiveData()
+    var roomList: MutableLiveData<List<RoomDataModel>> = MutableLiveData()
 
     fun selectRoomList(id: String): MutableLiveData<List<RoomDataModel>> {
         userRef.child(replacePointToComma(id))

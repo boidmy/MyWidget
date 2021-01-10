@@ -18,6 +18,7 @@ import com.mywidget.ui.chat.recyclerview.UserListRecyclerView
 import com.mywidget.ui.chatinvite.ChatInviteActivity
 import kotlinx.android.synthetic.main.activity_chatting.*
 import util.ItemDecoration
+import util.Util
 import javax.inject.Inject
 
 
@@ -89,6 +90,7 @@ class ChatActivity : BaseActivity<ActivityChattingBinding>() {
     }
 
     fun onClickOpenDrawer(v: View) {
+        Util.downKeyboard(this, chatEdit)
         binding.chatDrawLayout.openDrawer(GravityCompat.END)
     }
 
