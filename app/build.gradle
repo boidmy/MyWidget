@@ -2,9 +2,9 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'com.google.gms.google-services'
-apply plugin: 'io.fabric'
 apply plugin: 'kotlin-kapt'
 apply plugin: "scabbard.gradle"
+apply plugin: 'com.google.firebase.crashlytics'
 
 android {
     compileSdkVersion 30
@@ -16,8 +16,8 @@ android {
         applicationId "com.mywidget"
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 1
-        versionName "1.0"
+        versionCode 3
+        versionName "1.2"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
     }
@@ -151,4 +151,10 @@ dependencies {
     kapt "com.google.dagger:dagger-android-processor:2.27"
     kapt 'com.google.dagger:dagger-compiler:2.27'
     annotationProcessor 'com.google.dagger:dagger-compiler:2.27'
+
+    // Import the BoM for the Firebase platform
+
+    // Declare the dependencies for the Crashlytics and Analytics libraries
+    // When using the BoM, you don't specify versions in Firebase library dependencies
+    implementation 'com.google.firebase:firebase-crashlytics-ktx'
 }
