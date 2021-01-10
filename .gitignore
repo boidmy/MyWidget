@@ -18,3 +18,5 @@ gradlew
 gradlew.bat
 gradle/
 /app/google-services.json
+/app/release/output-metadata.json
+/app/release/app-release.apk
