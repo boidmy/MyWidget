@@ -32,9 +32,9 @@ abstract class ActivityBindingModule {
 
     @ActivityScope
     @ContributesAndroidInjector(modules = [
-            MainActivityModule::class,
-            MainFragmentModule::class,
-            MainViewModelModule::class
+        MainActivityModule::class,
+        MainFragmentModule::class,
+        MainViewModelModule::class
     ])
     abstract fun mainActivity(): MainActivity
 
