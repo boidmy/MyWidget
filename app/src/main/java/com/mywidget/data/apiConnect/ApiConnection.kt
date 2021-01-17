@@ -14,10 +14,8 @@ class ApiConnection private constructor() {
 
     private val baseUrl = "https://datewidget-ab4ba.firebaseio.com/"
 
-    val retrofitService: LmemoApi
-        get() {
-        return retrofit.create(LmemoApi::class.java)
-    }
+    private val retrofitService: LmemoApi
+        get() = retrofit.create(LmemoApi::class.java)
 
     init {
         retrofit = Retrofit.Builder()
@@ -31,13 +29,8 @@ class ApiConnection private constructor() {
 
         private val INSTANCE = ApiConnection()
 
-        fun Instance(): ApiConnection {
+        fun instance(): ApiConnection {
             return INSTANCE
         }
     }
-
-    fun selectNickName(mail: String): Observable<UserData> =
-        retrofitService
-            .userData(mail)
-            .subscribeOn(Schedulers.io())
 }
