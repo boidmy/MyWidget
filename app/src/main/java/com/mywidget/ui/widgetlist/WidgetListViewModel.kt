@@ -10,13 +10,30 @@ class WidgetListViewModel @Inject constructor(
     private val repository: WidgetListRepository
 ) : ViewModel() {
 
-    var data: MutableLiveData<List<User>> = MutableLiveData()
-    var dialogVisible: MutableLiveData<Boolean> = MutableLiveData()
-    var userEmail: MutableLiveData<String> = MutableLiveData()
-    var widgetJsonArrayData: MutableLiveData<JSONArray> = MutableLiveData()
+    private var _data: MutableLiveData<List<User>> = MutableLiveData()
+    private val _dialogVisible: MutableLiveData<Boolean> = MutableLiveData()
+    private val _userEmail: MutableLiveData<String> = MutableLiveData()
+    private var _widgetJsonArrayData: MutableLiveData<JSONArray> = MutableLiveData()
+    private val _deleteWidget: MutableLiveData<User> = MutableLiveData()
+    private val _deleteDialogVisibility: MutableLiveData<Boolean> = MutableLiveData()
 
-    var deleteWidget: MutableLiveData<User> = MutableLiveData()
-    var deleteDialogVisibility: MutableLiveData<Boolean> = MutableLiveData()
+    val data: MutableLiveData<List<User>>
+        get() = _data
+
+    val dialogVisible: MutableLiveData<Boolean>
+        get() = _dialogVisible
+
+    val userEmail: MutableLiveData<String>
+        get() = _userEmail
+
+    val widgetJsonArrayData: MutableLiveData<JSONArray>
+        get() = _widgetJsonArrayData
+
+    val deleteWidget: MutableLiveData<User>
+        get() = _deleteWidget
+
+    val deleteDialogVisibility: MutableLiveData<Boolean>
+        get() = _deleteDialogVisibility
 
     fun insertUser(user: String, phone: String) {
         repository.insertUser(user, phone)
@@ -29,11 +46,11 @@ class WidgetListViewModel @Inject constructor(
     }
 
     fun setWidgetData() {
-        data = repository.setWidgetData()
+        _data = repository.setWidgetData()
     }
 
     fun setWidgetDataJsonArray() {
-        widgetJsonArrayData = repository.setWidgetDataJsonArray()
+        _widgetJsonArrayData = repository.setWidgetDataJsonArray()
     }
 
     fun setDialogVisibility(flag: Boolean) {

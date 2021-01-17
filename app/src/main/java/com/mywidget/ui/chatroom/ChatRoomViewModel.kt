@@ -9,25 +9,42 @@ import javax.inject.Inject
 class ChatRoomViewModel @Inject constructor(
     private val repository: ChatRoomRepository
 ) : ViewModel() {
-    var roomList: MutableLiveData<List<RoomDataModel>> = MutableLiveData()
+    private var _roomList: MutableLiveData<List<RoomDataModel>> = MutableLiveData()
     var myId: String? = null
-    var isDialogVisibility: MutableLiveData<Boolean> = MutableLiveData()
-    var friendHashMap: MutableLiveData<HashMap<String, String>> = MutableLiveData()
-
-    var deleteRoom: MutableLiveData<RoomDataModel> = MutableLiveData()
-    var deleteDialogVisibility: MutableLiveData<Boolean> = MutableLiveData()
-    val enterRoom: MutableLiveData<RoomDataModel> = MutableLiveData()
+    private val _isDialogVisibility: MutableLiveData<Boolean> = MutableLiveData()
+    private var _friendHashMap: MutableLiveData<HashMap<String, String>> = MutableLiveData()
+    private val _deleteRoom: MutableLiveData<RoomDataModel> = MutableLiveData()
+    private val _deleteDialogVisibility: MutableLiveData<Boolean> = MutableLiveData()
+    private val _enterRoom: MutableLiveData<RoomDataModel> = MutableLiveData()
     private var _roomLastMessage: MutableLiveData<List<ChatDataModel>> = MutableLiveData(arrayListOf())
+
+    val roomList: MutableLiveData<List<RoomDataModel>>
+        get() = _roomList
+
+    val isDialogVisibility: MutableLiveData<Boolean>
+        get() = _isDialogVisibility
+
+    val friendHashMap: MutableLiveData<HashMap<String, String>>
+        get() = _friendHashMap
+
+    val deleteRoom: MutableLiveData<RoomDataModel>
+        get() = _deleteRoom
+
+    val deleteDialogVisibility: MutableLiveData<Boolean>
+        get() = _deleteDialogVisibility
+
+    val enterRoom: MutableLiveData<RoomDataModel>
+        get() = _enterRoom
 
     val roomLastMessage: MutableLiveData<List<ChatDataModel>>
         get() = _roomLastMessage
 
     fun selectRoomList(id: String) {
-        roomList = repository.selectRoomList(id)
+        _roomList = repository.selectRoomList(id)
     }
 
     fun selectFriendList(id: String) {
-        friendHashMap = repository.selectFriendList(id)
+        _friendHashMap = repository.selectFriendList(id)
     }
 
     fun resetLastMessage() {

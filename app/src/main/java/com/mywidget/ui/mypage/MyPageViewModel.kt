@@ -6,16 +6,25 @@ import javax.inject.Inject
 
 class MyPageViewModel @Inject constructor(val repository: MyPageRepository) : ViewModel() {
 
-    var myId: MutableLiveData<String> = MutableLiveData()
-    var nickName: MutableLiveData<String> = MutableLiveData()
-    var updateConfirm: MutableLiveData<Boolean> = MutableLiveData()
+    private val _myId: MutableLiveData<String> = MutableLiveData()
+    private var _nickName: MutableLiveData<String> = MutableLiveData()
+    private var _updateConfirm: MutableLiveData<Boolean> = MutableLiveData()
+
+    val myId: MutableLiveData<String>
+        get() = _myId
+
+    val nickName: MutableLiveData<String>
+        get() = _nickName
+
+    val updateConfirm: MutableLiveData<Boolean>
+        get() = _updateConfirm
 
     fun setMyId(email: String) {
         myId.value = repository.setMyId(email)
     }
 
     fun selectMyNickName() {
-        nickName = repository.selectMyNickName()
+        _nickName = repository.selectMyNickName()
     }
 
     fun updateNickName(name: String) {
@@ -23,6 +32,6 @@ class MyPageViewModel @Inject constructor(val repository: MyPageRepository) : Vi
     }
 
     fun resetConfirm() {
-        updateConfirm = repository.resetConfirm()
+        _updateConfirm = repository.resetConfirm()
     }
 }

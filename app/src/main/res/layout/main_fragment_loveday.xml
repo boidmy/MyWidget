@@ -127,7 +127,7 @@
             android:background="@drawable/heart2"
             android:gravity="center"
             android:paddingBottom="10dp"
-            android:text="@{viewModel.getLoveday()}"
+            android:text="@{viewModel.loveDay}"
             android:textColor="@color/white"
             android:textSize="28dp"
             app:layout_constraintBottom_toBottomOf="parent"

@@ -7,27 +7,49 @@ import javax.inject.Inject
 
 class FriendViewModel @Inject constructor(private val repository: FriendRepository) : ViewModel() {
 
-    var userExistenceChk: MutableLiveData<Boolean> = MutableLiveData()
-    var friendAddDialogVisibility: MutableLiveData<Boolean> = MutableLiveData()
-    var myId: String = ""
-    var friendList: MutableLiveData<ArrayList<FriendModel>> = MutableLiveData()
+    private var _userExistenceChk: MutableLiveData<Boolean> = MutableLiveData()
+    private val _friendAddDialogVisibility: MutableLiveData<Boolean> = MutableLiveData()
+    private var _myId: String = ""
+    private var _friendList: MutableLiveData<ArrayList<FriendModel>> = MutableLiveData()
+    private val _deleteFriend: MutableLiveData<String> = MutableLiveData()
+    private val _deleteDialogVisibility: MutableLiveData<Boolean> = MutableLiveData()
+    private var _friendUpdateDialogVisibility: MutableLiveData<Boolean> = MutableLiveData()
+    private var _friendUpdateModel: MutableLiveData<FriendModel> = MutableLiveData()
 
-    var deleteFriend: MutableLiveData<String> = MutableLiveData()
-    var deleteDialogVisibility: MutableLiveData<Boolean> = MutableLiveData()
+    val userExistenceChk: MutableLiveData<Boolean>
+        get() = _userExistenceChk
 
-    var friendUpdateDialogVisibility: MutableLiveData<Boolean> = MutableLiveData()
-    var friendUpdateModel: MutableLiveData<FriendModel> = MutableLiveData()
+    val friendAddDialogVisibility: MutableLiveData<Boolean>
+        get() = _friendAddDialogVisibility
+
+    val myId: String
+        get() = _myId
+
+    val friendList: MutableLiveData<ArrayList<FriendModel>>
+        get() = _friendList
+
+    val deleteFriend: MutableLiveData<String>
+        get() = _deleteFriend
+
+    val deleteDialogVisibility: MutableLiveData<Boolean>
+        get() = _deleteDialogVisibility
+
+    val friendUpdateDialogVisibility: MutableLiveData<Boolean>
+        get() = _friendUpdateDialogVisibility
+
+    val friendUpdateModel: MutableLiveData<FriendModel>
+        get() = _friendUpdateModel
 
     fun myId(email: String) {
-        myId = repository.myId(email)
+        _myId = repository.myId(email)
     }
 
     fun setFriendUpdateDialogVisibility() {
-        friendUpdateDialogVisibility = repository.setFriendUpdateDialogVisibility()
+        _friendUpdateDialogVisibility = repository.setFriendUpdateDialogVisibility()
     }
 
     fun setUserExistenceChk() {
-        userExistenceChk = repository.setUserExistenceChk()
+        _userExistenceChk = repository.setUserExistenceChk()
     }
 
     fun friendAddDialogVisibility(flag: Boolean) {
@@ -39,7 +61,7 @@ class FriendViewModel @Inject constructor(private val repository: FriendReposito
     }
 
     fun selectFriendList() {
-        friendList = repository.selectFriendList()
+        _friendList = repository.selectFriendList()
     }
 
     fun setFavorites(email: String, onOffChk: Boolean) {
@@ -60,7 +82,7 @@ class FriendViewModel @Inject constructor(private val repository: FriendReposito
     }
 
     fun friendUpdateSelect(email: String) {
-        friendUpdateModel = repository.friendUpdateSelect(email)
+        _friendUpdateModel = repository.friendUpdateSelect(email)
     }
 
     fun friendUpdate(email: String, nickName: String) {

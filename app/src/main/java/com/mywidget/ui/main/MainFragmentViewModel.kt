@@ -10,21 +10,58 @@ import javax.inject.Inject
 class MainFragmentViewModel @Inject constructor(
     private val repository: MainRepository
 ) : ViewModel() {
-    var memoData: MutableLiveData<List<Memo>> = MutableLiveData()
-    var loveday: MutableLiveData<String> = MutableLiveData()
-    var favoritesMessageMe: MutableLiveData<FavoritesData> = MutableLiveData()
-    var favoritesMessageFriend: MutableLiveData<FavoritesData> = MutableLiveData()
-    var myId: MutableLiveData<String> = MutableLiveData()
+    private val _memoData: MutableLiveData<List<Memo>> = MutableLiveData()
+    private val _loveDay: MutableLiveData<String> = MutableLiveData()
+    private var _favoritesMessageMe: MutableLiveData<FavoritesData> = MutableLiveData()
+    private var _favoritesMessageFriend: MutableLiveData<FavoritesData> = MutableLiveData()
+    private var _myId: MutableLiveData<String> = MutableLiveData()
+    private val _memoDialogVisibility: MutableLiveData<Boolean> = MutableLiveData()
+    private val _loveDayDialogVisibility: MutableLiveData<Boolean> = MutableLiveData()
+    private val _favoritesDialogVisibility: MutableLiveData<Boolean> = MutableLiveData()
+    private var _favoritesExistence: MutableLiveData<Boolean> = MutableLiveData()
+    private var _favoritesExistenceMyFriend: MutableLiveData<UserData> = MutableLiveData()
+    private val _deleteDDayDialog: MutableLiveData<Memo> = MutableLiveData()
+    private val _deleteDDayDialogVisibility: MutableLiveData<Boolean> = MutableLiveData()
+    private val _dDayDetail: MutableLiveData<Int> = MutableLiveData()
 
-    var memoDialogVisibility: MutableLiveData<Boolean> = MutableLiveData()
-    var loveDayDialogVisibility: MutableLiveData<Boolean> = MutableLiveData()
-    var favoritesDialogVisibility: MutableLiveData<Boolean> = MutableLiveData()
-    var favoritesExistence: MutableLiveData<Boolean> = MutableLiveData()
-    var favoritesExistenceMyFriend: MutableLiveData<UserData> = MutableLiveData()
+    val memoData: MutableLiveData<List<Memo>>
+        get() = _memoData
 
-    var deleteDDayDialog: MutableLiveData<Memo> = MutableLiveData()
-    var deleteDDayDialogVisibility: MutableLiveData<Boolean> = MutableLiveData()
-    var dDayDetail: MutableLiveData<Int> = MutableLiveData()
+    val loveDay: MutableLiveData<String>
+        get() = _loveDay
+
+    val favoritesMessageMe: MutableLiveData<FavoritesData>
+        get() = _favoritesMessageMe
+
+    val favoritesMessageFriend: MutableLiveData<FavoritesData>
+        get() = _favoritesMessageFriend
+
+    val myId: MutableLiveData<String>
+        get() = _myId
+
+    val memoDialogVisibility: MutableLiveData<Boolean>
+        get() = _memoDialogVisibility
+
+    val loveDayDialogVisibility: MutableLiveData<Boolean>
+        get() = _loveDayDialogVisibility
+
+    val favoritesDialogVisibility: MutableLiveData<Boolean>
+        get() = _favoritesDialogVisibility
+
+    val favoritesExistence: MutableLiveData<Boolean>
+        get() = _favoritesExistence
+
+    val favoritesExistenceMyFriend: MutableLiveData<UserData>
+        get() = _favoritesExistenceMyFriend
+
+    val deleteDDayDialog: MutableLiveData<Memo>
+        get() = _deleteDDayDialog
+
+    val deleteDDayDialogVisibility: MutableLiveData<Boolean>
+        get() = _deleteDDayDialogVisibility
+
+    val dDayDetail: MutableLiveData<Int>
+        get() = _dDayDetail
 
     fun insertMemo(memo: Memo) {
         Thread {
@@ -64,15 +101,15 @@ class MainFragmentViewModel @Inject constructor(
     }
 
     fun selectLoveDay() {
-        loveday.postValue(repository.selectLoveDay())
+        loveDay.postValue(repository.selectLoveDay())
     }
 
     fun favoritesResetMe() {
-        favoritesMessageMe = repository.favoritesResetMe()
+        _favoritesMessageMe = repository.favoritesResetMe()
     }
 
     fun favoritesResetFriend() {
-        favoritesMessageFriend = repository.favoritesResetFriend()
+        _favoritesMessageFriend = repository.favoritesResetFriend()
     }
 
     fun favoritesSelectMessage(friendEmail: String){
@@ -86,7 +123,7 @@ class MainFragmentViewModel @Inject constructor(
     }
 
     fun favoritesExistenceMyFriend() {
-        favoritesExistenceMyFriend = repository.favoritesExistenceMyFriend()
+        _favoritesExistenceMyFriend = repository.favoritesExistenceMyFriend()
     }
 
     fun logout(email: String) {
@@ -95,7 +132,7 @@ class MainFragmentViewModel @Inject constructor(
     }
 
     fun myIdReset() {
-        myId = repository.myIdReset()
+        _myId = repository.myIdReset()
     }
 
     fun myId(email: String) {
@@ -119,7 +156,7 @@ class MainFragmentViewModel @Inject constructor(
     }
 
     fun favoritesExistence() {
-        favoritesExistence = repository.favoritesExistence()
+        _favoritesExistence = repository.favoritesExistence()
     }
 
     fun dDayDetail(index: Int) {

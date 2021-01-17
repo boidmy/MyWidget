@@ -9,19 +9,25 @@ import javax.inject.Inject
 class ChatInviteViewModel @Inject constructor(
     private val repository: ChatInviteRepository) : ViewModel() {
 
-    var myId: String = ""
-    var friendList: MutableLiveData<ArrayList<FriendModel>> = MutableLiveData()
+    private var _myId: String = ""
+    private var _friendList: MutableLiveData<ArrayList<FriendModel>> = MutableLiveData()
+
+    val myId: String
+        get() = _myId
+
+    val friendList: MutableLiveData<ArrayList<FriendModel>>
+        get() = _friendList
 
     fun setChatRoomInformation(roomDataModel: RoomDataModel) {
         repository.setChatRoomInformation(roomDataModel)
     }
 
     fun selectFriendList() {
-        friendList = repository.selectFriendList(myId)
+        _friendList = repository.selectFriendList(myId)
     }
 
     fun myId(userEmail: String) {
-        myId = userEmail
+        _myId = userEmail
     }
 
     private fun inviteUser(email: String) {

@@ -11,14 +11,29 @@ import javax.inject.Inject
 @ActivityScope
 class ChatViewModel @Inject constructor(private val repository: ChatRepository) : ViewModel() {
 
-    var data: MutableLiveData<List<ChatDataModel>> = MutableLiveData()
-    var inviteUserList: MutableLiveData<ArrayList<ChatInviteModel>> = MutableLiveData()
-    var myId: String = ""
-    var inviteDatabaseMap = HashMap<String, String>()
-    lateinit var friendHashMap: HashMap<String, String>
+    private var _data: MutableLiveData<List<ChatDataModel>> = MutableLiveData()
+    private var _inviteUserList: MutableLiveData<ArrayList<ChatInviteModel>> = MutableLiveData()
+    private var _myId: String = ""
+    private var _inviteDatabaseMap = HashMap<String, String>()
+    private var _friendHashMap: HashMap<String, String> = hashMapOf()
+
+    val data: MutableLiveData<List<ChatDataModel>>
+        get() = _data
+
+    val inviteUserList: MutableLiveData<ArrayList<ChatInviteModel>>
+        get() = _inviteUserList
+
+    val inviteDatabaseMap: HashMap<String, String>
+        get() = _inviteDatabaseMap
+
+    val myId: String
+        get() = _myId
+
+    val friendHashMap: HashMap<String, String>
+        get() = _friendHashMap
 
     fun setFriendHashMap(hashData: Map<String, String>) {
-        friendHashMap = hashData as HashMap<String, String>
+        _friendHashMap = hashData as HashMap<String, String>
     }
 
     fun setRoomData(roomDataModel: RoomDataModel) {
@@ -26,11 +41,11 @@ class ChatViewModel @Inject constructor(private val repository: ChatRepository) 
     }
 
     fun setInviteDatabaseMap() {
-        inviteDatabaseMap = repository.setInviteDatabaseMap()
+        _inviteDatabaseMap = repository.setInviteDatabaseMap()
     }
 
     fun getListChat() {
-        data = repository.getListChat()
+        _data = repository.getListChat()
     }
 
     fun insertChat(sendUserEmail: String, text: String) {
@@ -38,11 +53,11 @@ class ChatViewModel @Inject constructor(private val repository: ChatRepository) 
     }
 
     fun myId(userEmail: String) {
-        myId = repository.userId(userEmail)
+        _myId = repository.userId(userEmail)
     }
 
     fun inviteUserList() {
-        inviteUserList = repository.inviteUserList()
+        _inviteUserList = repository.inviteUserList()
     }
 
     fun chatLoadMore(startPosition: Int) {
