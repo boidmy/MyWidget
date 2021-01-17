@@ -86,11 +86,11 @@ public class SendPush {
                 has.put("Content-Type", "application/json");
                 has.put("Authorization", "key=AAAAc7jMs94:APA91bEaUUpvn4eGas12VITCoc4zU0dLM3RuXVoulz3Qphx3fHDU_tzxcmgUDmWTI6R7WsPLBTZaTCFVvdmrSTvBEF9iuB_WtTtqf3lFTgX0UpdFo-8i2FxcRQ2QYSRU3ns-uBjONTg_");
 
-                subscrib.add(ApiConnection.Companion.instance().getRetrofitService()
+                /*subscrib.add(ApiConnection.Companion.instance().getRetrofitService()
                         .fcmTest("https://fcm.googleapis.com/fcm/send", has, root)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe());
+                        .subscribe());*/
 
                 /*URL Url = new URL("https://fcm.googleapis.com/fcm/send");
                 HttpURLConnection conn = (HttpURLConnection) Url.openConnection();
