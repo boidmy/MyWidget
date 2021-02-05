@@ -10,7 +10,7 @@ class FriendViewModel @Inject constructor(private val repository: FriendReposito
     private var _userExistenceChk: MutableLiveData<Boolean> = MutableLiveData()
     private val _friendAddDialogVisibility: MutableLiveData<Boolean> = MutableLiveData()
     private var _myId: String = ""
-    private var _friendList: MutableLiveData<ArrayList<FriendModel>> = MutableLiveData()
+    private var _friendList: MutableLiveData<MutableList<FriendModel>> = MutableLiveData()
     private val _deleteFriend: MutableLiveData<String> = MutableLiveData()
     private val _deleteDialogVisibility: MutableLiveData<Boolean> = MutableLiveData()
     private var _friendUpdateDialogVisibility: MutableLiveData<Boolean> = MutableLiveData()
@@ -25,7 +25,7 @@ class FriendViewModel @Inject constructor(private val repository: FriendReposito
     val myId: String
         get() = _myId
 
-    val friendList: MutableLiveData<ArrayList<FriendModel>>
+    val friendList: MutableLiveData<MutableList<FriendModel>>
         get() = _friendList
 
     val deleteFriend: MutableLiveData<String>

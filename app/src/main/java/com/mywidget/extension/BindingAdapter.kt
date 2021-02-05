@@ -226,19 +226,19 @@ fun chatAdapter(recyclerView: RecyclerView?, data: MutableLiveData<List<ChatData
 }
 
 @BindingAdapter("items")
-fun chatUserListAdapter(recyclerView: RecyclerView?, data: MutableLiveData<ArrayList<ChatInviteModel>>) {
+fun chatUserListAdapter(recyclerView: RecyclerView?, data: MutableLiveData<MutableList<ChatInviteModel>>) {
     val adapter: UserListRecyclerView = recyclerView?.adapter as UserListRecyclerView
     adapter.notifyDataSetChanged()
 }
 
 @BindingAdapter("items")
-fun friendListAdapter(recyclerView: RecyclerView?, data: MutableLiveData<ArrayList<FriendModel>>) {
+fun friendListAdapter(recyclerView: RecyclerView?, data: MutableLiveData<MutableList<FriendModel>>) {
     val adapter: FriendRecyclerView = recyclerView?.adapter as FriendRecyclerView
     adapter.notifyDataSetChanged()
 }
 
 @BindingAdapter("chatInviteRvAdapter")
-fun inviteAdapter(recyclerView: RecyclerView?, data: MutableLiveData<ArrayList<FriendModel>>) {
+fun inviteAdapter(recyclerView: RecyclerView?, data: MutableLiveData<MutableList<FriendModel>>) {
     val adapter: ChatInviteRecyclerView = recyclerView?.adapter as ChatInviteRecyclerView
     adapter.notifyDataSetChanged()
 }

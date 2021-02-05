@@ -12,7 +12,7 @@ import javax.inject.Inject
 class ChatViewModel @Inject constructor(private val repository: ChatRepository) : ViewModel() {
 
     private var _data: MutableLiveData<List<ChatDataModel>> = MutableLiveData()
-    private var _inviteUserList: MutableLiveData<ArrayList<ChatInviteModel>> = MutableLiveData()
+    private var _inviteUserList: MutableLiveData<MutableList<ChatInviteModel>> = MutableLiveData()
     private var _myId: String = ""
     private var _inviteDatabaseMap = HashMap<String, String>()
     private var _friendHashMap: HashMap<String, String> = hashMapOf()
@@ -20,7 +20,7 @@ class ChatViewModel @Inject constructor(private val repository: ChatRepository) 
     val data: MutableLiveData<List<ChatDataModel>>
         get() = _data
 
-    val inviteUserList: MutableLiveData<ArrayList<ChatInviteModel>>
+    val inviteUserList: MutableLiveData<MutableList<ChatInviteModel>>
         get() = _inviteUserList
 
     val inviteDatabaseMap: HashMap<String, String>

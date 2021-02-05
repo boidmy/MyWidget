@@ -24,7 +24,7 @@ class ChatRoomRepository @Inject constructor() {
         userRef.child(replacePointToComma(id))
             .child(ROOMLIST).addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                val list: ArrayList<RoomDataModel> = arrayListOf()
+                val list: MutableList<RoomDataModel> = arrayListOf()
                 for (snap: DataSnapshot in snapshot.children) {
                     val room = snap.getValue(RoomDataModel::class.java)
                     room?.let {

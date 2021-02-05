@@ -25,6 +25,7 @@ class FriendActivity : BaseActivity<ActivityFriendBinding>() {
     @Inject lateinit var deleteDialogBinding: DeleteConfirmDialogFriendBinding
     @Inject lateinit var friendUpdateDialog: Dialog
     @Inject lateinit var friendUpdateDialogBinding: FriendUpdateDialogBinding
+    @Inject lateinit var friendRecyclerView: FriendRecyclerView
 
     override val layout: Int
         get() = R.layout.activity_friend

@@ -6,8 +6,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.mywidget.data.model.FriendModel
 import com.mywidget.databinding.FriendListItemBinding
 import com.mywidget.ui.friend.FriendViewModel
+import javax.inject.Inject
 
-class FriendRecyclerView(val viewModel: FriendViewModel) :
+class FriendRecyclerView @Inject constructor(val viewModel: FriendViewModel) :
     RecyclerView.Adapter<FriendViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FriendViewHolder {

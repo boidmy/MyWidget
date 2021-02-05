@@ -30,11 +30,6 @@ class MainActivityModule {
     }
 
     @Provides
-    fun provideTabPagerAdapter(fragmentManager: FragmentManager): MainTabPagerAdapter {
-        return MainTabPagerAdapter(fragmentManager)
-    }
-
-    @Provides
     fun provideDialog(activity: MainActivity): Dialog {
         return Dialog(activity, R.style.CustomDialogTheme)
     }
