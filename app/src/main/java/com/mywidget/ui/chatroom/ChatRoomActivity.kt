@@ -60,7 +60,7 @@ class ChatRoomActivity : BaseActivity<ActivityChatRoomBinding>() {
         viewModel.enterRoom.observe(this, Observer {
             val intent = Intent(this, ChatActivity::class.java)
             intent.putExtra("data", it)
-            intent.putExtra("friendMap", viewModel.friendHashMap.value)
+            intent.putExtra("friendMap", (viewModel.friendHashMap.value as HashMap))
             this.startActivity(intent)
         })
 

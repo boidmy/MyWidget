@@ -10,7 +10,7 @@ import com.mywidget.data.model.FriendModel
 import util.CalendarUtil
 
 fun friendListExtension(friendRef: DatabaseReference
-                        , mutableData: MutableLiveData<MutableList<FriendModel>>) {
+                        , mutableData: MutableLiveData<List<FriendModel>>) {
     friendRef.addValueEventListener(object : ValueEventListener {
         override fun onDataChange(snapshot: DataSnapshot) {
             val favorites = snapshot.child("favorites").value

@@ -17,7 +17,7 @@ class FriendRepository @Inject constructor() {
     private val friendRef: DatabaseReference by lazy {
         userRef.child(replacePointToComma(myId)).child("friend") }
     var userExistenceChk: MutableLiveData<Boolean> = MutableLiveData()
-    var friendList: MutableLiveData<MutableList<FriendModel>> = MutableLiveData()
+    var friendList: MutableLiveData<List<FriendModel>> = MutableLiveData()
     var myId: String = ""
     var friendUpdateModel: MutableLiveData<FriendModel> = MutableLiveData()
     var friendUpdateDialogVisibility: MutableLiveData<Boolean> = MutableLiveData()
@@ -44,7 +44,7 @@ class FriendRepository @Inject constructor() {
             })
     }
 
-    fun selectFriendList(): MutableLiveData<MutableList<FriendModel>> {
+    fun selectFriendList(): MutableLiveData<List<FriendModel>> {
         friendListExtension(friendRef, friendList)
         return friendList
     }

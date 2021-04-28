@@ -16,7 +16,7 @@ class ChatRoomRepository @Inject constructor() {
     @Inject @Named("User") lateinit var userRef: DatabaseReference
     private val ROOMLIST = "RoomList"
     private val friendMap = hashMapOf<String, String>()
-    var friendHashMap: MutableLiveData<HashMap<String, String>> = MutableLiveData()
+    var friendHashMap: MutableLiveData<Map<String, String>> = MutableLiveData()
     var roomLastMessage: MutableLiveData<List<ChatDataModel>> = MutableLiveData()
     var roomList: MutableLiveData<List<RoomDataModel>> = MutableLiveData()
 
@@ -24,7 +24,7 @@ class ChatRoomRepository @Inject constructor() {
         userRef.child(replacePointToComma(id))
             .child(ROOMLIST).addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                val list: MutableList<RoomDataModel> = arrayListOf()
+                val list: MutableList<RoomDataModel> = mutableListOf()
                 for (snap: DataSnapshot in snapshot.children) {
                     val room = snap.getValue(RoomDataModel::class.java)
                     room?.let {
@@ -40,7 +40,7 @@ class ChatRoomRepository @Inject constructor() {
     }
 
     fun selectLastMessage(data: List<RoomDataModel>) {
-        val dataList = arrayListOf<ChatDataModel>()
+        val dataList = mutableListOf<ChatDataModel>()
         for (i in data.indices) {
             dataList.add(ChatDataModel())
         }
@@ -67,7 +67,7 @@ class ChatRoomRepository @Inject constructor() {
         return roomLastMessage
     }
 
-    fun selectFriendList(id: String): MutableLiveData<HashMap<String, String>> {
+    fun selectFriendList(id: String): MutableLiveData<Map<String, String>> {
         userRef.child(replacePointToComma(id)).child("friend")
             .child("friendList").addListenerForSingleValueEvent(object : ValueEventListener{
                 override fun onDataChange(snapshot: DataSnapshot) {

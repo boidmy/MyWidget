@@ -26,10 +26,10 @@ class ChatRepository @Inject constructor() {
     private val roomRef: DatabaseReference by lazy {
         database.child("Room").child(roomDataModel.master).child(roomDataModel.roomKey) }
     private val message: DatabaseReference by lazy { roomRef.child("message") }
-    private val inviteUserList: MutableLiveData<MutableList<ChatInviteModel>> = MutableLiveData()
+    private val inviteUserList: MutableLiveData<List<ChatInviteModel>> = MutableLiveData()
     var myId: String? = null
     var data: MutableLiveData<List<ChatDataModel>> = MutableLiveData()
-    val list: MutableList<ChatDataModel> = arrayListOf()
+    val list: MutableList<ChatDataModel> = mutableListOf()
     var lastMessageKey: String? = null
     var loadMoreChk = false
     private lateinit var roomDataModel: RoomDataModel
@@ -122,10 +122,10 @@ class ChatRepository @Inject constructor() {
             })
     }
 
-    fun inviteUserList(): MutableLiveData<MutableList<ChatInviteModel>> {
+    fun inviteUserList(): MutableLiveData<List<ChatInviteModel>> {
         roomRef.child("invite").addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                val list: MutableList<ChatInviteModel> = arrayListOf()
+                val list: MutableList<ChatInviteModel> = mutableListOf()
                 for (snap: DataSnapshot in snapshot.children) {
                     val user = snap.getValue(ChatInviteModel::class.java)
                     user?.let {

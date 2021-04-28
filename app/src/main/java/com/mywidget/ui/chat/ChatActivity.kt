@@ -28,7 +28,7 @@ class ChatActivity : BaseActivity<ActivityChattingBinding>() {
     @Inject lateinit var preferencesEditor: SharedPreferences.Editor
     private val viewModel by viewModels<ChatViewModel> { factory }
     lateinit var roomDataModel: RoomDataModel
-    lateinit var friendHashMap: HashMap<String, String>
+    lateinit var friendHashMap: Map<String, String>
 
     override val layout: Int
         get() = R.layout.activity_chatting
@@ -55,7 +55,7 @@ class ChatActivity : BaseActivity<ActivityChattingBinding>() {
         binding.drawerUserListRv.adapter = UserListRecyclerView(viewModel)
 
         roomDataModel = intent.getSerializableExtra("data") as RoomDataModel
-        friendHashMap = intent.getSerializableExtra("friendMap") as HashMap<String, String>
+        friendHashMap = intent.getSerializableExtra("friendMap") as Map<String, String>
 
         viewModel.setFriendHashMap(friendHashMap)
         viewModel.setRoomData(roomDataModel)

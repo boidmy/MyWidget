@@ -12,11 +12,11 @@ class ChatRoomViewModel @Inject constructor(
     private var _roomList: MutableLiveData<List<RoomDataModel>> = MutableLiveData()
     var myId: String? = null
     private val _isDialogVisibility: MutableLiveData<Boolean> = MutableLiveData()
-    private var _friendHashMap: MutableLiveData<HashMap<String, String>> = MutableLiveData()
+    private var _friendHashMap: MutableLiveData<Map<String, String>> = MutableLiveData()
     private val _deleteRoom: MutableLiveData<RoomDataModel> = MutableLiveData()
     private val _deleteDialogVisibility: MutableLiveData<Boolean> = MutableLiveData()
     private val _enterRoom: MutableLiveData<RoomDataModel> = MutableLiveData()
-    private var _roomLastMessage: MutableLiveData<List<ChatDataModel>> = MutableLiveData(arrayListOf())
+    private var _roomLastMessage: MutableLiveData<List<ChatDataModel>> = MutableLiveData()
 
     val roomList: MutableLiveData<List<RoomDataModel>>
         get() = _roomList
@@ -24,7 +24,7 @@ class ChatRoomViewModel @Inject constructor(
     val isDialogVisibility: MutableLiveData<Boolean>
         get() = _isDialogVisibility
 
-    val friendHashMap: MutableLiveData<HashMap<String, String>>
+    val friendHashMap: MutableLiveData<Map<String, String>>
         get() = _friendHashMap
 
     val deleteRoom: MutableLiveData<RoomDataModel>

@@ -21,14 +21,14 @@ class ChatInviteRepository @Inject constructor() {
     @Inject @Named("User") lateinit var userRef: DatabaseReference
     private val roomRef: DatabaseReference by lazy {
         database.child("Room").child(roomDataModel.master).child(roomDataModel.roomKey) }
-    var friendList: MutableLiveData<MutableList<FriendModel>> = MutableLiveData()
+    var friendList: MutableLiveData<List<FriendModel>> = MutableLiveData()
     private lateinit var roomDataModel: RoomDataModel
 
     fun setChatRoomInformation(roomDataModel: RoomDataModel) {
         this.roomDataModel = roomDataModel
     }
 
-    fun selectFriendList(myId: String): MutableLiveData<MutableList<FriendModel>> {
+    fun selectFriendList(myId: String): MutableLiveData<List<FriendModel>> {
         friendListExtension(userRef.child(replacePointToComma(myId)).child("friend")
             , friendList)
 

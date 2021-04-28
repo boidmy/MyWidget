@@ -10,12 +10,12 @@ class ChatInviteViewModel @Inject constructor(
     private val repository: ChatInviteRepository) : ViewModel() {
 
     private var _myId: String = ""
-    private var _friendList: MutableLiveData<MutableList<FriendModel>> = MutableLiveData()
+    private var _friendList: MutableLiveData<List<FriendModel>> = MutableLiveData()
 
     val myId: String
         get() = _myId
 
-    val friendList: MutableLiveData<MutableList<FriendModel>>
+    val friendList: MutableLiveData<List<FriendModel>>
         get() = _friendList
 
     fun setChatRoomInformation(roomDataModel: RoomDataModel) {
@@ -44,7 +44,7 @@ class ChatInviteViewModel @Inject constructor(
         }
     }
 
-    fun setFriendList(data: MutableList<FriendModel>) {
+    fun setFriendList(data: List<FriendModel>) {
         friendList.value = data
     }
 

@@ -12,28 +12,28 @@ import javax.inject.Inject
 class ChatViewModel @Inject constructor(private val repository: ChatRepository) : ViewModel() {
 
     private var _data: MutableLiveData<List<ChatDataModel>> = MutableLiveData()
-    private var _inviteUserList: MutableLiveData<MutableList<ChatInviteModel>> = MutableLiveData()
+    private var _inviteUserList: MutableLiveData<List<ChatInviteModel>> = MutableLiveData()
     private var _myId: String = ""
-    private var _inviteDatabaseMap = HashMap<String, String>()
-    private var _friendHashMap: HashMap<String, String> = hashMapOf()
+    private var _inviteDatabaseMap: Map<String, String> = hashMapOf()
+    private var _friendHashMap: Map<String, String> = hashMapOf()
 
     val data: MutableLiveData<List<ChatDataModel>>
         get() = _data
 
-    val inviteUserList: MutableLiveData<MutableList<ChatInviteModel>>
+    val inviteUserList: MutableLiveData<List<ChatInviteModel>>
         get() = _inviteUserList
 
-    val inviteDatabaseMap: HashMap<String, String>
+    val inviteDatabaseMap: Map<String, String>
         get() = _inviteDatabaseMap
 
     val myId: String
         get() = _myId
 
-    val friendHashMap: HashMap<String, String>
+    val friendHashMap: Map<String, String>
         get() = _friendHashMap
 
     fun setFriendHashMap(hashData: Map<String, String>) {
-        _friendHashMap = hashData as HashMap<String, String>
+        _friendHashMap = hashData
     }
 
     fun setRoomData(roomDataModel: RoomDataModel) {
