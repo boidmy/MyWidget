@@ -10,24 +10,23 @@ import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import com.mywidget.MainApplication
 import com.mywidget.R
+import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.android.synthetic.main.loveday_popup2.*
 import util.Util.toast
+import javax.inject.Inject
+import javax.inject.Named
 
-class FloatingPopupActivity : Activity() {
+class FloatingPopupActivity : DaggerAppCompatActivity() {
 
-    lateinit var openAnimation: Animation
-    lateinit var closeAnimation: Animation
-    lateinit var startRotateAnimation: Animation
-    lateinit var endRotateAnimation: Animation
+    @Inject @Named("floatingOpen") lateinit var openAnimation: Animation
+    @Inject @Named("floatingClose") lateinit var closeAnimation: Animation
+    @Inject @Named("rotateOpen") lateinit var startRotateAnimation: Animation
+    @Inject @Named("rotateClose") lateinit var endRotateAnimation: Animation
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.loveday_popup2)
 
-        startRotateAnimation = AnimationUtils.loadAnimation(this, R.anim.rotate_floating_open)
-        endRotateAnimation = AnimationUtils.loadAnimation(this, R.anim.rotate_floating_close)
-        openAnimation = AnimationUtils.loadAnimation(this, R.anim.anim_floating_open)
-        closeAnimation = AnimationUtils.loadAnimation(this, R.anim.anim_floating_close)
         activationAnimation(true)
     }
 

@@ -17,6 +17,8 @@ import com.mywidget.ui.main.MainActivity
 import com.mywidget.ui.main.MainActivityModule
 import com.mywidget.ui.login.signup.SignUpActivity
 import com.mywidget.ui.login.LoginViewModelModule
+import com.mywidget.ui.loveday.FloatingPopupActivity
+import com.mywidget.ui.loveday.FloatingPopupModule
 import com.mywidget.ui.main.MainFragmentModule
 import com.mywidget.ui.main.MainViewModelModule
 import com.mywidget.ui.mypage.MyPageActivity
@@ -78,4 +80,8 @@ abstract class ActivityBindingModule {
     @ActivityScope
     @ContributesAndroidInjector(modules = [MyPageViewModelModule::class])
     abstract fun myPageActivity(): MyPageActivity
+
+    @ActivityScope
+    @ContributesAndroidInjector(modules = [FloatingPopupModule::class])
+    abstract fun floatingPopupActivity(): FloatingPopupActivity
 }
