@@ -47,7 +47,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintWidth_percent="0.5"
-            tools:text="abcd1234" />
+            tools:text="abcd1234"
+            tools:visibility="visible" />
 
         <TextView
             android:id="@+id/chatTxt"

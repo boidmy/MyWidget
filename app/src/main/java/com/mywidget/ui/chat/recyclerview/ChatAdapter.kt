@@ -1,6 +1,5 @@
 package com.mywidget.ui.chat.recyclerview
 
-import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.RecyclerView
@@ -8,8 +7,6 @@ import com.mywidget.common.DiffUtilCallBack
 import com.mywidget.data.Interface.DiffUtilDataInterface
 import com.mywidget.data.model.ChatData
 import com.mywidget.ui.chat.ChatViewModel
-import com.mywidget.databinding.ChatLeftBinding
-import com.mywidget.databinding.ChatRightBinding
 
 class ChatAdapter(val viewModel: ChatViewModel) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -21,13 +18,9 @@ class ChatAdapter(val viewModel: ChatViewModel) :
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int)
             : RecyclerView.ViewHolder {
         return if (viewType == RIGHTCHAT) {
-            val bind = ChatRightBinding
-                .inflate(LayoutInflater.from(parent.context), parent, false)
-            ChatRightViewHolder(bind, viewModel)
+            ChatRightViewHolder(parent, viewModel)
         } else {
-            val bind = ChatLeftBinding
-                .inflate(LayoutInflater.from(parent.context), parent, false)
-            ChatLeftViewHolder(bind, viewModel)
+            ChatLeftViewHolder(parent, viewModel)
         }
     }
 
