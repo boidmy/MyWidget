@@ -57,12 +57,13 @@ fun daysPast(textView: TextView?, data: String?) {
     cal?.let {
         value = CalendarUtil.dDay(
             CalendarUtil.getYear(cal)
-            , CalendarUtil.getMonth(cal)+1
-            , CalendarUtil.getNowDate(cal)).toString()
+            , CalendarUtil.getMonth(cal) + 1
+            , CalendarUtil.getNowDate(cal)
+        ).toString()
     }
 
     textView?.let {
-        if(value.toInt() > 0) {
+        if (value.toInt() > 0) {
             it.textSize = 21f
             text(it, "D - $value")
         } else {
@@ -82,8 +83,9 @@ fun setNowDate(calendarTxtArea: EditText, today: String) {
     calendarTxtArea.setOnClickListener {
         val c = Calendar.getInstance()
         val dpd = DatePickerDialog(calendarTxtArea.context, { view, year, monthOfYear, dayOfMonth ->
-            calendarTxtArea.setText(year.toString() + "-" + (monthOfYear+1).toString() + "-" + dayOfMonth.toString())
-            calendarTxtArea.tag = year.toString()+String.format("%02d", monthOfYear+1)+dayOfMonth.toString()
+            calendarTxtArea.setText(year.toString() + "-" + (monthOfYear + 1).toString() + "-" + dayOfMonth.toString())
+            calendarTxtArea.tag =
+                year.toString() + String.format("%02d", monthOfYear + 1) + dayOfMonth.toString()
         }, CalendarUtil.getYear(c), CalendarUtil.getMonth(c), CalendarUtil.getNowDate(c))
         dpd.show()
     }
@@ -102,7 +104,12 @@ fun setLoveDay(imageView: ImageView, viewModel: MainFragmentViewModel, textView:
 }
 
 @BindingAdapter("memoTxt", "dateTxt", "viewModel")
-fun memoOnclick(imageView: ImageView, memo: EditText, date: TextView, viewModel: MainFragmentViewModel) {
+fun memoOnclick(
+    imageView: ImageView,
+    memo: EditText,
+    date: TextView,
+    viewModel: MainFragmentViewModel
+) {
     imageView.setOnClickListener {
         if (memo.text.toString().isEmpty()) {
             imageView.context.toast("디데이명을 입력해주세요!")
@@ -127,8 +134,8 @@ fun favoritesMemo(imageView: ImageView, editText: EditText, viewModel: MainFragm
 
 @BindingAdapter("chatNickName", "chatViewModel")
 fun chatText(textView: TextView, data: ChatDataModel, viewModel: ChatViewModel) {
-    val myInsertNickName = viewModel.friendHashMap[data.id] ?:"" //1순위 내가 등록한 친구 닉네임
-    val nickName = viewModel.inviteDatabaseMap[data.id] ?:"" //2순위 상대가 회원가입 할때 등록한 닉네임
+    val myInsertNickName = viewModel.friendHashMap[data.id] ?: "" //1순위 내가 등록한 친구 닉네임
+    val nickName = viewModel.inviteDatabaseMap[data.id] ?: "" //2순위 상대가 회원가입 할때 등록한 닉네임
     if (myInsertNickName.isNotEmpty()) {
         text(textView, myInsertNickName)
     } else {
@@ -141,7 +148,12 @@ fun chatText(textView: TextView, data: ChatDataModel, viewModel: ChatViewModel) 
 }
 
 @BindingAdapter("userConfirm", "userPhone", "userviewModel")
-fun setUserConfirm(button: Button, name: EditText, phone: EditText, viewModel: WidgetListViewModel) {
+fun setUserConfirm(
+    button: Button,
+    name: EditText,
+    phone: EditText,
+    viewModel: WidgetListViewModel
+) {
     button.setOnClickListener {
         viewModel.insertUser(name.text.toString(), phone.text.toString())
         viewModel.dialogVisible.value = false
@@ -151,12 +163,16 @@ fun setUserConfirm(button: Button, name: EditText, phone: EditText, viewModel: W
 @BindingAdapter("chatEditListener")
 fun chatEditListener(editText: EditText, view: Button) {
     val drawable = ResourcesCompat
-        .getDrawable(editText.resources, R.drawable.edge_round_smal_corner, null) as GradientDrawable
+        .getDrawable(
+            editText.resources,
+            R.drawable.edge_round_smal_corner,
+            null
+        ) as GradientDrawable
     editText.addTextChangedListener(object : TextWatcher {
         override fun afterTextChanged(p0: Editable?) {}
         override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
         override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-            if (p0?.length?:0 > 0 ) {
+            if (p0?.length ?: 0 > 0) {
                 drawable.setColor(Color.parseColor("#45D4FA"))
                 view.background = drawable
                 view.isEnabled = true
@@ -172,10 +188,10 @@ fun chatEditListener(editText: EditText, view: Button) {
 @BindingAdapter("favoriteFriendVisibility")
 fun favoriteFriendVisibility(view: View, data: UserData?) {
     data?.let {
-       if (it.email.isNotEmpty()) {
-           view.isVisible = true
-           return
-       }
+        if (it.email.isNotEmpty()) {
+            view.isVisible = true
+            return
+        }
     }
     view.isVisible = false
 }
@@ -204,42 +220,48 @@ fun roomLastMessage(textView: TextView, data: List<ChatDataModel>?, position: In
 @BindingAdapter("items")
 fun adapter(recyclerView: RecyclerView?, data: MutableLiveData<List<User>>) {
     val adapter: WidgetListRecyclerView = recyclerView?.adapter as WidgetListRecyclerView
-    adapter.notifyDataSetChanged()
+    adapter.setData(data.value ?: listOf())
 }
 
 @BindingAdapter("items")
 fun memoAdapter(recyclerView: RecyclerView?, data: MutableLiveData<List<Memo>>) {
     val adapter: MainTabMemoAdapter = recyclerView?.adapter as MainTabMemoAdapter
-    adapter.setData(data.value?: listOf())
+    adapter.setData(data.value ?: listOf())
 }
 
 @BindingAdapter("items")
 fun roomAdapter(recyclerView: RecyclerView?, data: MutableLiveData<List<RoomDataModel>>) {
     val adapter: ChatRoomRecyclerView = recyclerView?.adapter as ChatRoomRecyclerView
-    adapter.notifyDataSetChanged()
+    adapter.setData(data.value ?: listOf())
 }
 
 @BindingAdapter("items")
 fun chatAdapter(recyclerView: RecyclerView?, data: MutableLiveData<List<ChatData>>) {
     val adapter: ChatAdapter = recyclerView?.adapter as ChatAdapter
-    adapter.setData(data.value?: listOf())
+    adapter.setData(data.value ?: listOf())
     recyclerView.smoothScrollToPosition(0)
 }
 
 @BindingAdapter("items")
-fun chatUserListAdapter(recyclerView: RecyclerView?, data: MutableLiveData<MutableList<ChatInviteModel>>) {
+fun chatUserListAdapter(
+    recyclerView: RecyclerView?,
+    data: MutableLiveData<List<ChatInviteModel>>
+) {
     val adapter: UserListRecyclerView = recyclerView?.adapter as UserListRecyclerView
-    adapter.notifyDataSetChanged()
+    adapter.setData(data.value ?: listOf())
 }
 
 @BindingAdapter("items")
-fun friendListAdapter(recyclerView: RecyclerView?, data: MutableLiveData<MutableList<FriendModel>>) {
+fun friendListAdapter(
+    recyclerView: RecyclerView?,
+    data: MutableLiveData<List<FriendModel>>
+) {
     val adapter: FriendRecyclerView = recyclerView?.adapter as FriendRecyclerView
-    adapter.notifyDataSetChanged()
+    adapter.setData(data.value ?: listOf())
 }
 
 @BindingAdapter("chatInviteRvAdapter")
-fun inviteAdapter(recyclerView: RecyclerView?, data: MutableLiveData<MutableList<FriendModel>>) {
+fun inviteAdapter(recyclerView: RecyclerView?, data: MutableLiveData<List<FriendModel>>) {
     val adapter: ChatInviteRecyclerView = recyclerView?.adapter as ChatInviteRecyclerView
-    adapter.notifyDataSetChanged()
+    adapter.setData(data.value ?: listOf())
 }

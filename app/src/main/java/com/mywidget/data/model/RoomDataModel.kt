@@ -1,5 +1,6 @@
 package com.mywidget.data.model
 
+import com.mywidget.data.Interface.DiffUtilDataInterface
 import java.io.Serializable
 
 data class RoomDataModel (
@@ -7,4 +8,12 @@ data class RoomDataModel (
     var roomKey: String = "",
     var master: String = "",
     var lastMessage: String = ""
-): Serializable
+): Serializable, DiffUtilDataInterface {
+    override fun keyValue(): String {
+        return roomKey
+    }
+
+    override fun contentValue(): String {
+        return roomName
+    }
+}
