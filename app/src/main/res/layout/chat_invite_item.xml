@@ -12,6 +12,10 @@
         <variable
             name="viewModel"
             type="com.mywidget.ui.chatinvite.ChatInviteViewModel" />
+
+        <variable
+            name="data"
+            type="com.mywidget.data.model.FriendModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -21,7 +25,7 @@
         android:layout_marginTop="5dp"
         android:layout_marginRight="10dp"
         android:layout_marginBottom="5dp"
-        app:isSelected="@{position}"
+        app:isSelected="@{data}"
         app:viewModel="@{viewModel}">
 
         <View
@@ -40,7 +44,7 @@
             android:layout_marginEnd="10dp"
             android:ellipsize="end"
             android:singleLine="true"
-            android:text="@{viewModel.friendList.get(position).email}"
+            android:text="@{data.email}"
             android:textSize="16dp"
             app:layout_constraintBottom_toTopOf="@+id/userExplanation"
             app:layout_constraintEnd_toStartOf="@+id/checkBtn"
@@ -57,7 +61,7 @@
             android:layout_marginEnd="10dp"
             android:ellipsize="end"
             android:singleLine="true"
-            android:text="@{viewModel.friendList.get(position).nickName}"
+            android:text="@{data.nickName}"
             android:textSize="16dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/checkBtn"

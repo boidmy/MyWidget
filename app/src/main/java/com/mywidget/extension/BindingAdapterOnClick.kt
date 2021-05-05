@@ -91,14 +91,16 @@ fun createRoom(imageView: ImageView, viewModel: ChatRoomViewModel, editText: Edi
 }
 
 @BindingAdapter("isSelected", "viewModel")
-fun onClickSelected(view: View, position: Int, viewModel: ChatInviteViewModel) {
+fun onClickSelected(view: View, data: FriendModel, viewModel: ChatInviteViewModel) {
     view.setOnClickListener {
-        val array = viewModel.friendList.value
-        val selector = array?.get(position)?.selector ?: true
-        array?.get(position)?.selector = !selector
-        array?.let {
-            viewModel.setFriendList(it)
+        val value = viewModel.friendList.value?.map {
+            if (it.email == data.email) {
+                it.copy(selector = it.selector.not())
+            } else {
+                it
+            }
         }
+        viewModel.friendList.value = value
     }
 }
 
