@@ -1,7 +1,7 @@
 package com.mywidget.data.Interface
 
 
-interface ChatDataInterface {
+interface DiffUtilDataInterface {
 
     fun keyValue(): String
     fun contentValue(): String

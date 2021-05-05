@@ -3,12 +3,10 @@ package com.mywidget.ui.chat.recyclerview
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.mywidget.common.DiffUtilCallBack
-import com.mywidget.data.Interface.ChatDataInterface
+import com.mywidget.data.Interface.DiffUtilDataInterface
 import com.mywidget.data.model.ChatData
-import com.mywidget.data.model.ChatDataModel
 import com.mywidget.ui.chat.ChatViewModel
 import com.mywidget.databinding.ChatLeftBinding
 import com.mywidget.databinding.ChatRightBinding
@@ -58,9 +56,8 @@ class ChatAdapter(val viewModel: ChatViewModel) :
     }
 
     fun setData(data: List<ChatData>) {
-        val item: ArrayList<ChatData> = arrayListOf()
+        val item: MutableList<ChatData> = mutableListOf()
         item.addAll(data)
-        //diffUtil.submitList(null)
-        diffUtil.submitList(item as List<ChatDataInterface>?)
+        diffUtil.submitList(item as List<DiffUtilDataInterface>)
     }
 }

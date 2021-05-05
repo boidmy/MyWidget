@@ -19,7 +19,6 @@ import javax.inject.Inject
 
 
 class FragmentMemo : BaseFragment<MainFragmentDDayBinding>() {
-    @Inject lateinit var mAdapter: MainTabMemoAdapter
     @Inject lateinit var factory: ViewModelProvider.Factory
     @Inject lateinit var deleteDialogBinding: DeleteConfirmDialogDDayBinding
     @Inject lateinit var deleteDialog: Dialog
@@ -32,30 +31,32 @@ class FragmentMemo : BaseFragment<MainFragmentDDayBinding>() {
     override fun onCreateView(inflater: LayoutInflater, parent: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         super.onCreateView(inflater, parent, savedInstanceState)
-        bindView()
-        deleteDialog()
+        bind()
 
         return binding.root
     }
 
-    private fun bindView() {
+    private fun bind() {
+        binding.data = viewModel.memoData
+        binding.viewModel = viewModel
+
         binding.fragmentRv.apply {
-            adapter = mAdapter
+            adapter = MainTabMemoAdapter(viewModel)
             val animator = itemAnimator
             if (animator is SimpleItemAnimator) {
                 animator.supportsChangeAnimations = false
             }
         }
 
-        binding.data = viewModel.memoData
-        binding.viewModel = viewModel
-        mAdapter.setViewModel(viewModel)
+        setObserve()
+        selectCall()
+        deleteDialog()
+    }
 
+    private fun setObserve() {
         viewModel.dDayDetail.observe(requireActivity(), Observer {
             (binding.fragmentRv.adapter as MainTabMemoAdapter).detail(it)
         })
-
-        selectCall()
     }
 
     private fun selectCall() {

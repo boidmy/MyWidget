@@ -210,7 +210,7 @@ fun adapter(recyclerView: RecyclerView?, data: MutableLiveData<List<User>>) {
 @BindingAdapter("items")
 fun memoAdapter(recyclerView: RecyclerView?, data: MutableLiveData<List<Memo>>) {
     val adapter: MainTabMemoAdapter = recyclerView?.adapter as MainTabMemoAdapter
-    adapter.notifyDataSetChanged()
+    adapter.setData(data.value?: listOf())
 }
 
 @BindingAdapter("items")

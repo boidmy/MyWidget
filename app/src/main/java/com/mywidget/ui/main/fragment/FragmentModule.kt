@@ -10,11 +10,6 @@ import dagger.Provides
 class FragmentModule {
 
     @Provides
-    fun provideMainTabMemoAdapter(): MainTabMemoAdapter {
-        return MainTabMemoAdapter()
-    }
-
-    @Provides
     fun provideDeleteDialogBinding(fragment: FragmentMemo): DeleteConfirmDialogDDayBinding {
         return DeleteConfirmDialogDDayBinding.inflate(LayoutInflater.from(fragment.requireContext()))
     }

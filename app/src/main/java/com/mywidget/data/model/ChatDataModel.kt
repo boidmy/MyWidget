@@ -1,11 +1,11 @@
 package com.mywidget.data.model
 
-import com.mywidget.data.Interface.ChatDataInterface
+import com.mywidget.data.Interface.DiffUtilDataInterface
 
 data class ChatData(
     var key: String = "",
     var chatDataModel: ChatDataModel = ChatDataModel()
-): ChatDataInterface {
+): DiffUtilDataInterface {
     override fun keyValue(): String {
         return key
     }

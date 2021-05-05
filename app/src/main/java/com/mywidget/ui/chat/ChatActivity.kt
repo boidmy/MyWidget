@@ -98,7 +98,7 @@ class ChatActivity : BaseActivity<ActivityChattingBinding>() {
         startActivity(intent)
     }
 
-    /*TODO 사용자가 채팅방에 들어와있으면 push 를 받지 않기 위한 용도*/
+    //사용자가 채팅방에 들어와있으면 push 를 받지 않기 위한 용도
     private fun setRoomSharedPreferences() {
         preferencesEditor.putString(getString(R.string.roomKey), roomDataModel.roomKey)
         preferencesEditor.apply()
