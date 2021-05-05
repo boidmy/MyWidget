@@ -1,14 +1,15 @@
 package com.mywidget.ui.main.recyclerview
 
-import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.RecyclerView
+import com.mywidget.R
 import com.mywidget.common.DiffUtilCallBack
 import com.mywidget.data.Interface.DiffUtilDataInterface
 import com.mywidget.data.room.Memo
 import com.mywidget.databinding.MainFragmentDDayItemBinding
+import com.mywidget.ui.base.ViewHolderBase
 import com.mywidget.ui.main.MainFragmentViewModel
 
 class MainTabMemoAdapter(private val mFragmentViewModel: MainFragmentViewModel) :
@@ -29,9 +30,7 @@ class MainTabMemoAdapter(private val mFragmentViewModel: MainFragmentViewModel) 
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainTabMemoViewHolder {
-        val bind = MainFragmentDDayItemBinding
-            .inflate(LayoutInflater.from(parent.context), parent, false)
-        return MainTabMemoViewHolder(bind)
+        return MainTabMemoViewHolder(parent)
     }
 
     override fun getItemCount(): Int {
@@ -53,12 +52,11 @@ class MainTabMemoAdapter(private val mFragmentViewModel: MainFragmentViewModel) 
     }
 }
 
-class MainTabMemoViewHolder(val binding: MainFragmentDDayItemBinding) :
-    RecyclerView.ViewHolder(binding.root) {
+class MainTabMemoViewHolder(parent: ViewGroup) :
+    ViewHolderBase<MainFragmentDDayItemBinding>(parent, R.layout.main_fragment_d_day_item) {
 
-    fun bindView(mData: Memo?, mFragmentViewModel: MainFragmentViewModel, seq: Int) {
+    fun bindView(mData: Memo, mFragmentViewModel: MainFragmentViewModel, seq: Int) {
         binding.apply {
-            if (mData == null) return
             data = mData
             viewModel = mFragmentViewModel
             executePendingBindings()
