@@ -3,7 +3,6 @@ package com.mywidget.ui.chatroom
 import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
 import androidx.activity.viewModels
 import androidx.lifecycle.Observer
@@ -15,7 +14,7 @@ import com.mywidget.databinding.ChatCreateRoomBinding
 import com.mywidget.databinding.DeleteConfirmDialogChatRoomBinding
 import com.mywidget.ui.base.BaseActivity
 import com.mywidget.ui.chat.ChatActivity
-import com.mywidget.ui.chatroom.recyclerview.ChatRoomRecyclerView
+import com.mywidget.ui.chatroom.recyclerview.ChatRoomAdapter
 import javax.inject.Inject
 
 class ChatRoomActivity : BaseActivity<ActivityChatRoomBinding>() {
@@ -38,7 +37,7 @@ class ChatRoomActivity : BaseActivity<ActivityChatRoomBinding>() {
 
     private fun bind() {
         binding.viewModel = viewModel
-        binding.watingRoomRv.adapter = ChatRoomRecyclerView(viewModel)
+        binding.watingRoomRv.adapter = ChatRoomAdapter(viewModel)
 
         with(loginEmail()) {
             viewModel.selectFriendList(this)

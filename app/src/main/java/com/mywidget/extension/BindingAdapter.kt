@@ -22,13 +22,13 @@ import com.mywidget.data.room.User
 import com.mywidget.ui.chat.ChatViewModel
 import com.mywidget.ui.chat.recyclerview.ChatAdapter
 import com.mywidget.ui.chat.recyclerview.UserListRecyclerView
-import com.mywidget.ui.chatinvite.recyclerview.ChatInviteRecyclerView
-import com.mywidget.ui.chatroom.recyclerview.ChatRoomRecyclerView
-import com.mywidget.ui.friend.recyclerview.FriendRecyclerView
+import com.mywidget.ui.chatinvite.recyclerview.ChatInviteAdapter
+import com.mywidget.ui.chatroom.recyclerview.ChatRoomAdapter
+import com.mywidget.ui.friend.recyclerview.FriendAdapter
 import com.mywidget.ui.main.MainFragmentViewModel
 import com.mywidget.ui.main.recyclerview.MainTabMemoAdapter
 import com.mywidget.ui.widgetlist.WidgetListViewModel
-import com.mywidget.ui.widgetlist.recyclerview.WidgetListRecyclerView
+import com.mywidget.ui.widgetlist.recyclerview.WidgetListAdapter
 import util.CalendarUtil
 import util.CalendarUtil.hourDateFormat
 import util.CalendarUtil.memoDateFormat
@@ -219,7 +219,7 @@ fun roomLastMessage(textView: TextView, data: List<ChatDataModel>?, position: In
 
 @BindingAdapter("items")
 fun adapter(recyclerView: RecyclerView?, data: MutableLiveData<List<User>>) {
-    val adapter: WidgetListRecyclerView = recyclerView?.adapter as WidgetListRecyclerView
+    val adapter: WidgetListAdapter = recyclerView?.adapter as WidgetListAdapter
     adapter.setData(data.value ?: listOf())
 }
 
@@ -231,7 +231,7 @@ fun memoAdapter(recyclerView: RecyclerView?, data: MutableLiveData<List<Memo>>) 
 
 @BindingAdapter("items")
 fun roomAdapter(recyclerView: RecyclerView?, data: MutableLiveData<List<RoomDataModel>>) {
-    val adapter: ChatRoomRecyclerView = recyclerView?.adapter as ChatRoomRecyclerView
+    val adapter: ChatRoomAdapter = recyclerView?.adapter as ChatRoomAdapter
     adapter.setData(data.value ?: listOf())
 }
 
@@ -256,12 +256,12 @@ fun friendListAdapter(
     recyclerView: RecyclerView?,
     data: MutableLiveData<List<FriendModel>>
 ) {
-    val adapter: FriendRecyclerView = recyclerView?.adapter as FriendRecyclerView
+    val adapter: FriendAdapter = recyclerView?.adapter as FriendAdapter
     adapter.setData(data.value ?: listOf())
 }
 
 @BindingAdapter("chatInviteRvAdapter")
 fun inviteAdapter(recyclerView: RecyclerView?, data: MutableLiveData<List<FriendModel>>) {
-    val adapter: ChatInviteRecyclerView = recyclerView?.adapter as ChatInviteRecyclerView
+    val adapter: ChatInviteAdapter = recyclerView?.adapter as ChatInviteAdapter
     adapter.setData(data.value ?: listOf())
 }

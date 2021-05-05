@@ -8,7 +8,7 @@ import com.mywidget.R
 import com.mywidget.data.model.RoomDataModel
 import com.mywidget.databinding.ActivityChatInviteBinding
 import com.mywidget.ui.base.BaseActivity
-import com.mywidget.ui.chatinvite.recyclerview.ChatInviteRecyclerView
+import com.mywidget.ui.chatinvite.recyclerview.ChatInviteAdapter
 import javax.inject.Inject
 
 class ChatInviteActivity : BaseActivity<ActivityChatInviteBinding>() {
@@ -28,7 +28,7 @@ class ChatInviteActivity : BaseActivity<ActivityChatInviteBinding>() {
         binding.viewModel = viewModel
         viewModel.myId(loginEmail())
         viewModel.selectFriendList()
-        binding.inviteRv.adapter = ChatInviteRecyclerView(viewModel)
+        binding.inviteRv.adapter = ChatInviteAdapter(viewModel)
 
         val roomDataModel = intent.getSerializableExtra("data") as RoomDataModel
         viewModel.setChatRoomInformation(roomDataModel)

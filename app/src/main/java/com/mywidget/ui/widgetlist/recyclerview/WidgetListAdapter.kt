@@ -11,7 +11,7 @@ import com.mywidget.databinding.WidgetUserRvItemBinding
 import com.mywidget.ui.base.ViewHolderBase
 import com.mywidget.ui.widgetlist.WidgetListViewModel
 
-class WidgetListRecyclerView(viewModel: WidgetListViewModel)
+class WidgetListAdapter(viewModel: WidgetListViewModel)
     : RecyclerView.Adapter<MyViewHolder>() {
     private var mViewModel = viewModel
     private val diffUtil = AsyncListDiffer(this, DiffUtilCallBack)

@@ -12,7 +12,7 @@ import com.mywidget.databinding.FriendListItemBinding
 import com.mywidget.ui.friend.FriendViewModel
 import javax.inject.Inject
 
-class FriendRecyclerView @Inject constructor(val viewModel: FriendViewModel) :
+class FriendAdapter @Inject constructor(val viewModel: FriendViewModel) :
     RecyclerView.Adapter<FriendViewHolder>() {
 
     private val diffUtil = AsyncListDiffer(this, DiffUtilCallBack)

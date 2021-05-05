@@ -4,7 +4,6 @@ import android.app.Dialog
 import android.appwidget.AppWidgetManager
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.LayoutInflater
 import androidx.activity.viewModels
@@ -12,19 +11,17 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.mywidget.MyAppWidget
 import com.mywidget.R
-import com.mywidget.ui.widgetlist.recyclerview.WidgetListRecyclerView
+import com.mywidget.ui.widgetlist.recyclerview.WidgetListAdapter
 import com.mywidget.databinding.ActivityWidgetBinding
-import com.mywidget.databinding.DeleteConfirmDialogFriendBinding
 import com.mywidget.databinding.DeleteConfirmDialogWidgetBinding
 import com.mywidget.databinding.WidgetAddDialogBinding
 import com.mywidget.ui.base.BaseActivity
 import kotlinx.android.synthetic.main.widget_add_dialog.*
 import org.json.JSONArray
-import util.Util.toast
 import javax.inject.Inject
 
 class WidgetListActivity : BaseActivity<ActivityWidgetBinding>() {
-    private var mAdapter: WidgetListRecyclerView? = null
+    private var mAdapter: WidgetListAdapter? = null
 
     @Inject lateinit var factory: ViewModelProvider.Factory
     private val widgetDialog by lazy { Dialog(this, R.style.CustomDialogTheme) }
@@ -42,7 +39,7 @@ class WidgetListActivity : BaseActivity<ActivityWidgetBinding>() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding.viewModel = viewModel
-        mAdapter = WidgetListRecyclerView(viewModel)
+        mAdapter = WidgetListAdapter(viewModel)
         binding.userRv.adapter = mAdapter
         permissionChk()
         selectUser()

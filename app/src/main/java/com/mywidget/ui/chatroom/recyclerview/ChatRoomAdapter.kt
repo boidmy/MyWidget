@@ -11,7 +11,7 @@ import com.mywidget.databinding.WatingRoomItemBinding
 import com.mywidget.ui.base.ViewHolderBase
 import com.mywidget.ui.chatroom.ChatRoomViewModel
 
-class ChatRoomRecyclerView(val viewModel: ChatRoomViewModel) :
+class ChatRoomAdapter(val viewModel: ChatRoomViewModel) :
     RecyclerView.Adapter<ChatRoomViewHolder>() {
 
     private val diffUtil = AsyncListDiffer(this, DiffUtilCallBack)

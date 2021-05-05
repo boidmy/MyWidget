@@ -2,15 +2,13 @@ package com.mywidget.ui.friend
 
 import android.app.Dialog
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
 import androidx.activity.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.mywidget.R
 import com.mywidget.databinding.*
 import com.mywidget.ui.base.BaseActivity
-import com.mywidget.ui.friend.recyclerview.FriendRecyclerView
+import com.mywidget.ui.friend.recyclerview.FriendAdapter
 import kotlinx.android.synthetic.main.friend_add_dialog.*
 import util.Util.toast
 import javax.inject.Inject
@@ -25,7 +23,6 @@ class FriendActivity : BaseActivity<ActivityFriendBinding>() {
     @Inject lateinit var deleteDialogBinding: DeleteConfirmDialogFriendBinding
     @Inject lateinit var friendUpdateDialog: Dialog
     @Inject lateinit var friendUpdateDialogBinding: FriendUpdateDialogBinding
-    @Inject lateinit var friendRecyclerView: FriendRecyclerView
 
     override val layout: Int
         get() = R.layout.activity_friend
@@ -40,7 +37,7 @@ class FriendActivity : BaseActivity<ActivityFriendBinding>() {
 
     fun bindView() {
         binding.viewModel = viewModel
-        binding.friendRv.adapter = FriendRecyclerView(viewModel)
+        binding.friendRv.adapter = FriendAdapter(viewModel)
         with(loginEmail()) {
             viewModel.myId(this)
         }

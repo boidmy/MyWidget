@@ -13,7 +13,7 @@ import com.mywidget.databinding.ChatInviteItemBinding
 import com.mywidget.ui.base.ViewHolderBase
 import com.mywidget.ui.chatinvite.ChatInviteViewModel
 
-class ChatInviteRecyclerView(val viewModel: ChatInviteViewModel)
+class ChatInviteAdapter(val viewModel: ChatInviteViewModel)
     : RecyclerView.Adapter<ChatInviteViewHolder>() {
 
     private val diffUtil = AsyncListDiffer(this, DiffUtilSelectorCallBack)
