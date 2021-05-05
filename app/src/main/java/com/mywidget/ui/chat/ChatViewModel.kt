@@ -2,6 +2,7 @@ package com.mywidget.ui.chat
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.mywidget.data.model.ChatData
 import com.mywidget.data.model.ChatDataModel
 import com.mywidget.data.model.ChatInviteModel
 import com.mywidget.data.model.RoomDataModel
@@ -11,13 +12,13 @@ import javax.inject.Inject
 @ActivityScope
 class ChatViewModel @Inject constructor(private val repository: ChatRepository) : ViewModel() {
 
-    private var _data: MutableLiveData<List<ChatDataModel>> = MutableLiveData()
+    private var _data: MutableLiveData<List<ChatData>> = MutableLiveData()
     private var _inviteUserList: MutableLiveData<List<ChatInviteModel>> = MutableLiveData()
     private var _myId: String = ""
     private var _inviteDatabaseMap: Map<String, String> = hashMapOf()
     private var _friendHashMap: Map<String, String> = hashMapOf()
 
-    val data: MutableLiveData<List<ChatDataModel>>
+    val data: MutableLiveData<List<ChatData>>
         get() = _data
 
     val inviteUserList: MutableLiveData<List<ChatInviteModel>>

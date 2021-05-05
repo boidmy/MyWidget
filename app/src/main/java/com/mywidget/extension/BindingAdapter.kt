@@ -220,9 +220,10 @@ fun roomAdapter(recyclerView: RecyclerView?, data: MutableLiveData<List<RoomData
 }
 
 @BindingAdapter("items")
-fun chatAdapter(recyclerView: RecyclerView?, data: MutableLiveData<List<ChatDataModel>>) {
+fun chatAdapter(recyclerView: RecyclerView?, data: MutableLiveData<List<ChatData>>) {
     val adapter: ChatAdapter = recyclerView?.adapter as ChatAdapter
-    adapter.notifyDataSetChanged()
+    adapter.setData(data.value?: listOf())
+    recyclerView.smoothScrollToPosition(0)
 }
 
 @BindingAdapter("items")

@@ -4,11 +4,8 @@ import android.os.Handler
 import android.os.Looper
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.database.*
+import com.mywidget.data.model.*
 import com.mywidget.fcm.SendPush
-import com.mywidget.data.model.ChatDataModel
-import com.mywidget.data.model.ChatInviteModel
-import com.mywidget.data.model.FriendModel
-import com.mywidget.data.model.RoomDataModel
 import com.mywidget.di.custom.ActivityScope
 import util.CalendarUtil
 import util.CalendarUtil.yearDateFormat
@@ -21,15 +18,19 @@ import kotlin.collections.ArrayList
 @ActivityScope
 class ChatRepository @Inject constructor() {
 
-    @Inject lateinit var database: DatabaseReference
-    @Inject @Named("User") lateinit var userRef: DatabaseReference
+    @Inject
+    lateinit var database: DatabaseReference
+    @Inject
+    @Named("User")
+    lateinit var userRef: DatabaseReference
     private val roomRef: DatabaseReference by lazy {
-        database.child("Room").child(roomDataModel.master).child(roomDataModel.roomKey) }
+        database.child("Room").child(roomDataModel.master).child(roomDataModel.roomKey)
+    }
     private val message: DatabaseReference by lazy { roomRef.child("message") }
     private val inviteUserList: MutableLiveData<List<ChatInviteModel>> = MutableLiveData()
     var myId: String? = null
-    var data: MutableLiveData<List<ChatDataModel>> = MutableLiveData()
-    val list: MutableList<ChatDataModel> = mutableListOf()
+    var data: MutableLiveData<List<ChatData>> = MutableLiveData()
+    val list: MutableList<ChatData> = mutableListOf()
     var lastMessageKey: String? = null
     var loadMoreChk = false
     private lateinit var roomDataModel: RoomDataModel
@@ -49,7 +50,7 @@ class ChatRepository @Inject constructor() {
         return myId ?: ""
     }
 
-    fun getListChat(): MutableLiveData<List<ChatDataModel>> {
+    fun getListChat(): MutableLiveData<List<ChatData>> {
         message.limitToLast(20).addChildEventListener(itemSelectListener)
         return data
     }
@@ -59,24 +60,16 @@ class ChatRepository @Inject constructor() {
         val ref = message.push()
         ref.setValue(ChatDataModel(text, userEmail, CalendarUtil.getDate()))
             .addOnCompleteListener {
-            Handler(Looper.getMainLooper()).postDelayed({
-                insertPush(ref.key ?: "", text, userEmail)
-            }, 2000)
-        }
+                Handler(Looper.getMainLooper()).postDelayed({
+                    insertPush(ref.key ?: "", text, userEmail)
+                }, 2000)
+            }
     }
 
     private val itemSelectListener = object : ChildEventListener {
         override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
             if (!isListening) return
-            val i = snapshot.children.iterator()
-            val chatData = ChatDataModel()
-            while (i.hasNext()) {
-                chatData.id = i.next().value as String
-                chatData.message = i.next().value as String
-                chatData.nickName = i.next().value as String
-                chatData.time = yearDateFormat(i.next().value as String)
-            }
-
+            val chatData = chatData(snapshot.children.iterator(), previousChildName)
             list.add(0, chatData)
             data.value = list
             if (!loadMoreChk) {
@@ -86,6 +79,7 @@ class ChatRepository @Inject constructor() {
             //메시지를 보고있는 사람은 자기의 데이터에 key값이 여기서 들어감
             //roomRef.child("invite").child(myId ?: "").setValue(snapshot.key)
         }
+
         override fun onCancelled(error: DatabaseError) {}
         override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {}
         override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {}
@@ -98,14 +92,7 @@ class ChatRepository @Inject constructor() {
         message.orderByKey().endAt(lastMessageKey).limitToLast(20)
             .addChildEventListener(object : ChildEventListener {
                 override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
-                    val i = snapshot.children.iterator()
-                    val chatData = ChatDataModel()
-                    while (i.hasNext()) {
-                        chatData.id = i.next().value as String
-                        chatData.message = i.next().value as String
-                        chatData.nickName = i.next().value as String
-                        chatData.time = yearDateFormat(i.next().value as String)
-                    }
+                    val chatData = chatData(snapshot.children.iterator(), previousChildName)
                     if (loadMoreSelectKey != snapshot.key) {
                         list.add(startPosition, chatData)
                         data.value = list
@@ -115,11 +102,24 @@ class ChatRepository @Inject constructor() {
                         loadMoreChk = true
                     }
                 }
+
                 override fun onCancelled(error: DatabaseError) {}
                 override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {}
                 override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {}
                 override fun onChildRemoved(snapshot: DataSnapshot) {}
             })
+    }
+
+    fun chatData(iterator: MutableIterator<DataSnapshot>, key: String?): ChatData {
+        val chatData = ChatData()
+        while (iterator.hasNext()) {
+            chatData.chatDataModel.id = iterator.next().value as String
+            chatData.chatDataModel.message = iterator.next().value as String
+            chatData.chatDataModel.nickName = iterator.next().value as String
+            chatData.chatDataModel.time = yearDateFormat(iterator.next().value as String)
+        }
+        chatData.key = key ?: ""
+        return chatData
     }
 
     fun inviteUserList(): MutableLiveData<List<ChatInviteModel>> {
@@ -138,6 +138,7 @@ class ChatRepository @Inject constructor() {
                 }
                 inviteUserList.value = list
             }
+
             override fun onCancelled(error: DatabaseError) {}
         })
         return inviteUserList
@@ -155,6 +156,7 @@ class ChatRepository @Inject constructor() {
                         }
                     }
                 }
+
                 override fun onCancelled(error: DatabaseError) {}
             }
         )
@@ -166,14 +168,15 @@ class ChatRepository @Inject constructor() {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     val token = snapshot.child("token").value
                     val friendData = snapshot.child("friendList")
-                            .child(replacePointToComma(sendId)).getValue(FriendModel::class.java)
-                    val friendMyNickName = friendData?.nickName?: ""
+                        .child(replacePointToComma(sendId)).getValue(FriendModel::class.java)
+                    val friendMyNickName = friendData?.nickName ?: ""
                     var sendMyNickName = sendId
                     if (friendMyNickName.isNotEmpty()) sendMyNickName = friendMyNickName
                     token?.let {
                         SendPush().send(it.toString(), message, sendMyNickName, roomDataModel)
                     }
                 }
+
                 override fun onCancelled(error: DatabaseError) {}
             }
         )

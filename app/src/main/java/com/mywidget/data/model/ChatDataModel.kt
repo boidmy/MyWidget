@@ -1,5 +1,21 @@
 package com.mywidget.data.model
 
+import com.mywidget.data.Interface.ChatDataInterface
+
+data class ChatData(
+    var key: String = "",
+    var chatDataModel: ChatDataModel = ChatDataModel()
+): ChatDataInterface {
+    override fun keyValue(): String {
+        return key
+    }
+
+    override fun contentValue(): String {
+        return chatDataModel.message
+    }
+
+}
+
 data class ChatDataModel (
     var message: String = "",
     var id: String = "",

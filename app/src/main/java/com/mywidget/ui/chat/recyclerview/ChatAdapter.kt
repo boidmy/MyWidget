@@ -2,7 +2,13 @@ package com.mywidget.ui.chat.recyclerview
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.AsyncListDiffer
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.mywidget.common.DiffUtilCallBack
+import com.mywidget.data.Interface.ChatDataInterface
+import com.mywidget.data.model.ChatData
+import com.mywidget.data.model.ChatDataModel
 import com.mywidget.ui.chat.ChatViewModel
 import com.mywidget.databinding.ChatLeftBinding
 import com.mywidget.databinding.ChatRightBinding
@@ -12,6 +18,8 @@ class ChatAdapter(val viewModel: ChatViewModel) :
 
     private val LEFTCHAT = 0
     private val RIGHTCHAT = 1
+    private val diffUtil = AsyncListDiffer(this, DiffUtilCallBack)
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int)
             : RecyclerView.ViewHolder {
         return if (viewType == RIGHTCHAT) {
@@ -26,7 +34,8 @@ class ChatAdapter(val viewModel: ChatViewModel) :
     }
 
     override fun getItemViewType(position: Int): Int {
-        return if (viewModel.data.value?.get(position)?.id == viewModel.myId) {
+        val id = (diffUtil.currentList[position] as ChatData).chatDataModel.id
+        return if (id == viewModel.myId) {
             RIGHTCHAT
         } else {
             LEFTCHAT
@@ -34,21 +43,24 @@ class ChatAdapter(val viewModel: ChatViewModel) :
     }
 
     override fun getItemCount(): Int {
-        return viewModel.data.value?.size ?: 0
-    }
-
-    override fun getItemId(position: Int): Long {
-        return position.toLong()
+        return diffUtil.currentList.size
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val data = viewModel.data.value?.get(position)
-        data?.let {
+        val data = diffUtil.currentList[position]
+        (data as ChatData).let {
             if(holder is ChatRightViewHolder) {
-                holder.bindView(it)
+                holder.bindView(it.chatDataModel)
             } else if(holder is ChatLeftViewHolder){
-                holder.bindView(it)
+                holder.bindView(it.chatDataModel)
             }
         }
+    }
+
+    fun setData(data: List<ChatData>) {
+        val item: ArrayList<ChatData> = arrayListOf()
+        item.addAll(data)
+        //diffUtil.submitList(null)
+        diffUtil.submitList(item as List<ChatDataInterface>?)
     }
 }
