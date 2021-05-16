@@ -3,6 +3,7 @@ package com.mywidget.ui.base
 import android.os.Bundle
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
+import com.google.firebase.auth.FirebaseUser
 import com.mywidget.MainApplication
 import com.mywidget.R
 import dagger.android.support.DaggerAppCompatActivity
@@ -20,15 +21,17 @@ abstract class BaseActivity<D : ViewDataBinding> : DaggerAppCompatActivity() {
         binding.lifecycleOwner = this
     }
 
-    fun loginEmail(): String {
-        return MainApplication.INSTANSE.loginEmail()
-    }
+    fun loginEmail() = authUser()?.email ?: ""
+
+    fun authUser(): FirebaseUser? = MainApplication.INSTANSE.authUser()
 
     fun loginChkToast(): Boolean {
-        return if(loginEmail().isEmpty()) {
+        return if (loginEmail().isEmpty()) {
             this.toast("로그인 후 이용해 주세요")
             false
-        } else true
+        } else {
+            true
+        }
     }
 
     override fun onPause() {

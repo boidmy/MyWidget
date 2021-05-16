@@ -18,10 +18,18 @@ import javax.inject.Named
 
 class FloatingPopupActivity : DaggerAppCompatActivity() {
 
-    @Inject @Named("floatingOpen") lateinit var openAnimation: Animation
-    @Inject @Named("floatingClose") lateinit var closeAnimation: Animation
-    @Inject @Named("rotateOpen") lateinit var startRotateAnimation: Animation
-    @Inject @Named("rotateClose") lateinit var endRotateAnimation: Animation
+    @Inject
+    @Named("floatingOpen")
+    lateinit var openAnimation: Animation
+    @Inject
+    @Named("floatingClose")
+    lateinit var closeAnimation: Animation
+    @Inject
+    @Named("rotateOpen")
+    lateinit var startRotateAnimation: Animation
+    @Inject
+    @Named("rotateClose")
+    lateinit var endRotateAnimation: Animation
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,7 +54,7 @@ class FloatingPopupActivity : DaggerAppCompatActivity() {
     }
 
     fun onClickFloatingBtn(v: View) {
-        when (v.id){
+        when (v.id) {
             R.id.memoContainer -> {
                 val intent = Intent()
                 intent.putExtra("result", "memo")
@@ -63,7 +71,7 @@ class FloatingPopupActivity : DaggerAppCompatActivity() {
                 setResult(RESULT_OK, intent)
             }
             R.id.chatContainer -> {
-                if(loginEmail().isEmpty()) {
+                if (loginEmail().isEmpty()) {
                     this.toast("로그인 후 이용해 주세요")
                     return
                 }
@@ -79,6 +87,6 @@ class FloatingPopupActivity : DaggerAppCompatActivity() {
     }
 
     private fun loginEmail(): String {
-        return MainApplication.INSTANSE.loginEmail()
+        return MainApplication.INSTANSE.authUser()?.email ?: ""
     }
 }

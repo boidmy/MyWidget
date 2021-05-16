@@ -87,9 +87,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:alpha="0.6"
+                android:text='@{viewModel.favoritesExistenceMyFriend.getFriendNickName()}'
                 android:textColor="#240440"
                 android:textSize="14dp"
-                app:favoriteFriendNick='@{viewModel.favoritesExistenceMyFriend.nickName}'
                 tools:text="친구" />
 
             <TextView

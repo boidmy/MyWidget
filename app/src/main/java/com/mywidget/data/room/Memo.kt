@@ -4,16 +4,43 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.mywidget.data.Interface.DiffUtilDataInterface
+import com.mywidget.extension.text
+import util.CalendarUtil
 
 @Entity(tableName = "memo")
-class Memo(@PrimaryKey(autoGenerate = true) var sequence: Int?,
-            @ColumnInfo(name = "memo") var memo: String?,
-            @ColumnInfo(name = "date") var date: String?): DiffUtilDataInterface {
+class Memo(
+    @PrimaryKey(autoGenerate = true) var sequence: Int?,
+    @ColumnInfo(name = "memo") var memo: String?,
+    @ColumnInfo(name = "date") var date: String?
+) : DiffUtilDataInterface {
     override fun keyValue(): String {
         return sequence.toString()
     }
 
     override fun contentValue(): String {
         return memo ?: ""
+    }
+
+    fun daysPast(): Int {
+        val cal = CalendarUtil.calendar(date)
+        var value = ""
+        cal?.let {
+            value = CalendarUtil.dDay(
+                CalendarUtil.getYear(cal)
+                , CalendarUtil.getMonth(cal) + 1
+                , CalendarUtil.getNowDate(cal)
+            ).toString()
+        }
+
+        return value.toInt()
+    }
+
+    fun daysFullFormat(): String {
+        val cal = CalendarUtil.calendar(date)
+        return cal?.let {
+            CalendarUtil.memoDateFormat(it)
+        } ?: {
+            ""
+        }()
     }
 }

@@ -39,10 +39,11 @@ class ChatRoomActivity : BaseActivity<ActivityChatRoomBinding>() {
         binding.viewModel = viewModel
         binding.watingRoomRv.adapter = ChatRoomAdapter(viewModel)
 
-        with(loginEmail()) {
-            viewModel.selectFriendList(this)
-            viewModel.selectRoomList(this)
-            viewModel.myId = this
+        binding.guidTxt.setOnClickListener { TODO("Not yet implemented") }
+        with(viewModel) {
+            selectFriendList(loginEmail())
+            selectRoomList(loginEmail())
+            myId = loginEmail()
         }
 
         observer()
@@ -73,7 +74,7 @@ class ChatRoomActivity : BaseActivity<ActivityChatRoomBinding>() {
         dialogBinding.id = loginEmail()
         createRoomDialog.setContentView(dialogBinding.root)
         viewModel.isDialogVisibility.observe(this, Observer {
-            if(it) createRoomDialog.show()
+            if (it) createRoomDialog.show()
             else createRoomDialog.dismiss()
         })
     }

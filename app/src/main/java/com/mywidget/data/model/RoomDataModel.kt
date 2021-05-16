@@ -14,6 +14,6 @@ data class RoomDataModel (
     }
 
     override fun contentValue(): String {
-        return roomName
+        return lastMessage
     }
 }

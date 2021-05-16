@@ -40,38 +40,18 @@ fun text(textView: TextView?, data: String?) {
     textView?.text = data
 }
 
-@BindingAdapter("dateProcessing")
-fun dateProcessing(textView: TextView?, data: String?) {
-    val cal = CalendarUtil.calendar(data)
-    var value = ""
-    cal?.let {
-        value = memoDateFormat(cal)
-    }
-    text(textView, value)
-}
-
 @BindingAdapter("daysPast")
-fun daysPast(textView: TextView?, data: String?) {
-    val cal = CalendarUtil.calendar(data)
-    var value = ""
-    cal?.let {
-        value = CalendarUtil.dDay(
-            CalendarUtil.getYear(cal)
-            , CalendarUtil.getMonth(cal) + 1
-            , CalendarUtil.getNowDate(cal)
-        ).toString()
-    }
-
-    textView?.let {
-        if (value.toInt() > 0) {
-            it.textSize = 21f
-            text(it, "D - $value")
+fun daysPast(textView: TextView, date: Int) {
+    textView.apply {
+        if (date > 0) {
+            textSize = 21f
+            text(this, "D - $date")
         } else {
-            it.textSize = 15f
-            if (value.toInt() == 0) {
-                text(it, "오늘이에요!")
+            textSize = 15f
+            if (date == 0) {
+                text(this, "오늘이에요!")
             } else {
-                text(it, "지난 일정입니다")
+                text(this, "지난 일정이에요!")
             }
         }
     }
@@ -194,17 +174,6 @@ fun favoriteFriendVisibility(view: View, data: UserData?) {
         }
     }
     view.isVisible = false
-}
-
-@BindingAdapter("favoriteFriendNick")
-fun favoriteFriendNick(textView: TextView, nickName: String?) {
-    nickName?.let {
-        if (it.isEmpty()) {
-            text(textView, "친구")
-        } else {
-            text(textView, it)
-        }
-    }
 }
 
 @BindingAdapter("roomLastMessage", "position", "time")

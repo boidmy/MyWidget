@@ -1,6 +1,7 @@
 package com.mywidget
 
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.mywidget.di.compoenet.DaggerApplicationComponent
 import dagger.android.AndroidInjector
 import dagger.android.support.DaggerApplication
@@ -22,7 +23,7 @@ class MainApplication : DaggerApplication() {
         lateinit var INSTANSE: MainApplication
     }
 
-    fun loginEmail(): String {
-        return firebaseAuth.currentUser?.email?:""
+    fun authUser(): FirebaseUser? {
+        return firebaseAuth.currentUser
     }
 }

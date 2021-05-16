@@ -88,10 +88,12 @@ class MainActivity : BaseActivity<DrawerlayoutMainBinding>()
     }
 
     private fun tabInit() {
-        binding.mainContainer.mainTab.setupWithViewPager(binding.mainContainer.vpTab)
-        binding.mainContainer.vpTab.adapter = mTabPagerAdapter
-        binding.mainContainer.vpTab.addOnPageChangeListener(TabLayout
-            .TabLayoutOnPageChangeListener(binding.mainContainer.mainTab))
+        with(binding.mainContainer) {
+            mainTab.setupWithViewPager(binding.mainContainer.vpTab)
+            vpTab.adapter = mTabPagerAdapter
+            vpTab.addOnPageChangeListener(TabLayout
+                .TabLayoutOnPageChangeListener(binding.mainContainer.mainTab))
+        }
     }
 
     override fun onBackPressed() {

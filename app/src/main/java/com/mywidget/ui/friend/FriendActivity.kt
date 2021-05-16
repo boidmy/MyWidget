@@ -5,13 +5,18 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.SimpleItemAnimator
 import com.mywidget.R
-import com.mywidget.databinding.*
+import com.mywidget.databinding.ActivityFriendBinding
+import com.mywidget.databinding.DeleteConfirmDialogFriendBinding
+import com.mywidget.databinding.FriendAddDialogBinding
+import com.mywidget.databinding.FriendUpdateDialogBinding
 import com.mywidget.ui.base.BaseActivity
 import com.mywidget.ui.friend.recyclerview.FriendAdapter
 import kotlinx.android.synthetic.main.friend_add_dialog.*
 import util.Util.toast
 import javax.inject.Inject
+
 
 class FriendActivity : BaseActivity<ActivityFriendBinding>() {
 
@@ -38,6 +43,8 @@ class FriendActivity : BaseActivity<ActivityFriendBinding>() {
     fun bindView() {
         binding.viewModel = viewModel
         binding.friendRv.adapter = FriendAdapter(viewModel)
+        (binding.friendRv.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
+
         with(loginEmail()) {
             viewModel.myId(this)
         }
