@@ -21,6 +21,10 @@ class Memo(
         return memo ?: ""
     }
 
+    fun copy(sequence: Int?, memo: String?, date: String?): Memo {
+        return Memo(sequence, memo, date)
+    }
+
     fun daysPast(): Int {
         val cal = CalendarUtil.calendar(date)
         var value = ""

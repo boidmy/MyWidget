@@ -69,8 +69,8 @@ class MainRepository @Inject constructor(
     }
 
     fun updateMemo(data: Memo, updateMemo: String) {
-        data.memo = updateMemo
-        memoDb.memoDao().update(data)
+        val copyData = data.copy(data.sequence, updateMemo, data.date)
+        memoDb.memoDao().update(copyData)
     }
 
     fun selectMemo() : List<Memo>? {
