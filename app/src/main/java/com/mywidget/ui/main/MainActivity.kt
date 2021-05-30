@@ -68,7 +68,6 @@ class MainActivity : BaseActivity<DrawerlayoutMainBinding>()
 
     private fun loginCheck() {
         val email = loginEmail()
-        viewModel.myIdReset()
         if(email.isNotEmpty()) {
             viewModel.myId(email)
             binding.navView.menu.getItem(1).title = "로그아웃"
@@ -206,7 +205,6 @@ class MainActivity : BaseActivity<DrawerlayoutMainBinding>()
     private fun favoritesDialogBind() {
         favoritesDialog.setContentView(favoritesDialogBinding.root)
         favoritesDialogBinding.viewModel = viewModel
-        viewModel.favoritesExistence()
         viewModel.favoritesDialogVisibility.observe(this, Observer {
             if(it) favoritesDialog.show()
         })

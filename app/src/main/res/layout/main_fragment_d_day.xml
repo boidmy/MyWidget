@@ -10,7 +10,7 @@
         <import type="android.view.View" />
 
         <import type="androidx.lifecycle.MutableLiveData" />
-
+        <import type="androidx.lifecycle.LiveData" />
         <variable
             name="updateMemo"
             type="com.mywidget.data.room.Memo" />
@@ -21,7 +21,7 @@
 
         <variable
             name="data"
-            type="MutableLiveData&lt;List&lt;com.mywidget.data.room.Memo&gt;&gt;" />
+            type="LiveData&lt;List&lt;com.mywidget.data.room.Memo&gt;&gt;" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

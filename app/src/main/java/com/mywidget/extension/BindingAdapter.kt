@@ -13,6 +13,7 @@ import android.widget.TextView
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
 import androidx.databinding.BindingAdapter
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
 import com.mywidget.R
@@ -193,7 +194,7 @@ fun adapter(recyclerView: RecyclerView?, data: MutableLiveData<List<User>>) {
 }
 
 @BindingAdapter("items")
-fun memoAdapter(recyclerView: RecyclerView?, data: MutableLiveData<List<Memo>>) {
+fun memoAdapter(recyclerView: RecyclerView?, data: LiveData<List<Memo>>) {
     val adapter: MainTabMemoAdapter = recyclerView?.adapter as MainTabMemoAdapter
     adapter.setData(data.value ?: listOf())
 }

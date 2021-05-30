@@ -1,5 +1,6 @@
 package com.mywidget.ui.main
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.database.*
 import com.mywidget.data.model.FavoritesData
@@ -24,27 +25,17 @@ class MainRepository @Inject constructor(
     @Inject lateinit var database: DatabaseReference
     @Inject @Named("User") lateinit var userRef: DatabaseReference
     @Inject @Named("favorites") lateinit var favoritesRef: DatabaseReference
-    var myId: MutableLiveData<String> = MutableLiveData()
-    private val favoritesExistence: MutableLiveData<Boolean> = MutableLiveData()
+    private val _myId: MutableLiveData<String> = MutableLiveData()
+    private val _favoritesExistence: MutableLiveData<Boolean> = MutableLiveData()
     var favoritesExistenceMyFriend: MutableLiveData<UserData> = MutableLiveData()
     private val favoritesMessageMe: MutableLiveData<FavoritesData> = MutableLiveData()
     private val favoritesMessageFriend: MutableLiveData<FavoritesData> = MutableLiveData()
 
-    fun favoritesNoneMessageMe() {
-        favoritesMessageMe.value = null
-    }
+    val myId: MutableLiveData<String>
+        get() = _myId
 
-    fun favoritesNoneMessageFriend() {
-        favoritesMessageFriend.value = null
-    }
-
-    fun favoritesResetMe(): MutableLiveData<FavoritesData> {
-        return favoritesMessageMe
-    }
-
-    fun favoritesResetFriend(): MutableLiveData<FavoritesData> {
-        return favoritesMessageFriend
-    }
+    val favoritesExistence: LiveData<Boolean>
+        get() = _favoritesExistence
 
     private fun loveDayFormat(data: List<LoveDay>?): String {
         data?.let {
@@ -86,15 +77,11 @@ class MainRepository @Inject constructor(
     }
 
     fun myId(email: String) {
-        myId.value = email
-    }
-
-    fun myIdReset(): MutableLiveData<String>{
-        return myId
+        _myId.value = email
     }
 
     fun favoritesExistenceMyFriend() : MutableLiveData<UserData> {
-        userRef.child(replacePointToComma(myId.value ?:"")).child("friend")
+        userRef.child(replacePointToComma(_myId.value ?:"")).child("friend")
             .addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     val childFavorites = snapshot.child("favorites").value
@@ -113,36 +100,35 @@ class MainRepository @Inject constructor(
         return favoritesExistenceMyFriend
     }
 
-    fun favoritesMessageMe(friendEmail: String) {
-        favoritesMessageExtension(favoritesRef.child(replacePointToComma(myId.value ?:""))
+    fun favoritesMessageMe(friendEmail: String): MutableLiveData<FavoritesData> {
+        favoritesMessageExtension(favoritesRef.child(replacePointToComma(_myId.value ?:""))
             .child(replacePointToComma(friendEmail)), favoritesMessageMe)
+
+        return favoritesMessageMe
     }
 
-    fun favoritesMessageFriend(friendEmail: String) {
+    fun favoritesMessageFriend(friendEmail: String): LiveData<FavoritesData> {
         favoritesMessageExtension(favoritesRef.child(replacePointToComma(friendEmail))
-            .child(replacePointToComma(myId.value ?:"")), favoritesMessageFriend)
+            .child(replacePointToComma(_myId.value ?:"")), favoritesMessageFriend)
+        return favoritesMessageFriend
     }
 
     fun favoritesInsertMessage(message: String) {
-        userRef.child(replacePointToComma(myId.value ?:""))
+        userRef.child(replacePointToComma(_myId.value ?:""))
             .child("friend").child("favorites")
             .addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (snapshot.value == null) {
-                    favoritesExistence.value = false
+                    _favoritesExistence.value = false
                 } else {
-                    favoritesRef.child(replacePointToComma(myId.value ?:""))
+                    favoritesRef.child(replacePointToComma(_myId.value ?:""))
                         .child(snapshot.value.toString()).push().setValue(
                             FavoritesData(CalendarUtil.getDate(), message, "")
                         )
-                    favoritesExistence.value = true
+                    _favoritesExistence.value = true
                 }
             }
             override fun onCancelled(error: DatabaseError) {}
         })
-    }
-
-    fun favoritesExistence(): MutableLiveData<Boolean> {
-        return favoritesExistence
     }
 }
