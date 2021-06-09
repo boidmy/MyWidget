@@ -48,7 +48,6 @@ class LoginActivity: BaseActivity<ActivityLoginBinding>() {
 
         bindView()
         forgotPasswordDialog()
-
     }
 
     private fun bindView() {

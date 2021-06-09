@@ -33,7 +33,6 @@ class SignUpActivity : BaseActivity<ActivitySignupBinding>() {
     }
 
     fun bindView() {
-        viewModel.setSignUpComplete()
         viewModel.signUpComplete.observe(this, Observer {
             if(it) {
                 val intent = Intent()

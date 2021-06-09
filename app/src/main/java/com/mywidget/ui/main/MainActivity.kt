@@ -80,14 +80,16 @@ class MainActivity : BaseActivity<DrawerlayoutMainBinding>()
         }
         val drawerHeaderBinding: NavHeaderMainBinding = DataBindingUtil.inflate(layoutInflater
             , R.layout.nav_header_main, binding.navView, false)
-        drawerHeaderBinding.lifecycleOwner = this
-        drawerHeaderBinding.viewModel = viewModel
-        binding.navView.addHeaderView(drawerHeaderBinding.root)
+        drawerHeaderBinding.apply {
+            lifecycleOwner = this@MainActivity
+            viewModel = viewModel
+            binding.navView.addHeaderView(root)
+        }
         binding.navView.setNavigationItemSelectedListener(this)
     }
 
     private fun tabInit() {
-        with(binding.mainContainer) {
+        binding.mainContainer.apply {
             mainTab.setupWithViewPager(binding.mainContainer.vpTab)
             vpTab.adapter = mTabPagerAdapter
             vpTab.addOnPageChangeListener(TabLayout

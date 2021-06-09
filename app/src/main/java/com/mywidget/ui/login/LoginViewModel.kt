@@ -1,5 +1,6 @@
 package com.mywidget.ui.login
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import javax.inject.Inject
@@ -8,11 +9,11 @@ class LoginViewModel @Inject constructor(
     private val repository: LoginRepository
 ) : ViewModel() {
 
-    private var _signUpComplete: MutableLiveData<Boolean> = MutableLiveData()
+    private val _signUpComplete: LiveData<Boolean> = repository.signUpComplete
     private val _data: MutableLiveData<String> = MutableLiveData()
     private val _forgotPasswordDialogVisibility: MutableLiveData<Boolean> = MutableLiveData()
 
-    val signUpComplete: MutableLiveData<Boolean>
+    val signUpComplete: LiveData<Boolean>
         get() = _signUpComplete
 
     val data: MutableLiveData<String>
@@ -27,10 +28,6 @@ class LoginViewModel @Inject constructor(
 
     fun loginSetToken(email: String) {
         repository.signUpToken(email)
-    }
-
-    fun setSignUpComplete() {
-        _signUpComplete = repository.setSignUpComplete()
     }
 
     fun forgotPasswordDialogVisibility(flag: Boolean) {

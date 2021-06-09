@@ -1,5 +1,6 @@
 package com.mywidget.ui.login
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.messaging.FirebaseMessaging
@@ -12,15 +13,18 @@ class LoginRepository @Inject constructor() {
 
     @Inject lateinit var database: DatabaseReference
     @Inject @Named("User") lateinit var userRef: DatabaseReference
-    var signUpComplete: MutableLiveData<Boolean> = MutableLiveData()
+    private val _signUpComplete: MutableLiveData<Boolean> = MutableLiveData()
     var data: MutableLiveData<String> = MutableLiveData()
+
+    val signUpComplete: LiveData<Boolean>
+        get() = _signUpComplete
 
     fun singUpFirebase(email: String, uid: String, nickname: String) {
         val mEmail = replacePointToComma(email)
         val value = UserData(email, "", uid, nickname)
         userRef.child(mEmail).setValue(value)
         signUpToken(email)
-        signUpComplete.value = true
+        _signUpComplete.value = true
     }
 
     fun signUpToken(email: String) {
@@ -35,6 +39,6 @@ class LoginRepository @Inject constructor() {
     }
 
     fun setSignUpComplete(): MutableLiveData<Boolean> {
-        return signUpComplete
+        return _signUpComplete
     }
 }
