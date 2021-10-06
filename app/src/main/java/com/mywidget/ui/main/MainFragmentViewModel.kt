@@ -4,6 +4,7 @@ import androidx.lifecycle.*
 import com.mywidget.data.model.FavoritesData
 import com.mywidget.data.model.UserData
 import com.mywidget.data.room.*
+import kotlinx.coroutines.*
 import javax.inject.Inject
 
 class MainFragmentViewModel @Inject constructor(
@@ -14,7 +15,7 @@ class MainFragmentViewModel @Inject constructor(
     private val _memoDialogVisibility: MutableLiveData<Boolean> = MutableLiveData()
     private val _loveDayDialogVisibility: MutableLiveData<Boolean> = MutableLiveData()
     private val _favoritesDialogVisibility: MutableLiveData<Boolean> = MutableLiveData()
-    private val _myId: MutableLiveData<String> = repository.myId
+    private val _myId: LiveData<String> = repository.myId
     private val _favoritesExistence: LiveData<Boolean> = repository.favoritesExistence
     private val _favoritesExistenceMyFriend: LiveData<UserData> = Transformations.switchMap(_myId) {
         repository.favoritesExistenceMyFriend()
@@ -71,43 +72,43 @@ class MainFragmentViewModel @Inject constructor(
         get() = _dDayDetail
 
     fun insertMemo(memo: Memo) {
-        Thread {
+        viewModelScope.launch {
             repository.insertMemo(memo)
             selectMemo()
-        }.start()
+        }
     }
 
     fun deleteMemo(data: Memo) {
-        Thread {
+        viewModelScope.launch {
             repository.deleteMemo(data)
             selectMemo()
-        }.start()
+        }
         deleteDDayDialogVisibility(false)
     }
 
     fun updateMemo(data: Memo, updateMemo: String) {
-        Thread {
+        viewModelScope.launch {
             repository.updateMemo(data, updateMemo)
             selectMemo()
-        }.start()
+        }
     }
 
     fun deleteDDayDialogVisibility(flag: Boolean) {
         _deleteDDayDialogVisibility.value = flag
     }
 
-    fun selectMemo() {
+    suspend fun selectMemo() {
         _memoData.postValue(repository.selectMemo())
     }
 
     fun addLoveDay(data: String) {
-        Thread {
+        viewModelScope.launch {
             repository.addLoveDay(data)
             selectLoveDay()
-        }.start()
+        }
     }
 
-    fun selectLoveDay() {
+    suspend fun selectLoveDay() {
         _loveDay.postValue(repository.selectLoveDay())
     }
 

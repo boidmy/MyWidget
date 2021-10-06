@@ -12,13 +12,17 @@ import com.mywidget.R
 import com.mywidget.databinding.MainFragmentLovedayBinding
 import com.mywidget.ui.base.BaseFragment
 import com.mywidget.ui.main.MainFragmentViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class FragmentLoveDay : BaseFragment<MainFragmentLovedayBinding>() {
 
     @Inject lateinit var factory: ViewModelProvider.Factory
-
     val viewModel by activityViewModels<MainFragmentViewModel> { factory }
+    private val job = Job()
 
     override fun getLayout(): Int {
         return R.layout.main_fragment_loveday
@@ -34,8 +38,13 @@ class FragmentLoveDay : BaseFragment<MainFragmentLovedayBinding>() {
     private fun bindView() {
         binding.viewModel = viewModel
 
-        Thread {
+        CoroutineScope(Dispatchers.Main+job).launch {
             viewModel.selectLoveDay()
-        }.start()
+        }
+    }
+
+    override fun onDestroy() {
+        job.cancel()
+        super.onDestroy()
     }
 }

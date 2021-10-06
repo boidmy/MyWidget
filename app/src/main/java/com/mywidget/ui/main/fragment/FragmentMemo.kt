@@ -15,6 +15,9 @@ import com.mywidget.databinding.MainFragmentDDayBinding
 import com.mywidget.ui.base.BaseFragment
 import com.mywidget.ui.main.MainFragmentViewModel
 import com.mywidget.ui.main.recyclerview.MainTabMemoAdapter
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
@@ -60,9 +63,9 @@ class FragmentMemo : BaseFragment<MainFragmentDDayBinding>() {
     }
 
     private fun selectCall() {
-        Thread {
+        CoroutineScope(Dispatchers.IO).launch {
             viewModel.selectMemo()
-        }.start()
+        }
     }
 
     private fun deleteDialog() {
