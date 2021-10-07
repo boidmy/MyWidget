@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.mywidget.R
 import com.mywidget.databinding.ActivityMypageBinding
 import com.mywidget.ui.base.BaseActivity
+import util.observe
 import javax.inject.Inject
 
 class MyPageActivity : BaseActivity<ActivityMypageBinding>() {
@@ -21,16 +22,25 @@ class MyPageActivity : BaseActivity<ActivityMypageBinding>() {
         super.onCreate(savedInstanceState)
         binding.viewModel = viewModel
 
-        bindView()
+        bind()
+        setObserve()
     }
 
-    fun bindView() {
-        viewModel.setMyId(loginEmail())
-        viewModel.selectMyNickName()
-        viewModel.resetConfirm()
+    fun bind() {
+        with(viewModel) {
+            setMyId(loginEmail())
+            selectMyNickName()
+            resetConfirm()
+        }
+    }
 
-        viewModel.updateConfirm.observe(this, Observer {
-            finish()
-        })
+    private fun setObserve() {
+        with(viewModel) {
+            observe(updateConfirm, ::updateComplete)
+        }
+    }
+
+    private fun updateComplete(confirm: Boolean) {
+        if (confirm) finish()
     }
 }

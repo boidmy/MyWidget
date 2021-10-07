@@ -1,5 +1,6 @@
 package com.mywidget.ui.chat
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.mywidget.data.model.ChatData
@@ -18,10 +19,10 @@ class ChatViewModel @Inject constructor(private val repository: ChatRepository) 
     private var _inviteDatabaseMap: Map<String, String> = hashMapOf()
     private var _friendHashMap: Map<String, String> = hashMapOf()
 
-    val data: MutableLiveData<List<ChatData>>
+    val data: LiveData<List<ChatData>>
         get() = _data
 
-    val inviteUserList: MutableLiveData<List<ChatInviteModel>>
+    val inviteUserList: LiveData<List<ChatInviteModel>>
         get() = _inviteUserList
 
     val inviteDatabaseMap: Map<String, String>

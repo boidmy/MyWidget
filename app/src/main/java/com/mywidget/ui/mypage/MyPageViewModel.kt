@@ -1,5 +1,6 @@
 package com.mywidget.ui.mypage
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import javax.inject.Inject
@@ -10,17 +11,17 @@ class MyPageViewModel @Inject constructor(val repository: MyPageRepository) : Vi
     private var _nickName: MutableLiveData<String> = MutableLiveData()
     private var _updateConfirm: MutableLiveData<Boolean> = MutableLiveData()
 
-    val myId: MutableLiveData<String>
+    val myId: LiveData<String>
         get() = _myId
 
-    val nickName: MutableLiveData<String>
+    val nickName: LiveData<String>
         get() = _nickName
 
-    val updateConfirm: MutableLiveData<Boolean>
+    val updateConfirm: LiveData<Boolean>
         get() = _updateConfirm
 
     fun setMyId(email: String) {
-        myId.value = repository.setMyId(email)
+        _myId.value = repository.setMyId(email)
     }
 
     fun selectMyNickName() {

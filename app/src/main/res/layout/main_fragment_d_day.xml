@@ -16,7 +16,7 @@
             type="com.mywidget.data.room.Memo" />
 
         <variable
-            name="viewModel"
+            name="vm"
             type="com.mywidget.ui.main.MainFragmentViewModel" />
 
         <variable

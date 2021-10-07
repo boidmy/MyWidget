@@ -21,10 +21,10 @@ class ChatInviteActivity : BaseActivity<ActivityChatInviteBinding>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        bindView()
+        bind()
     }
 
-    fun bindView() {
+    fun bind() {
         binding.viewModel = viewModel
         viewModel.myId(loginEmail())
         viewModel.selectFriendList()

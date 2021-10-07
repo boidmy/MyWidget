@@ -35,6 +35,7 @@ class ChatActivity : BaseActivity<ActivityChattingBinding>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        init()
         bind()
         setRoomSharedPreferences()
     }
@@ -45,37 +46,43 @@ class ChatActivity : BaseActivity<ActivityChattingBinding>() {
         preferencesEditor.apply()
     }
 
-    private fun bind() {
-        binding.viewModel = viewModel
-        val adapter = ChatAdapter(viewModel)
-        binding.chatRv.adapter = adapter
-        binding.chatRv.addItemDecoration(ItemDecoration(10))
-        binding.drawerUserListRv.adapter = UserListRecyclerView(viewModel)
-
+    private fun init() {
         roomDataModel = intent.getSerializableExtra("data") as RoomDataModel
         friendHashMap = intent.getSerializableExtra("friendMap") as Map<String, String>
 
-        viewModel.setFriendHashMap(friendHashMap)
-        viewModel.setRoomData(roomDataModel)
-        viewModel.myId(loginEmail())
-        viewModel.setInviteDatabaseMap()
-        viewModel.inviteUserList()
-        viewModel.getListChat()
+        with(viewModel) {
+            setFriendHashMap(friendHashMap)
+            setRoomData(roomDataModel)
+            myId(loginEmail())
+            setInviteDatabaseMap()
+            inviteUserList()
+            getListChat()
+        }
+    }
 
-        binding.chatRv.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                super.onScrolled(recyclerView, dx, dy)
-                val last = binding.chatRv.layoutManager?.itemCount?:0
-                if (!recyclerView.canScrollVertically(-1)) {
-                    //loadMore
-                    viewModel.chatLoadMore(last)
+    private fun bind() {
+        binding.apply {
+            vm = viewModel
+            val adapter = ChatAdapter(viewModel)
+            chatRv.adapter = adapter
+            chatRv.addItemDecoration(ItemDecoration(10))
+            drawerUserListRv.adapter = UserListRecyclerView(viewModel)
+
+            chatRv.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    super.onScrolled(recyclerView, dx, dy)
+                    val last = chatRv.layoutManager?.itemCount?:0
+                    if (!recyclerView.canScrollVertically(-1)) {
+                        //loadMore
+                        viewModel.chatLoadMore(last)
+                    }
                 }
-            }
-        })
+            })
+        }
     }
 
     override fun onBackPressed() {
-        if(binding.chatDrawLayout.isDrawerOpen(GravityCompat.END)) {
+        if (binding.chatDrawLayout.isDrawerOpen(GravityCompat.END)) {
             binding.chatDrawLayout.closeDrawer(GravityCompat.END)
             return
         }

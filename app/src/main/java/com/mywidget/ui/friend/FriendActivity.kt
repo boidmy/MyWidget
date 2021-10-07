@@ -34,13 +34,13 @@ class FriendActivity : BaseActivity<ActivityFriendBinding>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        bindView()
+        bind()
         friendAddDialog()
         deleteDialog()
         friendUpdateDialog()
     }
 
-    fun bindView() {
+    fun bind() {
         binding.viewModel = viewModel
         binding.friendRv.adapter = FriendAdapter(viewModel)
         (binding.friendRv.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false

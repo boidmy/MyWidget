@@ -1,5 +1,6 @@
 package com.mywidget.ui.chatinvite
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.mywidget.data.model.FriendModel
@@ -15,7 +16,7 @@ class ChatInviteViewModel @Inject constructor(
     val myId: String
         get() = _myId
 
-    val friendList: MutableLiveData<List<FriendModel>>
+    val friendList: LiveData<List<FriendModel>>
         get() = _friendList
 
     fun setChatRoomInformation(roomDataModel: RoomDataModel) {
@@ -35,7 +36,7 @@ class ChatInviteViewModel @Inject constructor(
     }
 
     fun inviteUserArray() {
-        friendList.value?.let {
+        _friendList.value?.let {
             for(ar in it){
                 if(ar.selector) {
                     inviteUser(ar.email)
@@ -45,7 +46,7 @@ class ChatInviteViewModel @Inject constructor(
     }
 
     fun setFriendList(data: List<FriendModel>) {
-        friendList.value = data
+        _friendList.value = data
     }
 
 }

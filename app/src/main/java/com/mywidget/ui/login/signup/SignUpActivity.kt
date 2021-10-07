@@ -13,6 +13,7 @@ import com.mywidget.ui.base.BaseActivity
 import com.mywidget.ui.login.LoginViewModel
 import kotlinx.android.synthetic.main.activity_signup.*
 import util.Util
+import util.Util.firebaseAuthException
 import javax.inject.Inject
 
 class SignUpActivity : BaseActivity<ActivitySignupBinding>() {
@@ -53,7 +54,7 @@ class SignUpActivity : BaseActivity<ActivitySignupBinding>() {
                 }
             } else {
                 task.exception?.let {
-                    Util.firebaseAuthException((task.exception as FirebaseAuthException).errorCode, this)
+                    this firebaseAuthException (task.exception as FirebaseAuthException).errorCode
                 }
             }
         }

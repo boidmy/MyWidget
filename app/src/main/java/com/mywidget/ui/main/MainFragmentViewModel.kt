@@ -68,7 +68,7 @@ class MainFragmentViewModel @Inject constructor(
     val deleteDDayDialogVisibility: LiveData<Boolean>
         get() = _deleteDDayDialogVisibility
 
-    val dDayDetail: MutableLiveData<Int>
+    val dDayDetail: LiveData<Int>
         get() = _dDayDetail
 
     fun insertMemo(memo: Memo) {
@@ -138,7 +138,7 @@ class MainFragmentViewModel @Inject constructor(
     }
 
     fun dDayDetail(index: Int) {
-        dDayDetail.value = index
+        _dDayDetail.value = index
     }
 
     fun deleteDDayDialog(data: Memo) {

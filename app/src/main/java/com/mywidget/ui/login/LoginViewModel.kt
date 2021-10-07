@@ -16,10 +16,10 @@ class LoginViewModel @Inject constructor(
     val signUpComplete: LiveData<Boolean>
         get() = _signUpComplete
 
-    val data: MutableLiveData<String>
+    val data: LiveData<String>
         get() = _data
 
-    val forgotPasswordDialogVisibility: MutableLiveData<Boolean>
+    val forgotPasswordDialogVisibility: LiveData<Boolean>
         get() = _forgotPasswordDialogVisibility
 
     fun singUpFirebase(email: String, uid: String, nickname: String) {
@@ -31,6 +31,6 @@ class LoginViewModel @Inject constructor(
     }
 
     fun forgotPasswordDialogVisibility(flag: Boolean) {
-        forgotPasswordDialogVisibility.value = flag
+        _forgotPasswordDialogVisibility.value = flag
     }
 }

@@ -15,6 +15,7 @@ import com.mywidget.databinding.DeleteConfirmDialogChatRoomBinding
 import com.mywidget.ui.base.BaseActivity
 import com.mywidget.ui.chat.ChatActivity
 import com.mywidget.ui.chatroom.recyclerview.ChatRoomAdapter
+import util.Util.click
 import javax.inject.Inject
 
 class ChatRoomActivity : BaseActivity<ActivityChatRoomBinding>() {
@@ -39,7 +40,7 @@ class ChatRoomActivity : BaseActivity<ActivityChatRoomBinding>() {
         binding.viewModel = viewModel
         binding.watingRoomRv.adapter = ChatRoomAdapter(viewModel)
 
-        binding.guidTxt.setOnClickListener { TODO("Not yet implemented") }
+        binding.guidTxt.click { TODO("Not yet implemented") }
         with(viewModel) {
             selectFriendList(loginEmail())
             selectRoomList(loginEmail())

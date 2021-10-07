@@ -42,7 +42,7 @@ class MainRepository @Inject constructor(
     var favoritesExistenceMyFriend: MutableLiveData<UserData> = MutableLiveData()
     private val favoritesMessageMe: MutableLiveData<FavoritesData> = MutableLiveData()
     private val favoritesMessageFriend: MutableLiveData<FavoritesData> = MutableLiveData()
-    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
+    private val ioDispatcher: CoroutineDispatcher = IO
 
     val myId: MutableLiveData<String>
         get() = _myId

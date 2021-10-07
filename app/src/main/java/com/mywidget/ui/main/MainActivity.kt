@@ -28,6 +28,7 @@ import com.mywidget.ui.mypage.MyPageActivity
 import com.mywidget.ui.widgetlist.WidgetListActivity
 import util.CalendarUtil.getToday
 import util.Util
+import util.Util.click
 import util.Util.toast
 import javax.inject.Inject
 import javax.inject.Named
@@ -75,7 +76,7 @@ class MainActivity : BaseActivity<DrawerlayoutMainBinding>()
     }
 
     private fun leftMenu() {
-        binding.mainContainer.titleContainer.leftMenu.setOnClickListener {
+        binding.mainContainer.titleContainer.leftMenu.click {
             binding.drawerLayout.openDrawer(GravityCompat.START)
         }
         val drawerHeaderBinding: NavHeaderMainBinding = DataBindingUtil.inflate(layoutInflater
@@ -121,7 +122,7 @@ class MainActivity : BaseActivity<DrawerlayoutMainBinding>()
             }
             4000 -> {
                 with(loginEmail()) {
-                    if(this.isEmpty()) return
+                    if(isEmpty()) return
                     this@MainActivity.toast(this+"님 환영합니다!")
                     viewModel.myId(this)
                     loginTxt("로그아웃")

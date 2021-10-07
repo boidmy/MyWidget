@@ -1,5 +1,6 @@
 package com.mywidget.ui.friend
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.mywidget.data.model.FriendModel
@@ -16,28 +17,28 @@ class FriendViewModel @Inject constructor(private val repository: FriendReposito
     private var _friendUpdateDialogVisibility: MutableLiveData<Boolean> = MutableLiveData()
     private var _friendUpdateModel: MutableLiveData<FriendModel> = MutableLiveData()
 
-    val userExistenceChk: MutableLiveData<Boolean>
+    val userExistenceChk: LiveData<Boolean>
         get() = _userExistenceChk
 
-    val friendAddDialogVisibility: MutableLiveData<Boolean>
+    val friendAddDialogVisibility: LiveData<Boolean>
         get() = _friendAddDialogVisibility
 
     val myId: String
         get() = _myId
 
-    val friendList: MutableLiveData<List<FriendModel>>
+    val friendList: LiveData<List<FriendModel>>
         get() = _friendList
 
-    val deleteFriend: MutableLiveData<String>
+    val deleteFriend: LiveData<String>
         get() = _deleteFriend
 
-    val deleteDialogVisibility: MutableLiveData<Boolean>
+    val deleteDialogVisibility: LiveData<Boolean>
         get() = _deleteDialogVisibility
 
-    val friendUpdateDialogVisibility: MutableLiveData<Boolean>
+    val friendUpdateDialogVisibility: LiveData<Boolean>
         get() = _friendUpdateDialogVisibility
 
-    val friendUpdateModel: MutableLiveData<FriendModel>
+    val friendUpdateModel: LiveData<FriendModel>
         get() = _friendUpdateModel
 
     fun myId(email: String) {
@@ -53,7 +54,7 @@ class FriendViewModel @Inject constructor(private val repository: FriendReposito
     }
 
     fun friendAddDialogVisibility(flag: Boolean) {
-        friendAddDialogVisibility.value = flag
+        _friendAddDialogVisibility.value = flag
     }
 
     fun userExistenceChk(email: String, explanation: String) {
@@ -69,7 +70,7 @@ class FriendViewModel @Inject constructor(private val repository: FriendReposito
     }
 
     fun setDeleteFriendEmail(email: String) {
-        deleteFriend.value = email
+        _deleteFriend.value = email
     }
 
     fun deleteFriend(email: String) {
@@ -78,7 +79,7 @@ class FriendViewModel @Inject constructor(private val repository: FriendReposito
     }
 
     fun deleteDialogVisibility(flag: Boolean) {
-        deleteDialogVisibility.value = flag
+        _deleteDialogVisibility.value = flag
     }
 
     fun friendUpdateSelect(email: String) {

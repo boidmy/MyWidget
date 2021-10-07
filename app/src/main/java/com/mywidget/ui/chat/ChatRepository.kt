@@ -9,6 +9,7 @@ import com.mywidget.fcm.SendPush
 import com.mywidget.di.custom.ActivityScope
 import util.CalendarUtil
 import util.CalendarUtil.yearDateFormat
+import util.ChildEventListenerUse
 import util.Util.replaceCommaToPoint
 import util.Util.replacePointToComma
 import javax.inject.Inject
@@ -18,11 +19,8 @@ import kotlin.collections.ArrayList
 @ActivityScope
 class ChatRepository @Inject constructor() {
 
-    @Inject
-    lateinit var database: DatabaseReference
-    @Inject
-    @Named("User")
-    lateinit var userRef: DatabaseReference
+    @Inject lateinit var database: DatabaseReference
+    @Inject @Named("User") lateinit var userRef: DatabaseReference
     private val roomRef: DatabaseReference by lazy {
         database.child("Room").child(roomDataModel.master).child(roomDataModel.roomKey)
     }
@@ -66,7 +64,7 @@ class ChatRepository @Inject constructor() {
             }
     }
 
-    private val itemSelectListener = object : ChildEventListener {
+    private val itemSelectListener = object : ChildEventListenerUse {
         override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
             if (!isListening) return
             val chatData = chatData(snapshot.children.iterator(), previousChildName)
@@ -79,18 +77,13 @@ class ChatRepository @Inject constructor() {
             //메시지를 보고있는 사람은 자기의 데이터에 key값이 여기서 들어감
             //roomRef.child("invite").child(myId ?: "").setValue(snapshot.key)
         }
-
-        override fun onCancelled(error: DatabaseError) {}
-        override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {}
-        override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {}
-        override fun onChildRemoved(snapshot: DataSnapshot) {}
     }
 
     fun chatLoadMore(startPosition: Int) {
         loadMoreChk = false
         val loadMoreSelectKey = lastMessageKey
         message.orderByKey().endAt(lastMessageKey).limitToLast(20)
-            .addChildEventListener(object : ChildEventListener {
+            .addChildEventListener(object : ChildEventListenerUse {
                 override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
                     val chatData = chatData(snapshot.children.iterator(), previousChildName)
                     if (loadMoreSelectKey != snapshot.key) {
@@ -102,21 +95,18 @@ class ChatRepository @Inject constructor() {
                         loadMoreChk = true
                     }
                 }
-
-                override fun onCancelled(error: DatabaseError) {}
-                override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {}
-                override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {}
-                override fun onChildRemoved(snapshot: DataSnapshot) {}
             })
     }
 
     fun chatData(iterator: MutableIterator<DataSnapshot>, key: String?): ChatData {
         val chatData = ChatData()
         while (iterator.hasNext()) {
-            chatData.chatDataModel.id = iterator.next().value as String
-            chatData.chatDataModel.message = iterator.next().value as String
-            chatData.chatDataModel.nickName = iterator.next().value as String
-            chatData.chatDataModel.time = yearDateFormat(iterator.next().value as String)
+            chatData.chatDataModel.apply {
+                id = iterator.next().value as String
+                message = iterator.next().value as String
+                nickName = iterator.next().value as String
+                time = yearDateFormat(iterator.next().value as String)
+            }
         }
         chatData.key = key ?: ""
         return chatData

@@ -33,6 +33,7 @@ import com.mywidget.ui.widgetlist.recyclerview.WidgetListAdapter
 import util.CalendarUtil
 import util.CalendarUtil.hourDateFormat
 import util.CalendarUtil.memoDateFormat
+import util.Util.click
 import util.Util.toast
 import java.util.*
 
@@ -61,7 +62,7 @@ fun daysPast(textView: TextView, date: Int) {
 @BindingAdapter("NowDate")
 fun setNowDate(calendarTxtArea: EditText, today: String) {
     //calendarTxtArea.setText(today)
-    calendarTxtArea.setOnClickListener {
+    calendarTxtArea.click {
         val c = Calendar.getInstance()
         val dpd = DatePickerDialog(calendarTxtArea.context, { view, year, monthOfYear, dayOfMonth ->
             calendarTxtArea.setText(year.toString() + "-" + (monthOfYear + 1).toString() + "-" + dayOfMonth.toString())
@@ -74,7 +75,7 @@ fun setNowDate(calendarTxtArea: EditText, today: String) {
 
 @BindingAdapter("loveDayConfirm", "textTag")
 fun setLoveDay(imageView: ImageView, viewModel: MainFragmentViewModel, textView: TextView) {
-    imageView.setOnClickListener {
+    imageView.click {
         textView.tag?.let {
             viewModel.addLoveDay(it.toString())
             viewModel.loveDayDialogVisibility(false)
@@ -91,7 +92,7 @@ fun memoOnclick(
     date: TextView,
     viewModel: MainFragmentViewModel
 ) {
-    imageView.setOnClickListener {
+    imageView.click {
         if (memo.text.toString().isEmpty()) {
             imageView.context.toast("디데이명을 입력해주세요!")
         } else {
@@ -108,7 +109,7 @@ fun memoOnclick(
 
 @BindingAdapter("favoritesMessage", "viewModel")
 fun favoritesMemo(imageView: ImageView, editText: EditText, viewModel: MainFragmentViewModel) {
-    imageView.setOnClickListener {
+    imageView.click {
         viewModel.favoritesInsertMessage(editText.text.toString())
     }
 }
@@ -135,7 +136,7 @@ fun setUserConfirm(
     phone: EditText,
     viewModel: WidgetListViewModel
 ) {
-    button.setOnClickListener {
+    button.click {
         viewModel.insertUser(name.text.toString(), phone.text.toString())
         viewModel.dialogVisible.value = false
     }
@@ -206,7 +207,7 @@ fun roomAdapter(recyclerView: RecyclerView?, data: MutableLiveData<List<RoomData
 }
 
 @BindingAdapter("items")
-fun chatAdapter(recyclerView: RecyclerView?, data: MutableLiveData<List<ChatData>>) {
+fun chatAdapter(recyclerView: RecyclerView?, data: LiveData<List<ChatData>>) {
     val adapter: ChatAdapter = recyclerView?.adapter as ChatAdapter
     adapter.setData(data.value ?: listOf())
     recyclerView.smoothScrollToPosition(0)
@@ -215,7 +216,7 @@ fun chatAdapter(recyclerView: RecyclerView?, data: MutableLiveData<List<ChatData
 @BindingAdapter("items")
 fun chatUserListAdapter(
     recyclerView: RecyclerView?,
-    data: MutableLiveData<List<ChatInviteModel>>
+    data: LiveData<List<ChatInviteModel>>
 ) {
     val adapter: UserListRecyclerView = recyclerView?.adapter as UserListRecyclerView
     adapter.setData(data.value ?: listOf())
@@ -224,14 +225,14 @@ fun chatUserListAdapter(
 @BindingAdapter("items")
 fun friendListAdapter(
     recyclerView: RecyclerView?,
-    data: MutableLiveData<List<FriendModel>>
+    data: LiveData<List<FriendModel>>
 ) {
     val adapter: FriendAdapter = recyclerView?.adapter as FriendAdapter
     adapter.setData(data.value ?: listOf())
 }
 
 @BindingAdapter("chatInviteRvAdapter")
-fun inviteAdapter(recyclerView: RecyclerView?, data: MutableLiveData<List<FriendModel>>) {
+fun inviteAdapter(recyclerView: RecyclerView?, data: LiveData<List<FriendModel>>) {
     val adapter: ChatInviteAdapter = recyclerView?.adapter as ChatInviteAdapter
     adapter.setData(data.value ?: listOf())
 }

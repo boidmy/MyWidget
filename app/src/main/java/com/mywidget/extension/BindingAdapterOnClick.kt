@@ -17,6 +17,7 @@ import com.mywidget.ui.friend.FriendViewModel
 import com.mywidget.ui.login.LoginActivity
 import com.mywidget.ui.login.signup.SignUpActivity
 import util.Util
+import util.Util.click
 import util.Util.toast
 
 @BindingAdapter("email", "password", "confirmPassword", "missId", "missPassword", "activity")
@@ -29,7 +30,7 @@ fun firebaseSignUp(
     missPassword: TextView,
     activity: SignUpActivity
 ) {
-    button.setOnClickListener {
+    button.click {
         val vinputPassword: String = editPassword.text.toString()
         val confirmPassword: String = editConfirmPassword.text.toString()
         val email: String = editEmail.text.toString()
@@ -37,12 +38,12 @@ fun firebaseSignUp(
         if(TextUtils.isEmpty(email) || TextUtils.isEmpty(confirmPassword)
             || TextUtils.isEmpty(vinputPassword)) {
             missId.visibility = View.VISIBLE
-            return@setOnClickListener
+            return@click
         }
 
         if(vinputPassword != confirmPassword) {
             missPassword.visibility = View.VISIBLE
-            return@setOnClickListener
+            return@click
         }
 
         activity.singUpFirebase(email, vinputPassword)
@@ -51,7 +52,7 @@ fun firebaseSignUp(
 
 @BindingAdapter("email", "password", "activity")
 fun loginUser(button: Button, email: EditText, password: EditText, activity: LoginActivity) {
-    button.setOnClickListener {
+    button.click {
         val emailVal = email.text.toString()
         val passwordVal = password.text.toString()
         when {
@@ -70,7 +71,7 @@ fun loginUser(button: Button, email: EditText, password: EditText, activity: Log
 
 @BindingAdapter("activity")
 fun loginGoogle(button: View, activity: LoginActivity) {
-    button.setOnClickListener {
+    button.click {
         val signInIntent= activity.mGoogleSignInClient.signInIntent
         activity.startActivityForResult(signInIntent, activity.RC_SIGN_IN)
     }
@@ -78,7 +79,7 @@ fun loginGoogle(button: View, activity: LoginActivity) {
 
 @BindingAdapter("chatRoomViewModel", "roomSubject")
 fun createRoom(imageView: ImageView, viewModel: ChatRoomViewModel, editText: EditText) {
-    imageView.setOnClickListener {
+    imageView.click {
         if(editText.text.toString().isEmpty()) {
             Toast.makeText(imageView.context, "방 제목을 입력해 주세요", Toast.LENGTH_LONG).show()
         } else {
@@ -92,7 +93,7 @@ fun createRoom(imageView: ImageView, viewModel: ChatRoomViewModel, editText: Edi
 
 @BindingAdapter("isSelected", "viewModel")
 fun onClickSelected(view: View, data: FriendModel, viewModel: ChatInviteViewModel) {
-    view.setOnClickListener {
+    view.click {
         val value = viewModel.friendList.value?.map {
             if (it.email == data.email) {
                 it.copy(selector = it.selector.not())
@@ -100,13 +101,15 @@ fun onClickSelected(view: View, data: FriendModel, viewModel: ChatInviteViewMode
                 it
             }
         }
-        viewModel.friendList.value = value
+        value?.let {
+            viewModel.setFriendList(value)
+        }
     }
 }
 
 @BindingAdapter("favoritesAdd", "viewModel")
 fun setFavoritesAdd(button: Button, email: String, viewModel: FriendViewModel) {
-    button.setOnClickListener {
+    button.click {
         viewModel.setFavorites(email, !button.isSelected)
     }
 }

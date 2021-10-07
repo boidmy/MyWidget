@@ -22,6 +22,7 @@ import com.mywidget.databinding.ForgotPasswordDialogBinding
 import com.mywidget.ui.base.BaseActivity
 import com.mywidget.ui.login.signup.SignUpActivity
 import util.Util
+import util.Util.firebaseAuthException
 import util.Util.toast
 import javax.inject.Inject
 
@@ -46,11 +47,11 @@ class LoginActivity: BaseActivity<ActivityLoginBinding>() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        bindView()
+        bind()
         forgotPasswordDialog()
     }
 
-    private fun bindView() {
+    private fun bind() {
         binding.activity = this
         binding.viewModel = viewModel
     }
@@ -127,7 +128,7 @@ class LoginActivity: BaseActivity<ActivityLoginBinding>() {
                     this.toast("비밀번호 초기화 메일을 전송했습니다. 메일을 확인해 주세요")
                     viewModel.forgotPasswordDialogVisibility(false)
                 } else {
-                    Util.firebaseAuthException((task.exception as FirebaseAuthException).errorCode, this)
+                    this firebaseAuthException (task.exception as FirebaseAuthException).errorCode
                 }
             }
     }

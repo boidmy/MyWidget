@@ -16,4 +16,8 @@
     <string name="inChatPush">inChatPush</string>
     <string name="roomKey">roomKey</string>
     <string name="runChat">runChat</string>
+    <string name="emailFormatNotCorrect">이메일 형식이 올바르지 않습니다.</string>
+    <string name="emailAddressCheck">이메일 주소를 다시 확인해 주세요.</string>
+    <string name="passwordCount">비밀번호는 6자 이상으로 입력해 주세요.</string>
+    <string name="error">에러가 발생했습니다. 잠시후 다시 시도해 주세요.</string>
 </resources>
