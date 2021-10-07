@@ -10,6 +10,7 @@ import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import com.mywidget.MainApplication
 import com.mywidget.R
+import com.mywidget.data.*
 import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.android.synthetic.main.loveday_popup2.*
 import util.Util.toast
@@ -57,26 +58,26 @@ class FloatingPopupActivity : DaggerAppCompatActivity() {
         when (v.id) {
             R.id.memoContainer -> {
                 val intent = Intent()
-                intent.putExtra("result", "memo")
+                intent.putExtra(RESULT, MEMO)
                 setResult(RESULT_OK, intent)
             }
             R.id.conditionContainer -> {
                 val intent = Intent()
-                intent.putExtra("result", "condition")
+                intent.putExtra(RESULT, CONDITION)
                 setResult(RESULT_OK, intent)
             }
             R.id.loveDayContainer -> {
                 val intent = Intent()
-                intent.putExtra("result", "dDay")
+                intent.putExtra(RESULT, D_DAY)
                 setResult(RESULT_OK, intent)
             }
             R.id.chatContainer -> {
                 if (loginEmail().isEmpty()) {
-                    this.toast("로그인 후 이용해 주세요")
+                    toast(getString(R.string.afterLogin))
                     return
                 }
                 val intent = Intent()
-                intent.putExtra("result", "chat")
+                intent.putExtra(RESULT, CHAT)
                 setResult(RESULT_OK, intent)
             }
         }

@@ -8,6 +8,11 @@ import androidx.activity.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.mywidget.R
+import com.mywidget.data.INTENT_EXTRA_DATA
+import com.mywidget.data.INTENT_EXTRA_FRIEND_DATA
+import com.mywidget.data.Landing
+import com.mywidget.data.RouterEvent
+import com.mywidget.data.model.ChatDataModel
 import com.mywidget.data.model.RoomDataModel
 import com.mywidget.databinding.ActivityChatRoomBinding
 import com.mywidget.databinding.ChatCreateRoomBinding
@@ -15,16 +20,27 @@ import com.mywidget.databinding.DeleteConfirmDialogChatRoomBinding
 import com.mywidget.ui.base.BaseActivity
 import com.mywidget.ui.chat.ChatActivity
 import com.mywidget.ui.chatroom.recyclerview.ChatRoomAdapter
+import util.LandingRouter.move
 import util.Util.click
+import util.observe
 import javax.inject.Inject
 
 class ChatRoomActivity : BaseActivity<ActivityChatRoomBinding>() {
 
-    @Inject lateinit var factory: ViewModelProvider.Factory
-    @Inject lateinit var dialogBinding: ChatCreateRoomBinding
-    @Inject lateinit var createRoomDialog: Dialog
-    @Inject lateinit var deleteDialogBinding: DeleteConfirmDialogChatRoomBinding
-    @Inject lateinit var deleteDialog: Dialog
+    @Inject
+    lateinit var factory: ViewModelProvider.Factory
+
+    @Inject
+    lateinit var dialogBinding: ChatCreateRoomBinding
+
+    @Inject
+    lateinit var createRoomDialog: Dialog
+
+    @Inject
+    lateinit var deleteDialogBinding: DeleteConfirmDialogChatRoomBinding
+
+    @Inject
+    lateinit var deleteDialog: Dialog
     private val viewModel by viewModels<ChatRoomViewModel> { factory }
 
     override val layout: Int
@@ -37,47 +53,40 @@ class ChatRoomActivity : BaseActivity<ActivityChatRoomBinding>() {
     }
 
     private fun bind() {
-        binding.viewModel = viewModel
-        binding.watingRoomRv.adapter = ChatRoomAdapter(viewModel)
+        binding.apply {
+            vm = viewModel
+            watingRoomRv.adapter = ChatRoomAdapter(viewModel)
+        }
 
-        binding.guidTxt.click { TODO("Not yet implemented") }
         with(viewModel) {
             selectFriendList(loginEmail())
             selectRoomList(loginEmail())
             myId = loginEmail()
         }
 
-        observer()
+        setObserve()
         createRoomDialog()
         chatInPush()
     }
 
-    private fun observer() {
-        viewModel.resetLastMessage()
-        viewModel.roomLastMessage.observe(this, Observer {
-            binding.watingRoomRv.adapter?.notifyDataSetChanged()
-        })
-
-        viewModel.enterRoom.observe(this, Observer {
-            val intent = Intent(this, ChatActivity::class.java)
-            intent.putExtra("data", it)
-            intent.putExtra("friendMap", (viewModel.friendHashMap.value as HashMap))
-            this.startActivity(intent)
-        })
-
-        viewModel.roomList.observe(this, Observer {
-            viewModel.selectLastMessage(it)
-        })
+    private fun setObserve() {
+        with(viewModel) {
+            resetLastMessage()
+            observe(roomLastMessage, ::roomRefresh)
+            observe(enterRoom, ::inChatRoom)
+            observe(roomList, ::roomListAfterMessage)
+            observe(isDialogVisibility, ::createRoomVisibility)
+            observe(deleteDialogVisibility, ::deletePopVisibility)
+            observe(deleteRoom, ::deleteChatRoom)
+        }
     }
 
     private fun createRoomDialog() {
-        dialogBinding.viewModel = viewModel
-        dialogBinding.id = loginEmail()
-        createRoomDialog.setContentView(dialogBinding.root)
-        viewModel.isDialogVisibility.observe(this, Observer {
-            if (it) createRoomDialog.show()
-            else createRoomDialog.dismiss()
-        })
+        dialogBinding.apply {
+            vm = viewModel
+            id = loginEmail()
+            createRoomDialog.setContentView(root)
+        }
     }
 
     fun openCreateRoomDialog(v: View) {
@@ -88,18 +97,9 @@ class ChatRoomActivity : BaseActivity<ActivityChatRoomBinding>() {
     private fun deleteDialog() {
         deleteDialog.setContentView(deleteDialogBinding.root)
         deleteDialogBinding.viewModel = viewModel
-        viewModel.deleteDialogVisibility.observe(this, Observer {
-            if (it) deleteDialog.show()
-            else deleteDialog.dismiss()
-        })
-        viewModel.deleteRoom.observe(this, Observer {
-            deleteDialogBinding.data = it
-            viewModel.deleteDialogVisibility(true)
-        })
     }
 
     private fun chatInPush() {
-        val intent = intent
         val extras = intent.extras
         val chatArray = extras?.getStringArray(getString(R.string.runChat))
         chatArray?.let {
@@ -109,5 +109,38 @@ class ChatRoomActivity : BaseActivity<ActivityChatRoomBinding>() {
                 viewModel.enterRoom(roomData)
             })
         }
+    }
+
+    private fun roomRefresh(data: List<ChatDataModel>) {
+        binding.watingRoomRv.adapter?.notifyDataSetChanged()
+    }
+
+    private fun inChatRoom(data: RoomDataModel) {
+        val bundle = Bundle()
+        bundle.putSerializable(INTENT_EXTRA_DATA, data)
+        bundle.putSerializable(
+            INTENT_EXTRA_FRIEND_DATA,
+            viewModel.friendHashMap.value as HashMap
+        )
+        move(RouterEvent(type = Landing.CHAT, data = bundle))
+    }
+
+    private fun roomListAfterMessage(data: List<RoomDataModel>) {
+        viewModel.selectLastMessage(data)
+    }
+
+    private fun createRoomVisibility(flag: Boolean) {
+        if (flag) createRoomDialog.show()
+        else createRoomDialog.dismiss()
+    }
+
+    private fun deletePopVisibility(flag: Boolean) {
+        if (flag) deleteDialog.show()
+        else deleteDialog.dismiss()
+    }
+
+    private fun deleteChatRoom(data: RoomDataModel) {
+        deleteDialogBinding.data = data
+        viewModel.deleteDialogVisibility(true)
     }
 }

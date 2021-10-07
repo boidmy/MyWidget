@@ -6,7 +6,7 @@
     <data>
 
         <variable
-            name="viewModel"
+            name="vm"
             type="com.mywidget.ui.mypage.MyPageViewModel" />
     </data>
 
@@ -55,7 +55,7 @@
                 android:hint="Email"
                 android:inputType="textEmailAddress"
                 android:maxLines="1"
-                android:text="@{viewModel.myId}"
+                android:text="@{vm.myId}"
                 android:textColor="@android:color/white"
                 android:textSize="16sp" />
 
@@ -82,7 +82,7 @@
                 android:drawablePadding="16dp"
                 android:hint="NickName"
                 android:maxLines="1"
-                android:text="@{viewModel.nickName}"
+                android:text="@{vm.nickName}"
                 android:textColor="@android:color/white"
                 android:textSize="16sp" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -93,7 +93,7 @@
             android:layout_height="50dp"
             android:layout_marginBottom="20dp"
             android:background="@drawable/btn_round_white"
-            android:onClick="@{() -> viewModel.updateNickName(nicknameEdit.getText().toString())}"
+            android:onClick="@{() -> vm.updateNickName(nicknameEdit.getText().toString())}"
             android:text="수정하기"
             android:textAllCaps="false"
             android:textColor="#606060"

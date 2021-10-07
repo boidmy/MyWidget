@@ -8,6 +8,8 @@ import androidx.lifecycle.ViewModelProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthException
 import com.mywidget.R
+import com.mywidget.data.Constants.Companion.REQUEST_PASSWORD_SIGN_IN
+import com.mywidget.data.RESULT
 import com.mywidget.databinding.ActivitySignupBinding
 import com.mywidget.ui.base.BaseActivity
 import com.mywidget.ui.login.LoginViewModel
@@ -21,7 +23,6 @@ class SignUpActivity : BaseActivity<ActivitySignupBinding>() {
     @Inject lateinit var factory: ViewModelProvider.Factory
     @Inject lateinit var firebaseAuth: FirebaseAuth
     private val viewModel by viewModels<LoginViewModel> { factory }
-    val PASSWORD_SIGN_IN = 102
 
     override val layout: Int
         get() = R.layout.activity_signup
@@ -37,8 +38,8 @@ class SignUpActivity : BaseActivity<ActivitySignupBinding>() {
         viewModel.signUpComplete.observe(this, Observer {
             if(it) {
                 val intent = Intent()
-                intent.putExtra("result", true)
-                setResult(PASSWORD_SIGN_IN, intent)
+                intent.putExtra(RESULT, true)
+                setResult(REQUEST_PASSWORD_SIGN_IN, intent)
                 finish()
             }
         })

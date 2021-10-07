@@ -5,7 +5,7 @@
     <data>
 
         <variable
-            name="viewModel"
+            name="vm"
             type="com.mywidget.ui.main.MainFragmentViewModel" />
     </data>
 
@@ -89,7 +89,7 @@
             app:favoritesMessage="@{conditionTxtArea}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/conditionTxtArea"
-            app:viewModel="@{viewModel}" />
+            app:viewModel="@{vm}" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

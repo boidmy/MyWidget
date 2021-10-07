@@ -7,6 +7,8 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.BindingAdapter
 import androidx.lifecycle.Observer
 import com.google.android.gms.common.SignInButton
+import com.mywidget.R
+import com.mywidget.data.Constants.Companion.REQUEST_RC_SIGN_IN
 import com.mywidget.data.model.FriendModel
 import com.mywidget.ui.chat.ChatActivity
 import com.mywidget.ui.chat.ChatViewModel
@@ -52,18 +54,14 @@ fun firebaseSignUp(
 
 @BindingAdapter("email", "password", "activity")
 fun loginUser(button: Button, email: EditText, password: EditText, activity: LoginActivity) {
-    button.click {
-        val emailVal = email.text.toString()
-        val passwordVal = password.text.toString()
-        when {
-            emailVal.isEmpty() -> {
-                Toast.makeText(button.context, "이메일을 입력해주세요", Toast.LENGTH_LONG).show()
-            }
-            passwordVal.isEmpty() -> {
-                Toast.makeText(button.context, "비밀번호를 입력해주세요", Toast.LENGTH_LONG).show()
-            }
-            else -> {
-                activity.signInPassword(emailVal, passwordVal)
+    button.run {
+        click {
+            val emailVal = email.text.toString()
+            val passwordVal = password.text.toString()
+            when {
+                emailVal.isEmpty() -> context.toast(context.getString(R.string.inputEmail))
+                passwordVal.isEmpty() -> context.toast(context.getString(R.string.inputPassword))
+                else -> activity.signInPassword(emailVal, passwordVal)
             }
         }
     }
@@ -73,19 +71,21 @@ fun loginUser(button: Button, email: EditText, password: EditText, activity: Log
 fun loginGoogle(button: View, activity: LoginActivity) {
     button.click {
         val signInIntent= activity.mGoogleSignInClient.signInIntent
-        activity.startActivityForResult(signInIntent, activity.RC_SIGN_IN)
+        activity.startActivityForResult(signInIntent, REQUEST_RC_SIGN_IN)
     }
 }
 
 @BindingAdapter("chatRoomViewModel", "roomSubject")
 fun createRoom(imageView: ImageView, viewModel: ChatRoomViewModel, editText: EditText) {
-    imageView.click {
-        if(editText.text.toString().isEmpty()) {
-            Toast.makeText(imageView.context, "방 제목을 입력해 주세요", Toast.LENGTH_LONG).show()
-        } else {
-            viewModel.myId?.let {
-                viewModel.createRoom(it, editText.text.toString())
-                viewModel.dialogVisibility(false)
+    imageView.run {
+        click {
+            if (editText.text.toString().isEmpty()) {
+                context.toast(context.getString(R.string.inputRoomTitle))
+            } else {
+                viewModel.myId?.let {
+                    viewModel.createRoom(it, editText.text.toString())
+                    viewModel.dialogVisibility(false)
+                }
             }
         }
     }
@@ -94,15 +94,14 @@ fun createRoom(imageView: ImageView, viewModel: ChatRoomViewModel, editText: Edi
 @BindingAdapter("isSelected", "viewModel")
 fun onClickSelected(view: View, data: FriendModel, viewModel: ChatInviteViewModel) {
     view.click {
-        val value = viewModel.friendList.value?.map {
+        viewModel.friendList.value?.map {
             if (it.email == data.email) {
                 it.copy(selector = it.selector.not())
             } else {
                 it
             }
-        }
-        value?.let {
-            viewModel.setFriendList(value)
+        }?.let {
+            viewModel.setFriendList(it)
         }
     }
 }

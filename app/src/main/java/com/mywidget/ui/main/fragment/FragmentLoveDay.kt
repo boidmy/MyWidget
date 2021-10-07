@@ -31,13 +31,12 @@ class FragmentLoveDay : BaseFragment<MainFragmentLovedayBinding>() {
     override fun onCreateView(inflater: LayoutInflater, parent: ViewGroup?,
                               savedInstanceState: Bundle?): View {
         super.onCreateView(inflater, parent, savedInstanceState)
-        bindView()
+        bind()
         return binding.root
     }
 
-    private fun bindView() {
-        binding.viewModel = viewModel
-
+    private fun bind() {
+        binding.vm = viewModel
         CoroutineScope(Dispatchers.Main+job).launch {
             viewModel.selectLoveDay()
         }

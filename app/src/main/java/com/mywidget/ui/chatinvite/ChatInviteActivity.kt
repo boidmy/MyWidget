@@ -5,6 +5,8 @@ import android.view.View
 import androidx.activity.viewModels
 import androidx.lifecycle.ViewModelProvider
 import com.mywidget.R
+import com.mywidget.data.BUNDLE
+import com.mywidget.data.INTENT_EXTRA_DATA
 import com.mywidget.data.model.RoomDataModel
 import com.mywidget.databinding.ActivityChatInviteBinding
 import com.mywidget.ui.base.BaseActivity
@@ -30,7 +32,8 @@ class ChatInviteActivity : BaseActivity<ActivityChatInviteBinding>() {
         viewModel.selectFriendList()
         binding.inviteRv.adapter = ChatInviteAdapter(viewModel)
 
-        val roomDataModel = intent.getSerializableExtra("data") as RoomDataModel
+        val bundle = intent.getBundleExtra(BUNDLE)
+        val roomDataModel = bundle?.getSerializable(INTENT_EXTRA_DATA) as RoomDataModel
         viewModel.setChatRoomInformation(roomDataModel)
     }
 

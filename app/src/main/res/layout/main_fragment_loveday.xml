@@ -10,7 +10,7 @@
         <import type="android.text.TextUtils" />
 
         <variable
-            name="viewModel"
+            name="vm"
             type="com.mywidget.ui.main.MainFragmentViewModel" />
     </data>
 
@@ -27,7 +27,7 @@
             android:layout_marginTop="30dp"
             android:gravity="center"
             android:orientation="vertical"
-            app:favoriteFriendVisibility="@{viewModel.favoritesExistenceMyFriend}"
+            app:favoriteFriendVisibility="@{vm.favoritesExistenceMyFriend}"
             app:layout_constraintHorizontal_weight="0.5"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toLeftOf="@+id/favoritesFriendContainer"
@@ -51,7 +51,7 @@
                 android:lines="3"
                 android:paddingStart="5dp"
                 android:paddingEnd="5dp"
-                android:text="@{viewModel.favoritesMessageMe.memo}"
+                android:text="@{vm.favoritesMessageMe.memo}"
                 android:textColor="#240440"
                 android:textSize="15dp"
                 tools:text="기분이 좋아욤기분이 좋아욤기분이 좋아욤" />
@@ -62,7 +62,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:alpha="0.6"
-                android:text="@{viewModel.favoritesMessageMe.date}"
+                android:text="@{vm.favoritesMessageMe.date}"
                 android:textColor="#240440"
                 android:textSize="14dp"
                 tools:text="2020.10.10" />
@@ -76,7 +76,7 @@
             android:layout_marginTop="30dp"
             android:gravity="center"
             android:orientation="vertical"
-            app:favoriteFriendVisibility="@{viewModel.favoritesExistenceMyFriend}"
+            app:favoriteFriendVisibility="@{vm.favoritesExistenceMyFriend}"
             app:layout_constraintHorizontal_weight="0.5"
             app:layout_constraintLeft_toRightOf="@+id/favoritesMeContainer"
             app:layout_constraintRight_toRightOf="parent"
@@ -87,7 +87,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:alpha="0.6"
-                android:text='@{viewModel.favoritesExistenceMyFriend.getFriendNickName()}'
+                android:text='@{vm.favoritesExistenceMyFriend.getFriendNickName()}'
                 android:textColor="#240440"
                 android:textSize="14dp"
                 tools:text="친구" />
@@ -101,7 +101,7 @@
                 android:lines="3"
                 android:paddingStart="5dp"
                 android:paddingEnd="5dp"
-                android:text="@{viewModel.favoritesMessageFriend.memo}"
+                android:text="@{vm.favoritesMessageFriend.memo}"
                 android:textColor="#240440"
                 android:textSize="15dp"
                 tools:text="기분이 좋아욤" />
@@ -112,7 +112,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:alpha="0.6"
-                android:text="@{viewModel.favoritesMessageFriend.date}"
+                android:text="@{vm.favoritesMessageFriend.date}"
                 android:textColor="#240440"
                 android:textSize="14dp"
                 tools:text="2020.10.12" />
@@ -127,7 +127,7 @@
             android:background="@drawable/heart2"
             android:gravity="center"
             android:paddingBottom="10dp"
-            android:text="@{viewModel.loveDay}"
+            android:text="@{vm.loveDay}"
             android:textColor="@color/white"
             android:textSize="28dp"
             app:layout_constraintBottom_toBottomOf="parent"

@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.database.DatabaseReference
 import com.mywidget.R
+import com.mywidget.data.*
 import com.mywidget.data.model.RoomDataModel
 import com.mywidget.databinding.ActivityChattingBinding
 import com.mywidget.ui.base.BaseActivity
@@ -18,6 +19,7 @@ import com.mywidget.ui.chat.recyclerview.UserListRecyclerView
 import com.mywidget.ui.chatinvite.ChatInviteActivity
 import kotlinx.android.synthetic.main.activity_chatting.*
 import util.ItemDecoration
+import util.LandingRouter.move
 import util.Util
 import javax.inject.Inject
 
@@ -47,8 +49,10 @@ class ChatActivity : BaseActivity<ActivityChattingBinding>() {
     }
 
     private fun init() {
-        roomDataModel = intent.getSerializableExtra("data") as RoomDataModel
-        friendHashMap = intent.getSerializableExtra("friendMap") as Map<String, String>
+        intent.getBundleExtra(BUNDLE)?.let {
+            roomDataModel = it.getSerializable(INTENT_EXTRA_DATA) as RoomDataModel
+            friendHashMap = it.getSerializable(INTENT_EXTRA_FRIEND_DATA) as Map<String, String>
+        }
 
         with(viewModel) {
             setFriendHashMap(friendHashMap)
@@ -63,8 +67,7 @@ class ChatActivity : BaseActivity<ActivityChattingBinding>() {
     private fun bind() {
         binding.apply {
             vm = viewModel
-            val adapter = ChatAdapter(viewModel)
-            chatRv.adapter = adapter
+            chatRv.adapter = ChatAdapter(viewModel)
             chatRv.addItemDecoration(ItemDecoration(10))
             drawerUserListRv.adapter = UserListRecyclerView(viewModel)
 
@@ -100,9 +103,9 @@ class ChatActivity : BaseActivity<ActivityChattingBinding>() {
     }
 
     fun onClickInviteUser(v: View) {
-        val intent = Intent(this, ChatInviteActivity::class.java)
-        intent.putExtra("data", roomDataModel)
-        startActivity(intent)
+        val bundle = Bundle()
+        bundle.putSerializable(INTENT_EXTRA_DATA, roomDataModel)
+        move(RouterEvent(Landing.CHAT_INVITE, bundle))
     }
 
     //사용자가 채팅방에 들어와있으면 push 를 받지 않기 위한 용도

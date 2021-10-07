@@ -9,7 +9,6 @@ import android.view.animation.Animation
 import androidx.activity.viewModels
 import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.tabs.TabLayout
@@ -17,19 +16,18 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.mywidget.R
 import com.mywidget.common.BackPressAppFinish
+import com.mywidget.data.*
+import com.mywidget.data.Constants.Companion.REQUEST_CODE_FLOATING
+import com.mywidget.data.Constants.Companion.REQUEST_CODE_LOGIN
 import com.mywidget.databinding.*
 import com.mywidget.ui.base.BaseActivity
 import com.mywidget.ui.chatroom.ChatRoomActivity
-import com.mywidget.ui.friend.FriendActivity
-import com.mywidget.ui.login.LoginActivity
-import com.mywidget.ui.loveday.FloatingPopupActivity
 import com.mywidget.ui.main.fragment.MainTabPagerAdapter
-import com.mywidget.ui.mypage.MyPageActivity
-import com.mywidget.ui.widgetlist.WidgetListActivity
 import util.CalendarUtil.getToday
-import util.Util
+import util.LandingRouter.move
 import util.Util.click
 import util.Util.toast
+import util.observe
 import javax.inject.Inject
 import javax.inject.Named
 
@@ -56,11 +54,10 @@ class MainActivity : BaseActivity<DrawerlayoutMainBinding>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding.viewModel = viewModel
 
         loginCheck()
-        leftMenu()
-        tabInit()
+        bind()
+        bindLeftMenu()
         memoDialogBind()
         loveDayDialogBind()
         favoritesDialogBind()
@@ -68,38 +65,52 @@ class MainActivity : BaseActivity<DrawerlayoutMainBinding>()
     }
 
     private fun loginCheck() {
-        val email = loginEmail()
-        if(email.isNotEmpty()) {
-            viewModel.myId(email)
-            binding.navView.menu.getItem(1).title = "로그아웃"
+        loginEmail().run {
+            if (isNotEmpty()) {
+                viewModel.myId(this)
+                binding.navView.menu.getItem(1).title = getString(R.string.logout)
+            }
         }
     }
 
-    private fun leftMenu() {
+    private fun bind() {
+        binding.apply {
+            vm = viewModel
+        }.mainContainer.apply {
+            mainTab.setupWithViewPager(vpTab)
+            vpTab.adapter = mTabPagerAdapter
+            vpTab.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(mainTab))
+        }
+        setObserve()
+    }
+
+    private fun setObserve() {
+        with(viewModel) {
+            observe(loveDayDialogVisibility, ::loveDayDialogShow)
+            observe(memoDialogVisibility, ::memoDialogShow)
+            observe(favoritesDialogVisibility, ::favoritesDialogShow)
+            observe(favoritesExistence, ::favoritesExistenceChk)
+        }
+    }
+
+    private fun bindLeftMenu() {
         binding.mainContainer.titleContainer.leftMenu.click {
             binding.drawerLayout.openDrawer(GravityCompat.START)
         }
-        val drawerHeaderBinding: NavHeaderMainBinding = DataBindingUtil.inflate(layoutInflater
-            , R.layout.nav_header_main, binding.navView, false)
-        drawerHeaderBinding.apply {
+        inflateLeftMenu().apply {
             lifecycleOwner = this@MainActivity
             viewModel = viewModel
             binding.navView.addHeaderView(root)
         }
+
         binding.navView.setNavigationItemSelectedListener(this)
     }
 
-    private fun tabInit() {
-        binding.mainContainer.apply {
-            mainTab.setupWithViewPager(binding.mainContainer.vpTab)
-            vpTab.adapter = mTabPagerAdapter
-            vpTab.addOnPageChangeListener(TabLayout
-                .TabLayoutOnPageChangeListener(binding.mainContainer.mainTab))
-        }
-    }
+    private fun inflateLeftMenu(): NavHeaderMainBinding = DataBindingUtil.inflate(layoutInflater
+        , R.layout.nav_header_main, binding.navView, false)
 
     override fun onBackPressed() {
-        if(binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
+        if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
             binding.drawerLayout.closeDrawer(GravityCompat.START)
             return
         }
@@ -109,23 +120,20 @@ class MainActivity : BaseActivity<DrawerlayoutMainBinding>()
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         when (requestCode) {
-            3000 -> {
-                when (data?.getStringExtra("result")) {
-                    "memo" -> openMemoDialog()
-                    "dDay" -> openLoveDayDialog()
-                    "condition" -> openFavoritesDialog()
-                    "chat" -> {
-                        val intent = Intent(this, ChatRoomActivity::class.java)
-                        startActivity(intent)
-                    }
+            REQUEST_CODE_FLOATING -> {
+                when (data?.getStringExtra(RESULT)) {
+                    MEMO -> openMemoDialog()
+                    CONDITION -> openFavoritesDialog()
+                    D_DAY -> openLoveDayDialog()
+                    CHAT -> move(RouterEvent(type = Landing.CHAT_ROOM))
                 }
             }
-            4000 -> {
+            REQUEST_CODE_LOGIN -> {
                 with(loginEmail()) {
-                    if(isEmpty()) return
-                    this@MainActivity.toast(this+"님 환영합니다!")
+                    if (isEmpty()) return
+                    this@MainActivity.toast(String.format(this@MainActivity.getString(R.string.welcomeUser), this))
                     viewModel.myId(this)
-                    loginTxt("로그아웃")
+                    loginTxt(getString(R.string.logout))
                 }
             }
         }
@@ -137,62 +145,40 @@ class MainActivity : BaseActivity<DrawerlayoutMainBinding>()
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.widget_phone_add -> {
-                val intent = Intent(this, WidgetListActivity::class.java)
-                startActivity(intent)
-            }
+            R.id.widget_phone_add -> move(RouterEvent(type = Landing.WIDGET))
             R.id.login -> {
-                if (binding.navView.menu.getItem(1).title.toString() == "로그인") {
-                    val intent = Intent(this, LoginActivity::class.java)
-                    startActivityForResult(intent, 4000)
+                if (loginEmail().isEmpty()) {
+                    move(RouterEvent(type = Landing.LOGIN))
                 } else {
                     viewModel.logout(loginEmail())
                     Firebase.auth.signOut()
-                    loginTxt("로그인")
+                    loginTxt(getString(R.string.login))
                 }
             }
-            R.id.friendAdd -> {
-                if (loginChkToast()) {
-                    val intent = Intent(this, FriendActivity::class.java)
-                    startActivity(intent)
-                }
-            }
-            R.id.myPage -> {
-                if (loginChkToast()) {
-                    val intent = Intent(this, MyPageActivity::class.java)
-                    startActivity(intent)
-                }
-            }
+            R.id.friendAdd -> if (loginChkToast()) move(RouterEvent(type = Landing.FRIEND))
+            R.id.myPage -> if (loginChkToast()) move(RouterEvent(type = Landing.MYPAGE))
         }
         binding.drawerLayout.closeDrawer(GravityCompat.START)
         return true
     }
 
     private fun loveDayDialogBind() {
-        loveDayDialog.setContentView(loveDayDialogBinding.root)
-        loveDayDialogBinding.viewModel = viewModel
-        viewModel.loveDayDialogVisibility.observe(this, androidx.lifecycle.Observer {
-            if(it) loveDayDialog.show()
-            else loveDayDialog.dismiss()
-        })
+        loveDayDialogBinding.apply {
+            loveDayDialog.setContentView(root)
+            vm = viewModel
+        }
     }
 
     private fun openLoveDayDialog() {
         viewModel.loveDayDialogVisibility(true)
-        loveDayDialogBinding.apply {
-            date = getToday()
-        }
+        loveDayDialogBinding.date = getToday()
     }
 
     private fun memoDialogBind() {
-        memoDialog.setContentView(memoDialogBinding.root)
-        memoDialogBinding.viewModel = viewModel
-        viewModel.memoDialogVisibility.observe(this, androidx.lifecycle.Observer {
-            if(it) { memoDialog.show() }
-            else {
-                memoDialog.dismiss()
-            }
-        })
+        memoDialogBinding.apply {
+            memoDialog.setContentView(root)
+            vm = viewModel
+        }
     }
 
     private fun openMemoDialog() {
@@ -206,15 +192,10 @@ class MainActivity : BaseActivity<DrawerlayoutMainBinding>()
     }
 
     private fun favoritesDialogBind() {
-        favoritesDialog.setContentView(favoritesDialogBinding.root)
-        favoritesDialogBinding.viewModel = viewModel
-        viewModel.favoritesDialogVisibility.observe(this, Observer {
-            if(it) favoritesDialog.show()
-        })
-        viewModel.favoritesExistence.observe(this, Observer {
-            if(!it) this.toast("즐겨찾기 한 친구가 없어요!")
-            else favoritesDialog.dismiss()
-        })
+        favoritesDialogBinding.apply {
+            favoritesDialog.setContentView(root)
+            vm = viewModel
+        }
     }
 
     private fun openFavoritesDialog() {
@@ -226,19 +207,35 @@ class MainActivity : BaseActivity<DrawerlayoutMainBinding>()
     }
 
     fun onClickFloating(v: View) {
-        val intent = Intent(this, FloatingPopupActivity::class.java)
-        startActivityForResult(intent, 3000)
+        move(RouterEvent(type = Landing.FLOATING))
     }
 
     private fun chatInPush() {
-        val intent = intent
-        val extras = intent.extras
-        val chatInformation = extras?.getString(getString(R.string.runChat))
+        val chatInformation = intent.extras?.getString(getString(R.string.runChat))
         chatInformation?.let {
             val intent = Intent(this, ChatRoomActivity::class.java)
             val chatRoomData: Array<String> = it.split("&&".toRegex()).toTypedArray()
             intent.putExtra(getString(R.string.runChat), chatRoomData)
             startActivity(intent)
         }
+    }
+
+    private fun loveDayDialogShow(flag: Boolean) {
+        if (flag) loveDayDialog.show()
+        else loveDayDialog.dismiss()
+    }
+
+    private fun memoDialogShow(flag: Boolean) {
+        if (flag) memoDialog.show()
+        else memoDialog.dismiss()
+    }
+
+    private fun favoritesDialogShow(flag: Boolean) {
+        if (flag) favoritesDialog.show()
+    }
+
+    private fun favoritesExistenceChk(flag: Boolean) {
+        if (flag) favoritesDialog.dismiss()
+        else this.toast("즐겨찾기 한 친구가 없어요!")
     }
 }

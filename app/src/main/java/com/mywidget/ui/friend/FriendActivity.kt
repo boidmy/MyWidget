@@ -41,9 +41,11 @@ class FriendActivity : BaseActivity<ActivityFriendBinding>() {
     }
 
     fun bind() {
-        binding.viewModel = viewModel
-        binding.friendRv.adapter = FriendAdapter(viewModel)
-        (binding.friendRv.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
+        binding.apply {
+            vm = viewModel
+            friendRv.adapter = FriendAdapter(viewModel)
+            (friendRv.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
+        }
 
         with(loginEmail()) {
             viewModel.myId(this)
@@ -80,7 +82,7 @@ class FriendActivity : BaseActivity<ActivityFriendBinding>() {
             if (it) {
                 viewModel.friendAddDialogVisibility(false)
             } else {
-                this.toast("이메일을 다시 확인해 주세요")
+                toast("이메일을 다시 확인해 주세요")
             }
         })
     }

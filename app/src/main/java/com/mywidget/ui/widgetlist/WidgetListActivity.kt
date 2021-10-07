@@ -81,12 +81,13 @@ class WidgetListActivity : BaseActivity<ActivityWidgetBinding>() {
     }
 
     private fun setWidgetSharedPreference(jsonArray: JSONArray) {
-        val mSharedPreference
-                = getSharedPreferences("widget", Context.MODE_PRIVATE)
-        val editor = mSharedPreference.edit()
-        editor.remove("data")
-        editor.putString("data", jsonArray.toString())
-        editor.apply()
+        getSharedPreferences("widget", Context.MODE_PRIVATE).run {
+            this.edit()
+        }.apply {
+            remove("data")
+            putString("data", jsonArray.toString())
+            apply()
+        }
     }
 
     private fun deleteDialog() {

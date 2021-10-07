@@ -27,7 +27,7 @@ abstract class BaseActivity<D : ViewDataBinding> : DaggerAppCompatActivity() {
 
     fun loginChkToast(): Boolean {
         return if (loginEmail().isEmpty()) {
-            this.toast("로그인 후 이용해 주세요")
+            toast("로그인 후 이용해 주세요")
             false
         } else {
             true

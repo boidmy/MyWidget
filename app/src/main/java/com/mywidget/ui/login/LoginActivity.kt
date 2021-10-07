@@ -17,11 +17,15 @@ import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.*
 import com.mywidget.R
+import com.mywidget.data.Constants.Companion.REQUEST_PASSWORD_SIGN_IN
+import com.mywidget.data.Constants.Companion.REQUEST_RC_SIGN_IN
+import com.mywidget.data.Landing
+import com.mywidget.data.RESULT
+import com.mywidget.data.RouterEvent
 import com.mywidget.databinding.ActivityLoginBinding
 import com.mywidget.databinding.ForgotPasswordDialogBinding
 import com.mywidget.ui.base.BaseActivity
-import com.mywidget.ui.login.signup.SignUpActivity
-import util.Util
+import util.LandingRouter.move
 import util.Util.firebaseAuthException
 import util.Util.toast
 import javax.inject.Inject
@@ -33,33 +37,30 @@ class LoginActivity: BaseActivity<ActivityLoginBinding>() {
     @Inject lateinit var factory: ViewModelProvider.Factory
     @Inject lateinit var firebaseAuth: FirebaseAuth
     private val viewModel by viewModels<LoginViewModel> { factory }
-    private val errorMsg = "잠시 후 다시 시도해 주세요"
     private val forgotPasswordDialogBinding by lazy {
         ForgotPasswordDialogBinding.inflate(LayoutInflater.from(this)) }
     private val forgotPasswordDialog by lazy { Dialog(this, R.style.CustomDialogTheme) }
-
-    val RC_SIGN_IN = 101
-    val PASSWORD_SIGN_IN = 102
 
     override val layout: Int
         get() = R.layout.activity_login
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         bind()
         forgotPasswordDialog()
     }
 
     private fun bind() {
-        binding.activity = this
-        binding.viewModel = viewModel
+        binding.apply {
+            activity = this@LoginActivity
+            vm = viewModel
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if (requestCode == RC_SIGN_IN) {
+        if (requestCode == REQUEST_RC_SIGN_IN) {
             val task = GoogleSignIn.getSignedInAccountFromIntent(data)
             try {
                 val account = task.getResult(ApiException::class.java)
@@ -67,15 +68,14 @@ class LoginActivity: BaseActivity<ActivityLoginBinding>() {
             } catch (e: ApiException) {
                 Log.w("Google", "Google sign in failed", e)
             }
-        } else if (requestCode == PASSWORD_SIGN_IN) {
-            val result: Boolean = data?.extras?.getBoolean("result")?: false
-            if(result) finish()
+        } else if (requestCode == REQUEST_PASSWORD_SIGN_IN) {
+            val result: Boolean = data?.extras?.getBoolean(RESULT)?: false
+            if (result) finish()
         }
     }
 
     fun signUpBtn(view: View) {
-        val intent = Intent(this, SignUpActivity::class.java)
-        startActivityForResult(intent, PASSWORD_SIGN_IN)
+        move(RouterEvent(Landing.SIGN_UP))
     }
 
     fun signInPassword(email: String, password: String) {
@@ -84,9 +84,10 @@ class LoginActivity: BaseActivity<ActivityLoginBinding>() {
     }
 
     private fun signInGoogle(idToken: String) {
-        val credential = GoogleAuthProvider.getCredential(idToken, null)
-        firebaseAuth.signInWithCredential(credential)
-            .addOnCompleteListener(googleCompleteListener)
+        GoogleAuthProvider.getCredential(idToken, null).run {
+            firebaseAuth.signInWithCredential(this)
+                .addOnCompleteListener(googleCompleteListener)
+        }
     }
 
     private var passwordCompleteListener = OnCompleteListener { task: Task<AuthResult?> ->
@@ -113,24 +114,21 @@ class LoginActivity: BaseActivity<ActivityLoginBinding>() {
             viewModel.loginSetToken(getUser()?.email?:"")
             finish()
         } else {
-            this.toast(task.exception?.message?: errorMsg)
+            toast(task.exception?.message?: getString(R.string.error))
         }
     }
 
-    private fun getUser() : FirebaseUser? {
-        return firebaseAuth.currentUser
-    }
+    private fun getUser(): FirebaseUser? = firebaseAuth.currentUser
 
     fun forgotPassword(email: String) {
-        firebaseAuth.sendPasswordResetEmail(email)
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    this.toast("비밀번호 초기화 메일을 전송했습니다. 메일을 확인해 주세요")
-                    viewModel.forgotPasswordDialogVisibility(false)
-                } else {
-                    this firebaseAuthException (task.exception as FirebaseAuthException).errorCode
-                }
+        firebaseAuth.sendPasswordResetEmail(email).addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                toast(getString(R.string.passwordReset))
+                viewModel.forgotPasswordDialogVisibility(false)
+            } else {
+                this firebaseAuthException (task.exception as FirebaseAuthException).errorCode
             }
+        }
     }
 
     private fun forgotPasswordDialog() {

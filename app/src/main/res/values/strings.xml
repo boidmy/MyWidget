@@ -5,7 +5,8 @@
 
     <string name="menu_home">위젯등록하기</string>
     <string name="menu_gallery">미구현</string>
-    <string name="menu_slideshow">로그인</string>
+    <string name="login">로그인</string>
+    <string name="logout">로그아웃</string>
     <string name="invite_user">친구초대</string>
     <string name="friend_add">친구추가</string>
     <string name="menu_tools">Tools</string>
@@ -20,4 +21,10 @@
     <string name="emailAddressCheck">이메일 주소를 다시 확인해 주세요.</string>
     <string name="passwordCount">비밀번호는 6자 이상으로 입력해 주세요.</string>
     <string name="error">에러가 발생했습니다. 잠시후 다시 시도해 주세요.</string>
+    <string name="passwordReset">비밀번호 초기화 메일을 전송했습니다. 메일을 확인해 주세요</string>
+    <string name="afterLogin">로그인 후 이용해 주세요</string>
+    <string name="welcomeUser">%s님 환영합니다!</string>
+    <string name="inputEmail">이메일을 입력해주세요</string>
+    <string name="inputPassword">비밀번호를 입력해주세요</string>
+    <string name="inputRoomTitle">방 제목을 입력해 주세요</string>
 </resources>

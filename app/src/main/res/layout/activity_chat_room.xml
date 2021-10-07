@@ -11,7 +11,7 @@
             type="String" />
 
         <variable
-            name="viewModel"
+            name="vm"
             type="com.mywidget.ui.chatroom.ChatRoomViewModel" />
     </data>
 
@@ -53,7 +53,7 @@
             android:text="방을 생성해 보세요"
             android:textColor="#000000"
             android:textSize="20dp"
-            android:visibility="@{viewModel.roomList.size() > 0 ? View.GONE : View.VISIBLE}"
+            android:visibility="@{vm.roomList.size() > 0 ? View.GONE : View.VISIBLE}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -64,7 +64,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            app:items="@{viewModel.roomList}"
+            app:items="@{vm.roomList}"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constrainedHeight="true"
             app:layout_constraintBottom_toBottomOf="parent"

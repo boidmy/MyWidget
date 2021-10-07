@@ -20,13 +20,12 @@ class MyPageActivity : BaseActivity<ActivityMypageBinding>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding.viewModel = viewModel
-
         bind()
         setObserve()
     }
 
     fun bind() {
+        binding.vm = viewModel
         with(viewModel) {
             setMyId(loginEmail())
             selectMyNickName()

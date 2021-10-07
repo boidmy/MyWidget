@@ -9,7 +9,7 @@
             type="String" />
 
         <variable
-            name="viewModel"
+            name="vm"
             type="com.mywidget.ui.main.MainFragmentViewModel" />
     </data>
 
@@ -92,7 +92,7 @@
             android:src="@drawable/confirm_btn"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/calendarBtn"
-            app:loveDayConfirm="@{viewModel}"
+            app:loveDayConfirm="@{vm}"
             app:textTag="@{calendarTxtArea}" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

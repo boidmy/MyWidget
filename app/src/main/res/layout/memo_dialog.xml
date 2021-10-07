@@ -10,12 +10,12 @@
             type="String" />
 
         <variable
-            name="viewModel"
+            name="vm"
             type="com.mywidget.ui.main.MainFragmentViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/memo_dialog"
+        android:id="@+id/memoDialogContainer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
@@ -111,7 +111,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/calendarTxtArea"
             app:memoTxt="@{memoEdit}"
-            app:viewModel="@{viewModel}" />
+            app:viewModel="@{vm}" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>
