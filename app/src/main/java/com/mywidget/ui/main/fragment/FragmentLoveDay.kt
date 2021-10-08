@@ -28,11 +28,9 @@ class FragmentLoveDay : BaseFragment<MainFragmentLovedayBinding>() {
         return R.layout.main_fragment_loveday
     }
 
-    override fun onCreateView(inflater: LayoutInflater, parent: ViewGroup?,
-                              savedInstanceState: Bundle?): View {
-        super.onCreateView(inflater, parent, savedInstanceState)
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
         bind()
-        return binding.root
     }
 
     private fun bind() {

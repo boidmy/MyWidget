@@ -6,7 +6,7 @@
     <data>
 
         <variable
-            name="viewModel"
+            name="vm"
             type="com.mywidget.ui.main.MainFragmentViewModel" />
     </data>
 
@@ -33,15 +33,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingTop="@dimen/nav_header_vertical_spacing"
-            android:text="@{viewModel.myId}"
+            android:text="@{vm.myId}"
             android:textColor="#000000"
             tools:text="abcd1234님" />
 
         <TextView
             android:id="@+id/textView"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="오보보보" />
+            android:layout_height="wrap_content" />
 
     </LinearLayout>
 </layout>

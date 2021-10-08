@@ -23,11 +23,11 @@ abstract class BaseActivity<D : ViewDataBinding> : DaggerAppCompatActivity() {
 
     fun loginEmail() = authUser()?.email ?: ""
 
-    fun authUser(): FirebaseUser? = MainApplication.INSTANSE.authUser()
+    private fun authUser(): FirebaseUser? = MainApplication.INSTANSE.authUser()
 
     fun loginChkToast(): Boolean {
         return if (loginEmail().isEmpty()) {
-            toast("로그인 후 이용해 주세요")
+            toast(getString(R.string.afterLogin))
             false
         } else {
             true

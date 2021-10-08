@@ -8,10 +8,7 @@ import androidx.activity.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.mywidget.R
-import com.mywidget.data.INTENT_EXTRA_DATA
-import com.mywidget.data.INTENT_EXTRA_FRIEND_DATA
-import com.mywidget.data.Landing
-import com.mywidget.data.RouterEvent
+import com.mywidget.data.*
 import com.mywidget.data.model.ChatDataModel
 import com.mywidget.data.model.RoomDataModel
 import com.mywidget.databinding.ActivityChatRoomBinding
@@ -27,20 +24,11 @@ import javax.inject.Inject
 
 class ChatRoomActivity : BaseActivity<ActivityChatRoomBinding>() {
 
-    @Inject
-    lateinit var factory: ViewModelProvider.Factory
-
-    @Inject
-    lateinit var dialogBinding: ChatCreateRoomBinding
-
-    @Inject
-    lateinit var createRoomDialog: Dialog
-
-    @Inject
-    lateinit var deleteDialogBinding: DeleteConfirmDialogChatRoomBinding
-
-    @Inject
-    lateinit var deleteDialog: Dialog
+    @Inject lateinit var factory: ViewModelProvider.Factory
+    @Inject lateinit var dialogBinding: ChatCreateRoomBinding
+    @Inject lateinit var createRoomDialog: Dialog
+    @Inject lateinit var deleteDialogBinding: DeleteConfirmDialogChatRoomBinding
+    @Inject lateinit var deleteDialog: Dialog
     private val viewModel by viewModels<ChatRoomViewModel> { factory }
 
     override val layout: Int
@@ -61,6 +49,8 @@ class ChatRoomActivity : BaseActivity<ActivityChatRoomBinding>() {
         with(viewModel) {
             selectFriendList(loginEmail())
             selectRoomList(loginEmail())
+            this
+        }.apply {
             myId = loginEmail()
         }
 
@@ -100,14 +90,12 @@ class ChatRoomActivity : BaseActivity<ActivityChatRoomBinding>() {
     }
 
     private fun chatInPush() {
-        val extras = intent.extras
-        val chatArray = extras?.getStringArray(getString(R.string.runChat))
-        chatArray?.let {
-            //푸쉬 진입시 친구 목록을 불러온 후 채팅방 진입
-            viewModel.friendHashMap.observe(this, Observer {
-                val roomData = RoomDataModel("", chatArray[0], chatArray[1])
-                viewModel.enterRoom(roomData)
-            })
+        intent.getBundleExtra(BUNDLE)?.run {
+            getStringArray(RUN_CHAT)?.let { item ->
+                viewModel.friendHashMap.observe(this@ChatRoomActivity, Observer {
+                    viewModel.enterRoom(RoomDataModel("", item[0], item[1]))
+                })
+            }
         }
     }
 
@@ -116,13 +104,15 @@ class ChatRoomActivity : BaseActivity<ActivityChatRoomBinding>() {
     }
 
     private fun inChatRoom(data: RoomDataModel) {
-        val bundle = Bundle()
-        bundle.putSerializable(INTENT_EXTRA_DATA, data)
-        bundle.putSerializable(
-            INTENT_EXTRA_FRIEND_DATA,
-            viewModel.friendHashMap.value as HashMap
-        )
-        move(RouterEvent(type = Landing.CHAT, data = bundle))
+        Bundle().apply {
+            putSerializable(INTENT_EXTRA_DATA, data)
+            putSerializable(
+                INTENT_EXTRA_FRIEND_DATA,
+                viewModel.friendHashMap.value as HashMap
+            )
+        }.run {
+            move(RouterEvent(type = Landing.CHAT, data = this))
+        }
     }
 
     private fun roomListAfterMessage(data: List<RoomDataModel>) {

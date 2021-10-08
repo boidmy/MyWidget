@@ -27,4 +27,5 @@
     <string name="inputEmail">이메일을 입력해주세요</string>
     <string name="inputPassword">비밀번호를 입력해주세요</string>
     <string name="inputRoomTitle">방 제목을 입력해 주세요</string>
+    <string name="notFavoriteFriend">즐겨찾기 한 친구가 없어요!</string>
 </resources>

@@ -99,7 +99,7 @@ class MainActivity : BaseActivity<DrawerlayoutMainBinding>()
         }
         inflateLeftMenu().apply {
             lifecycleOwner = this@MainActivity
-            viewModel = viewModel
+            vm = viewModel
             binding.navView.addHeaderView(root)
         }
 
@@ -110,9 +110,11 @@ class MainActivity : BaseActivity<DrawerlayoutMainBinding>()
         , R.layout.nav_header_main, binding.navView, false)
 
     override fun onBackPressed() {
-        if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
-            binding.drawerLayout.closeDrawer(GravityCompat.START)
-            return
+        binding.drawerLayout.run {
+            if (isDrawerOpen(GravityCompat.START)) {
+                closeDrawer(GravityCompat.START)
+                return
+            }
         }
         backPressAppFinish.onBackPressed()
     }
@@ -137,10 +139,6 @@ class MainActivity : BaseActivity<DrawerlayoutMainBinding>()
                 }
             }
         }
-    }
-
-    private fun loginTxt(text: String) {
-        binding.navView.menu.getItem(1).title = text
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
@@ -200,9 +198,9 @@ class MainActivity : BaseActivity<DrawerlayoutMainBinding>()
 
     private fun openFavoritesDialog() {
         viewModel.favoritesDialogVisibility(true)
-        favoritesDialogBinding.apply {
-            conditionTxtArea.text = null
-            conditionTxtArea.isFocusable = true
+        favoritesDialogBinding.conditionTxtArea.apply {
+            text = null
+            isFocusable = true
         }
     }
 
@@ -211,12 +209,13 @@ class MainActivity : BaseActivity<DrawerlayoutMainBinding>()
     }
 
     private fun chatInPush() {
-        val chatInformation = intent.extras?.getString(getString(R.string.runChat))
-        chatInformation?.let {
-            val intent = Intent(this, ChatRoomActivity::class.java)
+        intent.extras?.getString(RUN_CHAT)?.let {
             val chatRoomData: Array<String> = it.split("&&".toRegex()).toTypedArray()
-            intent.putExtra(getString(R.string.runChat), chatRoomData)
-            startActivity(intent)
+            Bundle().apply {
+                putStringArray(RUN_CHAT, chatRoomData)
+            }.run {
+                move(RouterEvent(type = Landing.CHAT_ROOM, data = this))
+            }
         }
     }
 
@@ -236,6 +235,10 @@ class MainActivity : BaseActivity<DrawerlayoutMainBinding>()
 
     private fun favoritesExistenceChk(flag: Boolean) {
         if (flag) favoritesDialog.dismiss()
-        else this.toast("즐겨찾기 한 친구가 없어요!")
+        else toast(getString(R.string.notFavoriteFriend))
+    }
+
+    private fun loginTxt(text: String) {
+        binding.navView.menu.getItem(1).title = text
     }
 }

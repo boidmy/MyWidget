@@ -24,7 +24,7 @@ object LandingRouter {
         when (event.type) {
             Landing.WIDGET -> goWidget()
             Landing.FLOATING -> goFloating()
-            Landing.CHAT_ROOM -> goChatRoom()
+            Landing.CHAT_ROOM -> goChatRoom(event)
             Landing.CHAT -> goChat(event)
             Landing.CHAT_INVITE -> goChatInvite(event)
             Landing.LOGIN -> goLogin()
@@ -44,8 +44,9 @@ object LandingRouter {
         startActivityForResult(this as Activity, intent, REQUEST_CODE_FLOATING, null)
     }
 
-    private fun Context.goChatRoom() {
+    private fun Context.goChatRoom(event: RouterEvent) {
         val intent = Intent(this, ChatRoomActivity::class.java)
+        intent.putExtra(BUNDLE, event.data)
         startActivity(intent)
     }
 

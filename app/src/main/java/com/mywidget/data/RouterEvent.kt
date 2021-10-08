@@ -11,6 +11,7 @@ const val MEMO = "memo"
 const val CONDITION = "condition"
 const val D_DAY = "dDay"
 const val CHAT = "chat"
+const val RUN_CHAT = "runChat"
 
 class RouterEvent(
     val type: Landing,

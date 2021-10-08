@@ -31,11 +31,9 @@ class FragmentMemo : BaseFragment<MainFragmentDDayBinding>() {
 
     override fun getLayout() = R.layout.main_fragment_d_day
 
-    override fun onCreateView(inflater: LayoutInflater, parent: ViewGroup?, savedInstanceState: Bundle?): View {
-        super.onCreateView(inflater, parent, savedInstanceState)
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
         bind()
-
-        return binding.root
     }
 
     private fun bind() {
@@ -43,10 +41,6 @@ class FragmentMemo : BaseFragment<MainFragmentDDayBinding>() {
             data = viewModel.memoData
             vm = viewModel
             fragmentRv.adapter = MainTabMemoAdapter(viewModel)
-            val animator = fragmentRv.itemAnimator
-            if (animator is SimpleItemAnimator) {
-                animator.supportsChangeAnimations = false
-            }
         }
 
         setObserve()

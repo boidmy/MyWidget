@@ -19,18 +19,10 @@ import javax.inject.Named
 
 class FloatingPopupActivity : DaggerAppCompatActivity() {
 
-    @Inject
-    @Named("floatingOpen")
-    lateinit var openAnimation: Animation
-    @Inject
-    @Named("floatingClose")
-    lateinit var closeAnimation: Animation
-    @Inject
-    @Named("rotateOpen")
-    lateinit var startRotateAnimation: Animation
-    @Inject
-    @Named("rotateClose")
-    lateinit var endRotateAnimation: Animation
+    @Inject @Named("floatingOpen") lateinit var openAnimation: Animation
+    @Inject @Named("floatingClose") lateinit var closeAnimation: Animation
+    @Inject @Named("rotateOpen") lateinit var startRotateAnimation: Animation
+    @Inject @Named("rotateClose") lateinit var endRotateAnimation: Animation
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,28 +49,36 @@ class FloatingPopupActivity : DaggerAppCompatActivity() {
     fun onClickFloatingBtn(v: View) {
         when (v.id) {
             R.id.memoContainer -> {
-                val intent = Intent()
-                intent.putExtra(RESULT, MEMO)
-                setResult(RESULT_OK, intent)
+                Intent().apply {
+                    putExtra(RESULT, MEMO)
+                }.run {
+                    setResult(RESULT_OK, this)
+                }
             }
             R.id.conditionContainer -> {
-                val intent = Intent()
-                intent.putExtra(RESULT, CONDITION)
-                setResult(RESULT_OK, intent)
+                Intent().apply {
+                    putExtra(RESULT, CONDITION)
+                }.run {
+                    setResult(RESULT_OK, this)
+                }
             }
             R.id.loveDayContainer -> {
-                val intent = Intent()
-                intent.putExtra(RESULT, D_DAY)
-                setResult(RESULT_OK, intent)
+                Intent().apply {
+                    putExtra(RESULT, D_DAY)
+                }.run {
+                    setResult(RESULT_OK, this)
+                }
             }
             R.id.chatContainer -> {
                 if (loginEmail().isEmpty()) {
                     toast(getString(R.string.afterLogin))
                     return
                 }
-                val intent = Intent()
-                intent.putExtra(RESULT, CHAT)
-                setResult(RESULT_OK, intent)
+                Intent().apply {
+                    putExtra(RESULT, CHAT)
+                }.run {
+                    setResult(RESULT_OK, this)
+                }
             }
         }
         activationAnimation(false)

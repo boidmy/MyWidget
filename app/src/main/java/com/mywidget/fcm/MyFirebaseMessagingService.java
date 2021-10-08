@@ -34,27 +34,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     private static final String TAG = "MyFirebaseMsgService";
 
-    /*@Override
-    public void handleIntent(Intent intent) {
-        try {
-            if (intent.getExtras() != null) {
-                RemoteMessage.Builder builder = new RemoteMessage.Builder("MessagingService");
-
-                for (String key : intent.getExtras().keySet()) {
-                    builder.addData(key, intent.getExtras().get(key).toString());
-                }
-
-                onMessageReceived(builder.build());
-            }
-            else {
-                super.handleIntent(intent);
-            }
-        }
-        catch (Exception e) {
-            super.handleIntent(intent);
-        }
-    }*/
-
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
 

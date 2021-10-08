@@ -27,16 +27,9 @@ class MainRepository @Inject constructor(
     private val memoDb: MemoDB, private val loveDayDb: LoveDayDB
 ) {
 
-    @Inject
-    lateinit var database: DatabaseReference
-
-    @Inject
-    @Named("User")
-    lateinit var userRef: DatabaseReference
-
-    @Inject
-    @Named("favorites")
-    lateinit var favoritesRef: DatabaseReference
+    @Inject lateinit var database: DatabaseReference
+    @Inject @Named("User") lateinit var userRef: DatabaseReference
+    @Inject @Named("favorites") lateinit var favoritesRef: DatabaseReference
     private val _myId: MutableLiveData<String> = MutableLiveData()
     private val _favoritesExistence: MutableLiveData<Boolean> = MutableLiveData()
     var favoritesExistenceMyFriend: MutableLiveData<UserData> = MutableLiveData()
