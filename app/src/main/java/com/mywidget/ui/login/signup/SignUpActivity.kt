@@ -3,18 +3,18 @@ package com.mywidget.ui.login.signup
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
+import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthException
 import com.mywidget.R
+import com.mywidget.common.TestClass
 import com.mywidget.data.Constants.Companion.REQUEST_PASSWORD_SIGN_IN
 import com.mywidget.data.RESULT
 import com.mywidget.databinding.ActivitySignupBinding
 import com.mywidget.ui.base.BaseActivity
 import com.mywidget.ui.login.LoginViewModel
-import kotlinx.android.synthetic.main.activity_signup.*
-import util.Util
 import util.Util.firebaseAuthException
 import javax.inject.Inject
 
@@ -29,8 +29,8 @@ class SignUpActivity : BaseActivity<ActivitySignupBinding>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        binding = DataBindingUtil.setContentView(this, layout)
         binding.activity = this
-
         bindView()
     }
 
@@ -51,7 +51,7 @@ class SignUpActivity : BaseActivity<ActivitySignupBinding>() {
             if (task.isSuccessful) {
                 val user = firebaseAuth.currentUser
                 user?.email?.let { userVal ->
-                    viewModel.singUpFirebase(userVal, user.uid, nicknameEdit.text.toString())
+                    viewModel.singUpFirebase(userVal, user.uid, binding.nicknameEdit.text.toString())
                 }
             } else {
                 task.exception?.let {
@@ -59,5 +59,7 @@ class SignUpActivity : BaseActivity<ActivitySignupBinding>() {
                 }
             }
         }
+        val test = TestClass()
+        test(3, 4)
     }
 }

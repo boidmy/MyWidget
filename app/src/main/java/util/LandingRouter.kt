@@ -31,6 +31,7 @@ object LandingRouter {
             Landing.SIGN_UP -> goSignUp()
             Landing.FRIEND -> goFriendAdd()
             Landing.MYPAGE -> goMyPage()
+            else -> {}
         }
     }
 

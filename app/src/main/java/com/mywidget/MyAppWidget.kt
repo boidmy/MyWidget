@@ -7,9 +7,7 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
-import android.database.sqlite.SQLiteDatabase
 import android.net.Uri
-import android.util.Log
 import android.view.View
 import android.widget.RemoteViews
 import com.google.common.reflect.TypeToken
@@ -48,7 +46,7 @@ class MyAppWidget : AppWidgetProvider() {
 
     private fun actionCall(context: Context, number: String): PendingIntent {
         val intent1 = Intent(Intent.ACTION_DIAL, Uri.parse("tel:$number"))
-        return PendingIntent.getActivity(context, 0, intent1, 0)
+        return PendingIntent.getActivity(context, 0, intent1, PendingIntent.FLAG_IMMUTABLE)
     }
 
     override fun onReceive(context: Context, intent: Intent?) {

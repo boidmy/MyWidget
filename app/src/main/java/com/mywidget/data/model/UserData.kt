@@ -1,6 +1,5 @@
 package com.mywidget.data.model
 
-import com.mywidget.extension.text
 
 data class UserData(var email: String = "",
                     var friendName: String = "",

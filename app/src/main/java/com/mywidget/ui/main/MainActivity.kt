@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import android.view.animation.Animation
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
 import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
@@ -62,6 +63,18 @@ class MainActivity : BaseActivity<DrawerlayoutMainBinding>()
         loveDayDialogBind()
         favoritesDialogBind()
         chatInPush()
+
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true){
+            override fun handleOnBackPressed() {
+                binding.drawerLayout.run {
+                    if (isDrawerOpen(GravityCompat.START)) {
+                        closeDrawer(GravityCompat.START)
+                        return
+                    }
+                }
+                backPressAppFinish.onBackPressed()
+            }
+        })
     }
 
     private fun loginCheck() {
@@ -108,16 +121,6 @@ class MainActivity : BaseActivity<DrawerlayoutMainBinding>()
 
     private fun inflateLeftMenu(): NavHeaderMainBinding = DataBindingUtil.inflate(layoutInflater
         , R.layout.nav_header_main, binding.navView, false)
-
-    override fun onBackPressed() {
-        binding.drawerLayout.run {
-            if (isDrawerOpen(GravityCompat.START)) {
-                closeDrawer(GravityCompat.START)
-                return
-            }
-        }
-        backPressAppFinish.onBackPressed()
-    }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)

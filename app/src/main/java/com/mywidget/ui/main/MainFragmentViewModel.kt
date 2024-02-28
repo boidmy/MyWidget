@@ -17,15 +17,15 @@ class MainFragmentViewModel @Inject constructor(
     private val _favoritesDialogVisibility: MutableLiveData<Boolean> = MutableLiveData()
     private val _myId: LiveData<String> = repository.myId
     private val _favoritesExistence: LiveData<Boolean> = repository.favoritesExistence
-    private val _favoritesExistenceMyFriend: LiveData<UserData> = Transformations.switchMap(_myId) {
+    private val _favoritesExistenceMyFriend: LiveData<UserData> = _myId.switchMap {
         repository.favoritesExistenceMyFriend()
     }
     private val _favoritesMessageFriend: LiveData<FavoritesData> =
-        Transformations.switchMap(_favoritesExistenceMyFriend) {
+        _favoritesExistenceMyFriend.switchMap {
             repository.favoritesMessageFriend(it.email)
         }
     private val _favoritesMessageMe: LiveData<FavoritesData> =
-        Transformations.switchMap(_favoritesExistenceMyFriend) {
+        _favoritesExistenceMyFriend.switchMap {
             repository.favoritesMessageMe(it.email)
         }
     private val _deleteDDayDialog: MutableLiveData<Memo> = MutableLiveData()

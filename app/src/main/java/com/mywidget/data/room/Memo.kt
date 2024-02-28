@@ -4,7 +4,6 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.mywidget.data.Interface.DiffUtilDataInterface
-import com.mywidget.extension.text
 import util.CalendarUtil
 
 @Entity(tableName = "memo")

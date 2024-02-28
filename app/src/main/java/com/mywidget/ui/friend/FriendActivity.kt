@@ -13,7 +13,6 @@ import com.mywidget.databinding.FriendAddDialogBinding
 import com.mywidget.databinding.FriendUpdateDialogBinding
 import com.mywidget.ui.base.BaseActivity
 import com.mywidget.ui.friend.recyclerview.FriendAdapter
-import kotlinx.android.synthetic.main.friend_add_dialog.*
 import util.Util.toast
 import javax.inject.Inject
 
@@ -70,8 +69,8 @@ class FriendActivity : BaseActivity<ActivityFriendBinding>() {
         viewModel.friendAddDialogVisibility.observe(this, Observer {
             if(it) {
                 friendDialog.show()
-                friendDialog.friendAddExplanationEdit.text = null
-                friendDialog.friendAddEmailEdit.text = null
+                friendAddDialogBinding.friendAddExplanationEdit.text = null
+                friendAddDialogBinding.friendAddEmailEdit.text = null
             } else friendDialog.dismiss()
         })
     }

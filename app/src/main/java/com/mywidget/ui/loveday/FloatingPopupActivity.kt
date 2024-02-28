@@ -11,14 +11,15 @@ import android.view.animation.AnimationUtils
 import com.mywidget.MainApplication
 import com.mywidget.R
 import com.mywidget.data.*
+import com.mywidget.databinding.LovedayPopup2Binding
 import dagger.android.support.DaggerAppCompatActivity
-import kotlinx.android.synthetic.main.loveday_popup2.*
 import util.Util.toast
 import javax.inject.Inject
 import javax.inject.Named
 
 class FloatingPopupActivity : DaggerAppCompatActivity() {
 
+    private lateinit var binding: LovedayPopup2Binding
     @Inject @Named("floatingOpen") lateinit var openAnimation: Animation
     @Inject @Named("floatingClose") lateinit var closeAnimation: Animation
     @Inject @Named("rotateOpen") lateinit var startRotateAnimation: Animation
@@ -26,7 +27,8 @@ class FloatingPopupActivity : DaggerAppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.loveday_popup2)
+        binding = LovedayPopup2Binding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         activationAnimation(true)
     }
@@ -39,11 +41,11 @@ class FloatingPopupActivity : DaggerAppCompatActivity() {
     private fun activationAnimation(flag: Boolean) {
         val anim = if (flag) openAnimation else closeAnimation
         val rotateAnim = if (flag) startRotateAnimation else endRotateAnimation
-        chatContainer.startAnimation(anim)
-        loveDayContainer.startAnimation(anim)
-        conditionContainer.startAnimation(anim)
-        memoContainer.startAnimation(anim)
-        floatingBtn.startAnimation(rotateAnim)
+        binding.chatContainer.startAnimation(anim)
+        binding.loveDayContainer.startAnimation(anim)
+        binding.conditionContainer.startAnimation(anim)
+        binding.memoContainer.startAnimation(anim)
+        binding.floatingBtn.startAnimation(rotateAnim)
     }
 
     fun onClickFloatingBtn(v: View) {

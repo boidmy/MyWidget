@@ -16,7 +16,6 @@ import com.mywidget.databinding.ActivityWidgetBinding
 import com.mywidget.databinding.DeleteConfirmDialogWidgetBinding
 import com.mywidget.databinding.WidgetAddDialogBinding
 import com.mywidget.ui.base.BaseActivity
-import kotlinx.android.synthetic.main.widget_add_dialog.*
 import org.json.JSONArray
 import javax.inject.Inject
 
@@ -72,8 +71,8 @@ class WidgetListActivity : BaseActivity<ActivityWidgetBinding>() {
         widgetDialog.setContentView(widgetDialogBinding.root)
         viewModel.dialogVisible.observe(this, Observer {
             if(it) {
-                widgetDialog.widgetAddNameEdit.text = null
-                widgetDialog.widgetAddPhoneEdit.text = null
+                widgetDialogBinding.widgetAddNameEdit.text = null
+                widgetDialogBinding.widgetAddPhoneEdit.text = null
                 widgetDialog.show()
             }
             else widgetDialog.dismiss()

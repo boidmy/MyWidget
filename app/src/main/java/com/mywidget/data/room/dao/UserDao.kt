@@ -1,8 +1,6 @@
 package com.mywidget.data.room.dao
 
 import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy.REPLACE
 import androidx.room.Query
 import com.mywidget.data.room.User
 

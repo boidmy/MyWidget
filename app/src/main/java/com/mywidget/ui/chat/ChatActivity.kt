@@ -1,23 +1,25 @@
 package com.mywidget.ui.chat
 
-import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.View
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
 import androidx.core.view.GravityCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.database.DatabaseReference
 import com.mywidget.R
-import com.mywidget.data.*
+import com.mywidget.data.BUNDLE
+import com.mywidget.data.INTENT_EXTRA_DATA
+import com.mywidget.data.INTENT_EXTRA_FRIEND_DATA
+import com.mywidget.data.Landing
+import com.mywidget.data.RouterEvent
 import com.mywidget.data.model.RoomDataModel
 import com.mywidget.databinding.ActivityChattingBinding
 import com.mywidget.ui.base.BaseActivity
 import com.mywidget.ui.chat.recyclerview.ChatAdapter
 import com.mywidget.ui.chat.recyclerview.UserListRecyclerView
-import com.mywidget.ui.chatinvite.ChatInviteActivity
-import kotlinx.android.synthetic.main.activity_chatting.*
 import util.ItemDecoration
 import util.LandingRouter.move
 import util.Util
@@ -62,6 +64,16 @@ class ChatActivity : BaseActivity<ActivityChattingBinding>() {
             inviteUserList()
             getListChat()
         }
+
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true){
+            override fun handleOnBackPressed() {
+                if (binding.chatDrawLayout.isDrawerOpen(GravityCompat.END)) {
+                    binding.chatDrawLayout.closeDrawer(GravityCompat.END)
+                    return
+                }
+                finish()
+            }
+        })
     }
 
     private fun bind() {
@@ -84,21 +96,13 @@ class ChatActivity : BaseActivity<ActivityChattingBinding>() {
         }
     }
 
-    override fun onBackPressed() {
-        if (binding.chatDrawLayout.isDrawerOpen(GravityCompat.END)) {
-            binding.chatDrawLayout.closeDrawer(GravityCompat.END)
-            return
-        }
-        finish()
-    }
-
     fun onClickSendMessage(v: View) {
-        viewModel.insertChat(loginEmail(), chatEdit.text.toString())
+        viewModel.insertChat(loginEmail(), binding.chatEdit.text.toString())
         binding.chatEdit.text.clear()
     }
 
     fun onClickOpenDrawer(v: View) {
-        Util.downKeyboard(this, chatEdit)
+        Util.downKeyboard(this, binding.chatEdit)
         binding.chatDrawLayout.openDrawer(GravityCompat.END)
     }
 
