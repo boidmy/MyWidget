@@ -59,7 +59,5 @@ class SignUpActivity : BaseActivity<ActivitySignupBinding>() {
                 }
             }
         }
-        val test = TestClass()
-        test(3, 4)
     }
 }
